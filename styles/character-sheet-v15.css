@@ -1,0 +1,295 @@
+.genesys-vtt.genesys-character-sheet .window-content {
+  background: linear-gradient(180deg, rgba(0,0,0,0.035), rgba(0,0,0,0));
+}
+
+.genesys-vtt .genesys-sheet-v15 {
+  gap: 12px;
+}
+
+.genesys-vtt .genesys-sheet-v15 .genesys-sheet-header {
+  align-items: center;
+  padding: 14px 16px;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 10px;
+  background: color-mix(in srgb, currentColor 5%, transparent);
+}
+
+.genesys-vtt .genesys-sheet-v15 .genesys-name {
+  font-size: 1.9rem;
+}
+
+.genesys-vtt .genesys-sheet-roleline {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 6px;
+}
+
+.genesys-vtt .genesys-sheet-chip {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 2px 8px;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, currentColor 6%, transparent);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.035em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-sheet-chip[data-tone="alert"] {
+  background: color-mix(in srgb, #b6503a 16%, transparent);
+}
+
+.genesys-vtt .genesys-v15-dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.8fr);
+  gap: 12px;
+}
+
+.genesys-vtt .genesys-v15-core {
+  display: grid;
+  gap: 12px;
+}
+
+.genesys-vtt .genesys-v15-characteristics {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(72px, 1fr));
+  gap: 8px;
+}
+
+.genesys-vtt .genesys-v15-characteristic {
+  display: grid;
+  gap: 4px;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  border-radius: 8px;
+  text-align: center;
+  background: color-mix(in srgb, currentColor 3%, transparent);
+}
+
+.genesys-vtt .genesys-v15-characteristic span {
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.045em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.genesys-vtt .genesys-v15-characteristic input {
+  min-height: 38px;
+  font-size: 1.2rem;
+}
+
+.genesys-vtt .genesys-v15-vitals {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(90px, 1fr));
+  gap: 8px;
+}
+
+.genesys-vtt .genesys-vital-card {
+  display: grid;
+  gap: 5px;
+  padding: 9px;
+  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, currentColor 3%, transparent);
+}
+
+.genesys-vtt .genesys-vital-card > strong {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  opacity: 0.75;
+}
+
+.genesys-vtt .genesys-vital-pair {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+
+.genesys-vtt .genesys-vital-pair input {
+  width: 54px;
+}
+
+.genesys-vtt .genesys-v15-status-stack {
+  display: grid;
+  gap: 12px;
+}
+
+.genesys-vtt .genesys-v15-status-card {
+  min-height: 0;
+}
+
+.genesys-vtt .genesys-v15-status-card h2 {
+  margin-bottom: 6px;
+}
+
+.genesys-vtt .genesys-v15-status-summary {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 8px 0;
+}
+
+.genesys-vtt .genesys-v15-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.genesys-vtt .genesys-v15-actions button {
+  min-width: 0;
+}
+
+.genesys-vtt .genesys-v15-main-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 12px;
+}
+
+.genesys-vtt .genesys-v15-section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.genesys-vtt .genesys-v15-section-title h2,
+.genesys-vtt .genesys-v15-section-title p {
+  margin: 0;
+}
+
+.genesys-vtt .genesys-v15-section-title p {
+  margin-top: 3px;
+  font-size: 0.78rem;
+  opacity: 0.72;
+}
+
+.genesys-vtt .genesys-inventory-panel .genesys-combat-controls {
+  margin: 8px 0 12px;
+}
+
+.genesys-vtt .genesys-v15-profile-details,
+.genesys-vtt .genesys-v15-advanced {
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.genesys-vtt .genesys-v15-profile-details > summary,
+.genesys-vtt .genesys-v15-advanced > summary {
+  padding: 10px 12px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: color-mix(in srgb, currentColor 6%, transparent);
+}
+
+.genesys-vtt .genesys-v15-detail-body {
+  padding: 12px;
+}
+
+.genesys-vtt .genesys-v15-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.genesys-vtt .genesys-v15-profile-grid label,
+.genesys-vtt .genesys-v15-advanced-grid label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 700;
+}
+
+.genesys-vtt .genesys-v15-minion-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.genesys-vtt .genesys-v15-advanced-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 8px;
+}
+
+.genesys-vtt .genesys-v15-qa-note {
+  margin: 8px 0 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: color-mix(in srgb, currentColor 6%, transparent);
+  font-size: 0.75rem;
+  opacity: 0.78;
+}
+
+.genesys-vtt .genesys-sheet-v15 .genesys-check-engine-lab,
+.genesys-vtt .genesys-sheet-v15 .genesys-reaction-lab,
+.genesys-vtt .genesys-sheet-v15 .genesys-pool-builder,
+.genesys-vtt .genesys-sheet-v15 .genesys-dice-lab {
+  margin-top: 10px;
+}
+
+.genesys-vtt .genesys-sheet-v15 .genesys-pool-builder,
+.genesys-vtt .genesys-sheet-v15 .genesys-dice-lab {
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  padding: 0;
+}
+
+.genesys-vtt .genesys-sheet-v15 .genesys-panel-heading p,
+.genesys-vtt .genesys-sheet-v15 .genesys-check-engine-note {
+  max-width: 760px;
+}
+
+.genesys-vtt .genesys-talents-panel {
+  order: 0;
+}
+
+.genesys-vtt .genesys-talents-panel .genesys-panel-heading p {
+  opacity: 0.68;
+}
+
+.genesys-vtt .genesys-sheet-v15 .genesys-smoke-footer {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .genesys-vtt .genesys-v15-dashboard {
+    grid-template-columns: 1fr;
+  }
+
+  .genesys-vtt .genesys-v15-characteristics {
+    grid-template-columns: repeat(3, minmax(80px, 1fr));
+  }
+
+  .genesys-vtt .genesys-v15-vitals {
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
+  }
+
+  .genesys-vtt .genesys-v15-profile-grid,
+  .genesys-vtt .genesys-v15-advanced-grid {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .genesys-vtt .genesys-v15-characteristics,
+  .genesys-vtt .genesys-v15-vitals,
+  .genesys-vtt .genesys-v15-profile-grid,
+  .genesys-vtt .genesys-v15-minion-grid,
+  .genesys-vtt .genesys-v15-advanced-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
