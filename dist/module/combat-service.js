@@ -1,5 +1,5 @@
 import { rollNarrativePool } from "../domain/dice/index.js";
-import { applyReactionToPendingCombat, buildCombatCommitPlan, createPendingCombatResolution, finalizePendingCombatResolution, prepareCombatWeaponAttack, resolveDamageCharacteristic, getCriticalActivationCapacity, criticalExtraActivations } from "../domain/combat/index.js";
+import { applyReactionToPendingCombat, buildCombatCommitPlan, createPendingCombatResolution, finalizePendingCombatResolution, prepareCombatWeaponAttack, resolveDamageCharacteristic } from "../domain/combat/index.js";
 import { getEligibleReactions } from "../domain/reactions/index.js";
 import { normalizeWeaponRuleData } from "../domain/items/index.js";
 import { formatPool, resultToChatHtml } from "./dice-ui.js";
@@ -10,7 +10,9 @@ import { getActorConditionCheckModifiers } from "./condition-service.js";
 import { inflictCriticalInjury, promptCriticalSecondaryResolution } from "./critical-service.js";
 import { getRenderedActorResourceDebug, getRenderedActorFieldValue, rerenderRenderedCharacterSheet } from "./live-sheet-state.js";
 import { consumeSceneEncounterAction } from "./initiative-service.js";
-import { applyMinionCritical, normalizeActorRole, normalizeMinionGroup, suffersAutomaticThresholdCritical } from "../domain/adversaries/index.js";
+import { normalizeActorRole, normalizeMinionGroup, suffersAutomaticThresholdCritical } from "../domain/adversaries/index.js";
+import { createCombatNarrativeSpendState, narrativeSpendMessageFlags, promptCombatNarrativeSpend, withNarrativeSpendSummary } from "./narrative-spend-service.js";
+
 const scheduledSecondaryPrompts = new Set();
 export function scheduleCriticalSecondaryPrompt(actor, criticalId) {
     const key = `${actor?.id ?? "actor"}:${criticalId}`;
@@ -37,59 +39,6 @@ function escapeHtml(value) {
 function capitalize(value) {
     const text = String(value ?? "");
     return text.length ? `${text[0].toUpperCase()}${text.slice(1)}` : text;
-}
-function chooseActorDecisionUser(actor) {
-    const users = Array.isArray(game?.users?.contents) ? game.users.contents : [];
-    const activePlayerOwner = users.find((user) => user?.active && !user?.isGM && actor?.testUserPermission?.(user, "OWNER"));
-    if (activePlayerOwner)
-        return activePlayerOwner;
-    if (game?.user?.isGM)
-        return game.user;
-    const activeGm = users.find((user) => user?.active && user?.isGM);
-    return activeGm ?? game?.user;
-}
-async function promptCriticalActivation(attacker, target, resolution) {
-    const capacity = getCriticalActivationCapacity(resolution);
-    if (!capacity.eligible)
-        return 0;
-    const DialogV2 = foundry?.applications?.api?.DialogV2;
-    if (!DialogV2?.wait)
-        return 0;
-    const minionTarget = normalizeActorRole(target?.system?.role) === "minion";
-    const selectableActivations = minionTarget ? Math.min(1, capacity.maxActivations) : capacity.maxActivations;
-    const sourceBits = [
-        capacity.byAdvantage ? `${capacity.byAdvantage} via Advantage` : "",
-        capacity.byTriumph ? `${capacity.byTriumph} via Triumph` : ""
-    ].filter(Boolean).join(" · ");
-    const buttons = Array.from({ length: selectableActivations }, (_, index) => {
-        const count = index + 1;
-        const bonus = criticalExtraActivations(count) * 10;
-        return {
-            action: `critical:${count}`,
-            label: minionTarget ? "Inflict Critical — Remove 1 Minion" : count === 1 ? "Inflict Critical" : `Inflict Critical (+${bonus})`
-        };
-    });
-    const config = {
-        window: { title: `${attacker?.name ?? "Attacker"} — Critical Available` },
-        content: `<section class="genesys-critical-spend-dialog">
-      <p><strong>${escapeHtml(attacker?.name ?? "Attacker")}</strong> can inflict a Critical on <strong>${escapeHtml(target?.name ?? "Target")}</strong>.</p>
-      <p><strong>Weapon Crit:</strong> ${resolution.criticalRating}</p>
-      <p><strong>Available activations:</strong> ${capacity.maxActivations}${sourceBits ? ` · ${escapeHtml(sourceBits)}` : ""}</p>
-      ${minionTarget ? "<p>A Critical removes one minion from the group. Extra same-hit Critical activations do not create additional Critical Injuries.</p>" : "<p>Each activation beyond the first adds <strong>+10</strong> to the single Critical Injury roll.</p>"}
-    </section>`,
-        buttons: [...buttons, { action: "skip", label: "Do Not Crit", default: true }],
-        modal: true,
-        rejectClose: false
-    };
-    const decisionUser = chooseActorDecisionUser(attacker);
-    const currentUserId = game?.user?.id;
-    const result = decisionUser?.id && decisionUser.id !== currentUserId && typeof DialogV2.query === "function"
-        ? await DialogV2.query(decisionUser, "wait", config)
-        : await DialogV2.wait(config);
-    const match = /^critical:(\d+)$/.exec(String(result ?? ""));
-    if (!match)
-        return 0;
-    return Math.max(0, Math.min(selectableActivations, n(match[1])));
 }
 function n(value) {
     const x = Number(value ?? 0);
@@ -369,39 +318,13 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
     pending = await resolveCombatReactionWindow(prepared, pending, target, "pre-commit");
     const committed = await commitPendingCombatResolutionToActor(target, prepared, pending);
     const resolution = finalizePendingCombatResolution(pending);
-    const criticalActivations = await promptCriticalActivation(attacker, target, resolution);
-    let activatedCritical = null;
-    if (criticalActivations > 0) {
-        if (normalizeActorRole(target?.system?.role) === "minion") {
-            const snapshot = actorCombatSnapshot(target);
-            const group = normalizeMinionGroup({
-                members: snapshot.minionGroup?.members ?? 1,
-                memberWoundThreshold: snapshot.minionGroup?.memberWoundThreshold ?? 1,
-                casualties: snapshot.minionGroup?.casualties ?? 0,
-                wounds: snapshot.woundsValue,
-                groupSkillIds: snapshot.minionGroup?.groupSkillIds ?? []
-            });
-            let next = group;
-            for (let i = 0; i < criticalActivations; i += 1)
-                next = applyMinionCritical(next);
-            await target.update({ "system.wounds.value": next.wounds, "system.minionGroup.casualties": next.casualties });
-            activatedCritical = {
-                kind: "minion-critical",
-                activations: criticalActivations,
-                woundsAdded: next.wounds - group.wounds,
-                casualtiesAdded: Math.max(0, next.casualties - group.casualties),
-                remainingMembers: next.remainingMembers
-            };
-        }
-        else {
-            const viciousRank = prepared.preparedWeaponAttack.weapon.qualities.find((quality) => quality.id === "vicious")?.rank ?? 0;
-            activatedCritical = await inflictCriticalInjury(target, {
-                viciousRank,
-                extraActivations: criticalExtraActivations(criticalActivations)
-            }, "core:weapon-critical");
-        }
-        await rerenderRenderedCharacterSheet(target);
-    }
+
+    const initialNarrativeState = createCombatNarrativeSpendState(attacker, target, prepared, resolution, committed.automaticCritical);
+    const narrativeOutcome = await promptCombatNarrativeSpend(attacker, target, initialNarrativeState);
+    const narrativeSpend = narrativeOutcome.state;
+    const activatedCritical = narrativeOutcome.activatedCritical;
+    const criticalActivations = n(narrativeSpend?.critical?.pendingActivations);
+
     const p = prepared.preparedWeaponAttack;
     const targetRole = normalizeActorRole(target?.system?.role);
     const strainConvertsToWounds = resolution.damageTrack === "strain" && (targetRole === "minion" || targetRole === "rival");
@@ -416,9 +339,12 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
             + `<strong>POST-SOAK ${resolution.damageTrack.toUpperCase()} DAMAGE:</strong> ${resolution.damageAfterSoak}`
             + (strainConvertsToWounds ? `<br /><strong>${targetRole.toUpperCase()} RULE:</strong> Strain damage converts to Wounds` : "")
         : `<strong>DAMAGE:</strong> 0 · Miss — no damage.`;
-    const critLine = resolution.criticalEligible
-        ? `Critical eligible · Crit ${resolution.criticalRating} · Advantage activations ${resolution.criticalActivationsByAdvantage} · Triumph available ${resolution.criticalTriumphsAvailable}`
-        : "Critical not eligible from this hit.";
+    const canFundCritical = resolution.criticalEligible && (n(resolution.advantage) >= n(resolution.criticalRating) || n(resolution.triumph) > 0);
+    const critLine = canFundCritical
+        ? `Available as a Narrative Result spend · Crit ${resolution.criticalRating}`
+        : resolution.criticalEligible
+            ? `Hit is Critical-eligible, but this roll has insufficient Advantage/Triumph for a weapon Critical.`
+            : "Critical Injury is not available from this hit.";
     const plan = committed.plan;
     const applications = [
         plan.wounds ? `Wounds: ${plan.wounds.before} → ${plan.wounds.after} / ${plan.wounds.threshold}${plan.wounds.incapacitated ? (plan.targetRole === "minion" || plan.targetRole === "rival" ? " · DEFEATED" : " · INCAPACITATED") : ""}${plan.wounds.after >= plan.wounds.maxTrack && plan.wounds.damage > 0 ? ` · WOUND CAP ${plan.wounds.maxTrack}` : ""}` : "",
@@ -429,12 +355,7 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
         ? (applications || "No resource change.")
         : "Target resource not changed (no permission).";
     const autoCriticalLine = committed.automaticCritical
-        ? `<p><strong>Automatic Critical:</strong> ${committed.automaticCritical.state.name} · d100 ${committed.automaticCritical.resolution.rawRoll} → ${committed.automaticCritical.resolution.total} · ${committed.automaticCritical.state.effect}</p>`
-        : "";
-    const activatedCriticalLine = activatedCritical
-        ? (activatedCritical.kind === "minion-critical"
-            ? `<p><strong>Activated Critical:</strong> Minion group suffers ${activatedCritical.woundsAdded} additional wounds · ${activatedCritical.casualtiesAdded} minion(s) removed · ${activatedCritical.remainingMembers} remaining.</p>`
-            : `<p><strong>Activated Critical:</strong> ${activatedCritical.state.name} · d100 ${activatedCritical.resolution.rawRoll} → ${activatedCritical.resolution.total} · ${activatedCritical.state.effect}</p>`)
+        ? `<p><strong>Automatic Critical — Wound Threshold exceeded:</strong> ${committed.automaticCritical.state.name} · d100 ${committed.automaticCritical.resolution.rawRoll} → ${committed.automaticCritical.resolution.total} · ${committed.automaticCritical.state.effect}</p>`
         : "";
     const checkContext = prepared.checkContext ?? {};
     const damageContext = prepared.damageContext ?? {};
@@ -445,7 +366,7 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
     const damageSummary = damageContext.characteristicId
         ? `${escapeHtml(capitalize(damageContext.characteristicId))} ${damageContext.characteristicValue}`
         : "None";
-    const content = `
+    const baseContent = `
     <section class="genesys-constructed-check genesys-combat-check">
       <p><strong>${attacker?.name ?? "Attacker"}</strong> attacks <strong>${target?.name ?? "Target"}</strong> with <strong>${p.weaponName}</strong></p>
       <p><strong>Attack Mode:</strong> ${prepared.attackMode.toUpperCase()} · <strong>Skill:</strong> ${escapeHtml(checkContext.skillLabel || p.weapon.skillId)} · <strong>Check:</strong> ${checkSummary}</p>
@@ -459,15 +380,22 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
       <p><strong>Critical:</strong> ${critLine}</p>
       <p><strong>Applied:</strong> ${appliedLine}</p>
       ${autoCriticalLine}
-      ${activatedCriticalLine}
     </section>`;
-    await foundry.documents.ChatMessage.create({ content, speaker: { alias: attacker?.name ?? "Genesys Combat" } });
-    if (committed.automaticCritical?.state?.secondaryStatus === "pending") {
+    const content = withNarrativeSpendSummary(baseContent, narrativeSpend);
+    await foundry.documents.ChatMessage.create({
+        content,
+        speaker: { alias: attacker?.name ?? "Genesys Combat" },
+        flags: narrativeSpendMessageFlags(narrativeSpend)
+    });
+    if (committed.automaticCritical?.state?.secondaryStatus === "pending")
         scheduleCriticalSecondaryPrompt(target, committed.automaticCritical.state.id);
-    }
-    if (activatedCritical?.state?.secondaryStatus === "pending") {
-        scheduleCriticalSecondaryPrompt(target, activatedCritical.state.id);
-    }
-    return { prepared, result, pending, resolution, applied: { ...committed, activatedCritical, criticalActivations } };
+    return {
+        prepared,
+        result,
+        pending,
+        resolution,
+        narrativeSpend,
+        applied: { ...committed, activatedCritical, criticalActivations }
+    };
 }
 //# sourceMappingURL=combat-service.js.map
