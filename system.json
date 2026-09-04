@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.160 QA: adds Actions as a primary Quick Link between Talents and Equipment. The new Actions tab reuses live combat and Talent Action logic for weapon attacks and active Talents, and establishes a generic Character Content Registry for setting-driven archetypes, careers, skills, talents, equipment, actions, heroic abilities, and currency packs. Protected sourcebook content remains external/importable rather than hardcoded in the public repository. Preserves Biography status bar, XP/Funds header, two-row Characteristics and Health & Defense snapshot, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
-  "version": "0.0.160",
+  "description": "Genesys VTT 0.0.161 QA: corrects Quick Dice Pool colors to the standard Genesys narrative die palette: Boost light blue, Ability green, Proficiency yellow, Setback black, Difficulty purple, and Challenge red. Preserves the 0.0.160 Actions Quick Link and Character Content Registry foundation, Biography status bar, XP/Funds header, two-row Characteristics and Health & Defense snapshot, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
+  "version": "0.0.161",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -32,7 +32,8 @@
     "styles/character-sheet-v154.css",
     "styles/character-sheet-v157.css",
     "styles/character-sheet-v158.css",
-    "styles/character-sheet-v160.css"
+    "styles/character-sheet-v160.css",
+    "styles/character-sheet-v161.css"
   ],
   "languages": [
     {
