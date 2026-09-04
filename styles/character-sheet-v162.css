@@ -1,0 +1,96 @@
+/* 0.0.162 Actions editing + Custom Action authoring */
+.genesys-vtt .genesys-actions-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 8px 10px;
+  border: 1px solid var(--genesys-gold-deep);
+  background: linear-gradient(180deg,#15242f,#0d1820);
+  color: #ead18d;
+}
+.genesys-vtt .genesys-actions-toolbar > div { display:grid; gap:2px; }
+.genesys-vtt .genesys-actions-toolbar strong { font-size:.88rem; letter-spacing:.08em; text-transform:uppercase; }
+.genesys-vtt .genesys-actions-toolbar span { color:#d8c8a9; font-size:.67rem; }
+.genesys-vtt .genesys-create-custom-action { min-width:170px; width:auto; }
+
+.genesys-vtt .genesys-custom-actions-grid { display:grid; gap:8px; }
+.genesys-vtt .genesys-custom-action-card {
+  grid-template-columns: 34px minmax(0,1fr) auto;
+  align-items:center;
+}
+.genesys-vtt .genesys-custom-action-copy small {
+  display:block;
+  margin-top:3px;
+  opacity:.74;
+  line-height:1.3;
+}
+.genesys-vtt .genesys-custom-action-buttons { display:flex; gap:5px; align-items:center; }
+.genesys-vtt .genesys-custom-action-buttons button,
+.genesys-vtt [data-actions-explicit-edit] {
+  width:auto;
+  min-width:42px;
+  padding:3px 7px;
+}
+
+.genesys-vtt .genesys-custom-action-editor {
+  width:min(620px,calc(100vw - 60px));
+  padding:0;
+  border:1px solid var(--genesys-gold-deep);
+  background:#0d171e;
+  color:#ead9b9;
+  box-shadow:0 14px 50px rgba(0,0,0,.6), inset 0 0 0 3px rgba(215,173,82,.12);
+}
+.genesys-vtt .genesys-custom-action-editor::backdrop { background:rgba(0,0,0,.55); }
+.genesys-vtt .genesys-custom-action-form { padding:0; }
+.genesys-vtt .genesys-custom-action-form > header {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:10px 12px;
+  border-bottom:1px solid var(--genesys-gold-deep);
+  background:linear-gradient(180deg,#172936,#0f1b24);
+  color:#ecd187;
+}
+.genesys-vtt .genesys-custom-action-form > header > div { display:grid; gap:2px; }
+.genesys-vtt .genesys-custom-action-form > header strong { text-transform:uppercase; letter-spacing:.07em; }
+.genesys-vtt .genesys-custom-action-form > header small { color:#cbb995; }
+.genesys-vtt .genesys-custom-action-form > header button { width:30px; min-width:30px; }
+.genesys-vtt .genesys-custom-action-form-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:14px;
+  background:var(--genesys-parchment);
+  color:var(--genesys-ink);
+}
+.genesys-vtt .genesys-custom-action-form-grid label,
+.genesys-vtt .genesys-custom-action-notes {
+  display:grid;
+  gap:5px;
+  font-size:.68rem;
+  font-weight:800;
+  text-transform:uppercase;
+}
+.genesys-vtt .genesys-custom-action-notes {
+  padding:0 14px 14px;
+  background:var(--genesys-parchment);
+  color:var(--genesys-ink);
+}
+.genesys-vtt .genesys-custom-action-notes textarea { resize:vertical; min-height:100px; }
+.genesys-vtt .genesys-custom-action-form > footer {
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  padding:10px 12px;
+  border-top:1px solid var(--genesys-gold-deep);
+  background:#0d171e;
+}
+.genesys-vtt .genesys-custom-action-form > footer button { width:auto; min-width:110px; }
+
+@media(max-width:760px){
+  .genesys-vtt .genesys-actions-toolbar { align-items:stretch; flex-direction:column; }
+  .genesys-vtt .genesys-create-custom-action { width:100%; }
+  .genesys-vtt .genesys-custom-action-form-grid { grid-template-columns:1fr; }
+}
