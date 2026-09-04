@@ -9,7 +9,8 @@ const CONTENT_KEYS = Object.freeze([
     "talents",
     "equipment",
     "actions",
-    "heroicAbilities"
+    "heroicAbilities",
+    "motivations"
 ]);
 
 function text(value, fallback = "") {
@@ -42,6 +43,22 @@ function normalizeCurrency(currency = {}) {
     };
 }
 
+function normalizeCreationRules(rules = {}) {
+    return {
+        careerSkillGrantCount: Math.max(0, Math.trunc(Number(rules.careerSkillGrantCount ?? 4) || 0)),
+        careerSkillGrantRank: Math.max(0, Math.trunc(Number(rules.careerSkillGrantRank ?? 1) || 0)),
+        creationSkillCap: Math.max(0, Math.min(5, Math.trunc(Number(rules.creationSkillCap ?? 2) || 0))),
+        characteristicCostMultiplier: Math.max(0, Math.trunc(Number(rules.characteristicCostMultiplier ?? 10) || 0)),
+        careerSkillCostMultiplier: Math.max(0, Math.trunc(Number(rules.careerSkillCostMultiplier ?? 5) || 0)),
+        nonCareerSkillSurcharge: Math.max(0, Math.trunc(Number(rules.nonCareerSkillSurcharge ?? 5) || 0)),
+        talentCostMultiplier: Math.max(0, Math.trunc(Number(rules.talentCostMultiplier ?? 5) || 0)),
+        coreStartingFunds: Math.max(0, Math.trunc(Number(rules.coreStartingFunds ?? 500) || 0)),
+        heroicAbilityAtCreation: Boolean(rules.heroicAbilityAtCreation),
+        heroicAbilityStoryPointCost: Math.max(0, Math.trunc(Number(rules.heroicAbilityStoryPointCost ?? 0) || 0)),
+        notes: text(rules.notes, "")
+    };
+}
+
 function normalizeContentEntry(entry = {}, kind, index) {
     return {
         ...clone(entry),
@@ -62,6 +79,8 @@ export function normalizeCharacterContentPack(pack = {}) {
         sourceType: text(pack.sourceType, "custom"),
         complete: Boolean(pack.complete),
         currency: normalizeCurrency(pack.currency),
+        creationRules: normalizeCreationRules(pack.creationRules),
+        creationSteps: Array.isArray(pack.creationSteps) ? clone(pack.creationSteps) : [],
         metadata: { ...(pack.metadata ?? {}) }
     };
     for (const key of CONTENT_KEYS)
@@ -114,8 +133,18 @@ export function getCharacterContent(kind, { packIds = null, settingId = "" } = {
 }
 
 export function getSettingCurrency(settingId) {
-    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId && entry.currency?.denominations?.length);
+    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId);
     return pack ? clone(pack.currency) : { mode: "single", label: "Funds", denominations: [] };
+}
+
+export function getSettingCreationRules(settingId) {
+    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId);
+    return pack ? clone(pack.creationRules) : normalizeCreationRules({});
+}
+
+export function getSettingCreationSteps(settingId) {
+    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId);
+    return pack ? clone(pack.creationSteps) : [];
 }
 
 function persistedPacks() {
@@ -168,6 +197,8 @@ function exposeApi() {
         listPacks: listCharacterContentPacks,
         getContent: getCharacterContent,
         getCurrency: getSettingCurrency,
+        getCreationRules: getSettingCreationRules,
+        getCreationSteps: getSettingCreationSteps,
         snapshot: characterContentRegistrySnapshot
     });
     Object.defineProperty(game, "genesysContent", { configurable: true, value: api });
