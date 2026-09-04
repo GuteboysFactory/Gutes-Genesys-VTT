@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.154 QA: replaces the redundant header Brawn medallion with a compact quick-stat strip placed between character identity and the sheet tabs. The strip surfaces all six Characteristics plus Wounds, Strain, Soak, Melee Defense, and Ranged Defense at a glance while preserving the 0.0.153 Genesys Fantasy target layout, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
-  "version": "0.0.154",
+  "description": "Genesys VTT 0.0.155 QA: reworks the Character Sheet header and quick-stat area after visual QA. The sheet now uses a wider desktop-first window, a cleaner parchment quick-info band with separate Characteristics and Health & Defense groups, full labels instead of cramped mini boxes, improved header proportions, and better spacing across the three-column Summary layout. Preserves five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
+  "version": "0.0.155",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -18,7 +18,8 @@
   "esmodules": [
     "dist/genesys.js",
     "dist/module/talent-bootstrap.js",
-    "dist/module/character-sheet-v15-controller.js"
+    "dist/module/character-sheet-v15-controller.js",
+    "dist/module/character-sheet-window-polish.js"
   ],
   "styles": [
     "styles/genesys.css",
