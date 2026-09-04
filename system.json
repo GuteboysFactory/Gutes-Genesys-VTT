@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.167 QA: adds the complete Realms of Terrinoth Talent Catalog metadata to the Talent Library. The catalog is built from the official Realms of Terrinoth Table 2-4 plus mandatory errata additions and contains 112 setting-valid Talents across Tier 1-5, including both Terrinoth-original and Genesys Core talents used by the setting. Genesys Talents Expanded v5.0 is used as the working cross-reference index while official Terrinoth sources remain authoritative. Full copyrighted rules text is not bundled; catalog entries include structured metadata, prerequisites/exclusions where encoded, and existing Rule Elements for implemented talents such as Parry, Second Wind, and Finesse. Preserves the 0.0.166 Talent Library, 0.0.165 Character Creation Data Foundation, Actions, Rule Engine, combat, encounter, and narrative dice work.",
-  "version": "0.0.167",
+  "description": "Genesys VTT 0.0.168 QA: adds the Realms of Terrinoth Character Creation catalog foundation with 14 playable archetype/species profiles, 8 careers plus the Runemaster Mage variant, structured characteristics, starting XP, wound/strain formulas, starting skill grants, special-ability metadata, career skills, starting-gear choice groups, and Terrinoth silver-currency metadata. Scout starting gear follows the official errata. Also removes the deprecated Foundry renderChatMessage compatibility hook from Narrative Spend and uses renderChatMessageHTML with native HTMLElement handling for v13+ compatibility. Preserves the 0.0.167 Terrinoth Talent Catalog, Talent Library, Character Creation Data Foundation, Actions, Rule Engine, combat, encounter, and narrative dice work.",
+  "version": "0.0.168",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -20,6 +20,7 @@
     "dist/module/dice-renderer-bridge.js",
     "dist/module/talent-bootstrap.js",
     "dist/module/content-registry.js",
+    "dist/module/content-packs/realms-of-terrinoth-character-creation.js",
     "dist/module/content-packs/realms-of-terrinoth-talents.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",
