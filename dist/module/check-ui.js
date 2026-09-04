@@ -1,4 +1,3 @@
-import { rollNarrativePool } from "../domain/dice/index.js";
 import { prepareAssistedCheck, prepareOpposedCheck, prepareStandardCheck } from "../domain/checks/index.js";
 import { ruleElementToCheckModifier } from "../domain/rules/index.js";
 import { formatPool, resultToChatHtml } from "./dice-ui.js";
@@ -6,6 +5,7 @@ import { poolTraceToHtml } from "./pool-ui.js";
 import { prepareActorSkillCheck } from "./skill-ui.js";
 import { getActorConditionCheckModifiers } from "./condition-service.js";
 import { collectActorRuleElements } from "./talent-service-foundation.js";
+import { rollNarrativeWithPresentation } from "./dice-renderer-bridge.js";
 function capitalize(value) {
     return value.length ? `${value[0].toUpperCase()}${value.slice(1)}` : value;
 }
@@ -143,7 +143,18 @@ export function prepareActorSkillEngineCheck(actor, skillId, options = {}) {
     };
 }
 export async function rollPreparedActorCheckToChat(prepared, speakerAlias) {
-    const result = rollNarrativePool(prepared.check.construction.pool);
+    const { result } = await rollNarrativeWithPresentation(prepared.check.construction.pool, {
+        sourceType: `${prepared.check.kind ?? "standard"}-check`,
+        sourceId: prepared.skillId,
+        sourceLabel: prepared.skillLabel,
+        speakerAlias,
+        actorName: speakerAlias,
+        metadata: {
+            characteristicId: prepared.characteristicId,
+            checkKind: prepared.check.kind,
+            appliedRuleLabel: prepared.appliedRuleLabel
+        }
+    });
     const assistance = prepared.check.kind === "assisted"
         ? ` · ${prepared.check.assistanceMode === "skilled" ? "Skilled assistance" : "Unskilled assistance"}`
         : "";
