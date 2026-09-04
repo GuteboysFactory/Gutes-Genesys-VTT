@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.14C QA: Talents & Rule Elements foundation with live Parry plus Finesse wired into the before-check-build window. Finesse may use Agility for Brawl or Melee (Light) checks while weapon damage continues to use its separate damage characteristic.",
-  "version": "0.0.142",
+  "description": "Genesys VTT 0.0.14C QA hotfix: Talents & Rule Elements foundation with live Parry and Finesse. Finesse now survives the combat live-actor clone so Brawl/Melee (Light) attack checks can use Agility while weapon damage remains tied to its separate damage characteristic.",
+  "version": "0.0.143",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
