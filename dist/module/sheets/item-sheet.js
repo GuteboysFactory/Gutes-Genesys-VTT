@@ -27,6 +27,9 @@ export class GenesysItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             isArmor: this.item.type === "armor",
             isGear: this.item.type === "gear",
             isAttachment: this.item.type === "attachment",
+            isTalent: this.item.type === "talent",
+            talentRuleCount: Array.isArray(system.rules) ? system.rules.length : 0,
+            supportsQualities: this.item.type === "weapon" || this.item.type === "armor",
             skills: getActiveSkillDefinitions().map((skill) => ({ id: skill.id, label: skill.label, selected: skill.id === system.skillId })),
             qualitiesText: formatQualityText(system.qualities ?? []),
             qualityCatalog: CORE_QUALITY_DEFINITIONS,
@@ -34,7 +37,7 @@ export class GenesysItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             attackModeOptions: { auto: "Auto from skill/range", melee: "Melee", ranged: "Ranged" },
             engagedProfileOptions: { auto: "Auto", none: "No modifier", "one-handed": "One-handed (+1 difficulty)", "two-handed": "Two-handed (+2 difficulty)", heavy: "Heavy (cannot attack engaged)" },
             damageCharacteristicOptions: { auto: "Auto", none: "None / fixed damage", brawn: "Brawn", agility: "Agility", intellect: "Intellect", cunning: "Cunning", willpower: "Willpower", presence: "Presence" },
-            systemVersion: String(game?.system?.version ?? "0.0.7-1")
+            systemVersion: String(game?.system?.version ?? "0.0.141")
         };
     }
     static async #applyQualities(_event, target) {
