@@ -6,7 +6,8 @@ import { buildInventoryRows, rollActorWeaponToChat } from "../items-service.js";
 import { listCombatTargets, resolveCombatTargetReference, rollActorCombatAttackToChat, scheduleCriticalSecondaryPrompt } from "../combat-service.js";
 import { getActiveProfileId, updateActorSkillState } from "../skills-service.js";
 import { getDevReactionState, setDevReactionState } from "../reaction-service.js";
-import { collectActorTalents, grantCoreParry, grantTerrinothFinesse } from "../talent-service-foundation.js";
+import { collectActorTalents, grantCoreParry, grantCoreSecondWind, grantTerrinothFinesse } from "../talent-service-foundation.js";
+import { executeActorActiveTalent, listActorActiveTalentActions } from "../talent-action-service.js";
 import { buildCriticalSheetRows, criticalToChat, getActorCriticalModifier, healCriticalInjury, inflictCriticalInjury, promptCriticalSecondaryResolution } from "../critical-service.js";
 import { addActorCondition, getActorConditionRules, getActorConditionSummary, removeActorCondition } from "../condition-service.js";
 import { registerRenderedCharacterSheet, unregisterRenderedCharacterSheet } from "../live-sheet-state.js";
@@ -34,19 +35,24 @@ function escapeHtml(value) {
         .replaceAll("'", "&#039;");
 }
 function talentRows(actor) {
-    return collectActorTalents(actor).map((talent) => ({
-        id: talent.documentId,
-        name: talent.label,
-        sourceId: talent.id,
-        sourceType: talent.sourceType,
-        tier: talent.tier,
-        ranked: talent.ranked,
-        rank: talent.rank,
-        activation: talent.activation,
-        enabled: talent.enabled,
-        ruleCount: talent.rules.length,
-        notes: talent.notes
-    }));
+    const activeActions = listActorActiveTalentActions(actor);
+    return collectActorTalents(actor).map((talent) => {
+        const active = activeActions.find((row) => row.sourceId === talent.id) ?? null;
+        return {
+            id: talent.documentId,
+            name: talent.label,
+            sourceId: talent.id,
+            sourceType: talent.sourceType,
+            tier: talent.tier,
+            ranked: talent.ranked,
+            rank: talent.rank,
+            activation: talent.activation,
+            enabled: talent.enabled,
+            ruleCount: talent.rules.length,
+            notes: talent.notes,
+            activeAction: active
+        };
+    });
 }
 function renderTalentQaPanel(root, actor) {
     root.querySelector(".genesys-talents-panel")?.remove();
@@ -56,15 +62,22 @@ function renderTalentQaPanel(root, actor) {
     const rows = talentRows(actor);
     const section = document.createElement("section");
     section.className = "genesys-panel genesys-talents-panel";
-    const rowHtml = rows.length ? rows.map((talent) => `<div class="genesys-item-row genesys-simple-item-row" data-item-id="${escapeHtml(talent.id)}">
+    const rowHtml = rows.length ? rows.map((talent) => {
+        const active = talent.activeAction;
+        const useButton = active
+            ? `<button type="button" data-action="useTalent" data-source-id="${escapeHtml(active.sourceId)}" data-rule-id="${escapeHtml(active.ruleId)}" ${active.available ? "" : "disabled"} title="${escapeHtml(active.unavailableReason ?? "")}">Use</button>`
+            : "";
+        return `<div class="genesys-item-row genesys-simple-item-row" data-item-id="${escapeHtml(talent.id)}">
       <button type="button" class="genesys-item-name" data-action="editItem">${escapeHtml(talent.name)}${talent.ranked ? ` ${talent.rank}` : ""}</button>
       <span>Tier ${talent.tier} · ${escapeHtml(talent.activation)} · ${talent.ruleCount} Rule Element${talent.ruleCount === 1 ? "" : "s"} · ${talent.enabled ? "Enabled" : "Disabled"}</span>
-      <span class="genesys-item-actions"><button type="button" data-action="deleteItem">×</button></span>
-    </div>`).join("") : `<p class="genesys-empty-row">No Talents yet.</p>`;
-    section.innerHTML = `<div class="genesys-panel-heading"><div><h2>Talents &amp; Rule Elements</h2><p>0.0.14C live QA surface. Parry resolves through reactions; Finesse now enters the before-check-build Rule Element window.</p></div></div>
+      <span class="genesys-item-actions">${useButton}<button type="button" data-action="deleteItem">×</button></span>
+    </div>`;
+    }).join("") : `<p class="genesys-empty-row">No Talents yet.</p>`;
+    section.innerHTML = `<div class="genesys-panel-heading"><div><h2>Talents &amp; Rule Elements</h2><p>0.0.14D QA: Parry reactions, Finesse check overrides, and encounter-scoped active Talents.</p></div></div>
       <div class="genesys-item-createbar">
         <button type="button" data-action="grantParry">+ Parry / Increase Rank</button>
         <button type="button" data-action="grantFinesse">+ Finesse</button>
+        <button type="button" data-action="grantSecondWind">+ Second Wind / Increase Rank</button>
         <button type="button" data-action="createItem" data-item-type="talent">+ Custom Talent</button>
       </div>
       <div class="genesys-item-table">${rowHtml}</div>`;
@@ -83,14 +96,8 @@ function ruleChoiceToCheckOptions(ruleChoice) {
 export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     static DEFAULT_OPTIONS = {
         classes: ["genesys-vtt", "genesys-character-sheet"],
-        position: {
-            width: 780,
-            height: 700
-        },
-        form: {
-            closeOnSubmit: false,
-            submitOnChange: true
-        },
+        position: { width: 780, height: 700 },
+        form: { closeOnSubmit: false, submitOnChange: true },
         actions: {
             rollNarrativeDice: this.#rollNarrativeDice,
             constructAndRoll: this.#constructAndRoll,
@@ -100,6 +107,8 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             deleteItem: this.#deleteItem,
             grantParry: this.#grantParry,
             grantFinesse: this.#grantFinesse,
+            grantSecondWind: this.#grantSecondWind,
+            useTalent: this.#useTalent,
             rollWeapon: this.#rollWeapon,
             rollCombatWeapon: this.#rollCombatWeapon,
             rollCritical: this.#rollCritical,
@@ -112,15 +121,9 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             resetInitiative: this.#resetInitiative,
             openEncounterTracker: this.#openEncounterTracker
         },
-        window: {
-            resizable: true
-        }
+        window: { resizable: true }
     };
-    static PARTS = {
-        main: {
-            template: "systems/genesys-vtt/templates/actor/character-sheet.hbs"
-        }
-    };
+    static PARTS = { main: { template: "systems/genesys-vtt/templates/actor/character-sheet.hbs" } };
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
         const adversary = actorAdversaryContext(this.actor);
@@ -204,15 +207,13 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         const root = target.closest(".genesys-dice-lab");
         if (!root)
             return;
-        const pool = parsePoolFromElement(root);
-        await rollPoolToChat(pool, this.actor?.name ?? "Genesys Roll");
+        await rollPoolToChat(parsePoolFromElement(root), this.actor?.name ?? "Genesys Roll");
     }
     static async #constructAndRoll(_event, target) {
         const root = target.closest(".genesys-pool-builder");
         if (!root)
             return;
-        const input = parseStandardPoolInput(root);
-        await constructAndRollToChat(input, this.actor?.name ?? "Genesys Check");
+        await constructAndRollToChat(parseStandardPoolInput(root), this.actor?.name ?? "Genesys Check");
     }
     static async #rollSkill(_event, target) {
         const row = target.closest("[data-skill-id]");
@@ -220,8 +221,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         const skillId = row?.dataset.skillId;
         if (!row || !skillId)
             return;
-        const modeElement = panel?.querySelector("[data-check-mode]");
-        const mode = (modeElement?.value ?? "standard");
+        const mode = panel?.querySelector("[data-check-mode]")?.value ?? "standard";
         const rankOverride = this.actor?.system?.role === "minion" ? undefined : readInteger(row, "[data-skill-rank]", 0);
         const ruleChoice = await promptActorCheckCharacteristicChoice(this.actor, skillId, { tags: ["skill-check"] });
         const prepared = prepareActorSkillEngineCheck(this.actor, skillId, {
@@ -256,8 +256,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     }
     static async #editItem(_event, target) {
         const row = target.closest("[data-item-id]");
-        const item = row?.dataset.itemId ? this.actor.items?.get?.(row.dataset.itemId) : null;
-        item?.sheet?.render?.(true);
+        row?.dataset.itemId && this.actor.items?.get?.(row.dataset.itemId)?.sheet?.render?.(true);
     }
     static async #deleteItem(_event, target) {
         const row = target.closest("[data-item-id]");
@@ -269,13 +268,30 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     }
     static async #grantParry() {
         const existing = collectActorTalents(this.actor).find((talent) => talent.id === "core-talent:parry");
-        const nextRank = existing ? Math.min(5, existing.rank + 1) : 1;
-        await grantCoreParry(this.actor, nextRank);
+        await grantCoreParry(this.actor, existing ? Math.min(5, existing.rank + 1) : 1);
         await this.render({ force: true });
     }
     static async #grantFinesse() {
         await grantTerrinothFinesse(this.actor);
         await this.render({ force: true });
+    }
+    static async #grantSecondWind() {
+        const existing = collectActorTalents(this.actor).find((talent) => talent.id === "core-talent:second-wind");
+        await grantCoreSecondWind(this.actor, existing ? existing.rank + 1 : 1);
+        await this.render({ force: true });
+    }
+    static async #useTalent(_event, target) {
+        const sourceId = String(target.dataset.sourceId ?? "");
+        const ruleId = String(target.dataset.ruleId ?? "");
+        if (!sourceId || !ruleId)
+            return;
+        try {
+            await executeActorActiveTalent(this.actor, sourceId, ruleId);
+            await this.render({ force: true });
+        }
+        catch (error) {
+            ui?.notifications?.warn?.(String(error?.message ?? error));
+        }
     }
     static async #rollWeapon(_event, target) {
         const row = target.closest("[data-item-id]");
@@ -293,7 +309,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         const panel = target.closest(".genesys-inventory-panel");
         const item = row?.dataset.itemId ? this.actor.items?.get?.(row.dataset.itemId) : null;
         const targetRef = panel?.querySelector("[data-combat-target]")?.value;
-        const targetRange = (panel?.querySelector("[data-combat-range]")?.value ?? "engaged");
+        const targetRange = panel?.querySelector("[data-combat-range]")?.value ?? "engaged";
         const defender = targetRef ? resolveCombatTargetReference(targetRef) : null;
         if (!item)
             return;
@@ -314,31 +330,29 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     }
     static async #rollCritical(_event, target) {
         const panel = target.closest(".genesys-critical-panel");
-        const viciousRank = readInteger(panel, "[data-critical-vicious]", 0);
-        const extraActivations = readInteger(panel, "[data-critical-extra-activations]", 0);
-        const flatModifier = readSignedInteger(panel, "[data-critical-flat-modifier]", 0);
-        const result = await inflictCriticalInjury(this.actor, { viciousRank, extraActivations, flatModifier }, "dev:critical-lab");
+        const result = await inflictCriticalInjury(this.actor, {
+            viciousRank: readInteger(panel, "[data-critical-vicious]", 0),
+            extraActivations: readInteger(panel, "[data-critical-extra-activations]", 0),
+            flatModifier: readSignedInteger(panel, "[data-critical-flat-modifier]", 0)
+        }, "dev:critical-lab");
         await criticalToChat(this.actor, result);
         if (result.state.secondaryStatus === "pending")
             scheduleCriticalSecondaryPrompt(this.actor, result.state.id);
     }
     static async #resolveCriticalSecondary(_event, target) {
-        const row = target.closest("[data-critical-id]");
-        const criticalId = row?.dataset.criticalId;
+        const criticalId = target.closest("[data-critical-id]")?.dataset.criticalId;
         if (criticalId)
             await promptCriticalSecondaryResolution(this.actor, criticalId);
     }
     static async #healCritical(_event, target) {
-        const row = target.closest("[data-critical-id]");
-        const criticalId = row?.dataset.criticalId;
+        const criticalId = target.closest("[data-critical-id]")?.dataset.criticalId;
         if (criticalId)
             await healCriticalInjury(this.actor, criticalId);
     }
     static async #addCondition(_event, target) {
         const conditionId = String(target.dataset.conditionId ?? "");
-        if (!["staggered", "immobilized", "disoriented"].includes(conditionId))
-            return;
-        await addActorCondition(this.actor, conditionId, { sourceId: "dev:condition-lab", durationType: "manual" });
+        if (["staggered", "immobilized", "disoriented"].includes(conditionId))
+            await addActorCondition(this.actor, conditionId, { sourceId: "dev:condition-lab", durationType: "manual" });
     }
     static async #removeCondition(_event, target) {
         const conditionStateId = target.dataset.conditionStateId;
@@ -347,8 +361,8 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     }
     static async #rollInitiative(_event, target) {
         const panel = target.closest(".genesys-initiative-panel");
-        const side = (panel?.querySelector("[data-initiative-side]")?.value ?? "pc");
-        const skill = (panel?.querySelector("[data-initiative-skill]")?.value ?? "vigilance");
+        const side = panel?.querySelector("[data-initiative-side]")?.value ?? "pc";
+        const skill = panel?.querySelector("[data-initiative-skill]")?.value ?? "vigilance";
         try {
             await rollActorInitiative(this.actor, side, skill);
         }
