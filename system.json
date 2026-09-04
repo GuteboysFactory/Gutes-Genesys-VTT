@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.153 QA: major Character Sheet visual rebuild toward the locked Genesys Fantasy target. Adds a large branded header, ornate reusable UI assets, denser three-column Summary layout, characteristic medallions, visual Wound/Strain tracks, compact quick views, redesigned Quick Dice Pool, five-pip Skills, and a Tier-lane Talent Pyramid view with ranked Talent pips and compact tier occupancy status. Preserves the verified Rule Engine, Extra Activation UX, Narrative Results Assistant, and all existing combat/initiative mechanics.",
-  "version": "0.0.153",
+  "description": "Genesys VTT 0.0.154 QA: replaces the redundant header Brawn medallion with a compact quick-stat strip placed between character identity and the sheet tabs. The strip surfaces all six Characteristics plus Wounds, Strain, Soak, Melee Defense, and Ranged Defense at a glance while preserving the 0.0.153 Genesys Fantasy target layout, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
+  "version": "0.0.154",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -22,7 +22,8 @@
   ],
   "styles": [
     "styles/genesys.css",
-    "styles/character-sheet-v15.css"
+    "styles/character-sheet-v15.css",
+    "styles/character-sheet-v154.css"
   ],
   "languages": [
     {
