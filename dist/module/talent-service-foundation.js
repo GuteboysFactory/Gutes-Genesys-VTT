@@ -1,4 +1,4 @@
-import { createCoreParryTalent, createTerrinothFinesseTalent, getApplicableRuleElements, normalizeTalentDefinition, usageScopeKey } from "../domain/rules/index.js";
+import { createCoreParryTalent, createCoreSecondWindTalent, createTerrinothFinesseTalent, getApplicableRuleElements, normalizeTalentDefinition, usageScopeKey } from "../domain/rules/index.js";
 import { SYSTEM_ID } from "./constants.js";
 
 const USAGE_FLAG = "ruleUsage";
@@ -76,15 +76,39 @@ function activeScene() {
     return canvas?.scene ?? game?.scenes?.active ?? null;
 }
 
+export function getRuleEncounterId(scene = activeScene()) {
+    return String(scene?.getFlag?.(SYSTEM_ID, ENCOUNTER_FLAG)
+        ?? scene?.flags?.[SYSTEM_ID]?.[ENCOUNTER_FLAG]
+        ?? "");
+}
+
+export async function startNewRuleEncounter(scene = activeScene()) {
+    const id = nowId("encounter");
+    if (scene?.setFlag)
+        await scene.setFlag(SYSTEM_ID, ENCOUNTER_FLAG, id);
+    else if (scene) {
+        scene.flags ??= {};
+        scene.flags[SYSTEM_ID] ??= {};
+        scene.flags[SYSTEM_ID][ENCOUNTER_FLAG] = id;
+    }
+    return id;
+}
+
+export async function endRuleEncounter(scene = activeScene()) {
+    if (scene?.unsetFlag)
+        await scene.unsetFlag(SYSTEM_ID, ENCOUNTER_FLAG);
+    else if (scene?.flags?.[SYSTEM_ID])
+        delete scene.flags[SYSTEM_ID][ENCOUNTER_FLAG];
+}
+
 export function actorRuleLifecycleContext(actor, context = {}) {
     const scene = activeScene();
     const state = scene?.getFlag?.(SYSTEM_ID, "initiativeState")
         ?? scene?.flags?.[SYSTEM_ID]?.initiativeState
         ?? {};
     const actorRef = String(actor?.uuid ?? actor?.id ?? actor?.name ?? "actor");
-    const encounterId = String(scene?.getFlag?.(SYSTEM_ID, ENCOUNTER_FLAG)
-        ?? scene?.flags?.[SYSTEM_ID]?.[ENCOUNTER_FLAG]
-        ?? `${scene?.id ?? "no-scene"}:${state.status ?? "none"}`);
+    const encounterId = String(getRuleEncounterId(scene)
+        || `${scene?.id ?? "no-scene"}:${state.status ?? "none"}`);
     return {
         ...context,
         tags: [...(context.tags ?? [])],
@@ -166,6 +190,10 @@ async function grantTalent(actor, talent) {
 
 export async function grantCoreParry(actor, rank = 1) {
     return grantTalent(actor, createCoreParryTalent(rank));
+}
+
+export async function grantCoreSecondWind(actor, rank = 1) {
+    return grantTalent(actor, createCoreSecondWindTalent(rank));
 }
 
 export async function grantTerrinothFinesse(actor) {
