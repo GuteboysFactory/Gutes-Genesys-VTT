@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.156 QA: reframes the first Character Sheet tab as Biography instead of a duplicate mechanics dashboard. Biography now focuses on Backstory, Notes, Conditions, and streamlined Initiative. Quick Dice Pool moves to Skills. Player initiative is reduced to choosing Cool or Vigilance and rolling; encounter start/tracker/reset controls remain GM-only. The header quick-info area is now two full-width rows: Characteristics, then Health & Defense. Preserves five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
-  "version": "0.0.156",
+  "description": "Genesys VTT 0.0.157 QA: removes the oversized GENESYS FANTASY brand block from the Character Sheet header, moves the portrait to the left, expands character identity space, and adds a compact right-side resource panel for XP Available, XP Earned, Funds, and Configure. Adds Actor data fields for starting/earned/spent XP and setting-friendly currency while keeping automatic XP spending for the upcoming advancement step. Characteristics and Health & Defense remain on separate full-width rows. Preserves Biography-first layout, streamlined Initiative, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
+  "version": "0.0.157",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -20,12 +20,14 @@
     "dist/module/talent-bootstrap.js",
     "dist/module/character-sheet-v15-controller.js",
     "dist/module/character-sheet-window-polish.js",
-    "dist/module/character-sheet-biography-layout.js"
+    "dist/module/character-sheet-biography-layout.js",
+    "dist/module/character-sheet-header-resources.js"
   ],
   "styles": [
     "styles/genesys.css",
     "styles/character-sheet-v15.css",
-    "styles/character-sheet-v154.css"
+    "styles/character-sheet-v154.css",
+    "styles/character-sheet-v157.css"
   ],
   "languages": [
     {
