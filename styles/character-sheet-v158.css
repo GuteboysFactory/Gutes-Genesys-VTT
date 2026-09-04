@@ -1,0 +1,234 @@
+/* 0.0.158 Biography status bar */
+.genesys-vtt .genesys-biography-layout-wide {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.genesys-vtt .genesys-biography-statusbar {
+  position: relative;
+  z-index: 5;
+  display: grid;
+  grid-template-columns: minmax(170px,.8fr) minmax(170px,.8fr) minmax(330px,1.6fr);
+  align-items: stretch;
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--genesys-gold-deep);
+  background: linear-gradient(180deg,#111e27,#0b151c);
+  box-shadow: inset 0 0 0 2px rgba(215,173,82,.06), 0 2px 8px rgba(0,0,0,.25);
+}
+
+.genesys-vtt .genesys-biography-status-details,
+.genesys-vtt .genesys-biography-initiative-status {
+  position: relative;
+  min-width: 0;
+  border: 1px solid rgba(215,173,82,.28);
+  background: linear-gradient(180deg,#172731,#101b23);
+  color: #efd99e;
+}
+
+.genesys-vtt .genesys-biography-status-summary,
+.genesys-vtt .genesys-biography-initiative-status {
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 10px;
+}
+
+.genesys-vtt .genesys-biography-status-summary {
+  cursor: pointer;
+  list-style: none;
+}
+.genesys-vtt .genesys-biography-status-summary::-webkit-details-marker { display:none; }
+
+.genesys-vtt .genesys-biography-status-summary > i:first-child,
+.genesys-vtt .genesys-biography-initiative-status > i:first-child {
+  width: 22px;
+  color: var(--genesys-gold);
+  text-align: center;
+}
+
+.genesys-vtt .genesys-biography-criticals-status .genesys-biography-status-summary > i:first-child { color:#bc4c43; }
+.genesys-vtt .genesys-biography-conditions-status .genesys-biography-status-summary > i:first-child { color:#d3a64b; }
+
+.genesys-vtt .genesys-biography-status-label {
+  font: 700 .72rem Georgia,"Times New Roman",serif;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.genesys-vtt .genesys-biography-status-badge {
+  min-width: 24px;
+  height: 24px;
+  display: inline-grid;
+  place-items: center;
+  margin-left: auto;
+  border: 1px solid rgba(215,173,82,.28);
+  border-radius: 50%;
+  background: #0d171e;
+  color: #ad9a73;
+  font: 700 .72rem Arial,sans-serif;
+}
+.genesys-vtt .genesys-biography-status-badge.active {
+  border-color: var(--genesys-gold);
+  background: #7f281f;
+  color: #fff0c4;
+  box-shadow: 0 0 0 2px rgba(127,40,31,.18);
+}
+
+.genesys-vtt .genesys-biography-status-chevron {
+  margin-left: 2px;
+  font-size: .62rem;
+  opacity: .65;
+  transition: transform .15s ease;
+}
+.genesys-vtt .genesys-biography-status-details[open] .genesys-biography-status-chevron { transform: rotate(180deg); }
+
+.genesys-vtt .genesys-biography-status-popover,
+.genesys-vtt .genesys-biography-gm-menu {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  width: min(360px, 80vw);
+  padding: 10px;
+  border: 1px solid var(--genesys-gold-deep);
+  background: linear-gradient(180deg,rgba(255,255,255,.08),rgba(109,76,40,.03)),var(--genesys-parchment);
+  color: var(--genesys-ink);
+  box-shadow: 0 8px 20px rgba(0,0,0,.35);
+  z-index: 30;
+}
+
+.genesys-vtt .genesys-biography-dropdown-heading {
+  display:block;
+  margin: 2px 0 6px;
+  color:#63441f;
+  font-size:.72rem;
+  text-transform:uppercase;
+  letter-spacing:.06em;
+}
+
+.genesys-vtt .genesys-biography-condition-dropdown .genesys-condition-quick-grid {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:5px;
+  margin-bottom:8px;
+}
+
+.genesys-vtt .genesys-biography-condition-dropdown .genesys-condition-active {
+  display:block;
+  margin:3px 0;
+  color:#7e2c24;
+  font-weight:700;
+}
+
+.genesys-vtt .genesys-biography-manage-button {
+  width:100%;
+  margin-top:7px;
+  border:1px solid var(--genesys-gold-deep);
+  background:#142633;
+  color:#edd398;
+}
+
+.genesys-vtt .genesys-biography-initiative-status {
+  display:grid;
+  grid-template-columns:22px auto minmax(0,1fr) auto;
+}
+
+.genesys-vtt .genesys-biography-initiative-controls {
+  min-width:0;
+  display:grid;
+  grid-template-columns:minmax(120px,.75fr) minmax(130px,1fr);
+  gap:7px;
+  margin-left:auto;
+}
+
+.genesys-vtt .genesys-biography-initiative-select,
+.genesys-vtt .genesys-biography-initiative-roll {
+  min-height:30px;
+  margin:0;
+}
+
+.genesys-vtt .genesys-biography-initiative-select {
+  border:1px solid rgba(215,173,82,.35);
+  background:#201925;
+  color:#fff0c4;
+}
+
+.genesys-vtt .genesys-biography-initiative-roll {
+  border:1px solid var(--genesys-gold-deep);
+  background:linear-gradient(180deg,#1c5b84,#133a56);
+  color:#fff0c4;
+  font:700 .66rem Georgia,"Times New Roman",serif;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.genesys-vtt .genesys-biography-gm-initiative {
+  position:relative;
+  margin-left:auto;
+}
+.genesys-vtt .genesys-biography-gm-initiative > summary {
+  width:30px;
+  height:30px;
+  display:grid;
+  place-items:center;
+  list-style:none;
+  cursor:pointer;
+  border:1px solid rgba(215,173,82,.28);
+  background:#0d171e;
+  color:var(--genesys-gold);
+}
+.genesys-vtt .genesys-biography-gm-initiative > summary::-webkit-details-marker { display:none; }
+.genesys-vtt .genesys-biography-gm-menu {
+  left:auto;
+  right:0;
+  width:210px;
+}
+.genesys-vtt .genesys-biography-gm-menu button { width:100%; margin:3px 0; }
+
+.genesys-vtt .genesys-biography-story {
+  width:100%;
+}
+
+.genesys-vtt .genesys-biography-fields {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:12px;
+}
+
+.genesys-vtt .genesys-biography-field {
+  display:grid;
+  gap:6px;
+  min-width:0;
+  color:#5d432a;
+  font-weight:700;
+  text-transform:uppercase;
+  letter-spacing:.04em;
+}
+
+.genesys-vtt .genesys-biography-field textarea {
+  width:100%;
+  min-height:330px;
+  resize:vertical;
+  border:1px solid rgba(109,76,40,.35);
+  background:rgba(255,255,255,.12);
+  color:var(--genesys-ink);
+  font:normal .88rem Georgia,"Times New Roman",serif;
+  line-height:1.45;
+  text-transform:none;
+  letter-spacing:0;
+}
+
+@media (max-width: 900px) {
+  .genesys-vtt .genesys-biography-statusbar {
+    grid-template-columns:1fr 1fr;
+  }
+  .genesys-vtt .genesys-biography-initiative-status {
+    grid-column:1 / -1;
+  }
+  .genesys-vtt .genesys-biography-fields {
+    grid-template-columns:1fr;
+  }
+}
