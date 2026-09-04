@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.165 QA: adds the generic Character Creation Data Foundation used by the future guided Character Creator. Includes archetype/species and career normalization, creation XP rules and transactions, free career skill grants, creation skill caps, talent purchase costs, deterministic derived-stat recalculation, actor-bound save/resume drafts, final Actor updates, and expanded Character Content Registry support for motivations, creation rules, creation steps, Heroic Abilities, equipment and setting currency. Protected setting content remains external/importable. Preserves the 0.0.164 Dice Renderer Bridge foundation, narrative symbols, editable Actions, Custom Actions, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
-  "version": "0.0.165",
+  "description": "Genesys VTT 0.0.166 QA: adds a browsable Talent Library on the Character Sheet. The library reads Talents from Character Content Packs plus the system reference implementations, supports search and Tier/source filtering, detailed Talent inspection, XP cost display, Talent Pyramid legality checks, ranked Talent purchases, XP deduction, and creation of real embedded Talent Items consumed by the existing Rule Engine. The old Parry/Finesse/Second Wind QA grant buttons are removed from normal Talent-tab UX and replaced by Talent Library + Custom Talent. Preserves the 0.0.165 Character Creation Data Foundation and all prior combat, Actions, Rule Engine, narrative dice, and encounter work.",
+  "version": "0.0.166",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -22,6 +22,7 @@
     "dist/module/content-registry.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",
+    "dist/module/talent-library.js",
     "dist/module/character-sheet-v15-controller.js",
     "dist/module/character-sheet-window-polish.js",
     "dist/module/character-sheet-biography-layout.js",
@@ -38,7 +39,8 @@
     "styles/character-sheet-v160.css",
     "styles/character-sheet-v161.css",
     "styles/character-sheet-v162.css",
-    "styles/character-sheet-v163.css"
+    "styles/character-sheet-v163.css",
+    "styles/character-sheet-v166.css"
   ],
   "languages": [
     {
