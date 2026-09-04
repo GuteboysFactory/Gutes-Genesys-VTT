@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.152 QA: Skills now use five direct-click rank pips instead of numeric rank inputs, and the native Foundry macro hotbar is hidden for the Genesys play surface so the in-sheet Quick Dice Pool becomes the primary manual dice tool. Preserves the themed tabbed Character Sheet, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
-  "version": "0.0.152",
+  "description": "Genesys VTT 0.0.153 QA: major Character Sheet visual rebuild toward the locked Genesys Fantasy target. Adds a large branded header, ornate reusable UI assets, denser three-column Summary layout, characteristic medallions, visual Wound/Strain tracks, compact quick views, redesigned Quick Dice Pool, five-pip Skills, and a Tier-lane Talent Pyramid view with ranked Talent pips and compact tier occupancy status. Preserves the verified Rule Engine, Extra Activation UX, Narrative Results Assistant, and all existing combat/initiative mechanics.",
+  "version": "0.0.153",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
