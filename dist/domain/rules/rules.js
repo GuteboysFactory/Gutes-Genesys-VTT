@@ -149,10 +149,14 @@ export function expandRuleElement(rule, talent) {
     const normalized = normalizeRuleElement(rule);
     const rank = Math.max(1, nn(talent?.rank, 1));
     const effect = { ...normalized.effect };
-    if (effect.amount !== undefined || effect.amountPerRank !== undefined)
+    if (effect.amount !== undefined || effect.amountPerRank !== undefined) {
         effect.amount = rankedNumber(effect, "amount", rank);
-    if (effect.value !== undefined || effect.valuePerRank !== undefined)
+        delete effect.amountPerRank;
+    }
+    if (effect.value !== undefined || effect.valuePerRank !== undefined) {
         effect.value = rankedNumber(effect, "value", rank);
+        delete effect.valuePerRank;
+    }
     return { ...normalized, effect };
 }
 
