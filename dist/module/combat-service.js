@@ -34,6 +34,10 @@ function escapeHtml(value) {
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#039;");
 }
+function capitalize(value) {
+    const text = String(value ?? "");
+    return text.length ? `${text[0].toUpperCase()}${text.slice(1)}` : text;
+}
 function chooseActorDecisionUser(actor) {
     const users = Array.isArray(game?.users?.contents) ? game.users.contents : [];
     const activePlayerOwner = users.find((user) => user?.active && !user?.isGM && actor?.testUserPermission?.(user, "OWNER"));
@@ -91,14 +95,6 @@ function n(value) {
     const x = Number(value ?? 0);
     return Number.isFinite(x) ? Math.max(0, Math.trunc(x)) : 0;
 }
-/**
- * Flush a currently rendered DocumentSheetV2 before combat reads document data.
- *
- * Foundry ApplicationV2 submitOnChange is asynchronous. A common live case is:
- * edit Wounds on the defender sheet -> immediately click Attack on another sheet.
- * The defender DOM can already display the new value while Actor.system still contains
- * the previous value for a brief moment. Awaiting submit() closes that race.
- */
 export async function flushRenderedDocumentSheet(document) {
     const sheet = document?.sheet;
     if (!sheet?.rendered || typeof sheet.submit !== "function")
@@ -111,9 +107,6 @@ function isSyntheticTokenActor(actor) {
     return Boolean(actor?.isToken) || (uuid.startsWith("Scene.") && uuid.includes(".Token."));
 }
 function reacquireActor(actor) {
-    // Synthetic Token Actors are unique per unlinked Token. Reacquiring them through
-    // game.actors by actor.id silently swaps them for the Base Actor, causing Wounds,
-    // Criticals, Items, and Conditions to be written to the wrong document.
     if (isSyntheticTokenActor(actor))
         return actor;
     const id = actor?.id;
@@ -172,7 +165,6 @@ export function resolveCombatTargetReference(reference) {
     }
     if (ref.startsWith("actor:"))
         return game?.actors?.get?.(ref.slice(6)) ?? null;
-    // Backwards compatibility for old/raw Actor ids during 0.0.x development.
     return game?.actors?.get?.(ref) ?? null;
 }
 export function listCombatTargets(attacker) {
@@ -189,8 +181,6 @@ export function listCombatTargets(attacker) {
         const baseActorId = String(token?.document?.actorId ?? actor?.id ?? "");
         if (baseActorId)
             representedBaseActorIds.add(baseActorId);
-        // A synthetic attacker can distinguish itself from sibling tokens based on the same
-        // Base Actor. A world/base Actor cannot, so exclude all of its represented tokens.
         if (attackerIsToken) {
             if (actorIdentity(actor) === attackerIdentity)
                 continue;
@@ -221,7 +211,7 @@ export function listCombatTargets(attacker) {
     }));
     return [...tokenTargets, ...actorTargets];
 }
-export function prepareActorCombatAttack(attacker, item, target, targetRange) {
+export function prepareActorCombatAttack(attacker, item, target, targetRange, checkOptions = {}) {
     if (!item || item.type !== "weapon")
         throw new Error("A weapon Item is required.");
     if (!target || target.type !== "character")
@@ -235,10 +225,10 @@ export function prepareActorCombatAttack(attacker, item, target, targetRange) {
             liveCharacteristics[id] = n(visible);
     }
     const liveAttacker = { ...attacker, system: { ...(attacker?.system ?? {}), characteristics: liveCharacteristics } };
-    const skill = prepareActorSkillCheck(liveAttacker, weapon.skillId, 0);
+    const skill = prepareActorSkillCheck(liveAttacker, weapon.skillId, 0, checkOptions.rankOverride, checkOptions.characteristicOverrideId);
     const damageCharacteristicId = resolveDamageCharacteristic(weapon);
     const damageCharacteristicValue = damageCharacteristicId ? n(liveCharacteristics?.[damageCharacteristicId]) : 0;
-    return prepareCombatWeaponAttack({
+    const prepared = prepareCombatWeaponAttack({
         weaponName: item.name ?? "Weapon",
         weapon,
         actor: {
@@ -253,6 +243,22 @@ export function prepareActorCombatAttack(attacker, item, target, targetRange) {
         modifiers: getActorConditionCheckModifiers(attacker),
         contextTags: [weapon.equipped ? "equipped" : "unequipped", `target:${target.id}`]
     });
+    return {
+        ...prepared,
+        checkContext: {
+            skillId: skill.skillId,
+            skillLabel: skill.skillLabel,
+            characteristicId: skill.characteristicId,
+            characteristicValue: skill.characteristicValue,
+            appliedRuleLabel: String(checkOptions.appliedRuleLabel ?? ""),
+            sourceId: String(checkOptions.sourceId ?? ""),
+            ruleId: String(checkOptions.ruleId ?? "")
+        },
+        damageContext: {
+            characteristicId: damageCharacteristicId,
+            characteristicValue: damageCharacteristicValue
+        }
+    };
 }
 export function buildCombatReactionContext(prepared, pending, target, timing) {
     return {
@@ -297,8 +303,6 @@ export async function resolveCombatReactionWindow(prepared, pending, target, tim
     }
 }
 export async function commitPendingCombatResolutionToActor(target, prepared, pending) {
-    // Read visible resource values without writing them back. The combat commit itself is the
-    // authoritative write. This prevents stale sheet DOM from overwriting newly applied damage.
     target = reacquireActor(target);
     const live = actorCombatSnapshot(target);
     const commitPrepared = {
@@ -331,7 +335,6 @@ export async function commitPendingCombatResolutionToActor(target, prepared, pen
     await rerenderRenderedCharacterSheet(target);
     return { plan, applied: true, automaticCritical };
 }
-/** Backwards-compatible direct commit helper. Prefer pending resolution in 0.0.8+. */
 export async function applyCombatResolutionToActor(target, resolution) {
     if (!resolution.hit || resolution.damageAfterSoak <= 0)
         return null;
@@ -352,31 +355,20 @@ function reactionLines(pending) {
         return `<strong>${reaction.label.toUpperCase()}:</strong> ${reduction ? `-${reduction} Damage` : reaction.effect.type}${cost}<br />`;
     }).join("");
 }
-export async function rollActorCombatAttackToChat(attacker, item, target, targetRange) {
-    // Character sheets are read-only live inputs during combat. We deliberately do NOT submit
-    // or write their DOM values back here: doing so can race with combat updates and resurrect
-    // stale Wounds/Critical state. actorCombatSnapshot/prepareActorCombatAttack overlay only the
-    // visible values needed for this attack. Item sheets may still be flushed safely because
-    // combat does not write back into the weapon Item.
+export async function rollActorCombatAttackToChat(attacker, item, target, targetRange, checkOptions = {}) {
     await flushRenderedDocumentSheet(item);
     attacker = reacquireActor(attacker);
     target = reacquireActor(target);
     item = reacquireEmbeddedItem(attacker, item);
-    const prepared = prepareActorCombatAttack(attacker, item, target, targetRange);
-    // A weapon attack is a real Genesys Action. Outside an encounter this is a no-op;
-    // inside an active encounter the attacker must own the active legal turn and have an unused Action.
+    const prepared = prepareActorCombatAttack(attacker, item, target, targetRange, checkOptions);
     await consumeSceneEncounterAction(attacker);
     const result = rollNarrativePool(prepared.preparedWeaponAttack.check.construction.pool);
     let pending = createPendingCombatResolution(prepared, result);
-    // 0.0.8 integrates the first meaningful decision window: after damage is calculated, before soak.
-    // The same reaction registry/timing contract also supports pre-check, post-check, pre-commit, and after-resolution providers.
     if (pending.hit)
         pending = await resolveCombatReactionWindow(prepared, pending, target, "pre-soak");
     pending = await resolveCombatReactionWindow(prepared, pending, target, "pre-commit");
     const committed = await commitPendingCombatResolutionToActor(target, prepared, pending);
     const resolution = finalizePendingCombatResolution(pending);
-    // A capped Wound track never ends combat resolution. If the hit can legally activate the
-    // weapon Critical, offer the attacker the result-spend choice even when Wounds cannot rise.
     const criticalActivations = await promptCriticalActivation(attacker, target, resolution);
     let activatedCritical = null;
     if (criticalActivations > 0) {
@@ -444,10 +436,21 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
             ? `<p><strong>Activated Critical:</strong> Minion group suffers ${activatedCritical.woundsAdded} additional wounds · ${activatedCritical.casualtiesAdded} minion(s) removed · ${activatedCritical.remainingMembers} remaining.</p>`
             : `<p><strong>Activated Critical:</strong> ${activatedCritical.state.name} · d100 ${activatedCritical.resolution.rawRoll} → ${activatedCritical.resolution.total} · ${activatedCritical.state.effect}</p>`)
         : "";
+    const checkContext = prepared.checkContext ?? {};
+    const damageContext = prepared.damageContext ?? {};
+    const checkRule = checkContext.appliedRuleLabel ? ` · ${escapeHtml(checkContext.appliedRuleLabel)}` : "";
+    const checkSummary = checkContext.characteristicId
+        ? `${escapeHtml(capitalize(checkContext.characteristicId))} ${checkContext.characteristicValue}${checkRule}`
+        : "—";
+    const damageSummary = damageContext.characteristicId
+        ? `${escapeHtml(capitalize(damageContext.characteristicId))} ${damageContext.characteristicValue}`
+        : "None";
     const content = `
     <section class="genesys-constructed-check genesys-combat-check">
       <p><strong>${attacker?.name ?? "Attacker"}</strong> attacks <strong>${target?.name ?? "Target"}</strong> with <strong>${p.weaponName}</strong></p>
-      <p>${prepared.attackMode.toUpperCase()} · Target range ${prepared.targetRange} · Range difficulty ${prepared.rangeDifficulty}${prepared.silhouetteDifficultyDelta ? ` · Silhouette ${prepared.silhouetteDifficultyDelta > 0 ? "+1" : "−1"} Difficulty` : ""} · Adversary ${prepared.adversaryRank} · Defense ${prepared.defense}</p>
+      <p><strong>Attack Mode:</strong> ${prepared.attackMode.toUpperCase()} · <strong>Skill:</strong> ${escapeHtml(checkContext.skillLabel || p.weapon.skillId)} · <strong>Check:</strong> ${checkSummary}</p>
+      <p>Target range ${prepared.targetRange} · Range difficulty ${prepared.rangeDifficulty}${prepared.silhouetteDifficultyDelta ? ` · Silhouette ${prepared.silhouetteDifficultyDelta > 0 ? "+1" : "−1"} Difficulty` : ""} · Adversary ${prepared.adversaryRank} · Defense ${prepared.defense}</p>
+      <p><strong>Damage Characteristic:</strong> ${damageSummary}</p>
       <p class="genesys-check-pool"><strong>Pool:</strong> ${formatPool(p.check.construction.pool)}</p>
       ${poolTraceToHtml(p.check.construction)}
       ${resultToChatHtml(result)}
@@ -459,9 +462,6 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
       ${activatedCriticalLine}
     </section>`;
     await foundry.documents.ChatMessage.create({ content, speaker: { alias: attacker?.name ?? "Genesys Combat" } });
-    // Secondary Critical effects happen after the hit has fully resolved. They must never
-    // keep the Attack ApplicationV2 action pending, otherwise a dialog left open can make
-    // subsequent Attack clicks appear dead. Schedule the helper non-blockingly instead.
     if (committed.automaticCritical?.state?.secondaryStatus === "pending") {
         scheduleCriticalSecondaryPrompt(target, committed.automaticCritical.state.id);
     }
