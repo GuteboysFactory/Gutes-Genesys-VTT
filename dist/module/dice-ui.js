@@ -1,4 +1,4 @@
-import { rollNarrativePool } from "../domain/dice/index.js";
+import { rollNarrativeWithPresentation } from "./dice-renderer-bridge.js";
 const LABELS = {
     boost: "Boost",
     ability: "Ability",
@@ -58,7 +58,12 @@ export function resultToChatHtml(result) {
     </section>`;
 }
 export async function rollPoolToChat(pool, speakerAlias) {
-    const result = rollNarrativePool(pool);
+    const { result } = await rollNarrativeWithPresentation(pool, {
+        sourceType: "quick-dice-pool",
+        sourceLabel: "Quick Dice Pool",
+        speakerAlias,
+        actorName: speakerAlias
+    });
     const data = {
         content: resultToChatHtml(result)
     };
