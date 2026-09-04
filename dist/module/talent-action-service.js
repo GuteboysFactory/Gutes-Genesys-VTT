@@ -1,6 +1,6 @@
 import { ruleElementToActiveAction } from "../domain/rules/index.js";
 import { collectActorRuleElements, recordActorRuleUsage } from "./talent-service-foundation.js";
-import { getSceneTurnActionEligibility, readSceneInitiativeState } from "./initiative-service.js";
+import { actorInitiativeRef, getActorActivationEligibility, readSceneInitiativeState } from "./initiative-service.js";
 import { rerenderRenderedCharacterSheet } from "./live-sheet-state.js";
 
 function n(value) {
@@ -10,7 +10,6 @@ function n(value) {
 
 function activeTalentContext(actor) {
     const state = readSceneInitiativeState();
-    const turnEligibility = getSceneTurnActionEligibility(actor, "action");
     const strainValue = n(actor?.system?.strain?.value);
     const strainThreshold = n(actor?.system?.strain?.threshold);
     const woundsValue = n(actor?.system?.wounds?.value);
@@ -19,8 +18,8 @@ function activeTalentContext(actor) {
         timing: "activate",
         tags: ["active-talent"],
         resources: {
-            actionsRemaining: turnEligibility.allowed ? 1 : 0,
-            maneuversRemaining: 0,
+            actionsRemaining: state.turn?.actionUsed ? 0 : 1,
+            maneuversRemaining: Math.max(0, 2 - n(state.turn?.maneuversUsed)),
             canSufferStrain: true,
             canSufferWounds: true
         },
@@ -38,9 +37,17 @@ function incidentalEligibility(actor) {
     const state = readSceneInitiativeState();
     if (state.status !== "active")
         return { allowed: false, reason: "No active encounter." };
-    const actionEligibility = getSceneTurnActionEligibility(actor, "action");
-    if (!actionEligibility.allowed)
-        return { allowed: false, reason: actionEligibility.reason || "This actor cannot use an incidental right now." };
+    const ref = actorInitiativeRef(actor);
+    const entry = state.entries?.find?.((row) => row.actorRef === ref) ?? null;
+    if (!entry)
+        return { allowed: false, reason: "Actor is not an encounter participant." };
+    if (state.activeActorRef !== ref)
+        return { allowed: false, reason: "It is not this actor's active turn." };
+    if (String(entry.encounterStatus ?? "active") !== "active")
+        return { allowed: false, reason: "Actor is out of the fight." };
+    const activation = getActorActivationEligibility(actor);
+    if (!activation.allowed)
+        return { allowed: false, reason: activation.reason || "Actor cannot activate right now." };
     return { allowed: true, reason: "" };
 }
 
