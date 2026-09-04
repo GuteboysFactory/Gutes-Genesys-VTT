@@ -7,6 +7,7 @@ import { formatPool, resultToChatHtml } from "./dice-ui.js";
 import { poolTraceToHtml } from "./pool-ui.js";
 import { getActorConditionRules, advanceActorTurnConditions } from "./condition-service.js";
 import { rerenderAllRenderedCharacterSheets } from "./live-sheet-state.js";
+import { endRuleEncounter, startNewRuleEncounter } from "./talent-service-foundation.js";
 const FLAG_KEY = "initiativeState";
 let fallbackState = emptyInitiativeState();
 const stateListeners = new Set();
@@ -168,6 +169,7 @@ export async function writeSceneInitiativeState(state, scene = activeScene()) {
 }
 export async function resetSceneInitiative(scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
+    await endRuleEncounter(scene);
     return writeSceneInitiativeState(emptyInitiativeState(current.mode), scene);
 }
 export async function setSceneInitiativeMode(mode, scene = activeScene()) {
@@ -214,7 +216,10 @@ export async function rollActorInitiative(actor, side, skill, scene = activeScen
     return { state, result, prepared };
 }
 export async function startSceneInitiative(scene = activeScene()) {
-    let next = startInitiativeEncounter(readSceneInitiativeState(scene));
+    const current = readSceneInitiativeState(scene);
+    let next = startInitiativeEncounter(current);
+    if (current.status !== "active" && next.status === "active")
+        await startNewRuleEncounter(scene);
     if (next.mode === "popcorn") {
         // The domain layer knows who won initiative, but the Foundry service owns live Actor eligibility.
         // Always re-resolve the opening turn here so the highest eligible initiative result starts.
@@ -246,7 +251,9 @@ export async function restoreSceneInitiativeActivation(activationId, scene = act
     return writeSceneInitiativeState(restoreInitiativeActivation(readSceneInitiativeState(scene), activationId), scene);
 }
 export async function endSceneInitiativeEncounter(scene = activeScene()) {
-    return writeSceneInitiativeState(endInitiativeEncounter(readSceneInitiativeState(scene)), scene);
+    const next = await writeSceneInitiativeState(endInitiativeEncounter(readSceneInitiativeState(scene)), scene);
+    await endRuleEncounter(scene);
+    return next;
 }
 function entryForActorOrThrow(state, actor) {
     const ref = actorInitiativeRef(actor);
@@ -398,7 +405,8 @@ export function getInitiativeSheetContext(actor, scene = activeScene()) {
         actionUsed: state.turn.actionUsed,
         maneuversUsed: state.turn.maneuversUsed,
         canUseAction: isActiveActor && actionEligibility.allowed,
-        canUseManeuver: isActiveActor && maneuverEligibility.allowed
+        canUseManeuver: isActiveActor && maneuverEligibility.allowed,
+        conditionRules
     };
 }
 export function initiativeDebug(scene = activeScene()) {
