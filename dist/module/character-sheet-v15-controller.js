@@ -1,6 +1,7 @@
 import { rollPoolToChat } from "./dice-ui.js";
 
 const DIE_TYPES = ["boost", "ability", "proficiency", "setback", "difficulty", "challenge"];
+const LEGACY_CANVAS_DICE_CONTROLS = new Set(["Genesys Dice Lab", "Roll Pool"]);
 
 function sheetRootFrom(node) {
     return node?.closest?.("[data-genesys-sheet-tabs]") ?? null;
@@ -57,6 +58,73 @@ function poolIsEmpty(pool) {
     return DIE_TYPES.every((type) => Number(pool[type] ?? 0) <= 0);
 }
 
+function renderSkillRankPips(row) {
+    const input = row?.querySelector?.("[data-skill-rank]");
+    if (!input || row.querySelector("[data-skill-rank-pips]"))
+        return;
+    const current = Math.max(0, Math.min(5, Math.trunc(Number(input.value ?? 0) || 0)));
+    input.classList.add("genesys-skill-rank-native");
+    input.setAttribute("aria-hidden", "true");
+    input.tabIndex = -1;
+
+    const pips = document.createElement("div");
+    pips.className = "genesys-skill-rank-pips";
+    pips.dataset.skillRankPips = "true";
+    pips.setAttribute("role", "group");
+    pips.setAttribute("aria-label", "Skill rank 0 to 5");
+    for (let rank = 1; rank <= 5; rank += 1) {
+        const pip = document.createElement("button");
+        pip.type = "button";
+        pip.className = "genesys-skill-rank-pip";
+        pip.dataset.skillRankPip = String(rank);
+        pip.classList.toggle("filled", rank <= current);
+        pip.setAttribute("aria-pressed", rank <= current ? "true" : "false");
+        pip.setAttribute("aria-label", `Set skill rank ${rank}`);
+        pip.title = `Rank ${rank}`;
+        pips.append(pip);
+    }
+    input.after(pips);
+}
+
+function refreshSkillRankPips(row, rank) {
+    const normalized = Math.max(0, Math.min(5, Math.trunc(Number(rank ?? 0) || 0)));
+    for (const pip of row.querySelectorAll("[data-skill-rank-pip]")) {
+        const pipRank = Number(pip.dataset.skillRankPip ?? 0);
+        const filled = pipRank <= normalized;
+        pip.classList.toggle("filled", filled);
+        pip.setAttribute("aria-pressed", filled ? "true" : "false");
+    }
+}
+
+function setSkillRankFromPip(pip) {
+    const row = pip?.closest?.("[data-skill-id]");
+    const input = row?.querySelector?.("[data-skill-rank]");
+    if (!row || !input || input.disabled)
+        return;
+    const clickedRank = Math.max(1, Math.min(5, Math.trunc(Number(pip.dataset.skillRankPip ?? 1))));
+    const current = Math.max(0, Math.min(5, Math.trunc(Number(input.value ?? 0) || 0)));
+    const next = current === clickedRank ? clickedRank - 1 : clickedRank;
+    input.value = String(next);
+    refreshSkillRankPips(row, next);
+    input.dispatchEvent(new Event("change", { bubbles: true }));
+}
+
+function removeLegacyCanvasDiceControls(root = document) {
+    const nodes = root?.querySelectorAll?.("button, [role='button'], [aria-label], [data-tooltip], [title]") ?? [];
+    for (const node of nodes) {
+        const labels = [
+            node.getAttribute?.("aria-label"),
+            node.getAttribute?.("data-tooltip"),
+            node.getAttribute?.("title"),
+            node.textContent?.trim?.()
+        ].filter(Boolean);
+        if (!labels.some((label) => LEGACY_CANVAS_DICE_CONTROLS.has(String(label).trim())))
+            continue;
+        const wrapper = node.closest?.("li.control-tool, li.scene-control, .control-tool") ?? node;
+        wrapper.remove?.();
+    }
+}
+
 function initializeSheet(root) {
     if (!root || root.dataset.genesysV15Bound === "true")
         return;
@@ -64,6 +132,8 @@ function initializeSheet(root) {
     setActiveTab(root, root.dataset.activeTab || "summary");
     for (const button of root.querySelectorAll("[data-quick-die]"))
         renderQuickDie(button, Number(button.dataset.count ?? 0));
+    for (const row of root.querySelectorAll("[data-skill-id]"))
+        renderSkillRankPips(row);
 }
 
 function initializeExistingSheets() {
@@ -75,6 +145,13 @@ document.addEventListener("click", async (event) => {
     const target = event.target?.closest?.("button");
     if (!target)
         return;
+
+    if (target.matches("[data-skill-rank-pip]")) {
+        event.preventDefault();
+        event.stopPropagation();
+        setSkillRankFromPip(target);
+        return;
+    }
 
     if (target.matches("[data-genesys-tab]")) {
         event.preventDefault();
@@ -134,8 +211,12 @@ document.addEventListener("contextmenu", (event) => {
     changeQuickDie(target, -1);
 });
 
-const observer = new MutationObserver(() => initializeExistingSheets());
+const observer = new MutationObserver(() => {
+    initializeExistingSheets();
+    removeLegacyCanvasDiceControls();
+});
 Hooks.once("ready", () => {
     initializeExistingSheets();
+    removeLegacyCanvasDiceControls();
     observer.observe(document.body, { childList: true, subtree: true });
 });
