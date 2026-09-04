@@ -25,6 +25,14 @@ function readInteger(root, selector, fallback = 0) {
     const value = Number(input?.value ?? fallback);
     return Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : fallback;
 }
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
 function talentRows(actor) {
     return collectActorTalents(actor).map((talent) => ({
         id: talent.documentId,
@@ -39,6 +47,28 @@ function talentRows(actor) {
         ruleCount: talent.rules.length,
         notes: talent.notes
     }));
+}
+function renderTalentQaPanel(root, actor) {
+    root.querySelector(".genesys-talents-panel")?.remove();
+    const inventory = root.querySelector(".genesys-inventory-panel");
+    if (!inventory)
+        return;
+    const rows = talentRows(actor);
+    const section = document.createElement("section");
+    section.className = "genesys-panel genesys-talents-panel";
+    const rowHtml = rows.length ? rows.map((talent) => `<div class="genesys-item-row genesys-simple-item-row" data-item-id="${escapeHtml(talent.id)}">
+      <button type="button" class="genesys-item-name" data-action="editItem">${escapeHtml(talent.name)}${talent.ranked ? ` ${talent.rank}` : ""}</button>
+      <span>Tier ${talent.tier} · ${escapeHtml(talent.activation)} · ${talent.ruleCount} Rule Element${talent.ruleCount === 1 ? "" : "s"} · ${talent.enabled ? "Enabled" : "Disabled"}</span>
+      <span class="genesys-item-actions"><button type="button" data-action="deleteItem">×</button></span>
+    </div>`).join("") : `<p class="genesys-empty-row">No Talents yet.</p>`;
+    section.innerHTML = `<div class="genesys-panel-heading"><div><h2>Talents &amp; Rule Elements</h2><p>0.0.14B live QA surface. Parry now resolves from its Talent Item and Rule Element rather than the old dev-only provider.</p></div></div>
+      <div class="genesys-item-createbar">
+        <button type="button" data-action="grantParry">+ Parry / Increase Rank</button>
+        <button type="button" data-action="grantFinesse">+ Finesse</button>
+        <button type="button" data-action="createItem" data-item-type="talent">+ Custom Talent</button>
+      </div>
+      <div class="genesys-item-table">${rowHtml}</div>`;
+    inventory.before(section);
 }
 export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     static DEFAULT_OPTIONS = {
@@ -116,6 +146,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         if (!root)
             return;
         registerRenderedCharacterSheet(this.actor, this);
+        renderTalentQaPanel(root, this.actor);
         for (const input of Array.from(root.querySelectorAll("[data-skill-rank]"))) {
             input.addEventListener("change", async (event) => {
                 event.stopPropagation();
@@ -208,6 +239,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         };
         const created = await this.actor.createEmbeddedDocuments("Item", [defaults[type]]);
         created?.[0]?.sheet?.render?.(true);
+        await this.render({ force: true });
     }
     static async #editItem(_event, target) {
         const row = target.closest("[data-item-id]");
@@ -217,8 +249,10 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     static async #deleteItem(_event, target) {
         const row = target.closest("[data-item-id]");
         const item = row?.dataset.itemId ? this.actor.items?.get?.(row.dataset.itemId) : null;
-        if (item)
+        if (item) {
             await item.delete();
+            await this.render({ force: true });
+        }
     }
     static async #grantParry() {
         const existing = collectActorTalents(this.actor).find((talent) => talent.id === "core-talent:parry");
