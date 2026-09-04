@@ -6,6 +6,7 @@ import { buildInventoryRows, rollActorWeaponToChat } from "../items-service.js";
 import { listCombatTargets, resolveCombatTargetReference, rollActorCombatAttackToChat, scheduleCriticalSecondaryPrompt } from "../combat-service.js";
 import { getActiveProfileId, updateActorSkillState } from "../skills-service.js";
 import { getDevReactionState, setDevReactionState } from "../reaction-service.js";
+import { collectActorTalents, grantCoreParry, grantTerrinothFinesse } from "../talent-service-foundation.js";
 import { buildCriticalSheetRows, criticalToChat, getActorCriticalModifier, healCriticalInjury, inflictCriticalInjury, promptCriticalSecondaryResolution } from "../critical-service.js";
 import { addActorCondition, getActorConditionRules, getActorConditionSummary, removeActorCondition } from "../condition-service.js";
 import { registerRenderedCharacterSheet, unregisterRenderedCharacterSheet } from "../live-sheet-state.js";
@@ -23,6 +24,21 @@ function readInteger(root, selector, fallback = 0) {
     const input = root?.querySelector(selector);
     const value = Number(input?.value ?? fallback);
     return Number.isFinite(value) ? Math.max(0, Math.trunc(value)) : fallback;
+}
+function talentRows(actor) {
+    return collectActorTalents(actor).map((talent) => ({
+        id: talent.documentId,
+        name: talent.label,
+        sourceId: talent.id,
+        sourceType: talent.sourceType,
+        tier: talent.tier,
+        ranked: talent.ranked,
+        rank: talent.rank,
+        activation: talent.activation,
+        enabled: talent.enabled,
+        ruleCount: talent.rules.length,
+        notes: talent.notes
+    }));
 }
 export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     static DEFAULT_OPTIONS = {
@@ -42,6 +58,8 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             createItem: this.#createItem,
             editItem: this.#editItem,
             deleteItem: this.#deleteItem,
+            grantParry: this.#grantParry,
+            grantFinesse: this.#grantFinesse,
             rollWeapon: this.#rollWeapon,
             rollCombatWeapon: this.#rollCombatWeapon,
             rollCritical: this.#rollCritical,
@@ -78,6 +96,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             adversary,
             skills: buildSkillSheetRows(this.actor),
             inventory: buildInventoryRows(this.actor),
+            talents: talentRows(this.actor),
             combatTargets: listCombatTargets(this.actor),
             activeProfileId: getActiveProfileId(),
             reactionDev: getDevReactionState(this.actor),
@@ -88,7 +107,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             initiative: getInitiativeSheetContext(this.actor),
             editable: this.isEditable,
             foundryVersion: String(game?.version ?? game?.release?.version ?? "unknown"),
-            systemVersion: String(game?.system?.version ?? "0.0.13")
+            systemVersion: String(game?.system?.version ?? "0.0.14")
         };
     }
     async _onRender(context, options) {
@@ -177,14 +196,15 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     }
     static async #createItem(_event, target) {
         const type = String(target.dataset.itemType ?? "gear");
-        const allowed = new Set(["weapon", "armor", "gear", "attachment"]);
+        const allowed = new Set(["weapon", "armor", "gear", "attachment", "talent"]);
         if (!allowed.has(type))
             return;
         const defaults = {
             weapon: { name: "New Weapon", type: "weapon", system: { skillId: "melee", damage: 0, critical: 0, range: "engaged", equipped: true } },
             armor: { name: "New Armor", type: "armor", system: {} },
             gear: { name: "New Gear", type: "gear", system: { quantity: 1 } },
-            attachment: { name: "New Attachment", type: "attachment", system: { hardPointCost: 1 } }
+            attachment: { name: "New Attachment", type: "attachment", system: { hardPointCost: 1 } },
+            talent: { name: "New Talent", type: "talent", system: { sourceId: `custom-talent:${Date.now()}`, sourceType: "custom", tier: 1, ranked: false, rank: 1, activation: "passive", enabled: true, tags: [], rules: [], notes: "" } }
         };
         const created = await this.actor.createEmbeddedDocuments("Item", [defaults[type]]);
         created?.[0]?.sheet?.render?.(true);
@@ -199,6 +219,16 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         const item = row?.dataset.itemId ? this.actor.items?.get?.(row.dataset.itemId) : null;
         if (item)
             await item.delete();
+    }
+    static async #grantParry() {
+        const existing = collectActorTalents(this.actor).find((talent) => talent.id === "core-talent:parry");
+        const nextRank = existing ? Math.min(5, existing.rank + 1) : 1;
+        await grantCoreParry(this.actor, nextRank);
+        await this.render({ force: true });
+    }
+    static async #grantFinesse() {
+        await grantTerrinothFinesse(this.actor);
+        await this.render({ force: true });
     }
     static async #rollWeapon(_event, target) {
         const row = target.closest("[data-item-id]");
