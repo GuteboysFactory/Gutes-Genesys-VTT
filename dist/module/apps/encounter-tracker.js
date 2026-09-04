@@ -2,16 +2,117 @@ import { canClaimCurrentSlot } from "../../domain/initiative/index.js";
 import { narrativeHealthState } from "../../domain/encounter/index.js";
 import { actorRoleLabel, normalizeActorRole, normalizeMinionGroup } from "../../domain/adversaries/index.js";
 import { CORE_CONDITIONS } from "../../domain/conditions/index.js";
+import { SYSTEM_ID } from "../constants.js";
 import { getActorConditionRules, getActorConditionSummary } from "../condition-service.js";
-import { addSceneInitiativeParticipant, adjustSceneInitiativeRound, claimSceneInitiativeSlot, endSceneInitiativeEncounter, endSceneInitiativeTurn, forceClaimSceneInitiativeActor, claimSceneInitiativeActivation, forceEndCurrentSceneTurn, getActorActivationEligibility, getSceneTurnActionEligibility, markSceneActorActed, markSceneActorUnacted, moveSceneSlot, readSceneInitiativeState, removeSceneInitiativeParticipant, resetSceneInitiative, resolveInitiativeActorReference, rewindSceneInitiativeTurn, setSceneInitiativeMode, setSceneSlotSide, startSceneInitiative, startNextSceneInitiativeRound, setSceneParticipantStatus, getSceneEncounterOutcome, pendingSceneSpecialActivations, waiveSceneInitiativeActivation, restoreSceneInitiativeActivation, subscribeInitiativeState, unclaimSceneInitiative, useSceneTurnAction, useSceneTurnManeuver } from "../initiative-service.js";
+import { addSceneInitiativeParticipant, adjustSceneInitiativeRound, claimSceneInitiativeSlot, endSceneInitiativeEncounter, endSceneInitiativeTurn, forceClaimSceneInitiativeActor, claimSceneInitiativeActivation, forceEndCurrentSceneTurn, getActorActivationEligibility, getSceneTurnActionEligibility, markSceneActorActed, markSceneActorUnacted, moveSceneSlot, readSceneInitiativeState, removeSceneInitiativeParticipant, resetSceneInitiative, resolveInitiativeActorReference, rewindSceneInitiativeTurn, setSceneInitiativeMode, setSceneSlotSide, startSceneInitiative, startNextSceneInitiativeRound, setSceneParticipantStatus, getSceneEncounterOutcome, pendingSceneSpecialActivations, subscribeInitiativeState, unclaimSceneInitiative, useSceneTurnAction, useSceneTurnManeuver } from "../initiative-service.js";
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
+const EXTRA_ACTIVATION_REMINDER_SETTING = "extraActivationReminder";
+const reminderSeen = new Set();
+let reminderOpen = false;
 let trackerApp = null;
+
+Hooks.once("init", () => {
+    game.settings.register(SYSTEM_ID, EXTRA_ACTIVATION_REMINDER_SETTING, {
+        name: "Extra Activation Reminder",
+        hint: "Show a reminder when an unused Extra Activation is available at the end of a round.",
+        scope: "client",
+        config: true,
+        type: Boolean,
+        default: true
+    });
+});
+
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
 function canControlActor(actor) {
     if (game?.user?.isGM)
         return true;
     if (typeof actor?.testUserPermission === "function")
         return Boolean(actor.testUserPermission(game?.user, "OWNER"));
     return Boolean(actor?.isOwner);
+}
+function reminderEnabled() {
+    try {
+        return Boolean(game.settings.get(SYSTEM_ID, EXTRA_ACTIVATION_REMINDER_SETTING));
+    }
+    catch {
+        return true;
+    }
+}
+function reminderCandidate(state) {
+    if (state.status !== "active" || state.roundPhase !== "end-round" || state.activeActorRef)
+        return null;
+    return pendingSceneSpecialActivations()
+        .filter((row) => row.kind === "extra")
+        .find((row) => {
+        const actor = resolveInitiativeActorReference(row.actorRef);
+        if (!actor || !canControlActor(actor))
+            return false;
+        const eligibility = getActorActivationEligibility(actor);
+        const key = `${state.round}:${row.id}`;
+        return eligibility.allowed && !reminderSeen.has(key);
+    }) ?? null;
+}
+export async function maybePromptExtraActivationReminder() {
+    if (reminderOpen || !reminderEnabled())
+        return;
+    const state = readSceneInitiativeState();
+    const candidate = reminderCandidate(state);
+    if (!candidate)
+        return;
+    const key = `${state.round}:${candidate.id}`;
+    reminderSeen.add(key);
+    const DialogV2 = foundry?.applications?.api?.DialogV2;
+    if (!DialogV2?.wait)
+        return;
+    let neverShowAgain = false;
+    const capturePreference = (_event, _button, dialog) => {
+        neverShowAgain = Boolean(dialog?.element?.querySelector?.("[data-never-extra-activation-reminder]")?.checked);
+    };
+    reminderOpen = true;
+    try {
+        const result = await DialogV2.wait({
+            window: { title: "Extra Activation Available" },
+            content: `<section class="genesys-extra-activation-reminder"><p><strong>${escapeHtml(candidate.actorLabel)}</strong> has an unused <strong>${escapeHtml(candidate.sourceLabel)}</strong> this round.</p><p>You may use it now, or leave it unused and continue to the next round.</p><label><input type="checkbox" data-never-extra-activation-reminder /> Never show this reminder again</label></section>`,
+            buttons: [
+                {
+                    action: "use",
+                    label: "Use Extra Activation",
+                    callback: (event, button, dialog) => {
+                        capturePreference(event, button, dialog);
+                        return "use";
+                    }
+                },
+                {
+                    action: "not-now",
+                    label: "Not Now",
+                    default: true,
+                    callback: (event, button, dialog) => {
+                        capturePreference(event, button, dialog);
+                        return "not-now";
+                    }
+                }
+            ],
+            modal: true,
+            rejectClose: false
+        });
+        if (neverShowAgain)
+            await game.settings.set(SYSTEM_ID, EXTRA_ACTIVATION_REMINDER_SETTING, false);
+        if (result === "use")
+            await claimSceneInitiativeActivation(candidate.id);
+    }
+    catch (error) {
+        ui?.notifications?.warn?.(String(error?.message ?? error));
+    }
+    finally {
+        reminderOpen = false;
+    }
 }
 function participantContext(state, entry) {
     const actor = resolveInitiativeActorReference(entry.actorRef);
@@ -49,24 +150,36 @@ function participantContext(state, entry) {
         const ordinal = isRegular ? regularIndex : 0;
         const allowedNow = encounterActive && actorEligibility.allowed;
         const isCurrentActivation = state.activeActivationId === row.id;
+        const extraAvailable = row.kind === "extra" && state.roundPhase === "end-round" && !state.activeActorRef && !row.used && !row.waived && allowedNow;
+        const statusLabel = isCurrentActivation
+            ? "ACTIVE"
+            : row.used
+                ? "USED"
+                : row.kind === "extra" && state.roundPhase !== "end-round"
+                    ? "Available at end of round"
+                    : extraAvailable
+                        ? "AVAILABLE"
+                        : !encounterActive
+                            ? `BLOCKED — ${encounterStatus.replaceAll("-", " ")}`
+                            : !actorEligibility.allowed
+                                ? `BLOCKED — ${actorEligibility.reason}`
+                                : row.waived
+                                    ? "UNUSED"
+                                    : "AVAILABLE";
         return {
             ...row,
             ordinal,
             totalRegularActivations,
             activationLabel: isRegular ? `Activation ${ordinal}/${totalRegularActivations}` : "GM Override",
-            statusLabel: isCurrentActivation ? "ACTIVE" : row.used ? "USED" : row.waived ? "WAIVED" : !encounterActive ? `BLOCKED — ${encounterStatus.replaceAll("-", " ")}` : !actorEligibility.allowed ? `BLOCKED — ${actorEligibility.reason}` : "AVAILABLE",
+            statusLabel,
             active: isCurrentActivation,
-            available: !state.activeActorRef && !isCurrentActivation && !row.used && !row.waived && allowedNow,
-            unresolved: !row.used && !row.waived && !isCurrentActivation,
-            blocked: !isCurrentActivation && !row.used && !row.waived && (!allowedNow || Boolean(state.activeActorRef)),
-            canWaive: !isCurrentActivation && !row.used && !row.waived,
-            canRestore: !isCurrentActivation && (row.used || row.waived),
+            available: row.kind === "extra" ? extraAvailable : (!state.activeActorRef && !isCurrentActivation && !row.used && !row.waived && allowedNow),
             isExtra: row.kind === "extra",
             isBase: row.kind === "base",
-            isGmOverride: row.kind === "gm-override",
-            takeLabel: row.kind === "extra" ? "Take Extra Turn" : row.kind === "base" ? "Take Turn" : "Take GM Override"
+            isGmOverride: row.kind === "gm-override"
         };
     });
+    const extraActivation = activations.find((row) => row.isExtra) ?? null;
     return {
         actorRef: entry.actorRef,
         label: entry.label,
@@ -80,7 +193,8 @@ function participantContext(state, entry) {
         adversaryRank: Number(actor?.system?.adversaryRank ?? 0),
         extraActivations: Number(actor?.system?.extraActivations ?? entry.extraActivations ?? 0),
         activations,
-        remainingActivations: activations.filter((row) => row.available).length,
+        extraActivation,
+        hasExtraActivation: Boolean(extraActivation),
         skillLabel: entry.skill === "cool" ? "Cool" : "Vigilance",
         success: entry.success,
         advantage: entry.advantage,
@@ -146,8 +260,6 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
             addSelectedTokens: this.#addSelectedTokens,
             removeParticipant: this.#removeParticipant,
             startNextRound: this.#startNextRound,
-            waiveActivation: this.#waiveActivation,
-            restoreActivation: this.#restoreActivation,
             useActivation: this.#useActivation,
             markDefeated: this.#markDefeated,
             markOutOfFight: this.#markOutOfFight,
@@ -163,15 +275,13 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
         const state = readSceneInitiativeState();
         const participants = state.entries.map((entry) => participantContext(state, entry));
         const activeActor = state.activeActorRef ? resolveInitiativeActorReference(state.activeActorRef) : null;
-        const activeRules = activeActor ? getActorConditionRules(activeActor) : { canPerformActions: true, canPerformManeuvers: true };
         const activeActionEligibility = activeActor ? getSceneTurnActionEligibility(activeActor, "action") : { allowed: false, reason: "No active actor." };
         const activeManeuverEligibility = activeActor ? getSceneTurnActionEligibility(activeActor, "maneuver") : { allowed: false, reason: "No active actor." };
         const isGM = Boolean(game?.user?.isGM);
         const outcome = getSceneEncounterOutcome();
         const activeRefs = new Set(state.entries.filter((entry) => (entry.encounterStatus ?? "active") === "active").map((entry) => entry.actorRef));
         const activeRegularActivations = state.activationEntitlements.filter((row) => row.kind !== "gm-override" && activeRefs.has(row.actorRef));
-        const activePendingActivations = activeRegularActivations.filter((row) => !row.used && !row.waived);
-        const pendingSpecials = pendingSceneSpecialActivations();
+        const pendingSpecials = pendingSceneSpecialActivations().filter((row) => row.kind === "extra");
         return {
             ...context,
             isGM,
@@ -189,10 +299,8 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
             outcome,
             encounterComplete: state.status === "active" && outcome.complete,
             encounterOutcomeLabel: outcome.winner === "pc" ? "No active hostile NPCs remain" : outcome.winner === "npc" ? "No active PCs remain" : "No active participants remain",
-            activationUsedCount: state.activationEntitlements.filter((row) => row.used).length,
-            activationWaivedCount: state.activationEntitlements.filter((row) => row.waived).length,
+            activationUsedCount: activeRegularActivations.filter((row) => row.used).length,
             activationTotalCount: activeRegularActivations.length,
-            pendingCount: activePendingActivations.length,
             pendingSpecialCount: pendingSpecials.length,
             endRound: state.roundPhase === "end-round",
             round: state.round,
@@ -224,6 +332,7 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
         if (!this.#unsubscribe)
             this.#unsubscribe = subscribeInitiativeState(() => { if (this.rendered)
                 void this.render({ force: true }); });
+        void maybePromptExtraActivationReminder();
     }
     _onClose(options) {
         this.#unsubscribe?.();
@@ -362,61 +471,31 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
         if (!game?.user?.isGM)
             return;
         try {
-            const state = readSceneInitiativeState();
-            const pending = pendingSceneSpecialActivations();
-            if (!pending.length) {
-                await startNextSceneInitiativeRound();
-                return;
-            }
-            const DialogV2 = foundry?.applications?.api?.DialogV2;
-            if (!DialogV2?.wait) {
-                ui?.notifications?.warn?.(`${pending.length} special activation${pending.length === 1 ? " remains" : "s remain"}. Use or waive them before starting the next round.`);
-                return;
-            }
-            const rows = pending.map((row) => `<li><strong>${String(row.actorLabel)}</strong> — ${String(row.sourceLabel)}</li>`).join("");
-            const result = await DialogV2.wait({
-                window: { title: `Round ${state.round} — Pending Special Activations` },
-                content: `<section class="genesys-end-round-warning"><p><strong>${pending.length} special activation${pending.length === 1 ? " remains" : "s remain"}.</strong></p><ul>${rows}</ul><p>Starting Round ${state.round + 1} will explicitly waive these unused activations.</p></section>`,
-                buttons: [
-                    { action: "waive-start", label: `Waive & Start Round ${state.round + 1}` },
-                    { action: "keep", label: "Keep Round Open", default: true }
-                ],
-                modal: true,
-                rejectClose: false
-            });
-            if (result === "waive-start")
-                await startNextSceneInitiativeRound({ waivePendingSpecials: true });
+            await startNextSceneInitiativeRound({ waivePendingSpecials: true });
         }
         catch (error) {
             ui?.notifications?.warn?.(String(error?.message ?? error));
         }
     }
     static async #useActivation(_event, target) {
-        if (!game?.user?.isGM)
-            return;
         const id = GenesysEncounterTracker.activationIdFromTarget(target);
         if (!id)
             return;
+        const state = readSceneInitiativeState();
+        const activation = state.activationEntitlements.find((row) => row.id === id);
+        const actor = activation ? resolveInitiativeActorReference(activation.actorRef) : null;
+        if (!activation || activation.kind !== "extra" || !actor)
+            return;
+        if (!canControlActor(actor)) {
+            ui?.notifications?.warn?.("You do not control this participant.");
+            return;
+        }
         try {
             await claimSceneInitiativeActivation(id);
         }
         catch (error) {
             ui?.notifications?.warn?.(String(error?.message ?? error));
         }
-    }
-    static async #waiveActivation(_event, target) {
-        if (!game?.user?.isGM)
-            return;
-        const id = GenesysEncounterTracker.activationIdFromTarget(target);
-        if (id)
-            await waiveSceneInitiativeActivation(id);
-    }
-    static async #restoreActivation(_event, target) {
-        if (!game?.user?.isGM)
-            return;
-        const id = GenesysEncounterTracker.activationIdFromTarget(target);
-        if (id)
-            await restoreSceneInitiativeActivation(id);
     }
     static async #markDefeated(_event, target) {
         if (!game?.user?.isGM)
