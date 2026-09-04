@@ -473,10 +473,9 @@ async function reopenSpendFromMessage(message) {
     await message.update({ content, [`flags.${SYSTEM_ID}.narrativeSpend`]: state });
 }
 function bindSpendButtons(message, html) {
-    const root = html?.querySelectorAll ? html : html?.[0];
-    if (!root?.querySelectorAll)
+    if (!html?.querySelectorAll)
         return;
-    for (const button of root.querySelectorAll("[data-genesys-spend-results]")) {
+    for (const button of html.querySelectorAll("[data-genesys-spend-results]")) {
         if (button.dataset.genesysSpendBound === "true")
             continue;
         button.dataset.genesysSpendBound = "true";
@@ -485,4 +484,3 @@ function bindSpendButtons(message, html) {
 }
 
 Hooks.on("renderChatMessageHTML", (message, html) => bindSpendButtons(message, html));
-Hooks.on("renderChatMessage", (message, html) => bindSpendButtons(message, html));
