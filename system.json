@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.15A QA: first Character Sheet UX and information-hierarchy pass. Core characteristics and vital combat stats are promoted to a compact dashboard; encounter state, conditions, combat/equipment, skills, criticals, and profile controls are reorganized for normal play; development regression surfaces are retained under Advanced / QA Tools. Preserves the verified 0.0.14 Rule Engine, 0.0.146 Extra Activation UX, and 0.0.147 Narrative Results Assistant.",
-  "version": "0.0.150",
+  "description": "Genesys VTT 0.0.151 QA: themed tabbed Character Sheet foundation. The system sheet now adopts the Genesys fantasy design language with dark navy framing, parchment play surfaces, gold accents, portrait/header identity, Summary/Skills/Talents/Equipment/Effects/Notes tabs, and a player-facing Quick Dice Pool with click-to-add, right-click-to-remove, Clear, and Roll-to-chat. Adds character profile fields for archetype, career, motivation, background, and notes while preserving the verified Rule Engine, Extra Activation UX, and Narrative Results Assistant. The external theme module remains optional and can override shared Genesys design tokens for global Foundry styling.",
+  "version": "0.0.151",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -17,7 +17,8 @@
   "download": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT/archive/refs/heads/qa.zip",
   "esmodules": [
     "dist/genesys.js",
-    "dist/module/talent-bootstrap.js"
+    "dist/module/talent-bootstrap.js",
+    "dist/module/character-sheet-v15-controller.js"
   ],
   "styles": [
     "styles/genesys.css",
