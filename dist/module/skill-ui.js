@@ -4,27 +4,36 @@ import { formatPool, resultToChatHtml } from "./dice-ui.js";
 import { poolTraceToHtml } from "./pool-ui.js";
 import { buildSynchronizedSkillStates, getActiveSkillDefinitions } from "./skills-service.js";
 import { minionSkillRank, normalizeMinionGroup } from "../domain/adversaries/index.js";
-const transientCharacteristicOverrides = new WeakMap();
+let transientCharacteristicOverride = null;
 function capitalize(value) {
     return value.length ? `${value[0].toUpperCase()}${value.slice(1)}` : value;
 }
+function actorRef(actor) {
+    return String(actor?.uuid ?? actor?.id ?? actor?.name ?? "");
+}
 function getTransientCharacteristicOverride(actor, skillId) {
-    const state = transientCharacteristicOverrides.get(actor);
-    return state?.skillId === skillId ? state.characteristicId : undefined;
+    const state = transientCharacteristicOverride;
+    if (!state || state.skillId !== skillId)
+        return undefined;
+    const ref = actorRef(actor);
+    if (state.actorRef && ref && state.actorRef !== ref)
+        return undefined;
+    return state.characteristicId;
 }
 export async function withActorCheckCharacteristicOverride(actor, skillId, characteristicId, callback) {
     if (!actor || !characteristicId)
         return callback();
-    const previous = transientCharacteristicOverrides.get(actor);
-    transientCharacteristicOverrides.set(actor, { skillId, characteristicId: String(characteristicId) });
+    const previous = transientCharacteristicOverride;
+    transientCharacteristicOverride = {
+        actorRef: actorRef(actor),
+        skillId,
+        characteristicId: String(characteristicId)
+    };
     try {
         return await callback();
     }
     finally {
-        if (previous)
-            transientCharacteristicOverrides.set(actor, previous);
-        else
-            transientCharacteristicOverrides.delete(actor);
+        transientCharacteristicOverride = previous;
     }
 }
 export function findSkillState(actor, skillId) {
