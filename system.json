@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.14A: Talents & Rule Elements foundation with Talent Items, predicates, costs, timing, usage scopes, lifecycle state, and developer QA APIs layered over the verified 0.0.13 runtime.",
-  "version": "0.0.14",
+  "description": "Genesys VTT 0.0.14B QA: Talents & Rule Elements foundation plus live Parry integration from Talent Items, Talent sheet support, and a temporary Talents panel on the character sheet.",
+  "version": "0.0.141",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -12,6 +12,9 @@
       "name": "Genesys VTT Project"
     }
   ],
+  "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
+  "manifest": "https://raw.githubusercontent.com/GuteboysFactory/Gutes-Genesys-VTT/qa/system.json",
+  "download": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT/archive/refs/heads/qa.zip",
   "esmodules": [
     "dist/genesys.js",
     "dist/module/talent-bootstrap.js"
