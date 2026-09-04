@@ -256,6 +256,27 @@ export function ruleElementToReaction(rule, talent) {
     };
 }
 
+export function ruleElementToActiveAction(rule, talent) {
+    const expanded = expandRuleElement(rule, talent);
+    if (expanded.timing !== "activate")
+        return null;
+    if (expanded.type !== "resource.heal")
+        return null;
+    return {
+        id: `${talent.id}:${expanded.id}`,
+        label: talent.rank > 1 ? `${talent.label} ${talent.rank}` : talent.label,
+        sourceId: talent.id,
+        talentId: talent.id,
+        ruleId: expanded.id,
+        description: String(expanded.effect.description ?? talent.notes ?? ""),
+        activation: talent.activation,
+        optional: expanded.optional,
+        cost: expanded.cost,
+        effect: expanded.effect,
+        usage: expanded.usage
+    };
+}
+
 export function createCoreParryTalent(rank = 1) {
     const normalizedRank = clamp(nn(rank, 1) || 1, 1, 5);
     return normalizeTalentDefinition({
@@ -281,6 +302,39 @@ export function createCoreParryTalent(rank = 1) {
                 effect: { type: "reduce-damage", amount: 2, amountPerRank: 1 },
                 usage: { limit: 1, period: "hit" },
                 metadata: { reactionId: "core-talent:parry" }
+            }]
+        }
+    });
+}
+
+export function createCoreSecondWindTalent(rank = 1) {
+    const normalizedRank = clamp(nn(rank, 1) || 1, 1, 99);
+    return normalizeTalentDefinition({
+        id: "core-talent:second-wind",
+        name: "Second Wind",
+        system: {
+            sourceId: "core-talent:second-wind",
+            sourceType: "genesys-core",
+            tier: 1,
+            ranked: true,
+            rank: normalizedRank,
+            activation: "incidental",
+            enabled: true,
+            tags: ["resource", "strain", "active-talent"],
+            notes: "Once per encounter, may heal strain equal to ranks in Second Wind as an incidental.",
+            rules: [{
+                id: "second-wind-heal-strain",
+                type: "resource.heal",
+                timing: "activate",
+                optional: true,
+                predicate: {
+                    data: [
+                        { path: "encounterActive", op: "truthy" },
+                        { path: "resources.strain.value", op: "gt", value: 0 }
+                    ]
+                },
+                effect: { resource: "strain", amountPerRank: 1 },
+                usage: { limit: 1, period: "encounter" }
             }]
         }
     });
