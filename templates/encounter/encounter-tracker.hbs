@@ -8,7 +8,7 @@
       <div class="genesys-encounter-counter">
         <strong>ROUND {{round}}</strong>
         {{#if endRound}}<span>END OF ROUND</span>{{else}}<span>TURN {{turnNumber}} / {{totalTurns}}</span>{{/if}}
-        {{#if isGM}}<span>ACTIVATIONS {{activationUsedCount}} used · {{activationWaivedCount}} waived · {{pendingCount}} available</span>{{else}}<span>ACTED {{actedCount}} / {{participantCount}}</span>{{/if}}
+        {{#if isGM}}<span>ACTIVATIONS {{activationUsedCount}} / {{activationTotalCount}} used</span>{{else}}<span>ACTED {{actedCount}} / {{participantCount}}</span>{{/if}}
       </div>
     {{/if}}
   </header>
@@ -52,10 +52,10 @@
         <div>
           <small>END OF ROUND</small>
           <h2>Round {{round}} complete</h2>
-          {{#if isGM}}
-            <p>Base activations are resolved. Use or waive any remaining special activations, resolve end-of-round effects, then explicitly start the next round.</p>{{#if pendingSpecialCount}}<p><strong>{{pendingSpecialCount}} special activation(s) remain.</strong> Starting the next round will require an explicit GM waiver confirmation.</p>{{/if}}
+          {{#if pendingSpecialCount}}
+            <p><strong>{{pendingSpecialCount}} Extra Activation(s) still available.</strong> Use any you want, or start the next round and leave them unused.</p>
           {{else}}
-            <p>Waiting for the GM to resolve the end of the round.</p>
+            <p>All normal activations are complete. Resolve any end-of-round effects, then start the next round.</p>
           {{/if}}
         </div>
         {{#if isGM}}
@@ -105,7 +105,8 @@
             {{#if acted}}<span class="genesys-acted-badge">ACTED</span>{{/if}}
             {{#unless statusActive}}<span class="genesys-participant-status-badge status-{{encounterStatus}}">{{encounterStatusLabel}}</span>{{/unless}}
           </div>
-          <div class="genesys-health-state">{{healthLabel}}</div>{{#if incapacitated}}{{#if @root.isGM}}<small class="genesys-blocked-note">Normal activations blocked — {{activationBlockedReason}}</small>{{/if}}{{/if}}
+          <div class="genesys-health-state">{{healthLabel}}</div>
+          {{#if incapacitated}}{{#if @root.isGM}}<small class="genesys-blocked-note">Normal activations blocked — {{activationBlockedReason}}</small>{{/if}}{{/if}}
           <small>{{skillLabel}} · Success {{success}} · Advantage {{advantage}}</small>
           {{#if conditionLabels.length}}<small>Conditions: {{#each conditionLabels}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</small>{{/if}}
         </div>
@@ -119,18 +120,21 @@
             <span>Adversary <strong>{{adversaryRank}}</strong></span>
             <span>Activations <strong>{{activationBudgetUsed}} / {{activationBudgetTotal}}</strong></span>
           </div>
+        {{/if}}
+
+        {{#if hasExtraActivation}}
           <div class="genesys-activation-list">
-            {{#each activations}}
+            {{#with extraActivation}}
               <div class="genesys-activation-row" data-activation-id="{{id}}">
-                <span><strong>{{activationLabel}}</strong> — {{sourceLabel}} · {{statusLabel}}</span>
-                <span>
-                  {{#if available}}<button type="button" data-action="useActivation">{{takeLabel}}</button>{{/if}}{{#if canWaive}}<button type="button" data-action="waiveActivation">Waive</button>{{/if}}
-                  {{#if canRestore}}<button type="button" data-action="restoreActivation" title="GM override: reopen this resolved activation">GM Restore</button>{{/if}}
-                </span>
+                <span><strong>{{activationLabel}} — Extra Activation</strong> · {{statusLabel}}</span>
+                {{#if available}}
+                  <button type="button" data-action="useActivation">Use Extra Activation</button>
+                {{/if}}
               </div>
-            {{/each}}
+            {{/with}}
           </div>
         {{/if}}
+
         <div class="genesys-participant-actions">
           {{#if canClaim}}<button type="button" data-action="claimActor">Claim Turn</button>{{/if}}
           {{#if @root.isGM}}
