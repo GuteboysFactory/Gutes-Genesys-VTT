@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.13: Core Minion/Rival/Nemesis mechanics. Adds native minion groups with derived group skills and shared wounds, Rival/Minion strain-to-wounds routing, Nemesis strain behavior, and member-aware minion Critical/area-effect foundations.",
-  "version": "0.0.13",
+  "description": "Genesys VTT 0.0.131: Adds direct Genesys Dice Forge presentation for resolved narrative rolls while preserving the existing 0.0.13 adversary/combat baseline.",
+  "version": "0.0.131",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
