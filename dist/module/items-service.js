@@ -1,8 +1,8 @@
-import { rollNarrativePool } from "../domain/dice/index.js";
 import { formatQualityText, normalizeWeaponRuleData, prepareWeaponAttack } from "../domain/items/index.js";
 import { formatPool, resultToChatHtml } from "./dice-ui.js";
 import { poolTraceToHtml } from "./pool-ui.js";
 import { prepareActorSkillCheck } from "./skill-ui.js";
+import { rollNarrativeWithPresentation } from "./dice-renderer-bridge.js";
 function itemCollection(actor) {
     if (Array.isArray(actor?.items))
         return actor.items;
@@ -78,7 +78,14 @@ export function prepareActorWeaponAttack(actor, item, difficulty = 2, checkOptio
     };
 }
 export async function rollPreparedWeaponAttackToChat(prepared, speakerAlias) {
-    const result = rollNarrativePool(prepared.check.construction.pool);
+    const { result } = await rollNarrativeWithPresentation(prepared.check.construction.pool, {
+        sourceType: "weapon-check",
+        sourceId: prepared.checkContext?.skillId,
+        sourceLabel: prepared.weaponName,
+        speakerAlias,
+        actorName: speakerAlias,
+        metadata: { weaponName: prepared.weaponName, range: prepared.weapon.range, difficulty: prepared.check?.difficulty ?? null }
+    });
     const qualities = formatQualityText(prepared.weapon.qualities) || "None";
     const checkContext = prepared.checkContext ?? {};
     const skillLabel = checkContext.skillLabel || prepared.weapon.skillId;
