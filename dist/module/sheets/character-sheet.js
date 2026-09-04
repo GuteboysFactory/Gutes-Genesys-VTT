@@ -1,7 +1,7 @@
 import { parsePoolFromElement, rollPoolToChat } from "../dice-ui.js";
 import { constructAndRollToChat, parseStandardPoolInput } from "../pool-ui.js";
-import { buildSkillSheetRows } from "../skill-ui.js";
-import { prepareActorSkillEngineCheck, rollPreparedActorCheckToChat } from "../check-ui.js";
+import { buildSkillSheetRows, withActorCheckCharacteristicOverride } from "../skill-ui.js";
+import { prepareActorSkillEngineCheck, promptActorCheckCharacteristicChoice, rollPreparedActorCheckToChat } from "../check-ui.js";
 import { buildInventoryRows, rollActorWeaponToChat } from "../items-service.js";
 import { listCombatTargets, resolveCombatTargetReference, rollActorCombatAttackToChat, scheduleCriticalSecondaryPrompt } from "../combat-service.js";
 import { getActiveProfileId, updateActorSkillState } from "../skills-service.js";
@@ -61,7 +61,7 @@ function renderTalentQaPanel(root, actor) {
       <span>Tier ${talent.tier} · ${escapeHtml(talent.activation)} · ${talent.ruleCount} Rule Element${talent.ruleCount === 1 ? "" : "s"} · ${talent.enabled ? "Enabled" : "Disabled"}</span>
       <span class="genesys-item-actions"><button type="button" data-action="deleteItem">×</button></span>
     </div>`).join("") : `<p class="genesys-empty-row">No Talents yet.</p>`;
-    section.innerHTML = `<div class="genesys-panel-heading"><div><h2>Talents &amp; Rule Elements</h2><p>0.0.14B live QA surface. Parry now resolves from its Talent Item and Rule Element rather than the old dev-only provider.</p></div></div>
+    section.innerHTML = `<div class="genesys-panel-heading"><div><h2>Talents &amp; Rule Elements</h2><p>0.0.14C live QA surface. Parry resolves through reactions; Finesse now enters the before-check-build Rule Element window.</p></div></div>
       <div class="genesys-item-createbar">
         <button type="button" data-action="grantParry">+ Parry / Increase Rank</button>
         <button type="button" data-action="grantFinesse">+ Finesse</button>
@@ -213,9 +213,12 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         const modeElement = panel?.querySelector("[data-check-mode]");
         const mode = (modeElement?.value ?? "standard");
         const rankOverride = this.actor?.system?.role === "minion" ? undefined : readInteger(row, "[data-skill-rank]", 0);
+        const ruleChoice = await promptActorCheckCharacteristicChoice(this.actor, skillId, { tags: ["skill-check"] });
         const prepared = prepareActorSkillEngineCheck(this.actor, skillId, {
             mode,
             rankOverride,
+            characteristicOverrideId: ruleChoice?.characteristicId,
+            appliedRuleLabel: ruleChoice?.talentLabel,
             difficulty: readInteger(panel, "[data-skill-difficulty]", 2),
             opponentCharacteristic: readInteger(panel, "[data-opponent-characteristic]", 2),
             opponentSkillRank: readInteger(panel, "[data-opponent-skill-rank]", 2),
@@ -271,7 +274,9 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         if (!item)
             return;
         const difficulty = readInteger(panel, "[data-weapon-difficulty]", 2);
-        await rollActorWeaponToChat(this.actor, item, difficulty);
+        const skillId = String(item?.system?.skillId ?? "melee");
+        const ruleChoice = await promptActorCheckCharacteristicChoice(this.actor, skillId, { tags: ["combat", "weapon-attack"] });
+        await withActorCheckCharacteristicOverride(this.actor, skillId, ruleChoice?.characteristicId, () => rollActorWeaponToChat(this.actor, item, difficulty));
     }
     static async #rollCombatWeapon(_event, target) {
         const row = target.closest("[data-item-id]");
@@ -287,7 +292,11 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             return;
         }
         try {
-            await rollActorCombatAttackToChat(this.actor, item, defender, targetRange);
+            const skillId = String(item?.system?.skillId ?? "melee");
+            const ruleChoice = await promptActorCheckCharacteristicChoice(this.actor, skillId, { tags: ["combat", "weapon-attack"] });
+            if (ruleChoice)
+                ui?.notifications?.info?.(`${ruleChoice.talentLabel}: using ${ruleChoice.characteristicId} for this check. Weapon damage characteristic is unchanged.`);
+            await withActorCheckCharacteristicOverride(this.actor, skillId, ruleChoice?.characteristicId, () => rollActorCombatAttackToChat(this.actor, item, defender, targetRange));
         }
         catch (error) {
             ui?.notifications?.warn?.(String(error?.message ?? error));
