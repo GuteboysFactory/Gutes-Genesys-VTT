@@ -1,0 +1,61 @@
+/* 0.0.166 Talent Library */
+.genesys-vtt .genesys-talent-library {
+  width:min(1180px,calc(100vw - 70px));
+  height:min(820px,calc(100vh - 70px));
+  padding:0;
+  border:1px solid var(--genesys-gold-deep,#9d6b22);
+  background:#0c151c;
+  color:#ead9b9;
+  box-shadow:0 18px 70px rgba(0,0,0,.7),inset 0 0 0 3px rgba(215,173,82,.1);
+}
+.genesys-vtt .genesys-talent-library::backdrop{background:rgba(0,0,0,.58)}
+.genesys-vtt .genesys-talent-library-shell{display:grid;grid-template-rows:auto auto minmax(0,1fr);height:100%}
+.genesys-vtt .genesys-talent-library-header{
+  display:grid;grid-template-columns:minmax(0,1fr) auto auto;align-items:center;gap:14px;
+  padding:12px 14px;border-bottom:1px solid var(--genesys-gold-deep,#9d6b22);
+  background:linear-gradient(180deg,#182a36,#0e1b24)
+}
+.genesys-vtt .genesys-talent-library-header>div:first-child{display:grid;gap:2px}
+.genesys-vtt .genesys-talent-library-header strong{font-family:Georgia,serif;text-transform:uppercase;letter-spacing:.09em;color:#f1d386;font-size:1rem}
+.genesys-vtt .genesys-talent-library-header small{color:#c6b794}
+.genesys-vtt .genesys-talent-library-xp{display:grid;text-align:right;gap:1px;padding:5px 10px;border:1px solid rgba(215,173,82,.35);background:rgba(0,0,0,.18)}
+.genesys-vtt .genesys-talent-library-xp span{font-size:.62rem;text-transform:uppercase;letter-spacing:.07em;color:#c7ad70}
+.genesys-vtt .genesys-talent-library-xp strong{font-size:1.1rem}
+.genesys-vtt .genesys-talent-library-header>[data-library-close]{width:32px;min-width:32px;height:30px;font-size:1.1rem}
+.genesys-vtt .genesys-talent-library-controls{display:grid;grid-template-columns:minmax(220px,1fr) 150px 210px;gap:8px;padding:9px 12px;border-bottom:1px solid rgba(157,107,34,.65);background:#111d25}
+.genesys-vtt .genesys-talent-library-controls input,.genesys-vtt .genesys-talent-library-controls select{height:32px}
+.genesys-vtt .genesys-talent-library-body{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(300px,.75fr);min-height:0}
+.genesys-vtt .genesys-talent-library-list{overflow:auto;padding:12px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));align-content:start;gap:10px;background:linear-gradient(180deg,#ead6aa,#d9bd82);color:#2a2117}
+.genesys-vtt .genesys-library-talent-card{display:grid;grid-template-rows:auto auto minmax(52px,1fr) auto;gap:7px;padding:10px;border:1px solid #a9874f;background:rgba(255,248,226,.7);box-shadow:0 2px 7px rgba(62,38,12,.15)}
+.genesys-vtt .genesys-library-talent-card[hidden]{display:none!important}
+.genesys-vtt .genesys-library-talent-card header{display:flex;justify-content:space-between;gap:8px;align-items:start;border-bottom:1px solid rgba(125,87,34,.28);padding-bottom:5px}
+.genesys-vtt .genesys-library-talent-card header>div{display:grid;gap:1px}
+.genesys-vtt .genesys-library-talent-card header strong{font-family:Georgia,serif;font-size:.94rem;text-transform:uppercase;color:#20180e}
+.genesys-vtt .genesys-library-talent-card header span{font-size:.62rem;color:#755b39}
+.genesys-vtt .genesys-library-talent-card header b{min-width:32px;text-align:center;padding:3px 5px;border:1px solid #8a652d;background:#182733;color:#efce7e}
+.genesys-vtt .genesys-library-talent-meta{display:flex;flex-wrap:wrap;gap:4px}
+.genesys-vtt .genesys-library-talent-meta span{font-size:.59rem;text-transform:uppercase;padding:2px 5px;border:1px solid rgba(98,65,25,.28);background:rgba(255,255,255,.25)}
+.genesys-vtt .genesys-library-talent-card p{margin:0;font-size:.72rem;line-height:1.34}
+.genesys-vtt .genesys-library-talent-actions{display:flex;justify-content:flex-end;gap:6px}
+.genesys-vtt .genesys-library-talent-actions button{width:auto;min-width:76px;padding:4px 8px}
+.genesys-vtt .genesys-talent-library-detail{overflow:auto;padding:14px;background:#0f1c24;color:#e8d6b3;border-left:1px solid var(--genesys-gold-deep,#9d6b22)}
+.genesys-vtt .genesys-library-detail-placeholder{min-height:100%;display:grid;place-content:center;text-align:center;gap:7px;color:#baa886}
+.genesys-vtt .genesys-library-detail-placeholder i{font-size:2rem;color:#d6ae58}
+.genesys-vtt .genesys-library-detail-title{display:flex;justify-content:space-between;align-items:start;gap:10px;padding-bottom:10px;border-bottom:1px solid rgba(215,173,82,.35)}
+.genesys-vtt .genesys-library-detail-title>div{display:grid;gap:3px}
+.genesys-vtt .genesys-library-detail-title strong{font-family:Georgia,serif;font-size:1.15rem;text-transform:uppercase;color:#f1d386}
+.genesys-vtt .genesys-library-detail-title span{font-size:.65rem;color:#c3af88}
+.genesys-vtt .genesys-library-detail-title b{padding:4px 7px;border:1px solid #b58a3c;background:#152733;color:#f0ce79}
+.genesys-vtt .genesys-talent-library-detail dl{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin:12px 0}
+.genesys-vtt .genesys-talent-library-detail dl div{padding:6px;border:1px solid rgba(215,173,82,.2);background:rgba(255,255,255,.03)}
+.genesys-vtt .genesys-talent-library-detail dt{font-size:.57rem;text-transform:uppercase;color:#bca475}
+.genesys-vtt .genesys-talent-library-detail dd{margin:2px 0 0;font-weight:700}
+.genesys-vtt .genesys-talent-library-detail section{margin-top:12px}
+.genesys-vtt .genesys-talent-library-detail h3{margin:0 0 4px;color:#e4bd69;font-size:.75rem;text-transform:uppercase;letter-spacing:.07em}
+.genesys-vtt .genesys-talent-library-detail p{margin:0;line-height:1.42;font-size:.73rem}
+.genesys-vtt .genesys-library-warning,.genesys-vtt .genesys-library-ok{margin-top:13px;padding:8px;border:1px solid rgba(215,173,82,.35);background:rgba(0,0,0,.2)}
+.genesys-vtt .genesys-library-warning{border-color:#8e4c3d;color:#f0b9aa}
+.genesys-vtt .genesys-library-warning p{margin:2px 0}
+.genesys-vtt .genesys-library-ok{color:#d5c88e}
+.genesys-vtt .genesys-library-detail-purchase{margin-top:12px;width:100%}
+@media(max-width:900px){.genesys-vtt .genesys-talent-library-body{grid-template-columns:1fr}.genesys-vtt .genesys-talent-library-detail{border-left:0;border-top:1px solid var(--genesys-gold-deep,#9d6b22);max-height:38vh}.genesys-vtt .genesys-talent-library-list{grid-template-columns:1fr}.genesys-vtt .genesys-talent-library-controls{grid-template-columns:1fr}}
