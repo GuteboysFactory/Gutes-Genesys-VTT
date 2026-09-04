@@ -1,9 +1,9 @@
-import { rollNarrativePool } from "../domain/dice/index.js";
 import { prepareSkillCheck } from "../domain/skills/index.js";
 import { formatPool, resultToChatHtml } from "./dice-ui.js";
 import { poolTraceToHtml } from "./pool-ui.js";
 import { buildSynchronizedSkillStates, getActiveSkillDefinitions } from "./skills-service.js";
 import { minionSkillRank, normalizeMinionGroup } from "../domain/adversaries/index.js";
+import { rollNarrativeWithPresentation } from "./dice-renderer-bridge.js";
 let transientCharacteristicOverride = null;
 function capitalize(value) {
     return value.length ? `${value[0].toUpperCase()}${value.slice(1)}` : value;
@@ -111,7 +111,14 @@ export function prepareActorSkillCheck(actor, skillId, difficulty = 2, rankOverr
     });
 }
 export async function rollPreparedSkillCheckToChat(prepared, speakerAlias) {
-    const result = rollNarrativePool(prepared.construction.pool);
+    const { result } = await rollNarrativeWithPresentation(prepared.construction.pool, {
+        sourceType: "skill-check",
+        sourceId: prepared.skillId,
+        sourceLabel: prepared.skillLabel,
+        speakerAlias,
+        actorName: speakerAlias,
+        metadata: { difficulty: prepared.difficulty, characteristicId: prepared.characteristicId }
+    });
     const content = `
     <section class="genesys-constructed-check genesys-skill-check">
       <p><strong>${prepared.skillLabel}</strong> · ${capitalize(prepared.characteristicId)} ${prepared.characteristicValue} + Rank ${prepared.skillRank} · Difficulty ${prepared.difficulty}</p>
