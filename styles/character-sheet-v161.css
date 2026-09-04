@@ -1,0 +1,56 @@
+/* 0.0.161 - Genesys narrative dice colour correction */
+
+/* Boost d6 - light blue */
+.genesys-vtt .genesys-quick-die.die-boost {
+  background: linear-gradient(145deg, #b9ddf2 0%, #7fb3d3 52%, #4f82a5 100%);
+  border-color: #355c77;
+  color: #17242c;
+  text-shadow: 0 1px 0 rgba(255,255,255,.35);
+}
+
+/* Ability d8 - green */
+.genesys-vtt .genesys-quick-die.die-ability {
+  background: linear-gradient(145deg, #57a84f 0%, #2f7f3d 52%, #185329 100%);
+  border-color: #123f20;
+  color: #101a12;
+  text-shadow: 0 1px 0 rgba(255,255,255,.22);
+}
+
+/* Proficiency d12 - yellow / gold */
+.genesys-vtt .genesys-quick-die.die-proficiency {
+  background: linear-gradient(145deg, #f0c94a 0%, #d39c1d 52%, #95670b 100%);
+  border-color: #6c4908;
+  color: #201a0c;
+  text-shadow: 0 1px 0 rgba(255,255,255,.28);
+}
+
+/* Setback d6 - black */
+.genesys-vtt .genesys-quick-die.die-setback {
+  background: linear-gradient(145deg, #353a3e 0%, #1a1e21 52%, #090b0d 100%);
+  border-color: #050607;
+  color: #f3eee3;
+  text-shadow: 0 1px 2px #000;
+}
+
+/* Difficulty d8 - purple */
+.genesys-vtt .genesys-quick-die.die-difficulty {
+  background: linear-gradient(145deg, #9250b4 0%, #70308f 52%, #46175f 100%);
+  border-color: #351047;
+  color: #f7edf9;
+  text-shadow: 0 1px 2px #24102b;
+}
+
+/* Challenge d12 - red */
+.genesys-vtt .genesys-quick-die.die-challenge {
+  background: linear-gradient(145deg, #bd5145 0%, #962f28 52%, #651714 100%);
+  border-color: #4d100e;
+  color: #f8eee3;
+  text-shadow: 0 1px 2px #310806;
+}
+
+.genesys-vtt .genesys-quick-die {
+  box-shadow:
+    inset 0 1px 0 rgba(255,255,255,.32),
+    inset 0 -2px 5px rgba(0,0,0,.28),
+    0 3px 7px rgba(0,0,0,.35);
+}
