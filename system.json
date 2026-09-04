@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.14D QA: generic encounter-scoped Rule Element lifecycle plus active Talent execution. Adds ranked Second Wind as an incidental that heals strain equal to ranks once per encounter, with unique encounter IDs so usage automatically becomes available in the next encounter.",
-  "version": "0.0.145",
+  "description": "Genesys VTT 0.0.146 QA: simplified Extra Activation encounter UX. Extra Activations are optional opportunities with a direct Use Extra Activation button, no normal Waive/Restore controls, no round-blocking requirement, and a per-user reminder that can be disabled with Never show this reminder again.",
+  "version": "0.0.146",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
