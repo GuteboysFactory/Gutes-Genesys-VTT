@@ -1,7 +1,6 @@
 import { rollPoolToChat } from "./dice-ui.js";
 
 const DIE_TYPES = ["boost", "ability", "proficiency", "setback", "difficulty", "challenge"];
-const LEGACY_CANVAS_DICE_CONTROLS = new Set(["Genesys Dice Lab", "Roll Pool"]);
 
 function sheetRootFrom(node) {
     return node?.closest?.("[data-genesys-sheet-tabs]") ?? null;
@@ -109,22 +108,6 @@ function setSkillRankFromPip(pip) {
     input.dispatchEvent(new Event("change", { bubbles: true }));
 }
 
-function removeLegacyCanvasDiceControls(root = document) {
-    const nodes = root?.querySelectorAll?.("button, [role='button'], [aria-label], [data-tooltip], [title]") ?? [];
-    for (const node of nodes) {
-        const labels = [
-            node.getAttribute?.("aria-label"),
-            node.getAttribute?.("data-tooltip"),
-            node.getAttribute?.("title"),
-            node.textContent?.trim?.()
-        ].filter(Boolean);
-        if (!labels.some((label) => LEGACY_CANVAS_DICE_CONTROLS.has(String(label).trim())))
-            continue;
-        const wrapper = node.closest?.("li.control-tool, li.scene-control, .control-tool") ?? node;
-        wrapper.remove?.();
-    }
-}
-
 function initializeSheet(root) {
     if (!root || root.dataset.genesysV15Bound === "true")
         return;
@@ -211,12 +194,8 @@ document.addEventListener("contextmenu", (event) => {
     changeQuickDie(target, -1);
 });
 
-const observer = new MutationObserver(() => {
-    initializeExistingSheets();
-    removeLegacyCanvasDiceControls();
-});
+const observer = new MutationObserver(() => initializeExistingSheets());
 Hooks.once("ready", () => {
     initializeExistingSheets();
-    removeLegacyCanvasDiceControls();
     observer.observe(document.body, { childList: true, subtree: true });
 });
