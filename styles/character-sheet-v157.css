@@ -1,0 +1,122 @@
+/* 0.0.157 portrait-first header with XP and Funds */
+.genesys-vtt .genesys-hero-header {
+  grid-template-columns: 176px minmax(0,1fr) 270px;
+  min-height: 166px;
+}
+
+.genesys-vtt .genesys-portrait-column {
+  border-right: 1px solid var(--genesys-gold-deep);
+  background: radial-gradient(circle at center,rgba(215,173,82,.10),transparent 62%),#0d171e;
+}
+
+.genesys-vtt .genesys-portrait-frame {
+  width: 138px;
+  height: 138px;
+}
+
+.genesys-vtt .genesys-character-identity {
+  padding: 15px 22px;
+}
+
+.genesys-vtt .genesys-header-actions {
+  display: grid;
+  grid-template-rows: 1fr auto auto;
+  align-content: stretch;
+  padding: 12px;
+  border-left: 1px solid var(--genesys-gold-deep);
+  background: linear-gradient(180deg,#111d25,#0b141a);
+}
+
+.genesys-vtt .genesys-header-resource-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  align-content: center;
+}
+
+.genesys-vtt .genesys-header-resource {
+  display: grid;
+  grid-template-columns: 30px minmax(0,1fr);
+  align-items: center;
+  min-height: 52px;
+  padding: 6px 8px;
+  border: 1px solid rgba(215,173,82,.28);
+  background: linear-gradient(180deg,rgba(255,255,255,.035),rgba(0,0,0,.10));
+  color: #efd99e;
+}
+
+.genesys-vtt .genesys-header-resource:last-child {
+  grid-column: 1 / -1;
+}
+
+.genesys-vtt .genesys-header-resource i {
+  color: var(--genesys-gold);
+  font-size: 1.15rem;
+  text-align: center;
+}
+
+.genesys-vtt .genesys-header-resource > div {
+  display: grid;
+  gap: 1px;
+}
+
+.genesys-vtt .genesys-header-resource small {
+  color: #bca36b;
+  font: 700 .56rem Arial,sans-serif;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-header-resource strong,
+.genesys-vtt .genesys-header-resource input {
+  width: 100%;
+  min-width: 0;
+  height: auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #fff0bd;
+  font: 600 1.25rem Georgia,"Times New Roman",serif;
+  text-align: left;
+}
+
+.genesys-vtt .genesys-header-resource input:focus {
+  outline: 1px solid rgba(215,173,82,.35);
+}
+
+.genesys-vtt .genesys-header-button {
+  margin-top: 7px;
+}
+
+/* Force the quick stats into two distinct full-width rows. */
+.genesys-vtt .genesys-header-snapshot {
+  grid-template-columns: 1fr !important;
+}
+
+.genesys-vtt .genesys-header-characteristics {
+  border-right: 0 !important;
+  border-bottom: 1px solid rgba(109,76,40,.35);
+}
+
+.genesys-vtt .genesys-header-vitals {
+  grid-template-columns: repeat(5,minmax(0,1fr));
+}
+
+@media (max-width: 980px) {
+  .genesys-vtt .genesys-hero-header {
+    grid-template-columns: 155px minmax(0,1fr);
+  }
+  .genesys-vtt .genesys-header-actions {
+    grid-column: 1 / -1;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto auto;
+  }
+  .genesys-vtt .genesys-header-resource-grid {
+    grid-template-columns: repeat(3,1fr);
+  }
+  .genesys-vtt .genesys-header-resource:last-child {
+    grid-column: auto;
+  }
+}
