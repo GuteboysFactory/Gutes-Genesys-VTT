@@ -1,6 +1,6 @@
-import { rollNarrativePool } from "../domain/dice/index.js";
 import { constructStandardPool } from "../domain/pool/index.js";
 import { formatPool, resultToChatHtml } from "./dice-ui.js";
+import { rollNarrativeWithPresentation } from "./dice-renderer-bridge.js";
 function readInteger(root, selector, fallback = 0) {
     const input = root.querySelector(selector);
     const value = Number(input?.value ?? fallback);
@@ -48,7 +48,13 @@ export function poolTraceToHtml(construction) {
 }
 export async function constructAndRollToChat(input, speakerAlias) {
     const construction = constructStandardPool(input);
-    const result = rollNarrativePool(construction.pool);
+    const { result } = await rollNarrativeWithPresentation(construction.pool, {
+        sourceType: "constructed-pool",
+        sourceLabel: "Constructed Pool",
+        speakerAlias,
+        actorName: speakerAlias,
+        metadata: { characteristic: input.characteristic, skillRank: input.skillRank, difficulty: input.difficulty ?? 0 }
+    });
     const content = `
     <section class="genesys-constructed-check">
       <p><strong>Characteristic ${input.characteristic} + Skill ${input.skillRank}</strong> · Difficulty ${input.difficulty ?? 0}</p>
