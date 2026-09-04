@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.151 QA: themed tabbed Character Sheet foundation. The system sheet now adopts the Genesys fantasy design language with dark navy framing, parchment play surfaces, gold accents, portrait/header identity, Summary/Skills/Talents/Equipment/Effects/Notes tabs, and a player-facing Quick Dice Pool with click-to-add, right-click-to-remove, Clear, and Roll-to-chat. Adds character profile fields for archetype, career, motivation, background, and notes while preserving the verified Rule Engine, Extra Activation UX, and Narrative Results Assistant. The external theme module remains optional and can override shared Genesys design tokens for global Foundry styling.",
-  "version": "0.0.151",
+  "description": "Genesys VTT 0.0.152 QA: Skills now use five direct-click rank pips instead of numeric rank inputs, and the native Foundry macro hotbar is hidden for the Genesys play surface so the in-sheet Quick Dice Pool becomes the primary manual dice tool. Preserves the themed tabbed Character Sheet, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
+  "version": "0.0.152",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
