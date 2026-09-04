@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.146 QA: simplified Extra Activation encounter UX. Extra Activations are optional opportunities with a direct Use Extra Activation button, no normal Waive/Restore controls, no round-blocking requirement, and a per-user reminder that can be disabled with Never show this reminder again.",
-  "version": "0.0.146",
+  "description": "Genesys VTT 0.0.147 QA: Narrative Results Assistant for combat checks. Advantage and Triumph now open an explanatory spend flow that says exactly what the roll generated and why the system is asking. Critical Injury is one spend option rather than the popup concept itself; active weapon qualities and Other / Narrative Effect are surfaced contextually, chosen spends are recorded on the combat chat card, remaining results can be reopened from chat, and automatic Wound Threshold Criticals are explicitly distinguished from additional spent Criticals. Includes the simplified 0.0.146 Extra Activation UX.",
+  "version": "0.0.147",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
