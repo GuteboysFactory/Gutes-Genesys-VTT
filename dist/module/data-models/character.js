@@ -68,6 +68,15 @@ function minionGroupField() {
         groupSkillIds: new ArrayField(new StringField({ required: true, nullable: false, blank: false, initial: "athletics" }), { required: true, nullable: false, initial: [] })
     });
 }
+function profileField() {
+    return new SchemaField({
+        archetype: new StringField({ required: true, nullable: false, initial: "" }),
+        career: new StringField({ required: true, nullable: false, initial: "" }),
+        motivation: new StringField({ required: true, nullable: false, initial: "" }),
+        background: new StringField({ required: true, nullable: false, initial: "" }),
+        notes: new StringField({ required: true, nullable: false, initial: "" })
+    });
+}
 export class GenesysCharacterData extends foundry.abstract.TypeDataModel {
     static defineSchema() {
         return {
@@ -76,6 +85,7 @@ export class GenesysCharacterData extends foundry.abstract.TypeDataModel {
             adversaryRank: new NumberField({ required: true, nullable: false, integer: true, min: 0, max: 10, initial: 0 }),
             extraActivations: new NumberField({ required: true, nullable: false, integer: true, min: 0, max: 10, initial: 0 }),
             minionGroup: minionGroupField(),
+            profile: profileField(),
             characteristics: new SchemaField({
                 brawn: characteristicField(),
                 agility: characteristicField(),
