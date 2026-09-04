@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.158 QA: replaces the open Conditions and Initiative Biography panels with a compact status bar directly below the sheet tabs. Conditions and Critical Injuries now use separate icons, live count badges, and click-open dropdowns; Initiative sits alongside them with Cool/Vigilance and Roll Initiative, while GM encounter controls remain tucked into a compact GM menu. Biography and Backstory now use the full content width below the status bar. Preserves the portrait-first XP/Funds header, two-row Characteristics and Health & Defense snapshot, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
-  "version": "0.0.158",
+  "description": "Genesys VTT 0.0.159 QA: removes legacy QA/test surfaces from the normal Character Sheet without removing the underlying rules engine. The injected Talents & Rule Elements regression panel is hidden from Equipment, Effects and Configure are removed from primary navigation while remaining reachable through the Biography status bar and header Configure action, and explicit Advanced/QA blocks are removed from normal use. Preserves Biography status bar, XP/Funds header, two-row Characteristics and Health & Defense snapshot, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
+  "version": "0.0.159",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -21,7 +21,8 @@
     "dist/module/character-sheet-v15-controller.js",
     "dist/module/character-sheet-window-polish.js",
     "dist/module/character-sheet-biography-layout.js",
-    "dist/module/character-sheet-header-resources.js"
+    "dist/module/character-sheet-header-resources.js",
+    "dist/module/character-sheet-release-cleanup.js"
   ],
   "styles": [
     "styles/genesys.css",
