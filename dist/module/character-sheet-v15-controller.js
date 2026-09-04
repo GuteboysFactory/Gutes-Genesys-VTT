@@ -175,6 +175,78 @@ function arrangeTalentPyramid(root) {
     }
 }
 
+function inputValue(root, name, fallback = "0") {
+    const input = root?.querySelector?.(`[name="${name}"]`);
+    const value = input?.value;
+    return value === undefined || value === null || value === "" ? fallback : String(value);
+}
+
+function resourceSnapshot(root, resourceName) {
+    const value = inputValue(root, `system.${resourceName}.value`, "0");
+    let threshold = inputValue(root, `system.${resourceName}.threshold`, "");
+    if (!threshold) {
+        const track = root?.querySelector?.(`[data-resource-track="${resourceName}"]`);
+        threshold = String(track?.dataset?.threshold ?? "");
+    }
+    return threshold ? `${value}/${threshold}` : value;
+}
+
+function createSnapshotStat(label, value, iconClass, tone = "") {
+    const item = document.createElement("div");
+    item.className = `genesys-header-stat${tone ? ` ${tone}` : ""}`;
+    const icon = document.createElement("i");
+    icon.className = iconClass;
+    icon.setAttribute("aria-hidden", "true");
+    const copy = document.createElement("div");
+    const name = document.createElement("small");
+    name.textContent = label;
+    const number = document.createElement("strong");
+    number.textContent = value;
+    copy.append(name, number);
+    item.append(icon, copy);
+    return item;
+}
+
+function buildHeaderSnapshot(root) {
+    if (!root || root.querySelector("[data-header-snapshot]"))
+        return;
+    const header = root.querySelector(".genesys-hero-header");
+    const tabs = root.querySelector(".genesys-sheet-tabs");
+    if (!header || !tabs)
+        return;
+
+    root.querySelector(".genesys-rank-seal")?.remove();
+
+    const strip = document.createElement("section");
+    strip.className = "genesys-header-snapshot";
+    strip.dataset.headerSnapshot = "true";
+    strip.setAttribute("aria-label", "Character quick statistics");
+
+    const characteristics = document.createElement("div");
+    characteristics.className = "genesys-header-stat-group genesys-header-characteristics";
+    characteristics.append(
+        createSnapshotStat("Brawn", inputValue(root, "system.characteristics.brawn"), "fa-solid fa-hand-fist"),
+        createSnapshotStat("Agility", inputValue(root, "system.characteristics.agility"), "fa-solid fa-person-running"),
+        createSnapshotStat("Intellect", inputValue(root, "system.characteristics.intellect"), "fa-solid fa-book-open"),
+        createSnapshotStat("Cunning", inputValue(root, "system.characteristics.cunning"), "fa-solid fa-mask"),
+        createSnapshotStat("Willpower", inputValue(root, "system.characteristics.willpower"), "fa-solid fa-sun"),
+        createSnapshotStat("Presence", inputValue(root, "system.characteristics.presence"), "fa-solid fa-crown")
+    );
+
+    const vitals = document.createElement("div");
+    vitals.className = "genesys-header-stat-group genesys-header-vitals";
+    vitals.append(
+        createSnapshotStat("Wounds", resourceSnapshot(root, "wounds"), "fa-solid fa-heart", "wounds"),
+        createSnapshotStat("Strain", resourceSnapshot(root, "strain"), "fa-solid fa-circle-notch", "strain"),
+        createSnapshotStat("Soak", inputValue(root, "system.soak"), "fa-solid fa-shield-halved"),
+        createSnapshotStat("Melee Def", inputValue(root, "system.defense.melee"), "fa-solid fa-shield"),
+        createSnapshotStat("Ranged Def", inputValue(root, "system.defense.ranged"), "fa-regular fa-compass")
+    );
+
+    strip.append(characteristics, vitals);
+    tabs.before(strip);
+}
+
 function initializeSheet(root) {
     if (!root || root.dataset.genesysV15Bound === "true")
         return;
@@ -187,6 +259,7 @@ function initializeSheet(root) {
     for (const track of root.querySelectorAll("[data-resource-track]"))
         renderResourceTrack(track);
     arrangeTalentPyramid(root);
+    buildHeaderSnapshot(root);
 }
 
 function initializeExistingSheets() {
