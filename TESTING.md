@@ -1,41 +1,46 @@
-# Genesys VTT 0.0.13 — Foundry 13.351 Live Test
+# Genesys VTT 0.0.14A — Foundry 13.351 QA
 
-## Regression
-1. Existing PC combat, token-aware targets, reactions, Criticals and Encounter Tracker still work.
-2. Console contains no red `genesys-vtt` errors.
+This is a foundation smoke test. Existing 0.0.13 combat, reactions and Encounter behavior should remain unchanged.
 
-## Minion group
-1. Create an Actor and set Role = **Minion**.
-2. Set Group Size = 4 and Member Wound Threshold = 5.
-3. Verify Combined WT = 20, Members Remaining = 4, Casualties = 0.
-4. Mark **Melee** as a Group Skill. It should show Rank 3. A non-listed skill should show Rank 0.
-5. Roll Melee and verify the pool uses Rank 3.
-6. Set Wounds to 6. Verify one casualty, 3 remaining, and Melee group rank falls to 2.
-7. Apply strain/Stun Damage to the group; it must increase Wounds, not Strain.
-8. Inflict/activate a Critical against the group; it should remove one minion through group wounds and should not add a normal Critical Injury row.
+## Load test
 
-## Rival
-1. Set Role = **Rival**.
-2. Apply Stun Damage / strain. It must increase Wounds; the separate Strain track is not used for damage.
-3. Rival Critical Injuries remain normal. Crossing WT defeats the Rival but does not create the PC/Nemesis automatic threshold Critical.
+1. Start a Genesys world and verify there are no red `genesys-vtt` console errors.
+2. `game.genesysVtt.version` should report `0.0.14`.
+3. `game.genesysRules` should exist with `rules` and `talents` APIs.
+4. Existing Actors, weapons, initiative, Minion/Rival/Nemesis behavior and the current dev Parry flow should still work exactly as in verified 0.0.13.
 
-## Nemesis
-1. Set Role = **Nemesis**.
-2. Stun Damage must increase Strain, not Wounds.
-3. Wounds/Strain threshold behavior and Criticals should remain PC-like.
-4. Existing bounded Nemesis Extra Activation behavior from 0.0.12-4 must still work.
+## Talent Item foundation
 
-## Console helpers
-```js
-game.genesysVtt.adversaries.normalizeMinionGroup({
-  members: 4, memberWoundThreshold: 5, wounds: 6, groupSkillIds: ["melee"]
-})
-```
-Expected: combined WT 20, casualties 1, remaining 3.
+Choose an Actor in the console, for example:
 
-```js
-game.genesysVtt.adversaries.minionSkillRank({
-  members: 4, memberWoundThreshold: 5, wounds: 6, groupSkillIds: ["melee"]
-}, "melee")
-```
-Expected: `2`.
+`const actor = game.actors.getName("YOUR ACTOR NAME")`
+
+Grant Core Parry rank 2:
+
+`await game.genesysRules.talents.grantCoreParry(actor, 2)`
+
+Expected: an embedded Item named **Parry** with type `talent`, rank 2, tier 1, structured rule data and a 3 Strain cost. Inspect with:
+
+`game.genesysRules.talents.collect(actor)`
+
+Grant the Terrinoth Finesse fixture:
+
+`await game.genesysRules.talents.grantTerrinothFinesse(actor)`
+
+Expected: an embedded **Finesse** Talent whose Rule Element is optional, applies before check construction, matches Brawl/Melee (Light), and specifies Agility as the check characteristic override.
+
+## Domain checks
+
+Inspect lifecycle/rule evaluation:
+
+`game.genesysRules.talents.debug(actor, { timing: "pre-soak", tags: ["combat", "attack:melee", "hit", "target:wielding-melee-weapon"] })`
+
+Inspect current usage records:
+
+`game.genesysRules.talents.usage(actor)`
+
+Start a new rules-session scope:
+
+`await game.genesysRules.talents.startNewSession()`
+
+The next 0.0.14 substep will connect these Rule Elements to live check construction and combat reaction prompts. Do not expect Parry/Finesse Talent Items to replace the old live automation in 0.0.14A yet.

@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.13: Core Minion/Rival/Nemesis mechanics. Adds native minion groups with derived group skills and shared wounds, Rival/Minion strain-to-wounds routing, Nemesis strain behavior, and member-aware minion Critical/area-effect foundations.",
-  "version": "0.0.13",
+  "description": "Genesys VTT 0.0.14A: Talents & Rule Elements foundation with Talent Items, predicates, costs, timing, usage scopes, lifecycle state, and developer QA APIs layered over the verified 0.0.13 runtime.",
+  "version": "0.0.14",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -13,7 +13,8 @@
     }
   ],
   "esmodules": [
-    "dist/genesys.js"
+    "dist/genesys.js",
+    "dist/module/talent-bootstrap.js"
   ],
   "styles": [
     "styles/genesys.css"
@@ -38,7 +39,8 @@
       "weapon": {},
       "armor": {},
       "gear": {},
-      "attachment": {}
+      "attachment": {},
+      "talent": {}
     }
   }
 }
