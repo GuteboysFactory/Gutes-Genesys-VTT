@@ -7,6 +7,38 @@ const LABELS = {
     difficulty: "Difficulty",
     challenge: "Challenge"
 };
+const presentedResults = new WeakSet();
+function diceForgeRollId() {
+    return `genesys-vtt-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`;
+}
+function presentWithDiceForge(result) {
+    if (!result || typeof result !== "object" || presentedResults.has(result))
+        return;
+    const module = game?.modules?.get?.("genesys-dice-forge");
+    const forge = module?.active ? module.api : null;
+    if (!forge?.wantsSystemRollPresentation?.())
+        return;
+    presentedResults.add(result);
+    const payload = {
+        rollId: diceForgeRollId(),
+        dice: Array.isArray(result.dice) ? result.dice.map((die) => ({
+            type: die.type,
+            faceIndex: die.faceIndex,
+            rawSymbols: { ...(die.symbols ?? {}) }
+        })) : [],
+        totals: { ...(result.raw ?? {}) },
+        net: { ...(result.net ?? {}) },
+        context: {
+            source: "genesys-vtt",
+            systemVersion: String(game?.system?.version ?? "unknown")
+        }
+    };
+    if (!payload.dice.length)
+        return;
+    void forge.presentResolvedSystemRoll(payload).catch((error) => {
+        console.warn("genesys-vtt | Genesys Dice Forge presentation failed; continuing with normal system result.", error, payload);
+    });
+}
 export function parsePoolFromElement(root) {
     const result = {
         boost: 0,
@@ -33,6 +65,10 @@ function resultHeading(result) {
     return result.succeeded ? "SUCCESS" : "FAILURE";
 }
 export function resultToChatHtml(result) {
+    // Every current Genesys VTT narrative roll passes through this formatter.
+    // Start Dice Forge from the exact already-resolved physical dice before the
+    // chat message is created. Dice Forge is presentation-only and never re-rolls.
+    presentWithDiceForge(result);
     const dice = result.dice.map((die) => {
         const symbols = Object.entries(die.symbols)
             .map(([name, count]) => `${name} ×${count}`)
