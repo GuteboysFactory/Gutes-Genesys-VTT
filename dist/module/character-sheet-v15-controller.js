@@ -108,6 +108,73 @@ function setSkillRankFromPip(pip) {
     input.dispatchEvent(new Event("change", { bubbles: true }));
 }
 
+function renderResourceTrack(track) {
+    const boxes = track?.querySelector?.("[data-resource-boxes]");
+    if (!boxes)
+        return;
+    const current = Math.max(0, Math.trunc(Number(track.dataset.current ?? 0) || 0));
+    const threshold = Math.max(0, Math.min(30, Math.trunc(Number(track.dataset.threshold ?? 0) || 0)));
+    boxes.replaceChildren();
+    for (let i = 1; i <= threshold; i += 1) {
+        const box = document.createElement("span");
+        box.className = "genesys-track-box";
+        box.classList.toggle("filled", i <= current);
+        boxes.append(box);
+    }
+}
+
+function renderTalentRankPips(card) {
+    const holder = card?.querySelector?.("[data-talent-rank-pips]");
+    if (!holder)
+        return;
+    const ranked = String(card.dataset.ranked ?? "false") === "true";
+    const rank = Math.max(1, Math.min(5, Math.trunc(Number(card.dataset.talentRank ?? 1) || 1)));
+    holder.replaceChildren();
+    if (!ranked) {
+        holder.hidden = true;
+        return;
+    }
+    holder.hidden = false;
+    for (let i = 1; i <= 5; i += 1) {
+        const pip = document.createElement("span");
+        pip.className = "genesys-talent-rank-pip";
+        pip.classList.toggle("filled", i <= rank);
+        holder.append(pip);
+    }
+}
+
+function arrangeTalentPyramid(root) {
+    const pyramid = root?.querySelector?.("[data-talent-pyramid]");
+    if (!pyramid || pyramid.dataset.arranged === "true")
+        return;
+    pyramid.dataset.arranged = "true";
+    const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
+    const cards = Array.from(pyramid.querySelectorAll("[data-talent-source] .genesys-talent-card"));
+    for (const card of cards) {
+        const tier = Math.max(1, Math.min(5, Math.trunc(Number(card.dataset.tier ?? 1) || 1)));
+        counts[tier] += 1;
+        renderTalentRankPips(card);
+        pyramid.querySelector(`[data-talent-lane="${tier}"] [data-tier-cards]`)?.append(card);
+    }
+    for (let tier = 1; tier <= 5; tier += 1) {
+        const lane = pyramid.querySelector(`[data-talent-lane="${tier}"]`);
+        const count = counts[tier];
+        const laneCount = lane?.querySelector?.("[data-lane-count]");
+        if (laneCount)
+            laneCount.textContent = `${count} Talent${count === 1 ? "" : "s"}`;
+        const status = pyramid.querySelector(`[data-tier-status="${tier}"]`);
+        const countLabel = status?.querySelector?.("[data-tier-count]");
+        if (countLabel)
+            countLabel.textContent = String(count);
+        const lowerCount = tier === 1 ? count : counts[tier - 1];
+        const denominator = Math.max(1, tier === 1 ? count : lowerCount);
+        const ratio = tier === 1 ? (count > 0 ? 1 : 0) : Math.min(1, count / denominator);
+        const fill = status?.querySelector?.("[data-tier-meter-fill]");
+        if (fill)
+            fill.style.width = `${Math.round(ratio * 100)}%`;
+    }
+}
+
 function initializeSheet(root) {
     if (!root || root.dataset.genesysV15Bound === "true")
         return;
@@ -117,6 +184,9 @@ function initializeSheet(root) {
         renderQuickDie(button, Number(button.dataset.count ?? 0));
     for (const row of root.querySelectorAll("[data-skill-id]"))
         renderSkillRankPips(row);
+    for (const track of root.querySelectorAll("[data-resource-track]"))
+        renderResourceTrack(track);
+    arrangeTalentPyramid(root);
 }
 
 function initializeExistingSheets() {
@@ -138,15 +208,13 @@ document.addEventListener("click", async (event) => {
 
     if (target.matches("[data-genesys-tab]")) {
         event.preventDefault();
-        const root = sheetRootFrom(target);
-        setActiveTab(root, target.dataset.genesysTab);
+        setActiveTab(sheetRootFrom(target), target.dataset.genesysTab);
         return;
     }
 
     if (target.matches("[data-open-tab]")) {
         event.preventDefault();
-        const root = sheetRootFrom(target);
-        setActiveTab(root, target.dataset.openTab);
+        setActiveTab(sheetRootFrom(target), target.dataset.openTab);
         return;
     }
 
