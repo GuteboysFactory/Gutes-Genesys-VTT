@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.161 QA: corrects Quick Dice Pool colors to the standard Genesys narrative die palette: Boost light blue, Ability green, Proficiency yellow, Setback black, Difficulty purple, and Challenge red. Preserves the 0.0.160 Actions Quick Link and Character Content Registry foundation, Biography status bar, XP/Funds header, two-row Characteristics and Health & Defense snapshot, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
-  "version": "0.0.161",
+  "description": "Genesys VTT 0.0.162 QA: adds explicit Edit controls to existing weapon- and talent-based Actions and adds a top-level + Custom Action workflow on the Actions tab. Custom Actions are actor-bound and editable with name, activation type, skill id, difficulty, and description, with delete support. Preserves the 0.0.161 corrected Genesys die colors, Character Content Registry foundation, Biography status bar, XP/Funds header, two-row Characteristics and Health & Defense snapshot, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
+  "version": "0.0.162",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -33,7 +33,8 @@
     "styles/character-sheet-v157.css",
     "styles/character-sheet-v158.css",
     "styles/character-sheet-v160.css",
-    "styles/character-sheet-v161.css"
+    "styles/character-sheet-v161.css",
+    "styles/character-sheet-v162.css"
   ],
   "languages": [
     {
