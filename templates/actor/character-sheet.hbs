@@ -1,0 +1,507 @@
+<section class="genesys-sheet-body">
+  <header class="genesys-sheet-header">
+    <div>
+      <p class="genesys-eyebrow">GENESYS VTT · v{{systemVersion}}</p>
+      <input class="genesys-name" type="text" name="name" value="{{actor.name}}" {{#unless editable}}disabled{{/unless}} />
+    </div>
+    <div class="genesys-runtime" title="Runtime compatibility target">
+      Foundry {{foundryVersion}}
+    </div>
+  </header>
+
+  <section class="genesys-panel genesys-actor-profile-panel">
+    <div class="genesys-panel-heading">
+      <div>
+        <h2>Actor &amp; Adversary Profile</h2>
+        <p>0.0.13 adversary foundation. PC, Minion, Rival, and Nemesis now drive distinct Core health/skill behavior.</p>
+      </div>
+    </div>
+    <div class="genesys-actor-profile-grid">
+      <label>Role
+        <select name="system.role" {{#unless editable}}disabled{{/unless}}>
+          <option value="pc" {{#if actorProfile.rolePc}}selected{{/if}}>PC</option>
+          <option value="minion" {{#if actorProfile.roleMinion}}selected{{/if}}>Minion</option>
+          <option value="rival" {{#if actorProfile.roleRival}}selected{{/if}}>Rival</option>
+          <option value="nemesis" {{#if actorProfile.roleNemesis}}selected{{/if}}>Nemesis</option>
+        </select>
+      </label>
+      <label>Silhouette<input type="number" name="system.silhouette" value="{{system.silhouette}}" min="0" max="10" {{#unless editable}}disabled{{/unless}} /></label>
+      <label>Adversary Rank<input type="number" name="system.adversaryRank" value="{{system.adversaryRank}}" min="0" max="10" {{#unless editable}}disabled{{/unless}} /></label>
+      {{#if actorProfile.roleNemesis}}
+        <label>Core Nemesis Extra Activation
+          <select name="system.extraActivations" {{#unless editable}}disabled{{/unless}}>
+            <option value="0" {{#if actorProfile.nemesisExtraOff}}selected{{/if}}>Off — 1 activation/round</option>
+            <option value="1" {{#if actorProfile.nemesisExtraOn}}selected{{/if}}>On — 2 activations/round</option>
+          </select>
+        </label>
+      {{else}}
+        <label>Extra Activations (custom)<input type="number" name="system.extraActivations" value="{{system.extraActivations}}" min="0" max="10" {{#unless editable}}disabled{{/unless}} /></label>
+      {{/if}}
+    </div>
+    <small>Nemesis does not automatically grant Adversary. Core Nemesis Extra Activation is an optional on/off rule and grants exactly one extra activation per round.</small>
+    {{#if actorProfile.roleMinion}}
+      <div class="genesys-minion-group-config">
+        <label>Group Size<input type="number" name="system.minionGroup.members" value="{{system.minionGroup.members}}" min="1" max="50" {{#unless editable}}disabled{{/unless}} /></label>
+        <label>Member Wound Threshold<input type="number" name="system.minionGroup.memberWoundThreshold" value="{{system.minionGroup.memberWoundThreshold}}" min="1" max="100" {{#unless editable}}disabled{{/unless}} /></label>
+        <label>Defeated Members<input type="number" name="system.minionGroup.casualties" value="{{system.minionGroup.casualties}}" min="0" max="{{system.minionGroup.members}}" {{#unless editable}}disabled{{/unless}} /></label>
+        <span><strong>Combined WT:</strong> {{adversary.minionGroup.groupWoundThreshold}}</span>
+        <span><strong>Members Remaining:</strong> {{adversary.minionGroup.remainingMembers}} / {{adversary.minionGroup.members}}</span>
+        <span><strong>Casualties:</strong> {{adversary.minionGroup.casualties}}</span>
+      </div>
+      <small>Minion group listed skills use rank = remaining members − 1. Non-listed skills are untrained. Minions do not track Strain; inflicted Strain becomes Wounds.</small>
+    {{/if}}
+  </section>
+
+  <section class="genesys-panel">
+    <h2>Characteristics</h2>
+    <div class="genesys-characteristics">
+      <label>Brawn<input type="number" name="system.characteristics.brawn" value="{{system.characteristics.brawn}}" min="1" max="6" {{#unless editable}}disabled{{/unless}} /></label>
+      <label>Agility<input type="number" name="system.characteristics.agility" value="{{system.characteristics.agility}}" min="1" max="6" {{#unless editable}}disabled{{/unless}} /></label>
+      <label>Intellect<input type="number" name="system.characteristics.intellect" value="{{system.characteristics.intellect}}" min="1" max="6" {{#unless editable}}disabled{{/unless}} /></label>
+      <label>Cunning<input type="number" name="system.characteristics.cunning" value="{{system.characteristics.cunning}}" min="1" max="6" {{#unless editable}}disabled{{/unless}} /></label>
+      <label>Willpower<input type="number" name="system.characteristics.willpower" value="{{system.characteristics.willpower}}" min="1" max="6" {{#unless editable}}disabled{{/unless}} /></label>
+      <label>Presence<input type="number" name="system.characteristics.presence" value="{{system.characteristics.presence}}" min="1" max="6" {{#unless editable}}disabled{{/unless}} /></label>
+    </div>
+  </section>
+
+  <section class="genesys-resource-grid">
+    <div class="genesys-panel">
+      <h2>Wounds</h2>
+      <div class="genesys-resource-row">
+        <input aria-label="Current wounds" type="number" name="system.wounds.value" value="{{system.wounds.value}}" min="0" {{#unless editable}}disabled{{/unless}} />
+        <span>/</span>
+        {{#if actorProfile.roleMinion}}
+          <input aria-label="Group wound threshold" type="number" value="{{adversary.minionGroup.groupWoundThreshold}}" disabled />
+        {{else}}
+          <input aria-label="Wound threshold" type="number" name="system.wounds.threshold" value="{{system.wounds.threshold}}" min="0" {{#unless editable}}disabled{{/unless}} />
+        {{/if}}
+      </div>
+    </div>
+
+    <div class="genesys-panel">
+      <h2>Strain</h2>
+      {{#if adversary.tracksStrain}}
+        <div class="genesys-resource-row">
+          <input aria-label="Current strain" type="number" name="system.strain.value" value="{{system.strain.value}}" min="0" {{#unless editable}}disabled{{/unless}} />
+          <span>/</span>
+          <input aria-label="Strain threshold" type="number" name="system.strain.threshold" value="{{system.strain.threshold}}" min="0" {{#unless editable}}disabled{{/unless}} />
+        </div>
+      {{else}}
+        <p class="genesys-empty-row"><strong>Not tracked.</strong> Strain suffered by {{actorProfile.role}} becomes Wounds.</p>
+      {{/if}}
+    </div>
+
+    <div class="genesys-panel genesys-compact-stat">
+      <h2>Soak</h2>
+      <input type="number" name="system.soak" value="{{system.soak}}" min="0" {{#unless editable}}disabled{{/unless}} />
+    </div>
+  </section>
+
+  <section class="genesys-panel">
+    <h2>Defense</h2>
+    <div class="genesys-defense">
+      <label>Melee<input type="number" name="system.defense.melee" value="{{system.defense.melee}}" min="0" {{#unless editable}}disabled{{/unless}} /></label>
+      <label>Ranged<input type="number" name="system.defense.ranged" value="{{system.defense.ranged}}" min="0" {{#unless editable}}disabled{{/unless}} /></label>
+    </div>
+  </section>
+
+  <section class="genesys-panel genesys-initiative-panel">
+    <div class="genesys-panel-heading">
+      <div>
+        <h2>Initiative</h2>
+        <p>Encounter control now lives in the dedicated Encounter Tracker. Roll here; manage the encounter there.</p>
+        {{#if initiative.hasRolled}}<small>Activation budget: {{initiative.activationCounterLabel}} · {{initiative.activationTotalCount}} total this round</small>{{/if}}
+      </div>
+      <div class="genesys-initiative-status">
+        <strong>{{initiative.modeLabel}}</strong> · {{initiative.status}}{{#if initiative.active}} · Round {{initiative.round}} · Turn {{initiative.turnNumber}}/{{initiative.totalTurns}}{{/if}}
+      </div>
+    </div>
+
+    {{#if initiative.collecting}}
+      <div class="genesys-initiative-controls genesys-initiative-compact">
+        <label>Side
+          <select data-initiative-side>
+            <option value="pc" {{#if initiative.sidePcSelected}}selected{{/if}}>PC</option>
+            <option value="npc" {{#if initiative.sideNpcSelected}}selected{{/if}}>NPC</option>
+          </select>
+        </label>
+        <label>Initiative Skill
+          <select data-initiative-skill>
+            <option value="cool" {{#if initiative.skillCoolSelected}}selected{{/if}}>Cool</option>
+            <option value="vigilance" {{#if initiative.skillVigilanceSelected}}selected{{/if}}>Vigilance</option>
+          </select>
+        </label>
+        <button type="button" data-action="rollInitiative">{{#if initiative.hasRolled}}Reroll Initiative{{else}}Roll Initiative{{/if}}</button>
+        <button type="button" data-action="openEncounterTracker">Open Encounter Tracker</button>
+        <button type="button" data-action="startInitiative">Start Encounter</button>
+      </div>
+    {{else}}
+      <div class="genesys-initiative-encounter-link">
+        <div>
+          {{#if initiative.active}}
+            <strong>Encounter active:</strong> Round {{initiative.round}} · Turn {{initiative.turnNumber}} / {{initiative.totalTurns}} · Active: {{initiative.activeActorLabel}}
+          {{else}}
+            <strong>Encounter ended.</strong>
+          {{/if}}
+        </div>
+        <button type="button" data-action="openEncounterTracker">Open Encounter Tracker</button>
+        <button type="button" data-action="resetInitiative">Reset Encounter</button>
+      </div>
+    {{/if}}
+  </section>
+
+  {{#unless actorProfile.roleMinion}}
+  <section class="genesys-panel genesys-critical-panel">
+    <div class="genesys-panel-heading">
+      <div>
+        <h2>Critical Injuries</h2>
+        <p>0.0.12 Core Critical resolver + secondary resolution. Every unresolved Critical adds +10 to the next Critical roll.</p>
+      </div>
+      <strong>Current modifier: +{{criticalModifier}}</strong>
+    </div>
+    <div class="genesys-critical-lab">
+      <label>Vicious Rank<input type="number" data-critical-vicious value="0" min="0" max="10" /></label>
+      <label>Extra Crit Activations<input type="number" data-critical-extra-activations value="0" min="0" max="10" /></label>
+      <label>Other Modifier<input type="number" data-critical-flat-modifier value="0" min="-150" max="150" /></label>
+      <button type="button" data-action="rollCritical">Roll Critical</button>
+    </div>
+    <div class="genesys-critical-list">
+      {{#each criticals}}
+        <div class="genesys-critical-row" data-critical-id="{{id}}">
+          <div><strong>{{name}}</strong> <span>({{severityLabel}} · Heal {{difficultyLabel}})</span><br /><small>d100 {{rawRoll}} → {{total}} · {{effect}}</small>{{#if secondarySummary}}<br /><small><strong>{{secondarySummary}}</strong></small>{{/if}}</div>
+          <div class="genesys-critical-actions">
+            {{#if needsSecondaryResolution}}<button type="button" data-action="resolveCriticalSecondary">Resolve Effect</button>{{/if}}
+            <button type="button" data-action="healCritical">Mark Healed</button>
+          </div>
+        </div>
+      {{else}}
+        <p class="genesys-empty-row">No unresolved Critical Injuries.</p>
+      {{/each}}
+    </div>
+  </section>
+
+  {{else}}
+  <section class="genesys-panel genesys-critical-panel">
+    <div class="genesys-panel-heading"><div><h2>Minion Criticals</h2><p>Minion groups do not keep Critical Injury records. A Critical applies one member Wound Threshold + 1 wounds to the shared group track.</p></div></div>
+  </section>
+  {{/unless}}
+
+  <section class="genesys-panel genesys-condition-panel">
+    <div class="genesys-panel-heading">
+      <div>
+        <h2>Conditions</h2>
+        <p>Structured Core states. Disoriented already adds one Setback to checks; Staggered/Immobilized expose action/maneuver restrictions for the upcoming turn engine.</p>
+      </div>
+    </div>
+    <div class="genesys-condition-status">
+      <span>Actions: <strong>{{#if conditionRules.canPerformActions}}Allowed{{else}}BLOCKED{{/if}}</strong></span>
+      <span>Maneuvers: <strong>{{#if conditionRules.canPerformManeuvers}}Allowed{{else}}BLOCKED{{/if}}</strong></span>
+    </div>
+    <div class="genesys-condition-buttons">
+      <button type="button" data-action="addCondition" data-condition-id="staggered">+ Staggered</button>
+      <button type="button" data-action="addCondition" data-condition-id="immobilized">+ Immobilized</button>
+      <button type="button" data-action="addCondition" data-condition-id="disoriented">+ Disoriented</button>
+    </div>
+    <div class="genesys-condition-list">
+      {{#each conditionSummary.active}}
+        <div class="genesys-condition-row">
+          <span><strong>{{conditionId}}</strong> · {{durationType}}{{#if remaining}} · {{remaining}}{{/if}} · source {{sourceId}}</span>
+          <button type="button" data-action="removeCondition" data-condition-state-id="{{id}}">×</button>
+        </div>
+      {{else}}
+        <p class="genesys-empty-row">No active conditions.</p>
+      {{/each}}
+    </div>
+  </section>
+
+
+  <section class="genesys-panel genesys-inventory-panel">
+    <div class="genesys-panel-heading">
+      <div>
+        <h2>Items &amp; Weapons</h2>
+        <p>0.0.12 combat + Adversary/Activation/Critical/Condition surface. Attacks now use pending resolution and pause when a legal reaction is available before resources are committed.</p>
+      </div>
+      <label class="genesys-weapon-difficulty">Test Difficulty<input type="number" data-weapon-difficulty value="2" min="0" max="5" /></label>
+    </div>
+
+    <div class="genesys-combat-controls">
+      <label>Combat Target
+        <select data-combat-target>
+          <option value="">— Select Actor —</option>
+          {{#each combatTargets}}<option value="{{id}}">{{name}}</option>{{/each}}
+        </select>
+      </label>
+      <label>Target Range
+        <select data-combat-range>
+          <option value="engaged">Engaged</option>
+          <option value="short">Short</option>
+          <option value="medium">Medium</option>
+          <option value="long">Long</option>
+          <option value="extreme">Extreme</option>
+        </select>
+      </label>
+      <span class="genesys-check-engine-note">Smart Auto continues automatically when no legal reaction exists. If the target has a relevant option, resolution pauses before damage is committed.</span>
+    </div>
+
+
+    <details class="genesys-reaction-lab">
+      <summary>Reaction Test Lab (0.0.11 regression)</summary>
+      <div class="genesys-reaction-lab-grid">
+        <label class="genesys-item-check"><input type="checkbox" data-dev-parry-enabled {{#if reactionDev.parryEnabled}}checked{{/if}} {{#unless editable}}disabled{{/unless}} /> Enable Parry test reaction</label>
+        <label>Parry Rank<input type="number" data-dev-parry-rank value="{{reactionDev.parryRank}}" min="1" max="5" {{#unless editable}}disabled{{/unless}} /></label>
+        <p>Dev-only bridge until Talents are implemented. Parry requires an equipped melee weapon, triggers after melee-hit damage is calculated but before soak, costs 3 Strain, and reduces damage by 2 + rank.</p>
+      </div>
+    </details>
+
+    <div class="genesys-item-createbar">
+      <button type="button" data-action="createItem" data-item-type="weapon">+ Weapon</button>
+      <button type="button" data-action="createItem" data-item-type="armor">+ Armor</button>
+      <button type="button" data-action="createItem" data-item-type="gear">+ Gear</button>
+      <button type="button" data-action="createItem" data-item-type="attachment">+ Attachment</button>
+    </div>
+
+    <details class="genesys-item-group" open>
+      <summary>Weapons ({{inventory.weapons.length}})</summary>
+      <div class="genesys-item-table genesys-weapon-table">
+        <div class="genesys-item-head"><span>Name</span><span>Skill</span><span>Damage</span><span>Crit</span><span>Range</span><span>Qualities</span><span>Actions</span></div>
+        {{#each inventory.weapons}}
+          <div class="genesys-item-row" data-item-id="{{id}}">
+            <button type="button" class="genesys-item-name" data-action="editItem">{{name}}</button>
+            <span>{{skillId}}</span><span>{{damage}}</span><span>{{critical}}</span><span>{{range}}</span><span class="genesys-item-qualities">{{qualitiesText}}</span>
+            <span class="genesys-item-actions"><button type="button" data-action="rollCombatWeapon">Attack</button><button type="button" data-action="rollWeapon" title="0.0.6 regression roll">Raw Roll</button><button type="button" data-action="deleteItem">×</button></span>
+          </div>
+        {{else}}
+          <p class="genesys-empty-row">No weapons yet.</p>
+        {{/each}}
+      </div>
+    </details>
+
+    <details class="genesys-item-group">
+      <summary>Armor ({{inventory.armor.length}})</summary>
+      <div class="genesys-item-table">
+        {{#each inventory.armor}}
+          <div class="genesys-item-row genesys-simple-item-row" data-item-id="{{id}}">
+            <button type="button" class="genesys-item-name" data-action="editItem">{{name}}</button>
+            <span>Soak {{soak}} · Defense {{defense}} · Enc {{encumbrance}} · HP {{hardPoints}} · {{qualitiesText}}</span>
+            <span class="genesys-item-actions"><button type="button" data-action="deleteItem">×</button></span>
+          </div>
+        {{else}}<p class="genesys-empty-row">No armor yet.</p>{{/each}}
+      </div>
+    </details>
+
+    <details class="genesys-item-group">
+      <summary>Gear ({{inventory.gear.length}})</summary>
+      <div class="genesys-item-table">
+        {{#each inventory.gear}}
+          <div class="genesys-item-row genesys-simple-item-row" data-item-id="{{id}}">
+            <button type="button" class="genesys-item-name" data-action="editItem">{{name}}</button>
+            <span>Qty {{quantity}} · Enc {{encumbrance}}</span>
+            <span class="genesys-item-actions"><button type="button" data-action="deleteItem">×</button></span>
+          </div>
+        {{else}}<p class="genesys-empty-row">No gear yet.</p>{{/each}}
+      </div>
+    </details>
+
+    <details class="genesys-item-group">
+      <summary>Attachments ({{inventory.attachments.length}})</summary>
+      <div class="genesys-item-table">
+        {{#each inventory.attachments}}
+          <div class="genesys-item-row genesys-simple-item-row" data-item-id="{{id}}">
+            <button type="button" class="genesys-item-name" data-action="editItem">{{name}}</button>
+            <span>HP cost {{hardPointCost}} · {{#if installed}}Installed{{else}}Not installed{{/if}} · {{qualitiesText}}</span>
+            <span class="genesys-item-actions"><button type="button" data-action="deleteItem">×</button></span>
+          </div>
+        {{else}}<p class="genesys-empty-row">No attachments yet.</p>{{/each}}
+      </div>
+    </details>
+  </section>
+
+  <section class="genesys-panel genesys-skills-panel">
+    <div class="genesys-panel-heading">
+      <div>
+        <h2>Skills</h2>
+        <p>0.0.13 adversary-aware skills · Active profile: <strong>{{activeProfileId}}</strong>. Click a skill to route the roll through Standard, Opposed, or Assisted check preparation.</p>
+      </div>
+    </div>
+
+    <details class="genesys-check-engine-lab" open>
+      <summary>Check Engine test controls</summary>
+      <div class="genesys-check-engine-controls">
+        <label>Mode
+          <select data-check-mode>
+            <option value="standard">Standard</option>
+            <option value="opposed">Opposed</option>
+            <option value="assisted">Assisted</option>
+          </select>
+        </label>
+        <label>Difficulty<input type="number" data-skill-difficulty value="2" min="0" max="5" /></label>
+        <label>Opponent Char<input type="number" data-opponent-characteristic value="2" min="0" max="10" /></label>
+        <label>Opponent Rank<input type="number" data-opponent-skill-rank value="2" min="0" max="10" /></label>
+        <label>Assistant Char<input type="number" data-assistant-characteristic value="2" min="0" max="10" /></label>
+        <label>Assistant Rank<input type="number" data-assistant-skill-rank value="2" min="0" max="10" /></label>
+        <label>Extra Helpers<input type="number" data-extra-helpers value="0" min="0" max="10" /></label>
+      </div>
+      <p class="genesys-check-engine-note">Only the fields relevant to the selected mode are used. This is a temporary mechanics test surface, not the final roll dialog.</p>
+    </details>
+
+    <details class="genesys-skill-group" open>
+      <summary>General</summary>
+      <div class="genesys-skill-table">
+        <div class="genesys-skill-head"><span>Skill</span><span>Characteristic</span><span>Rank</span><span>{{#if actorProfile.roleMinion}}Group Skill{{else}}Career{{/if}}</span></div>
+        {{#each skills.general}}
+          <div class="genesys-skill-row" data-skill-id="{{id}}" data-skill-index="{{index}}" title="Availability: {{availability}} · Source: {{sourceId}}">
+            <button type="button" class="genesys-skill-roll" data-action="rollSkill">{{label}}</button>
+            <span class="genesys-skill-characteristic">{{characteristicLabel}}</span>
+            {{#if ../actorProfile.roleMinion}}
+              <span class="genesys-minion-derived-rank" title="Group rank = remaining members − 1 for listed group skills">{{rank}}</span>
+              <input type="checkbox" data-minion-group-skill {{checked groupSkill}} {{#unless ../editable}}disabled{{/unless}} />
+            {{else}}
+              <input type="number" data-skill-rank value="{{rank}}" min="0" max="5" {{#unless ../editable}}disabled{{/unless}} />
+              <input type="checkbox" data-skill-career {{checked career}} {{#unless ../editable}}disabled{{/unless}} />
+            {{/if}}
+          </div>
+        {{/each}}
+      </div>
+    </details>
+
+    <details class="genesys-skill-group">
+      <summary>Combat</summary>
+      <div class="genesys-skill-table">
+        <div class="genesys-skill-head"><span>Skill</span><span>Characteristic</span><span>Rank</span><span>{{#if actorProfile.roleMinion}}Group Skill{{else}}Career{{/if}}</span></div>
+        {{#each skills.combat}}
+          <div class="genesys-skill-row" data-skill-id="{{id}}" data-skill-index="{{index}}" title="Availability: {{availability}} · Source: {{sourceId}}">
+            <button type="button" class="genesys-skill-roll" data-action="rollSkill">{{label}}</button>
+            <span class="genesys-skill-characteristic">{{characteristicLabel}}</span>
+            {{#if ../actorProfile.roleMinion}}
+              <span class="genesys-minion-derived-rank" title="Group rank = remaining members − 1 for listed group skills">{{rank}}</span>
+              <input type="checkbox" data-minion-group-skill {{checked groupSkill}} {{#unless ../editable}}disabled{{/unless}} />
+            {{else}}
+              <input type="number" data-skill-rank value="{{rank}}" min="0" max="5" {{#unless ../editable}}disabled{{/unless}} />
+              <input type="checkbox" data-skill-career {{checked career}} {{#unless ../editable}}disabled{{/unless}} />
+            {{/if}}
+          </div>
+        {{/each}}
+      </div>
+    </details>
+
+    <details class="genesys-skill-group">
+      <summary>Knowledge / Specialized</summary>
+      <div class="genesys-skill-table">
+        <div class="genesys-skill-head"><span>Skill</span><span>Characteristic</span><span>Rank</span><span>{{#if actorProfile.roleMinion}}Group Skill{{else}}Career{{/if}}</span></div>
+        {{#each skills.knowledge}}
+          <div class="genesys-skill-row" data-skill-id="{{id}}" data-skill-index="{{index}}" title="Availability: {{availability}} · Source: {{sourceId}}">
+            <button type="button" class="genesys-skill-roll" data-action="rollSkill">{{label}}</button>
+            <span class="genesys-skill-characteristic">{{characteristicLabel}}</span>
+            {{#if ../actorProfile.roleMinion}}
+              <span class="genesys-minion-derived-rank" title="Group rank = remaining members − 1 for listed group skills">{{rank}}</span>
+              <input type="checkbox" data-minion-group-skill {{checked groupSkill}} {{#unless ../editable}}disabled{{/unless}} />
+            {{else}}
+              <input type="number" data-skill-rank value="{{rank}}" min="0" max="5" {{#unless ../editable}}disabled{{/unless}} />
+              <input type="checkbox" data-skill-career {{checked career}} {{#unless ../editable}}disabled{{/unless}} />
+            {{/if}}
+          </div>
+        {{/each}}
+      </div>
+    </details>
+
+    <details class="genesys-skill-group">
+      <summary>Magic</summary>
+      <div class="genesys-skill-table">
+        <div class="genesys-skill-head"><span>Skill</span><span>Characteristic</span><span>Rank</span><span>{{#if actorProfile.roleMinion}}Group Skill{{else}}Career{{/if}}</span></div>
+        {{#each skills.magic}}
+          <div class="genesys-skill-row" data-skill-id="{{id}}" data-skill-index="{{index}}" title="Availability: {{availability}} · Source: {{sourceId}}">
+            <button type="button" class="genesys-skill-roll" data-action="rollSkill">{{label}}</button>
+            <span class="genesys-skill-characteristic">{{characteristicLabel}}</span>
+            {{#if ../actorProfile.roleMinion}}
+              <span class="genesys-minion-derived-rank" title="Group rank = remaining members − 1 for listed group skills">{{rank}}</span>
+              <input type="checkbox" data-minion-group-skill {{checked groupSkill}} {{#unless ../editable}}disabled{{/unless}} />
+            {{else}}
+              <input type="number" data-skill-rank value="{{rank}}" min="0" max="5" {{#unless ../editable}}disabled{{/unless}} />
+              <input type="checkbox" data-skill-career {{checked career}} {{#unless ../editable}}disabled{{/unless}} />
+            {{/if}}
+          </div>
+        {{/each}}
+      </div>
+    </details>
+  </section>
+
+  <section class="genesys-panel genesys-pool-builder">
+    <div class="genesys-panel-heading">
+      <div>
+        <h2>Standard Pool Builder</h2>
+        <p>0.0.3 regression surface — retained temporarily to verify pool construction independently of persistent skills.</p>
+      </div>
+      <button type="button" data-action="constructAndRoll">Build &amp; Roll</button>
+    </div>
+
+    <div class="genesys-builder-basics">
+      <label>Characteristic
+        <select data-check-characteristic>
+          <option value="{{system.characteristics.brawn}}">Brawn ({{system.characteristics.brawn}})</option>
+          <option value="{{system.characteristics.agility}}">Agility ({{system.characteristics.agility}})</option>
+          <option value="{{system.characteristics.intellect}}">Intellect ({{system.characteristics.intellect}})</option>
+          <option value="{{system.characteristics.cunning}}">Cunning ({{system.characteristics.cunning}})</option>
+          <option value="{{system.characteristics.willpower}}">Willpower ({{system.characteristics.willpower}})</option>
+          <option value="{{system.characteristics.presence}}">Presence ({{system.characteristics.presence}})</option>
+        </select>
+      </label>
+      <label>Skill Rank<input type="number" data-check-skill-rank value="0" min="0" max="5" /></label>
+      <label>Base Difficulty<input type="number" data-check-difficulty value="2" min="0" max="5" /></label>
+    </div>
+
+    <div class="genesys-modifier-order">
+      <strong>Core order:</strong> Base Pool → Add Dice → Upgrades → Downgrades → Removals
+    </div>
+
+    <div class="genesys-builder-groups">
+      <fieldset>
+        <legend>Add Dice</legend>
+        <label>Boost<input type="number" data-add-die="boost" value="0" min="0" max="20" /></label>
+        <label>Ability<input type="number" data-add-die="ability" value="0" min="0" max="20" /></label>
+        <label>Setback<input type="number" data-add-die="setback" value="0" min="0" max="20" /></label>
+        <label>Difficulty<input type="number" data-add-die="difficulty" value="0" min="0" max="20" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Up / Down</legend>
+        <label>Upgrade +<input type="number" data-upgrade-positive value="0" min="0" max="20" /></label>
+        <label>Upgrade −<input type="number" data-upgrade-negative value="0" min="0" max="20" /></label>
+        <label>Downgrade +<input type="number" data-downgrade-positive value="0" min="0" max="20" /></label>
+        <label>Downgrade −<input type="number" data-downgrade-negative value="0" min="0" max="20" /></label>
+      </fieldset>
+
+      <fieldset>
+        <legend>Remove Dice</legend>
+        <label>Boost<input type="number" data-remove-die="boost" value="0" min="0" max="20" /></label>
+        <label>Ability<input type="number" data-remove-die="ability" value="0" min="0" max="20" /></label>
+        <label>Proficiency<input type="number" data-remove-die="proficiency" value="0" min="0" max="20" /></label>
+        <label>Setback<input type="number" data-remove-die="setback" value="0" min="0" max="20" /></label>
+        <label>Difficulty<input type="number" data-remove-die="difficulty" value="0" min="0" max="20" /></label>
+        <label>Challenge<input type="number" data-remove-die="challenge" value="0" min="0" max="20" /></label>
+      </fieldset>
+    </div>
+  </section>
+
+  <section class="genesys-panel genesys-dice-lab">
+    <div class="genesys-panel-heading">
+      <div>
+        <h2>Narrative Dice Lab</h2>
+        <p>Manual regression surface — enter any pool and roll the six Genesys dice directly.</p>
+      </div>
+      <button type="button" data-action="rollNarrativeDice">Roll Pool</button>
+    </div>
+
+    <div class="genesys-dice-grid">
+      <label class="genesys-die genesys-die-positive">Boost<input type="number" data-die-count="boost" value="0" min="0" max="20" /></label>
+      <label class="genesys-die genesys-die-positive">Ability<input type="number" data-die-count="ability" value="1" min="0" max="20" /></label>
+      <label class="genesys-die genesys-die-positive">Proficiency<input type="number" data-die-count="proficiency" value="0" min="0" max="20" /></label>
+      <label class="genesys-die genesys-die-negative">Setback<input type="number" data-die-count="setback" value="0" min="0" max="20" /></label>
+      <label class="genesys-die genesys-die-negative">Difficulty<input type="number" data-die-count="difficulty" value="1" min="0" max="20" /></label>
+      <label class="genesys-die genesys-die-negative">Challenge<input type="number" data-die-count="challenge" value="0" min="0" max="20" /></label>
+    </div>
+  </section>
+
+  <footer class="genesys-smoke-footer">
+    0.0.9: persistent Critical Injuries + structured Conditions on top of the verified reaction/combat foundation.
+  </footer>
+</section>

@@ -1,0 +1,994 @@
+.genesys-vtt .window-content {
+  padding: 0;
+  min-height: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scrollbar-gutter: stable;
+}
+
+.genesys-vtt .genesys-sheet-body {
+  box-sizing: border-box;
+  min-height: 0;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  color: var(--color-text-primary, #1f1f1f);
+}
+
+.genesys-vtt .genesys-sheet-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid currentColor;
+}
+
+.genesys-vtt .genesys-eyebrow,
+.genesys-vtt .genesys-runtime,
+.genesys-vtt .genesys-smoke-footer {
+  opacity: 0.72;
+  font-size: 0.78rem;
+}
+
+.genesys-vtt .genesys-eyebrow {
+  margin: 0 0 4px;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.genesys-vtt input.genesys-name {
+  width: min(420px, 100%);
+  height: auto;
+  padding: 2px 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  font-size: 1.7rem;
+  font-weight: 700;
+}
+
+.genesys-vtt .genesys-panel {
+  padding: 14px;
+  border: 1px solid color-mix(in srgb, currentColor 22%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, currentColor 4%, transparent);
+}
+
+.genesys-vtt .genesys-panel h2 {
+  margin: 0 0 12px;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.genesys-vtt .genesys-characteristics {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(80px, 1fr));
+  gap: 10px;
+}
+
+.genesys-vtt .genesys-characteristics label,
+.genesys-vtt .genesys-defense label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.8rem;
+  font-weight: 650;
+  text-align: center;
+}
+
+.genesys-vtt input[type="number"] {
+  text-align: center;
+  font-weight: 700;
+}
+
+.genesys-vtt .genesys-resource-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 0.6fr;
+  gap: 14px;
+}
+
+.genesys-vtt .genesys-resource-row,
+.genesys-vtt .genesys-defense {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.genesys-vtt .genesys-resource-row input {
+  width: 72px;
+}
+
+.genesys-vtt .genesys-compact-stat input {
+  display: block;
+  width: 84px;
+  margin: 0 auto;
+}
+
+.genesys-vtt .genesys-defense label {
+  width: 120px;
+}
+
+.genesys-vtt .genesys-smoke-footer {
+  margin-top: auto;
+  padding-top: 8px;
+  text-align: center;
+}
+
+@media (max-width: 720px) {
+  .genesys-vtt .genesys-characteristics {
+    grid-template-columns: repeat(3, minmax(80px, 1fr));
+  }
+
+  .genesys-vtt .genesys-resource-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.genesys-vtt .genesys-panel-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.genesys-vtt .genesys-panel-heading h2 {
+  margin-bottom: 4px;
+}
+
+.genesys-vtt .genesys-panel-heading p {
+  margin: 0;
+  opacity: 0.72;
+  font-size: 0.8rem;
+}
+
+.genesys-vtt .genesys-panel-heading button {
+  flex: 0 0 auto;
+  min-width: 120px;
+  font-weight: 700;
+}
+
+.genesys-vtt .genesys-dice-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(80px, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.genesys-vtt .genesys-die {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 9px;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 7px;
+  text-align: center;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.genesys-vtt .genesys-die-positive {
+  background: color-mix(in srgb, currentColor 5%, transparent);
+}
+
+.genesys-vtt .genesys-die-negative {
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.genesys-chat-roll h3 {
+  margin: 0 0 6px;
+  letter-spacing: 0.05em;
+}
+
+.genesys-chat-roll p {
+  margin: 0 0 8px;
+}
+
+.genesys-chat-result-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px 12px;
+  margin: 8px 0;
+}
+
+.genesys-chat-roll details {
+  margin-top: 8px;
+}
+
+.genesys-chat-roll ol {
+  margin: 6px 0 0 20px;
+  padding: 0;
+}
+
+@media (max-width: 720px) {
+  .genesys-vtt .genesys-dice-grid {
+    grid-template-columns: repeat(3, minmax(80px, 1fr));
+  }
+}
+
+.genesys-vtt .genesys-builder-basics {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr 1fr;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.genesys-vtt .genesys-builder-basics label,
+.genesys-vtt .genesys-builder-groups label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 0.76rem;
+  font-weight: 700;
+}
+
+.genesys-vtt .genesys-builder-basics select {
+  min-height: 32px;
+}
+
+.genesys-vtt .genesys-modifier-order {
+  margin: 10px 0;
+  padding: 8px 10px;
+  border-radius: 6px;
+  background: color-mix(in srgb, currentColor 7%, transparent);
+  font-size: 0.78rem;
+  text-align: center;
+}
+
+.genesys-vtt .genesys-builder-groups {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.35fr;
+  gap: 10px;
+}
+
+.genesys-vtt .genesys-builder-groups fieldset {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin: 0;
+  padding: 9px;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 7px;
+}
+
+.genesys-vtt .genesys-builder-groups legend {
+  padding: 0 5px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.genesys-pool-trace ol {
+  margin: 6px 0 10px 20px;
+  padding: 0;
+}
+
+@media (max-width: 720px) {
+  .genesys-vtt .genesys-builder-basics,
+  .genesys-vtt .genesys-builder-groups {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 0.0.4 persistent skills development surface */
+.genesys-vtt .genesys-skill-difficulty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 110px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-align: center;
+}
+
+.genesys-vtt .genesys-skill-difficulty input {
+  min-height: 30px;
+}
+
+.genesys-vtt .genesys-skill-group {
+  margin-top: 10px;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.genesys-vtt .genesys-skill-group > summary {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: color-mix(in srgb, currentColor 6%, transparent);
+}
+
+.genesys-vtt .genesys-skill-table {
+  padding: 6px;
+}
+
+.genesys-vtt .genesys-skill-head,
+.genesys-vtt .genesys-skill-row {
+  display: grid;
+  grid-template-columns: minmax(170px, 1.6fr) minmax(100px, 0.9fr) 64px 58px;
+  gap: 8px;
+  align-items: center;
+}
+
+.genesys-vtt .genesys-skill-head {
+  padding: 4px 6px 6px;
+  opacity: 0.65;
+  font-size: 0.68rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.genesys-vtt .genesys-skill-row {
+  padding: 4px 6px;
+  border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+}
+
+.genesys-vtt .genesys-skill-row input[type="number"] {
+  width: 58px;
+}
+
+.genesys-vtt .genesys-skill-row input[type="checkbox"] {
+  justify-self: center;
+}
+
+.genesys-vtt .genesys-skill-roll {
+  min-height: 28px;
+  text-align: left;
+  font-weight: 700;
+}
+
+.genesys-vtt .genesys-skill-characteristic {
+  font-size: 0.76rem;
+  opacity: 0.82;
+}
+
+.genesys-check-pool {
+  margin: 4px 0 8px;
+}
+
+@media (max-width: 720px) {
+  .genesys-vtt .genesys-skill-head,
+  .genesys-vtt .genesys-skill-row {
+    grid-template-columns: minmax(140px, 1.4fr) minmax(90px, 1fr) 56px 48px;
+  }
+}
+
+/* 0.0.5 Check Engine temporary test controls */
+.genesys-vtt .genesys-check-engine-lab {
+  margin-top: 10px;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.genesys-vtt .genesys-check-engine-lab > summary {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: color-mix(in srgb, currentColor 6%, transparent);
+}
+
+.genesys-vtt .genesys-check-engine-controls {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(82px, 1fr));
+  gap: 8px;
+  padding: 10px 10px 4px;
+}
+
+.genesys-vtt .genesys-check-engine-controls label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.68rem;
+  font-weight: 750;
+  text-align: center;
+}
+
+.genesys-vtt .genesys-check-engine-controls select,
+.genesys-vtt .genesys-check-engine-controls input {
+  min-height: 30px;
+}
+
+.genesys-vtt .genesys-check-engine-note {
+  margin: 4px 10px 10px;
+  opacity: 0.68;
+  font-size: 0.72rem;
+}
+
+@media (max-width: 900px) {
+  .genesys-vtt .genesys-check-engine-controls {
+    grid-template-columns: repeat(4, minmax(82px, 1fr));
+  }
+}
+
+@media (max-width: 650px) {
+  .genesys-vtt .genesys-check-engine-controls {
+    grid-template-columns: repeat(2, minmax(82px, 1fr));
+  }
+}
+
+/* 0.0.6 persistent items development surface */
+.genesys-vtt .genesys-item-createbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 8px 0 10px;
+}
+
+.genesys-vtt .genesys-weapon-difficulty {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 105px;
+  font-size: 0.7rem;
+  font-weight: 750;
+  text-align: center;
+}
+
+.genesys-vtt .genesys-item-group {
+  margin-top: 8px;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.genesys-vtt .genesys-item-group > summary {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: color-mix(in srgb, currentColor 6%, transparent);
+}
+
+.genesys-vtt .genesys-item-table {
+  padding: 6px;
+}
+
+.genesys-vtt .genesys-item-head,
+.genesys-vtt .genesys-weapon-table .genesys-item-row {
+  display: grid;
+  grid-template-columns: minmax(135px, 1.3fr) 80px 58px 50px 70px minmax(150px, 1.4fr) 116px;
+  gap: 7px;
+  align-items: center;
+}
+
+.genesys-vtt .genesys-item-head {
+  padding: 4px 6px 6px;
+  opacity: 0.65;
+  font-size: 0.66rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-item-row {
+  padding: 5px 6px;
+  border-top: 1px solid color-mix(in srgb, currentColor 10%, transparent);
+  font-size: 0.74rem;
+}
+
+.genesys-vtt .genesys-simple-item-row {
+  display: grid;
+  grid-template-columns: minmax(150px, 1fr) minmax(260px, 2fr) 52px;
+  gap: 8px;
+  align-items: center;
+}
+
+.genesys-vtt .genesys-item-name {
+  min-height: 28px;
+  text-align: left;
+  font-weight: 750;
+}
+
+.genesys-vtt .genesys-item-actions {
+  display: flex;
+  gap: 4px;
+  justify-content: flex-end;
+}
+
+.genesys-vtt .genesys-item-actions button {
+  min-width: 34px;
+}
+
+.genesys-vtt .genesys-item-qualities,
+.genesys-vtt .genesys-empty-row,
+.genesys-vtt .genesys-item-note {
+  opacity: 0.76;
+}
+
+.genesys-vtt .genesys-empty-row {
+  margin: 6px 8px;
+  font-size: 0.74rem;
+}
+
+.genesys-vtt .genesys-item-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.genesys-vtt .genesys-item-grid label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.genesys-vtt .genesys-item-grid .genesys-item-check {
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+.genesys-vtt .genesys-quality-entry {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+}
+
+.genesys-vtt .genesys-item-fields textarea {
+  width: 100%;
+  resize: vertical;
+}
+
+@media (max-width: 820px) {
+  .genesys-vtt .genesys-item-head {
+    display: none;
+  }
+  .genesys-vtt .genesys-weapon-table .genesys-item-row,
+  .genesys-vtt .genesys-simple-item-row {
+    grid-template-columns: 1fr;
+  }
+  .genesys-vtt .genesys-item-grid {
+    grid-template-columns: repeat(2, minmax(120px, 1fr));
+  }
+}
+
+.genesys-combat-controls {
+  display: grid;
+  grid-template-columns: minmax(180px, 1fr) minmax(130px, 0.6fr) minmax(260px, 1.5fr);
+  gap: 0.6rem;
+  align-items: end;
+  margin: 0.65rem 0;
+}
+
+.genesys-combat-controls label {
+  display: grid;
+  gap: 0.25rem;
+}
+
+.genesys-combat-controls .genesys-check-engine-note {
+  align-self: center;
+}
+
+/* 0.0.8 semi-automatic reaction test surface */
+.genesys-vtt .genesys-reaction-lab {
+  margin: 0.65rem 0;
+  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.genesys-vtt .genesys-reaction-lab > summary {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 0.76rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  background: color-mix(in srgb, currentColor 6%, transparent);
+}
+
+.genesys-vtt .genesys-reaction-lab-grid {
+  display: grid;
+  grid-template-columns: minmax(210px, 1fr) 110px minmax(300px, 2fr);
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+}
+
+.genesys-vtt .genesys-reaction-lab-grid label {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.genesys-vtt .genesys-reaction-lab-grid label:not(.genesys-item-check) {
+  flex-direction: column;
+  align-items: stretch;
+}
+
+.genesys-vtt .genesys-reaction-lab-grid p {
+  margin: 0;
+  opacity: 0.72;
+  font-size: 0.72rem;
+}
+
+.genesys-reaction-dialog .genesys-reaction-option {
+  margin: 0.55rem 0;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid rgba(127,127,127,0.35);
+  border-radius: 6px;
+}
+
+.genesys-reaction-dialog .genesys-reaction-option span,
+.genesys-reaction-dialog .genesys-reaction-note {
+  opacity: 0.78;
+}
+
+@media (max-width: 820px) {
+  .genesys-vtt .genesys-reaction-lab-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 0.0.9 Critical Injuries and Conditions mechanics surface */
+.genesys-vtt .genesys-critical-lab {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(110px, 1fr)) auto;
+  gap: 8px;
+  align-items: end;
+  margin: 8px 0 10px;
+}
+.genesys-vtt .genesys-critical-lab label { display: grid; gap: 4px; font-size: 0.7rem; font-weight: 750; }
+.genesys-vtt .genesys-critical-list,
+.genesys-vtt .genesys-condition-list { display: grid; gap: 6px; }
+.genesys-vtt .genesys-critical-row,
+.genesys-vtt .genesys-condition-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 6px;
+}
+.genesys-vtt .genesys-critical-row small { opacity: 0.78; }
+.genesys-vtt .genesys-condition-status,
+.genesys-vtt .genesys-condition-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin: 8px 0; }
+.genesys-vtt .genesys-condition-status span {
+  padding: 5px 8px;
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 5px;
+}
+@media (max-width: 820px) {
+  .genesys-vtt .genesys-critical-lab { grid-template-columns: 1fr 1fr; }
+}
+
+/* 0.0.9-2 Critical secondary resolution */
+.genesys-vtt .genesys-critical-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
+.genesys-critical-secondary-dialog { display: grid; gap: 8px; }
+.genesys-critical-secondary-dialog h3 { margin: 0; }
+
+/* 0.0.10 Initiative & Turn State mechanics surface */
+.genesys-vtt .genesys-initiative-status {
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  opacity: 0.82;
+}
+.genesys-vtt .genesys-initiative-controls {
+  display: grid;
+  grid-template-columns: minmax(110px, 0.7fr) minmax(150px, 1fr) auto auto auto;
+  gap: 8px;
+  align-items: end;
+  margin: 8px 0 10px;
+}
+.genesys-vtt .genesys-initiative-controls label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.7rem;
+  font-weight: 750;
+}
+.genesys-vtt .genesys-initiative-slots {
+  display: grid;
+  gap: 6px;
+}
+.genesys-vtt .genesys-initiative-slot {
+  display: grid;
+  grid-template-columns: 110px 1fr minmax(120px, auto);
+  gap: 10px;
+  align-items: center;
+  padding: 7px 9px;
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 6px;
+  font-size: 0.74rem;
+}
+.genesys-vtt .genesys-initiative-slot.is-active {
+  outline: 2px solid color-mix(in srgb, currentColor 42%, transparent);
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+.genesys-vtt .genesys-turn-state {
+  margin-top: 10px;
+  padding: 9px;
+  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
+  border-radius: 6px;
+  display: grid;
+  gap: 8px;
+}
+.genesys-vtt .genesys-turn-state > div:first-child,
+.genesys-vtt .genesys-turn-budget {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+.genesys-vtt .genesys-turn-state span {
+  padding: 4px 7px;
+  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  border-radius: 5px;
+}
+@media (max-width: 820px) {
+  .genesys-vtt .genesys-initiative-controls,
+  .genesys-vtt .genesys-initiative-slot {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 0.0.11 dedicated Encounter Tracker */
+.genesys-encounter-tracker .window-content {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+.genesys-vtt .genesys-initiative-encounter-link {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+.genesys-vtt .genesys-initiative-compact {
+  grid-template-columns: minmax(110px, .7fr) minmax(150px, 1fr) auto auto auto;
+}
+.genesys-encounter-shell {
+  display: grid;
+  gap: 12px;
+  min-height: 100%;
+  padding: 10px;
+}
+.genesys-encounter-header,
+.genesys-encounter-section-title,
+.genesys-encounter-toolbar,
+.genesys-gm-encounter-controls,
+.genesys-active-turn-card {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.genesys-encounter-header h1,
+.genesys-encounter-header p,
+.genesys-encounter-section-title h2,
+.genesys-active-turn-card h2,
+.genesys-active-turn-card p {
+  margin: 0;
+}
+.genesys-encounter-header p,
+.genesys-encounter-note,
+.genesys-encounter-section-title span {
+  opacity: .72;
+  font-size: .74rem;
+}
+.genesys-encounter-counter {
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 2px 10px;
+  text-align: right;
+}
+.genesys-encounter-counter strong {
+  grid-column: 1 / -1;
+  font-size: 1rem;
+}
+.genesys-mode-choice,
+.genesys-toolbar-actions,
+.genesys-active-turn-actions,
+.genesys-gm-encounter-controls,
+.genesys-participant-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.genesys-mode-choice button.is-selected {
+  outline: 2px solid color-mix(in srgb, currentColor 45%, transparent);
+  font-weight: 800;
+}
+.genesys-active-turn-card {
+  padding: 11px;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 8px;
+  background: color-mix(in srgb, currentColor 5%, transparent);
+}
+.genesys-encounter-participants,
+.genesys-encounter-slots {
+  display: grid;
+  gap: 7px;
+}
+.genesys-participant-row {
+  display: grid;
+  grid-template-columns: minmax(210px, 1.4fr) minmax(220px, 1fr) minmax(220px, 1.1fr) auto;
+  gap: 10px;
+  align-items: center;
+  padding: 9px 10px;
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 7px;
+}
+.genesys-participant-row.is-active {
+  outline: 2px solid color-mix(in srgb, currentColor 42%, transparent);
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+.genesys-participant-row.has-acted:not(.is-active) {
+  opacity: .66;
+}
+.genesys-participant-main,
+.genesys-participant-exact {
+  display: grid;
+  gap: 3px;
+}
+.genesys-participant-name {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.genesys-side-badge,
+.genesys-active-badge,
+.genesys-acted-badge {
+  padding: 2px 5px;
+  border: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+  border-radius: 4px;
+  font-size: .62rem;
+  font-weight: 800;
+}
+.genesys-health-state {
+  font-size: .8rem;
+  font-weight: 800;
+}
+.genesys-participant-row.health-bloodied .genesys-health-state,
+.genesys-participant-row.health-serious .genesys-health-state,
+.genesys-participant-row.health-incapacitated .genesys-health-state {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
+.genesys-participant-exact {
+  grid-template-columns: repeat(6, auto);
+  font-size: .7rem;
+}
+.genesys-participant-exact span {
+  padding: 4px 6px;
+  border: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+  border-radius: 5px;
+}
+.genesys-tracker-slot {
+  display: grid;
+  grid-template-columns: 100px 1fr minmax(120px, auto) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 7px 9px;
+  border: 1px solid color-mix(in srgb, currentColor 14%, transparent);
+  border-radius: 6px;
+  font-size: .72rem;
+}
+.genesys-tracker-slot.is-active {
+  outline: 2px solid color-mix(in srgb, currentColor 38%, transparent);
+}
+.genesys-gm-encounter-controls {
+  position: sticky;
+  bottom: 0;
+  padding: 9px;
+  border-top: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  background: var(--color-cool-5-90, rgba(20,20,20,.92));
+  justify-content: flex-end;
+}
+@media (max-width: 760px) {
+  .genesys-participant-row,
+  .genesys-tracker-slot {
+    grid-template-columns: 1fr;
+  }
+  .genesys-participant-exact {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  .genesys-vtt .genesys-initiative-compact {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 0.0.12 actor/adversary + activation foundation */
+.genesys-actor-profile-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.6rem;
+}
+.genesys-actor-profile-grid label { display: grid; gap: 0.25rem; font-size: 0.78rem; font-weight: 700; }
+.genesys-actor-profile-grid input,
+.genesys-actor-profile-grid select { width: 100%; }
+.genesys-activation-list {
+  display: grid;
+  gap: 0.3rem;
+  min-width: 15rem;
+}
+.genesys-activation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.3rem 0.4rem;
+  border: 1px solid rgba(216, 190, 148, 0.2);
+  border-radius: 4px;
+  font-size: 0.75rem;
+}
+.genesys-activation-row button { padding: 0.15rem 0.35rem; font-size: 0.7rem; }
+.genesys-end-round-card { border-style: dashed; }
+
+/* 0.0.12-3 encounter participation + bounded Nemesis activation budget */
+.genesys-encounter-complete-card {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  margin: 0 0 0.85rem;
+  padding: 0.85rem 1rem;
+  border: 1px solid rgba(216, 190, 148, 0.45);
+  border-radius: 8px;
+  background: rgba(30, 24, 20, 0.48);
+}
+.genesys-encounter-complete-card h2 { margin: 0.15rem 0 0.25rem; }
+.genesys-gm-note { display: block; max-width: 26rem; font-size: 0.7rem; opacity: 0.78; }
+.genesys-participant-status-badge {
+  display: inline-flex;
+  padding: 0.12rem 0.35rem;
+  border: 1px solid rgba(216, 190, 148, 0.4);
+  border-radius: 4px;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+}
+.genesys-participant-status-badge.status-dead { text-decoration: line-through; }
+.genesys-participant-row.health-out,
+.genesys-participant-row.health-dead { opacity: 0.72; }
+.genesys-participant-row.health-dead .genesys-participant-name strong { text-decoration: line-through; }
+
+
+/* 0.0.13 Minion / Rival / Nemesis foundation */
+.genesys-minion-group-config {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.55rem;
+  align-items: end;
+  margin-top: 0.65rem;
+  padding-top: 0.65rem;
+  border-top: 1px solid color-mix(in srgb, currentColor 12%, transparent);
+}
+.genesys-minion-group-config label { display: grid; gap: 0.25rem; font-size: 0.75rem; font-weight: 700; }
+.genesys-minion-group-config span { font-size: 0.74rem; padding: 0.35rem 0; }
+.genesys-minion-derived-rank {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2rem;
+  font-weight: 800;
+}
+.genesys-participant-exact { grid-template-columns: repeat(auto-fit, minmax(76px, auto)); }
+@media (max-width: 760px) {
+  .genesys-minion-group-config { grid-template-columns: 1fr 1fr; }
+}

@@ -1,0 +1,44 @@
+{
+  "id": "genesys-vtt",
+  "title": "Genesys VTT",
+  "description": "Genesys VTT 0.0.13: Core Minion/Rival/Nemesis mechanics. Adds native minion groups with derived group skills and shared wounds, Rival/Minion strain-to-wounds routing, Nemesis strain behavior, and member-aware minion Critical/area-effect foundations.",
+  "version": "0.0.13",
+  "compatibility": {
+    "minimum": "13.351",
+    "verified": "13.351"
+  },
+  "authors": [
+    {
+      "name": "Genesys VTT Project"
+    }
+  ],
+  "esmodules": [
+    "dist/genesys.js"
+  ],
+  "styles": [
+    "styles/genesys.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "sv",
+      "name": "Svenska",
+      "path": "lang/sv.json"
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {}
+    },
+    "Item": {
+      "weapon": {},
+      "armor": {},
+      "gear": {},
+      "attachment": {}
+    }
+  }
+}
