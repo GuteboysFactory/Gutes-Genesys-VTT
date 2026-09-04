@@ -1,6 +1,8 @@
 import { resolveAttackMode } from "../domain/combat/index.js";
 import { createCoreParryReaction, formatReactionCost, getEligibleReactions } from "../domain/reactions/index.js";
+import { ruleElementToReaction } from "../domain/rules/index.js";
 import { normalizeWeaponRuleData } from "../domain/items/index.js";
+import { actorHasTalent, collectActorRuleElements } from "./talent-service-foundation.js";
 import { SYSTEM_ID } from "./constants.js";
 const providers = new Set();
 function integer(value, fallback = 0) {
@@ -53,13 +55,32 @@ export function buildActorReactionTags(actor, extra = []) {
         tags.push("target:wielding-melee-weapon");
     return tags;
 }
+function talentReactions(actor, context) {
+    const resources = {
+        ...(context?.resources ?? {}),
+        canSufferStrain: actor?.system?.role !== "minion" && actor?.system?.role !== "rival",
+        canSufferWounds: true
+    };
+    const applicable = collectActorRuleElements(actor, { ...context, resources });
+    return applicable
+        .map(({ talent, rule }) => ruleElementToReaction(rule, talent))
+        .filter(Boolean);
+}
 export function registerBuiltInReactionProviders() {
     if (registerBuiltInReactionProviders._registered)
         return;
     registerBuiltInReactionProviders._registered = true;
-    registerReactionProvider((actor) => {
-        const dev = getDevReactionState(actor);
-        return dev.parryEnabled ? [createCoreParryReaction(dev.parryRank)] : [];
+    registerReactionProvider((actor, context) => {
+        const fromTalents = talentReactions(actor, context);
+        if (fromTalents.length)
+            return fromTalents;
+        // 0.0.14B compatibility bridge for worlds that still have the old dev flag but
+        // have not yet granted a real Parry Talent Item. New/live Parry uses Rule Elements.
+        if (!actorHasTalent(actor, "core-talent:parry")) {
+            const dev = getDevReactionState(actor);
+            return dev.parryEnabled ? [createCoreParryReaction(dev.parryRank)] : [];
+        }
+        return [];
     });
 }
 function chooseDecisionUser(actor) {
