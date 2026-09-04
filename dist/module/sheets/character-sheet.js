@@ -1,6 +1,6 @@
 import { parsePoolFromElement, rollPoolToChat } from "../dice-ui.js";
 import { constructAndRollToChat, parseStandardPoolInput } from "../pool-ui.js";
-import { buildSkillSheetRows, withActorCheckCharacteristicOverride } from "../skill-ui.js";
+import { buildSkillSheetRows } from "../skill-ui.js";
 import { prepareActorSkillEngineCheck, promptActorCheckCharacteristicChoice, rollPreparedActorCheckToChat } from "../check-ui.js";
 import { buildInventoryRows, rollActorWeaponToChat } from "../items-service.js";
 import { listCombatTargets, resolveCombatTargetReference, rollActorCombatAttackToChat, scheduleCriticalSecondaryPrompt } from "../combat-service.js";
@@ -69,6 +69,16 @@ function renderTalentQaPanel(root, actor) {
       </div>
       <div class="genesys-item-table">${rowHtml}</div>`;
     inventory.before(section);
+}
+function ruleChoiceToCheckOptions(ruleChoice) {
+    if (!ruleChoice)
+        return {};
+    return {
+        characteristicOverrideId: ruleChoice.characteristicId,
+        appliedRuleLabel: ruleChoice.talentLabel,
+        sourceId: ruleChoice.talentId,
+        ruleId: ruleChoice.ruleId
+    };
 }
 export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     static DEFAULT_OPTIONS = {
@@ -276,7 +286,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         const difficulty = readInteger(panel, "[data-weapon-difficulty]", 2);
         const skillId = String(item?.system?.skillId ?? "melee");
         const ruleChoice = await promptActorCheckCharacteristicChoice(this.actor, skillId, { tags: ["combat", "weapon-attack"] });
-        await withActorCheckCharacteristicOverride(this.actor, skillId, ruleChoice?.characteristicId, () => rollActorWeaponToChat(this.actor, item, difficulty));
+        await rollActorWeaponToChat(this.actor, item, difficulty, ruleChoiceToCheckOptions(ruleChoice));
     }
     static async #rollCombatWeapon(_event, target) {
         const row = target.closest("[data-item-id]");
@@ -296,7 +306,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             const ruleChoice = await promptActorCheckCharacteristicChoice(this.actor, skillId, { tags: ["combat", "weapon-attack"] });
             if (ruleChoice)
                 ui?.notifications?.info?.(`${ruleChoice.talentLabel}: using ${ruleChoice.characteristicId} for this check. Weapon damage characteristic is unchanged.`);
-            await withActorCheckCharacteristicOverride(this.actor, skillId, ruleChoice?.characteristicId, () => rollActorCombatAttackToChat(this.actor, item, defender, targetRange));
+            await rollActorCombatAttackToChat(this.actor, item, defender, targetRange, ruleChoiceToCheckOptions(ruleChoice));
         }
         catch (error) {
             ui?.notifications?.warn?.(String(error?.message ?? error));
