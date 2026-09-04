@@ -4,8 +4,28 @@ import { formatPool, resultToChatHtml } from "./dice-ui.js";
 import { poolTraceToHtml } from "./pool-ui.js";
 import { buildSynchronizedSkillStates, getActiveSkillDefinitions } from "./skills-service.js";
 import { minionSkillRank, normalizeMinionGroup } from "../domain/adversaries/index.js";
+const transientCharacteristicOverrides = new WeakMap();
 function capitalize(value) {
     return value.length ? `${value[0].toUpperCase()}${value.slice(1)}` : value;
+}
+function getTransientCharacteristicOverride(actor, skillId) {
+    const state = transientCharacteristicOverrides.get(actor);
+    return state?.skillId === skillId ? state.characteristicId : undefined;
+}
+export async function withActorCheckCharacteristicOverride(actor, skillId, characteristicId, callback) {
+    if (!actor || !characteristicId)
+        return callback();
+    const previous = transientCharacteristicOverrides.get(actor);
+    transientCharacteristicOverrides.set(actor, { skillId, characteristicId: String(characteristicId) });
+    try {
+        return await callback();
+    }
+    finally {
+        if (previous)
+            transientCharacteristicOverrides.set(actor, previous);
+        else
+            transientCharacteristicOverrides.delete(actor);
+    }
 }
 export function findSkillState(actor, skillId) {
     return buildSynchronizedSkillStates(actor).find((entry) => entry?.id === skillId);
@@ -48,7 +68,7 @@ export function buildSkillSheetRows(actor) {
     }
     return groups;
 }
-export function prepareActorSkillCheck(actor, skillId, difficulty = 2, rankOverride) {
+export function prepareActorSkillCheck(actor, skillId, difficulty = 2, rankOverride, characteristicOverrideId) {
     const definition = getActiveSkillDefinitions().find((entry) => entry.id === skillId);
     if (!definition)
         throw new Error(`Unknown active skill '${skillId}'.`);
@@ -67,7 +87,13 @@ export function prepareActorSkillCheck(actor, skillId, difficulty = 2, rankOverr
         });
         effectiveRank = minionSkillRank(group, skillId);
     }
-    const effectiveState = { ...state, rank: effectiveRank };
+    const transientOverride = getTransientCharacteristicOverride(actor, skillId);
+    const effectiveCharacteristicOverride = characteristicOverrideId || transientOverride || state.characteristicOverride || undefined;
+    const effectiveState = {
+        ...state,
+        rank: effectiveRank,
+        ...(effectiveCharacteristicOverride ? { characteristicOverride: effectiveCharacteristicOverride } : {})
+    };
     return prepareSkillCheck({
         definition,
         state: effectiveState,
