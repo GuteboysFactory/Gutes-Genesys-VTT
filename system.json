@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.163 QA: maps the Quick Dice Pool to the six locked Genesys narrative result symbols: Boost shows Success, Ability shows Advantage, Proficiency shows Triumph, Setback shows Failure, Difficulty shows Threat, and Challenge shows Despair. Uses reusable SVG symbol assets for future chat, result assistant, and Dice Forge integration. Preserves editable Actions and Custom Action workflow, Character Content Registry foundation, Biography status bar, XP/Funds header, two-row Characteristics and Health & Defense snapshot, five-pip Skills, Talent Tier lanes, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
-  "version": "0.0.163",
+  "description": "Genesys VTT 0.0.164 QA: adds the versioned genesys-dice-renderer-v1 bridge for optional external visual dice renderers such as Genesys Dice Forge. Genesys VTT remains source of truth for narrative RNG/results, while renderers receive exact resolved die types and face indices and may animate them before chat output. Quick Dice Pool, Skill rolls, constructed pools, standard/assisted/opposed engine checks, and non-targeted Weapon checks now await the renderer bridge with automatic fallback. Includes a public integration spec and preserves 0.0.163 narrative symbols, editable Actions, Custom Actions, Character Content Registry, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
+  "version": "0.0.164",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -17,6 +17,7 @@
   "download": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT/archive/refs/heads/qa.zip",
   "esmodules": [
     "dist/genesys.js",
+    "dist/module/dice-renderer-bridge.js",
     "dist/module/talent-bootstrap.js",
     "dist/module/content-registry.js",
     "dist/module/character-sheet-v15-controller.js",
