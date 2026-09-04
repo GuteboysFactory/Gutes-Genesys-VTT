@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.164 QA: adds the versioned genesys-dice-renderer-v1 bridge for optional external visual dice renderers such as Genesys Dice Forge. Genesys VTT remains source of truth for narrative RNG/results, while renderers receive exact resolved die types and face indices and may animate them before chat output. Quick Dice Pool, Skill rolls, constructed pools, standard/assisted/opposed engine checks, and non-targeted Weapon checks now await the renderer bridge with automatic fallback. Includes a public integration spec and preserves 0.0.163 narrative symbols, editable Actions, Custom Actions, Character Content Registry, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
-  "version": "0.0.164",
+  "description": "Genesys VTT 0.0.165 QA: adds the generic Character Creation Data Foundation used by the future guided Character Creator. Includes archetype/species and career normalization, creation XP rules and transactions, free career skill grants, creation skill caps, talent purchase costs, deterministic derived-stat recalculation, actor-bound save/resume drafts, final Actor updates, and expanded Character Content Registry support for motivations, creation rules, creation steps, Heroic Abilities, equipment and setting currency. Protected setting content remains external/importable. Preserves the 0.0.164 Dice Renderer Bridge foundation, narrative symbols, editable Actions, Custom Actions, Rule Engine, Extra Activation UX, and Narrative Results Assistant.",
+  "version": "0.0.165",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -20,6 +20,8 @@
     "dist/module/dice-renderer-bridge.js",
     "dist/module/talent-bootstrap.js",
     "dist/module/content-registry.js",
+    "dist/module/character-creation-service.js",
+    "dist/module/character-creation-state.js",
     "dist/module/character-sheet-v15-controller.js",
     "dist/module/character-sheet-window-polish.js",
     "dist/module/character-sheet-biography-layout.js",
