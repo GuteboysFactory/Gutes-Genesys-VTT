@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.147 QA: Narrative Results Assistant for combat checks. Advantage and Triumph now open an explanatory spend flow that says exactly what the roll generated and why the system is asking. Critical Injury is one spend option rather than the popup concept itself; active weapon qualities and Other / Narrative Effect are surfaced contextually, chosen spends are recorded on the combat chat card, remaining results can be reopened from chat, and automatic Wound Threshold Criticals are explicitly distinguished from additional spent Criticals. Includes the simplified 0.0.146 Extra Activation UX.",
-  "version": "0.0.147",
+  "description": "Genesys VTT 0.0.15A QA: first Character Sheet UX and information-hierarchy pass. Core characteristics and vital combat stats are promoted to a compact dashboard; encounter state, conditions, combat/equipment, skills, criticals, and profile controls are reorganized for normal play; development regression surfaces are retained under Advanced / QA Tools. Preserves the verified 0.0.14 Rule Engine, 0.0.146 Extra Activation UX, and 0.0.147 Narrative Results Assistant.",
+  "version": "0.0.150",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -20,7 +20,8 @@
     "dist/module/talent-bootstrap.js"
   ],
   "styles": [
-    "styles/genesys.css"
+    "styles/genesys.css",
+    "styles/character-sheet-v15.css"
   ],
   "languages": [
     {
