@@ -1,200 +1,570 @@
+.genesys-vtt.genesys-character-sheet {
+  --genesys-gold: var(--genesys-theme-gold, #d7ad52);
+  --genesys-gold-deep: var(--genesys-theme-gold-deep, #8e6425);
+  --genesys-dark: var(--genesys-theme-dark, #101820);
+  --genesys-dark-2: var(--genesys-theme-dark-2, #182530);
+  --genesys-parchment: var(--genesys-theme-parchment, #ead8b9);
+  --genesys-parchment-light: var(--genesys-theme-parchment-light, #f4e8cf);
+  --genesys-ink: var(--genesys-theme-ink, #2a2118);
+  --genesys-border: var(--genesys-theme-border, #6d4c28);
+  --genesys-success: #2f7d32;
+  --genesys-advantage: #1976b2;
+  --genesys-triumph: #8e24aa;
+  --genesys-setback: #3d4147;
+  --genesys-difficulty: #6c5c51;
+  --genesys-challenge: #a52a1f;
+}
+
 .genesys-vtt.genesys-character-sheet .window-content {
-  background: linear-gradient(180deg, rgba(0,0,0,0.035), rgba(0,0,0,0));
+  padding: 0;
+  background:
+    radial-gradient(circle at 20% 0%, rgba(255,255,255,0.035), transparent 30%),
+    linear-gradient(180deg, #0d151c, #111a22 45%, #0c1319);
+  color: var(--genesys-parchment-light);
 }
 
 .genesys-vtt .genesys-sheet-v15 {
-  gap: 12px;
+  box-sizing: border-box;
+  min-height: 100%;
+  padding: 10px;
+  gap: 0;
+  background:
+    linear-gradient(90deg, rgba(215,173,82,0.05) 1px, transparent 1px),
+    linear-gradient(rgba(215,173,82,0.025) 1px, transparent 1px);
+  background-size: 42px 42px;
 }
 
-.genesys-vtt .genesys-sheet-v15 .genesys-sheet-header {
+.genesys-vtt .genesys-theme-fantasy {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
+.genesys-vtt .genesys-fantasy-header {
+  display: grid;
+  grid-template-columns: 132px minmax(0, 1fr) 190px;
+  gap: 16px;
   align-items: center;
-  padding: 14px 16px;
-  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
-  border-radius: 10px;
-  background: color-mix(in srgb, currentColor 5%, transparent);
+  padding: 12px 16px;
+  border: 1px solid var(--genesys-gold-deep);
+  border-bottom: 2px solid var(--genesys-gold);
+  background:
+    linear-gradient(90deg, rgba(215,173,82,0.06), transparent 26%, rgba(215,173,82,0.035)),
+    var(--genesys-dark);
+  box-shadow: inset 0 0 0 2px rgba(0,0,0,0.38), 0 4px 14px rgba(0,0,0,0.28);
 }
 
-.genesys-vtt .genesys-sheet-v15 .genesys-name {
-  font-size: 1.9rem;
+.genesys-vtt .genesys-portrait-frame {
+  width: 116px;
+  height: 116px;
+  padding: 5px;
+  border: 2px solid var(--genesys-gold);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 3px rgba(0,0,0,0.6), 0 0 0 1px #24180d;
+  background: var(--genesys-dark-2);
 }
 
-.genesys-vtt .genesys-sheet-roleline {
+.genesys-vtt .genesys-portrait {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 1px solid #23180e;
+}
+
+.genesys-vtt .genesys-character-identity {
+  min-width: 0;
+}
+
+.genesys-vtt .genesys-eyebrow {
+  margin: 0 0 3px;
+  color: var(--genesys-gold);
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt input.genesys-name {
+  width: 100%;
+  height: auto;
+  margin: 0;
+  padding: 0 0 3px;
+  border: 0;
+  border-bottom: 1px solid rgba(215,173,82,0.35);
+  border-radius: 0;
+  background: transparent;
+  color: var(--genesys-parchment-light);
+  font-size: 2rem;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 600;
+  box-shadow: none;
+}
+
+.genesys-vtt .genesys-identity-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.genesys-vtt .genesys-identity-grid label,
+.genesys-vtt .genesys-v15-profile-grid label,
+.genesys-vtt .genesys-v15-minion-grid label,
+.genesys-vtt .genesys-v15-advanced-grid label,
+.genesys-vtt .genesys-combat-controls label,
+.genesys-vtt .genesys-check-engine-controls label,
+.genesys-vtt .genesys-v15-actions label {
+  display: grid;
+  gap: 4px;
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-identity-grid input {
+  min-width: 0;
+  color: var(--genesys-parchment-light);
+  border: 1px solid rgba(215,173,82,0.25);
+  background: rgba(255,255,255,0.035);
+}
+
+.genesys-vtt .genesys-header-status {
   display: flex;
   flex-wrap: wrap;
+  justify-content: flex-end;
+  align-content: center;
   gap: 6px;
+}
+
+.genesys-vtt .genesys-header-status small {
+  flex-basis: 100%;
   margin-top: 6px;
+  text-align: right;
+  opacity: 0.62;
 }
 
 .genesys-vtt .genesys-sheet-chip {
   display: inline-flex;
   align-items: center;
-  min-height: 22px;
+  min-height: 23px;
   padding: 2px 8px;
-  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
+  border: 1px solid rgba(215,173,82,0.38);
   border-radius: 999px;
-  background: color-mix(in srgb, currentColor 6%, transparent);
-  font-size: 0.72rem;
+  background: rgba(215,173,82,0.07);
+  color: var(--genesys-parchment-light);
+  font-size: 0.67rem;
+  font-family: Arial, sans-serif;
   font-weight: 800;
   letter-spacing: 0.035em;
   text-transform: uppercase;
 }
 
 .genesys-vtt .genesys-sheet-chip[data-tone="alert"] {
-  background: color-mix(in srgb, #b6503a 16%, transparent);
+  border-color: rgba(165,42,31,0.65);
+  background: rgba(165,42,31,0.18);
 }
 
-.genesys-vtt .genesys-v15-dashboard {
+.genesys-vtt .genesys-sheet-tabs {
   display: grid;
-  grid-template-columns: minmax(0, 1.55fr) minmax(280px, 0.8fr);
-  gap: 12px;
-}
-
-.genesys-vtt .genesys-v15-core {
-  display: grid;
-  gap: 12px;
-}
-
-.genesys-vtt .genesys-v15-characteristics {
-  display: grid;
-  grid-template-columns: repeat(6, minmax(72px, 1fr));
-  gap: 8px;
-}
-
-.genesys-vtt .genesys-v15-characteristic {
-  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
   gap: 4px;
-  padding: 8px;
-  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
-  border-radius: 8px;
-  text-align: center;
-  background: color-mix(in srgb, currentColor 3%, transparent);
+  padding: 7px 6px 8px;
+  border-left: 1px solid var(--genesys-gold-deep);
+  border-right: 1px solid var(--genesys-gold-deep);
+  border-bottom: 1px solid var(--genesys-gold-deep);
+  background: #0a1218;
 }
 
-.genesys-vtt .genesys-v15-characteristic span {
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.045em;
-  text-transform: uppercase;
-  opacity: 0.72;
-}
-
-.genesys-vtt .genesys-v15-characteristic input {
+.genesys-vtt .genesys-sheet-tabs button {
   min-height: 38px;
+  border: 1px solid rgba(215,173,82,0.34);
+  border-radius: 2px;
+  background: linear-gradient(180deg, #182a37, #111c25);
+  color: #e7d2a3;
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-sheet-tabs button:hover,
+.genesys-vtt .genesys-sheet-tabs button.active {
+  border-color: var(--genesys-gold);
+  background: linear-gradient(180deg, #23425a, #173047);
+  color: #ffe6a7;
+  box-shadow: inset 0 -2px 0 var(--genesys-gold);
+}
+
+.genesys-vtt .genesys-tab-panel {
+  padding: 10px 0 0;
+}
+
+.genesys-vtt .genesys-tab-panel[hidden] {
+  display: none !important;
+}
+
+.genesys-vtt .genesys-summary-grid {
+  display: grid;
+  grid-template-columns: minmax(330px, 0.95fr) minmax(380px, 1.2fr) minmax(260px, 0.8fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.genesys-vtt .genesys-fantasy-panel {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid var(--genesys-border);
+  outline: 1px solid rgba(215,173,82,0.22);
+  outline-offset: -4px;
+  background:
+    radial-gradient(circle at 15% 20%, rgba(255,255,255,0.22), transparent 28%),
+    linear-gradient(180deg, rgba(255,255,255,0.11), rgba(104,73,37,0.055)),
+    var(--genesys-parchment);
+  color: var(--genesys-ink);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.25);
+}
+
+.genesys-vtt .genesys-fantasy-panel h2 {
+  margin: 0 0 9px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(109,76,40,0.45);
+  color: #4c3218;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-panel-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.genesys-vtt .genesys-panel-title-row h2 {
+  flex: 1;
+}
+
+.genesys-vtt .genesys-panel-help,
+.genesys-vtt .genesys-muted,
+.genesys-vtt .genesys-empty-row {
+  margin: -3px 0 8px;
+  font-size: 0.72rem;
+  opacity: 0.7;
+}
+
+.genesys-vtt .genesys-text-button {
+  width: auto;
+  min-width: 0;
+  padding: 1px 6px;
+  border: 0;
+  background: transparent;
+  color: #68461f;
+  font-size: 0.68rem;
+  text-decoration: underline;
+}
+
+.genesys-vtt .genesys-characteristic-medallions {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(80px, 1fr));
+  gap: 10px;
+}
+
+.genesys-vtt .genesys-characteristic-medallions label {
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 8px 4px 6px;
+  text-align: center;
+}
+
+.genesys-vtt .genesys-characteristic-medallions label > span {
+  font-size: 0.65rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-characteristic-medallions input {
+  width: 62px;
+  height: 62px;
+  border: 2px solid rgba(109,76,40,0.6);
+  border-radius: 50%;
+  background: rgba(255,250,238,0.42);
+  color: var(--genesys-ink);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: 1.65rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: inset 0 0 0 4px rgba(215,173,82,0.13);
+}
+
+.genesys-vtt .genesys-quick-pool {
+  text-align: center;
+}
+
+.genesys-vtt .genesys-quick-dice-row {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(48px, 1fr));
+  gap: 7px;
+  margin: 10px 0 12px;
+}
+
+.genesys-vtt .genesys-quick-die {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  min-height: 70px;
+  padding: 5px;
+  border: 1px solid rgba(0,0,0,0.5);
+  border-radius: 12px;
+  color: #f9f3df;
+  text-shadow: 0 1px 2px #000;
+  box-shadow: inset 0 0 0 2px rgba(255,255,255,0.08), 0 3px 7px rgba(0,0,0,0.32);
+}
+
+.genesys-vtt .genesys-quick-die .die-glyph {
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.genesys-vtt .genesys-quick-die strong {
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  min-width: 19px;
+  height: 19px;
+  padding: 1px 4px;
+  border: 1px solid rgba(255,255,255,0.4);
+  border-radius: 10px;
+  background: rgba(0,0,0,0.65);
+  font-family: Arial, sans-serif;
+  font-size: 0.7rem;
+  line-height: 15px;
+}
+
+.genesys-vtt .genesys-quick-die:not(.has-dice) strong {
+  opacity: 0.42;
+}
+
+.genesys-vtt .die-boost { background: linear-gradient(145deg, #31763a, #173b1d); }
+.genesys-vtt .die-ability { background: linear-gradient(145deg, #318d48, #245e2d); }
+.genesys-vtt .die-proficiency { background: linear-gradient(145deg, #9a3ba8, #5b1c69); }
+.genesys-vtt .die-setback { background: linear-gradient(145deg, #4f5962, #23272c); }
+.genesys-vtt .die-difficulty { background: linear-gradient(145deg, #75675c, #463b34); }
+.genesys-vtt .die-challenge { background: linear-gradient(145deg, #b53b2d, #681c16); }
+
+.genesys-vtt .genesys-primary-action {
+  width: min(280px, 80%);
+  min-height: 38px;
+  border: 1px solid #805719;
+  background: linear-gradient(180deg, #1d4d70, #173650);
+  color: #f5df9b;
+  font-family: Georgia, "Times New Roman", serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  box-shadow: inset 0 0 0 2px rgba(215,173,82,0.32), 0 2px 5px rgba(0,0,0,0.28);
+}
+
+.genesys-vtt .genesys-vital-stat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 7px;
+}
+
+.genesys-vtt .genesys-vital-stat-grid label,
+.genesys-vtt .genesys-resource-card {
+  display: grid;
+  justify-items: center;
+  gap: 5px;
+  padding: 7px;
+  border: 1px solid rgba(109,76,40,0.28);
+  background: rgba(255,255,255,0.12);
+}
+
+.genesys-vtt .genesys-vital-stat-grid span,
+.genesys-vtt .genesys-resource-card strong {
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-vital-stat-grid input {
+  width: 58px;
+  height: 42px;
   font-size: 1.2rem;
 }
 
-.genesys-vtt .genesys-v15-vitals {
+.genesys-vtt .genesys-resource-tracks {
   display: grid;
-  grid-template-columns: repeat(5, minmax(90px, 1fr));
-  gap: 8px;
-}
-
-.genesys-vtt .genesys-vital-card {
-  display: grid;
-  gap: 5px;
-  padding: 9px;
-  border: 1px solid color-mix(in srgb, currentColor 16%, transparent);
-  border-radius: 8px;
-  background: color-mix(in srgb, currentColor 3%, transparent);
-}
-
-.genesys-vtt .genesys-vital-card > strong {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  opacity: 0.75;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin-top: 8px;
 }
 
 .genesys-vtt .genesys-vital-pair {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 5px;
+  gap: 4px;
 }
 
 .genesys-vtt .genesys-vital-pair input {
   width: 54px;
+  text-align: center;
+  font-weight: 700;
 }
 
-.genesys-vtt .genesys-v15-status-stack {
+.genesys-vtt .genesys-summary-list {
   display: grid;
-  gap: 12px;
+  gap: 3px;
 }
 
-.genesys-vtt .genesys-v15-status-card {
-  min-height: 0;
+.genesys-vtt .genesys-summary-row {
+  display: grid;
+  grid-template-columns: minmax(90px, 0.9fr) minmax(0, 1.7fr) auto;
+  gap: 7px;
+  align-items: center;
+  min-height: 31px;
+  padding: 4px 6px;
+  border-bottom: 1px solid rgba(109,76,40,0.2);
+  font-size: 0.72rem;
 }
 
-.genesys-vtt .genesys-v15-status-card h2 {
-  margin-bottom: 6px;
+.genesys-vtt .genesys-summary-row > span {
+  opacity: 0.75;
 }
 
-.genesys-vtt .genesys-v15-status-summary {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-  margin: 8px 0;
-}
-
-.genesys-vtt .genesys-v15-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 6px;
-}
-
-.genesys-vtt .genesys-v15-actions button {
+.genesys-vtt .genesys-summary-row button,
+.genesys-vtt .genesys-item-actions button,
+.genesys-vtt .genesys-v15-actions button,
+.genesys-vtt .genesys-item-createbar button,
+.genesys-vtt .genesys-critical-actions button {
+  width: auto;
   min-width: 0;
 }
 
-.genesys-vtt .genesys-v15-main-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: 12px;
+.genesys-vtt .genesys-summary-weapons {
+  grid-column: 2 / 3;
 }
 
-.genesys-vtt .genesys-v15-section-title {
+.genesys-vtt .genesys-summary-encounter {
+  grid-column: 3 / 4;
+}
+
+.genesys-vtt .genesys-v15-status-summary,
+.genesys-vtt .genesys-v15-actions,
+.genesys-vtt .genesys-item-createbar,
+.genesys-vtt .genesys-combat-controls {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 10px;
+  flex-wrap: wrap;
+  gap: 6px;
 }
 
-.genesys-vtt .genesys-v15-section-title h2,
-.genesys-vtt .genesys-v15-section-title p {
+.genesys-vtt .genesys-fantasy-panel .genesys-sheet-chip {
+  color: #3b2918;
+  border-color: rgba(109,76,40,0.38);
+  background: rgba(109,76,40,0.08);
+}
+
+.genesys-vtt .genesys-tab-panel > .genesys-fantasy-panel,
+.genesys-vtt .genesys-effects-grid,
+.genesys-vtt .genesys-notes-grid {
   margin: 0;
 }
 
-.genesys-vtt .genesys-v15-section-title p {
-  margin-top: 3px;
-  font-size: 0.78rem;
-  opacity: 0.72;
+.genesys-vtt .genesys-effects-grid,
+.genesys-vtt .genesys-notes-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
 }
 
-.genesys-vtt .genesys-inventory-panel .genesys-combat-controls {
-  margin: 8px 0 12px;
+.genesys-vtt .genesys-notes-field {
+  display: grid;
+  gap: 5px;
+  margin-bottom: 10px;
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
 }
 
-.genesys-vtt .genesys-v15-profile-details,
-.genesys-vtt .genesys-v15-advanced {
-  border: 1px solid color-mix(in srgb, currentColor 18%, transparent);
-  border-radius: 8px;
-  overflow: hidden;
+.genesys-vtt .genesys-notes-field textarea {
+  resize: vertical;
+  color: var(--genesys-ink);
+  background: rgba(255,252,241,0.45);
 }
 
-.genesys-vtt .genesys-v15-profile-details > summary,
-.genesys-vtt .genesys-v15-advanced > summary {
-  padding: 10px 12px;
+.genesys-vtt .genesys-item-group,
+.genesys-vtt .genesys-skill-group,
+.genesys-vtt .genesys-check-engine-lab,
+.genesys-vtt .genesys-v15-advanced,
+.genesys-vtt .genesys-reaction-lab {
+  margin-top: 10px;
+  border: 1px solid rgba(109,76,40,0.36);
+  background: rgba(255,255,255,0.08);
+}
+
+.genesys-vtt .genesys-item-group > summary,
+.genesys-vtt .genesys-skill-group > summary,
+.genesys-vtt .genesys-check-engine-lab > summary,
+.genesys-vtt .genesys-v15-advanced > summary,
+.genesys-vtt .genesys-reaction-lab > summary {
+  padding: 8px 10px;
   cursor: pointer;
-  font-size: 0.78rem;
+  color: #4b321a;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-skill-table,
+.genesys-vtt .genesys-item-table,
+.genesys-vtt .genesys-critical-list,
+.genesys-vtt .genesys-condition-list {
+  padding: 6px;
+}
+
+.genesys-vtt .genesys-skill-head,
+.genesys-vtt .genesys-skill-row {
+  display: grid;
+  grid-template-columns: minmax(170px, 1.6fr) minmax(105px, 0.9fr) 64px 58px;
+  gap: 8px;
+  align-items: center;
+}
+
+.genesys-vtt .genesys-skill-head {
+  padding: 4px 6px 6px;
+  opacity: 0.62;
+  font-size: 0.65rem;
   font-weight: 800;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  background: color-mix(in srgb, currentColor 6%, transparent);
 }
 
-.genesys-vtt .genesys-v15-detail-body {
-  padding: 12px;
+.genesys-vtt .genesys-skill-row {
+  padding: 4px 6px;
+  border-top: 1px solid rgba(109,76,40,0.15);
+}
+
+.genesys-vtt .genesys-skill-roll,
+.genesys-vtt .genesys-item-name {
+  color: #302112;
+  font-weight: 700;
+  text-align: left;
+}
+
+.genesys-vtt .genesys-item-head,
+.genesys-vtt .genesys-item-row {
+  color: var(--genesys-ink);
+}
+
+.genesys-vtt .genesys-weapon-table .genesys-item-head,
+.genesys-vtt .genesys-weapon-table .genesys-item-row {
+  grid-template-columns: minmax(130px,1.3fr) minmax(90px,0.8fr) 56px 48px 74px minmax(120px,1.2fr) minmax(160px,1.1fr);
 }
 
 .genesys-vtt .genesys-v15-profile-grid {
@@ -203,90 +573,101 @@
   gap: 8px;
 }
 
-.genesys-vtt .genesys-v15-profile-grid label,
-.genesys-vtt .genesys-v15-advanced-grid label {
-  display: grid;
-  gap: 4px;
-  font-size: 0.72rem;
-  font-weight: 700;
-}
-
-.genesys-vtt .genesys-v15-minion-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(120px, 1fr));
-  gap: 8px;
-  margin-top: 10px;
-}
-
+.genesys-vtt .genesys-v15-minion-grid,
 .genesys-vtt .genesys-v15-advanced-grid {
   display: grid;
   grid-template-columns: repeat(3, minmax(120px, 1fr));
   gap: 8px;
-}
-
-.genesys-vtt .genesys-v15-qa-note {
-  margin: 8px 0 0;
-  padding: 8px 10px;
-  border-radius: 6px;
-  background: color-mix(in srgb, currentColor 6%, transparent);
-  font-size: 0.75rem;
-  opacity: 0.78;
-}
-
-.genesys-vtt .genesys-sheet-v15 .genesys-check-engine-lab,
-.genesys-vtt .genesys-sheet-v15 .genesys-reaction-lab,
-.genesys-vtt .genesys-sheet-v15 .genesys-pool-builder,
-.genesys-vtt .genesys-sheet-v15 .genesys-dice-lab {
   margin-top: 10px;
 }
 
-.genesys-vtt .genesys-sheet-v15 .genesys-pool-builder,
-.genesys-vtt .genesys-sheet-v15 .genesys-dice-lab {
-  border: 0;
-  border-radius: 0;
-  background: transparent;
-  padding: 0;
+.genesys-vtt .genesys-v15-detail-body {
+  padding: 10px;
+  color: var(--genesys-ink);
+  background: var(--genesys-parchment);
 }
 
-.genesys-vtt .genesys-sheet-v15 .genesys-panel-heading p,
-.genesys-vtt .genesys-sheet-v15 .genesys-check-engine-note {
-  max-width: 760px;
+.genesys-vtt .genesys-v15-qa-note {
+  padding: 7px 9px;
+  border-left: 3px solid var(--genesys-gold-deep);
+  background: rgba(109,76,40,0.08);
+  font-size: 0.72rem;
 }
 
-.genesys-vtt .genesys-talents-panel {
-  order: 0;
+.genesys-vtt .genesys-dice-lab {
+  margin-top: 12px;
 }
 
-.genesys-vtt .genesys-talents-panel .genesys-panel-heading p {
-  opacity: 0.68;
+.genesys-vtt .genesys-dice-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(70px,1fr));
+  gap: 6px;
 }
 
-.genesys-vtt .genesys-sheet-v15 .genesys-smoke-footer {
-  display: none;
+.genesys-vtt .genesys-die {
+  display: grid;
+  gap: 4px;
+  font-size: 0.7rem;
 }
 
-@media (max-width: 900px) {
-  .genesys-vtt .genesys-v15-dashboard {
+.genesys-vtt .genesys-tab-panel[data-genesys-tab-panel="equipment"] > .genesys-talents-panel {
+  display: none !important;
+}
+
+.genesys-vtt .genesys-theme-fantasy input,
+.genesys-vtt .genesys-theme-fantasy select,
+.genesys-vtt .genesys-theme-fantasy textarea {
+  border-color: rgba(109,76,40,0.36);
+}
+
+.genesys-vtt .genesys-theme-fantasy .genesys-fantasy-panel input,
+.genesys-vtt .genesys-theme-fantasy .genesys-fantasy-panel select,
+.genesys-vtt .genesys-theme-fantasy .genesys-fantasy-panel textarea {
+  color: var(--genesys-ink);
+  background: rgba(255,252,241,0.48);
+}
+
+@media (max-width: 1050px) {
+  .genesys-vtt .genesys-summary-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .genesys-vtt .genesys-summary-weapons,
+  .genesys-vtt .genesys-summary-encounter {
+    grid-column: auto;
+  }
+  .genesys-vtt .genesys-fantasy-header {
+    grid-template-columns: 105px minmax(0,1fr);
+  }
+  .genesys-vtt .genesys-header-status {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+  .genesys-vtt .genesys-header-status small {
+    flex-basis: auto;
+    text-align: left;
+  }
+  .genesys-vtt .genesys-portrait-frame {
+    width: 92px;
+    height: 92px;
+  }
+}
+
+@media (max-width: 760px) {
+  .genesys-vtt .genesys-sheet-tabs {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .genesys-vtt .genesys-summary-grid,
+  .genesys-vtt .genesys-effects-grid,
+  .genesys-vtt .genesys-notes-grid {
     grid-template-columns: 1fr;
   }
-
-  .genesys-vtt .genesys-v15-characteristics {
-    grid-template-columns: repeat(3, minmax(80px, 1fr));
+  .genesys-vtt .genesys-characteristic-medallions {
+    grid-template-columns: repeat(3, 1fr);
   }
-
-  .genesys-vtt .genesys-v15-vitals {
-    grid-template-columns: repeat(3, minmax(90px, 1fr));
+  .genesys-vtt .genesys-quick-dice-row {
+    grid-template-columns: repeat(3, 1fr);
   }
-
-  .genesys-vtt .genesys-v15-profile-grid,
-  .genesys-vtt .genesys-v15-advanced-grid {
-    grid-template-columns: repeat(2, minmax(120px, 1fr));
-  }
-}
-
-@media (max-width: 620px) {
-  .genesys-vtt .genesys-v15-characteristics,
-  .genesys-vtt .genesys-v15-vitals,
+  .genesys-vtt .genesys-identity-grid,
   .genesys-vtt .genesys-v15-profile-grid,
   .genesys-vtt .genesys-v15-minion-grid,
   .genesys-vtt .genesys-v15-advanced-grid {
