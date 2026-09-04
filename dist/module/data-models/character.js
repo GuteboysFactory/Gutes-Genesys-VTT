@@ -15,6 +15,19 @@ function resourceField(threshold) {
         threshold: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: threshold })
     });
 }
+function progressionField() {
+    return new SchemaField({
+        starting: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        earned: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        spent: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 })
+    });
+}
+function currencyField() {
+    return new SchemaField({
+        value: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        label: new StringField({ required: true, nullable: false, initial: "Funds" })
+    });
+}
 function skillStateField() {
     return new SchemaField({
         id: new StringField({ required: true, nullable: false, blank: false, initial: "unknown" }),
@@ -86,6 +99,8 @@ export class GenesysCharacterData extends foundry.abstract.TypeDataModel {
             extraActivations: new NumberField({ required: true, nullable: false, integer: true, min: 0, max: 10, initial: 0 }),
             minionGroup: minionGroupField(),
             profile: profileField(),
+            xp: progressionField(),
+            currency: currencyField(),
             characteristics: new SchemaField({
                 brawn: characteristicField(),
                 agility: characteristicField(),
