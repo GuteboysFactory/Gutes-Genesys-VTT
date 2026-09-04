@@ -1,4 +1,5 @@
 import { GenesysTalentData } from "./data-models/talent.js";
+import { GenesysItemSheet } from "./sheets/item-sheet.js";
 import { SYSTEM_ID } from "./constants.js";
 import { createCoreParryTalent, createTerrinothFinesseTalent, evaluateRuleElement, getApplicableRuleElements, normalizeRuleCost, normalizeRuleElement, normalizeRuleUsage, normalizeTalentDefinition, ruleElementToCheckModifier, ruleElementToReaction, rulePredicateMatches, usageScopeKey, validateRuleCost } from "../domain/rules/index.js";
 import { actorHasTalent, actorRuleLifecycleContext, clearActorRuleUsage, collectActorRuleElements, collectActorTalents, getActorRuleUsage, getRuleSessionId, grantCoreParry, grantTerrinothFinesse, recordActorRuleUsage, registerRuleEngineSettings, startNewRuleSession, talentDebug } from "./talent-service-foundation.js";
@@ -6,6 +7,11 @@ import { actorHasTalent, actorRuleLifecycleContext, clearActorRuleUsage, collect
 Hooks.once("init", () => {
     registerRuleEngineSettings();
     CONFIG.Item.dataModels.talent = GenesysTalentData;
+    foundry.applications.apps.DocumentSheetConfig.registerSheet(foundry.documents.Item, SYSTEM_ID, GenesysItemSheet, {
+        types: ["talent"],
+        makeDefault: true,
+        label: "GENESYS.Sheet.Item"
+    });
 });
 
 Hooks.once("ready", () => {
@@ -43,5 +49,5 @@ Hooks.once("ready", () => {
             })
         })
     });
-    console.log(`${SYSTEM_ID} | 0.0.14A Rule Engine foundation ready`);
+    console.log(`${SYSTEM_ID} | 0.0.14B Rule Engine + live Parry ready`);
 });
