@@ -1,0 +1,56 @@
+/* 0.0.163 Quick Dice Pool narrative symbol mapping */
+.genesys-vtt .genesys-quick-die .die-glyph {
+  display:inline-block;
+  width:30px;
+  height:30px;
+  font-size:0!important;
+  background:currentColor;
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  mask-position:center;
+  -webkit-mask-size:contain;
+  mask-size:contain;
+}
+
+/* Boost = Success */
+.genesys-vtt .die-boost .die-glyph {
+  -webkit-mask-image:url("../assets/ui/narrative-success.svg");
+  mask-image:url("../assets/ui/narrative-success.svg");
+  color:#142431;
+}
+
+/* Ability = Advantage */
+.genesys-vtt .die-ability .die-glyph {
+  -webkit-mask-image:url("../assets/ui/narrative-advantage.svg");
+  mask-image:url("../assets/ui/narrative-advantage.svg");
+  color:#102319;
+}
+
+/* Proficiency = Triumph */
+.genesys-vtt .die-proficiency .die-glyph {
+  -webkit-mask-image:url("../assets/ui/narrative-triumph.svg");
+  mask-image:url("../assets/ui/narrative-triumph.svg");
+  color:#241a09;
+}
+
+/* Setback = Failure */
+.genesys-vtt .die-setback .die-glyph {
+  -webkit-mask-image:url("../assets/ui/narrative-failure.svg");
+  mask-image:url("../assets/ui/narrative-failure.svg");
+  color:#f5ead0;
+}
+
+/* Difficulty = Threat */
+.genesys-vtt .die-difficulty .die-glyph {
+  -webkit-mask-image:url("../assets/ui/narrative-threat.svg");
+  mask-image:url("../assets/ui/narrative-threat.svg");
+  color:#f1d9ff;
+}
+
+/* Challenge = Despair */
+.genesys-vtt .die-challenge .die-glyph {
+  -webkit-mask-image:url("../assets/ui/narrative-despair.svg");
+  mask-image:url("../assets/ui/narrative-despair.svg");
+  color:#f8eadc;
+}
