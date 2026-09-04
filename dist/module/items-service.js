@@ -14,6 +14,10 @@ function integer(value, fallback = 0) {
     const n = Number(value ?? fallback);
     return Number.isFinite(n) ? Math.max(0, Math.trunc(n)) : fallback;
 }
+function capitalize(value) {
+    const text = String(value ?? "");
+    return text.length ? `${text[0].toUpperCase()}${text.slice(1)}` : text;
+}
 export function buildInventoryRows(actor) {
     const groups = { weapons: [], armor: [], gear: [], attachments: [] };
     for (const item of itemCollection(actor)) {
@@ -44,12 +48,12 @@ export function buildInventoryRows(actor) {
     }
     return groups;
 }
-export function prepareActorWeaponAttack(actor, item, difficulty = 2) {
+export function prepareActorWeaponAttack(actor, item, difficulty = 2, checkOptions = {}) {
     if (!item || item.type !== "weapon")
         throw new Error("A weapon Item is required.");
     const weapon = normalizeWeaponRuleData(item.system ?? {});
-    const skill = prepareActorSkillCheck(actor, weapon.skillId, 0);
-    return prepareWeaponAttack({
+    const skill = prepareActorSkillCheck(actor, weapon.skillId, 0, checkOptions.rankOverride, checkOptions.characteristicOverrideId);
+    const prepared = prepareWeaponAttack({
         weaponName: item.name ?? "Weapon",
         weapon,
         actor: {
@@ -60,13 +64,30 @@ export function prepareActorWeaponAttack(actor, item, difficulty = 2) {
         difficulty,
         contextTags: [weapon.equipped ? "equipped" : "unequipped"]
     });
+    return {
+        ...prepared,
+        checkContext: {
+            skillId: skill.skillId,
+            skillLabel: skill.skillLabel,
+            characteristicId: skill.characteristicId,
+            characteristicValue: skill.characteristicValue,
+            appliedRuleLabel: String(checkOptions.appliedRuleLabel ?? ""),
+            sourceId: String(checkOptions.sourceId ?? ""),
+            ruleId: String(checkOptions.ruleId ?? "")
+        }
+    };
 }
 export async function rollPreparedWeaponAttackToChat(prepared, speakerAlias) {
     const result = rollNarrativePool(prepared.check.construction.pool);
     const qualities = formatQualityText(prepared.weapon.qualities) || "None";
+    const checkContext = prepared.checkContext ?? {};
+    const skillLabel = checkContext.skillLabel || prepared.weapon.skillId;
+    const characteristicLabel = checkContext.characteristicId ? `${capitalize(checkContext.characteristicId)} ${checkContext.characteristicValue}` : "";
+    const ruleLabel = checkContext.appliedRuleLabel ? ` · ${checkContext.appliedRuleLabel}` : "";
     const content = `
     <section class="genesys-constructed-check genesys-weapon-check">
-      <p><strong>${prepared.weaponName}</strong> · Skill ${prepared.weapon.skillId} · Range ${prepared.weapon.range}</p>
+      <p><strong>${prepared.weaponName}</strong> · Skill ${skillLabel} · Range ${prepared.weapon.range}</p>
+      ${characteristicLabel ? `<p><strong>Check:</strong> ${characteristicLabel}${ruleLabel}</p>` : ""}
       <p>Damage ${prepared.weapon.damage} · Crit ${prepared.weapon.critical || "—"} · Qualities ${qualities}</p>
       <p class="genesys-check-pool"><strong>Pool:</strong> ${formatPool(prepared.check.construction.pool)}</p>
       ${poolTraceToHtml(prepared.check.construction)}
@@ -78,8 +99,8 @@ export async function rollPreparedWeaponAttackToChat(prepared, speakerAlias) {
     await foundry.documents.ChatMessage.create(data);
     return { prepared, result };
 }
-export async function rollActorWeaponToChat(actor, item, difficulty = 2) {
-    const prepared = prepareActorWeaponAttack(actor, item, difficulty);
+export async function rollActorWeaponToChat(actor, item, difficulty = 2, checkOptions = {}) {
+    const prepared = prepareActorWeaponAttack(actor, item, difficulty, checkOptions);
     return rollPreparedWeaponAttackToChat(prepared, actor?.name ?? "Genesys Weapon Check");
 }
 //# sourceMappingURL=items-service.js.map
