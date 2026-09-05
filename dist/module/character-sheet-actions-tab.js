@@ -74,16 +74,27 @@ function makeSection(title, subtitle = "") {
     return section;
 }
 
+function buildQuickDicePool() {
+    const pool = document.createElement("section");
+    pool.className = "genesys-fantasy-panel genesys-ornate-panel genesys-quick-pool genesys-actions-quick-pool";
+    pool.dataset.quickDicePool = "true";
+    pool.innerHTML = `<div class="genesys-panel-banner"><h2>Quick Dice Pool</h2></div>
+      <div class="genesys-quick-dice-row">
+        <button type="button" class="genesys-quick-die die-boost" data-quick-die="boost" title="Boost"><span class="die-glyph">◆</span><strong data-quick-count>0</strong></button>
+        <button type="button" class="genesys-quick-die die-ability" data-quick-die="ability" title="Ability"><span class="die-glyph">◆</span><strong data-quick-count>0</strong></button>
+        <button type="button" class="genesys-quick-die die-proficiency" data-quick-die="proficiency" title="Proficiency"><span class="die-glyph">✦</span><strong data-quick-count>0</strong></button>
+        <button type="button" class="genesys-quick-die die-setback" data-quick-die="setback" title="Setback"><span class="die-glyph">●</span><strong data-quick-count>0</strong></button>
+        <button type="button" class="genesys-quick-die die-difficulty" data-quick-die="difficulty" title="Difficulty"><span class="die-glyph">⬢</span><strong data-quick-count>0</strong></button>
+        <button type="button" class="genesys-quick-die die-challenge" data-quick-die="challenge" title="Challenge"><span class="die-glyph">▼</span><strong data-quick-count>0</strong></button>
+      </div>
+      <div class="genesys-quick-pool-actions"><button type="button" class="genesys-primary-action" data-quick-roll><i class="fa-solid fa-dice" aria-hidden="true"></i> Roll Dice</button><button type="button" class="genesys-secondary-action" data-quick-clear>Clear</button></div>`;
+    return pool;
+}
+
 function buildRollTools(root) {
     const section = makeSection("Roll Tools", "Quick Dice Pool and advanced check configuration live here instead of on the Skills page.");
     section.classList.add("genesys-actions-roll-tools");
-
-    const quickPool = root.querySelector(".genesys-quick-pool");
-    if (quickPool) {
-        quickPool.classList.remove("genesys-skills-quick-pool");
-        quickPool.classList.add("genesys-actions-quick-pool");
-        section.append(quickPool);
-    }
+    section.append(buildQuickDicePool());
 
     const sourceAdvanced = root.querySelector("[data-genesys-tab-panel='skills'] .genesys-check-engine-lab");
     if (sourceAdvanced) {
@@ -390,4 +401,5 @@ const observer = new MutationObserver(() => initializeActionsTabs());
 Hooks.once("ready", () => {
     initializeActionsTabs();
     observer.observe(document.body, { childList: true, subtree: true });
+    console.log("genesys-vtt | 0.0.1755 Actions Roll Tools ready");
 });
