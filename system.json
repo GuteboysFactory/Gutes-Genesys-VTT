@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1759 locks the approved Wizard-era Character Sheet header and swaps only the Actions top order so Dice Tools appears above the Actions toolbar / + Custom Action row. Combat, Custom, Talent, General, Skills, Biography, Equipment, Magic, and header behavior are otherwise unchanged.",
-  "version": "0.0.1759",
+  "description": "Genesys VTT 0.0.1760 locks the approved Character Sheet chrome and makes only the active tab content scrollable beneath the fixed header, Characteristics/Health snapshot, and tab row. The approved 0.0.1759 Actions ordering and header behavior remain unchanged.",
+  "version": "0.0.1760",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -68,7 +68,8 @@
     "styles/character-sheet-v1755.css",
     "styles/character-sheet-v1756.css",
     "styles/character-sheet-v1758.css",
-    "styles/character-sheet-v1759.css"
+    "styles/character-sheet-v1759.css",
+    "styles/character-sheet-v1760.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
