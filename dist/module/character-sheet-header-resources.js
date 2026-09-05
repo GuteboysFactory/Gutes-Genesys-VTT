@@ -14,7 +14,7 @@ function actorForRoot(root) {
         return game.actors.get(actorId);
     const name = String(root?.dataset?.actorName ?? "");
     const actor = Array.from(game?.actors ?? []).find((entry) => entry?.name === name && (entry?.isOwner || game?.user?.isGM))
-        ?? Array.from(canvas?.tokens?.placeables ?? []).map((token) => token?.actor).find((entry) => entry?.name === name && (entry?.isOwner || game?.user?.isGM))
+        ?? Array.from(globalThis.canvas?.tokens?.placeables ?? []).map((token) => token?.actor).find((entry) => entry?.name === name && (entry?.isOwner || game?.user?.isGM))
         ?? null;
     if (actor && root)
         root.dataset.actorId = String(actor.id ?? "");
@@ -154,14 +154,13 @@ function buildHeaderResources(root) {
     buildMagicImplements(root, actor);
 
     const header = root.querySelector(".genesys-hero-header");
-    const brand = root.querySelector(".genesys-brand-block");
     const portrait = root.querySelector(".genesys-portrait-column");
     const identity = root.querySelector(".genesys-character-identity");
     const actions = root.querySelector(".genesys-header-actions");
     if (!header || !portrait || !identity || !actions)
         return;
 
-    brand?.remove();
+    root.querySelector(".genesys-brand-block")?.remove();
     header.classList.remove("genesys-header-v1755");
     header.classList.add("genesys-header-wizard-baseline");
     if (header.firstElementChild !== portrait)
@@ -176,6 +175,8 @@ function buildHeaderResources(root) {
 }
 
 function init() {
+    if (!globalThis.game)
+        return;
     for (const root of document.querySelectorAll("[data-genesys-sheet-tabs]"))
         buildHeaderResources(root);
 }
@@ -218,9 +219,24 @@ document.addEventListener("change", async (event) => {
         await item.update({ "system.equipped": Boolean(toggle.checked) });
 });
 
-const observer = new MutationObserver(init);
-Hooks.once("ready", () => {
+let observerStarted = false;
+const observer = new MutationObserver(() => init());
+function startHeaderResourceRuntime() {
     init();
-    observer.observe(document.body, { childList: true, subtree: true });
-    console.log("genesys-vtt | 0.0.1756 Wizard-era header restored");
+    if (!observerStarted && document.body) {
+        observer.observe(document.body, { childList: true, subtree: true });
+        observerStarted = true;
+    }
+}
+
+if (document.readyState === "loading")
+    document.addEventListener("DOMContentLoaded", startHeaderResourceRuntime, { once: true });
+else
+    startHeaderResourceRuntime();
+
+Hooks.once("ready", () => {
+    startHeaderResourceRuntime();
+    for (const delay of [0, 50, 150, 350])
+        setTimeout(init, delay);
+    console.log("genesys-vtt | 0.0.1758 Wizard-era XP/Currency header resources ready");
 });
