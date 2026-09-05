@@ -27,8 +27,28 @@
   {{#if isAttachment}}
   <section class="genesys-panel genesys-item-fields"><h2>Attachment groundwork</h2><div class="genesys-item-grid"><label>Hard Point Cost<input type="number" name="system.hardPointCost" value="{{system.hardPointCost}}" min="0" /></label><label>Host Item ID<input type="text" name="system.hostItemId" value="{{system.hostItemId}}" /></label><label>Compatible Types<input type="text" name="system.compatibleTypes" value="{{system.compatibleTypes}}" /></label><label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label><label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label><label class="genesys-item-check">Installed<input type="checkbox" name="system.installed" {{checked system.installed}} /></label></div></section>{{/if}}
 
+  {{#if isTalent}}
+  <section class="genesys-panel genesys-item-fields genesys-talent-reference">
+    <h2>Talent Rules</h2>
+    <div class="genesys-talent-reference-grid">
+      <div><span>Tier</span><strong>{{system.tier}}</strong></div>
+      <div><span>Rank</span><strong>{{system.rank}}</strong></div>
+      <div><span>Ranked</span><strong>{{#if system.ranked}}Yes{{else}}No{{/if}}</strong></div>
+      <div><span>Activation</span><strong>{{system.activation}}</strong></div>
+      <div><span>Source</span><strong>{{talentSourceLabel}}</strong></div>
+      <div><span>Automation</span><strong>{{talentAutomationLabel}}</strong></div>
+    </div>
+    <div class="genesys-talent-rules-summary"><h3>Rules Summary</h3><p>{{talentRulesSummary}}</p></div>
+    {{#if talentSourceReference}}<p class="genesys-talent-source-note">Reference: {{talentSourceReference}}. This quick reference is an original paraphrase; the published source remains authoritative.</p>{{/if}}
+  </section>
+  {{/if}}
+
   {{#if supportsQualities}}
   <section class="genesys-panel genesys-quality-editor"><h2>Qualities</h2><p class="genesys-item-note">Structured internally. Editor accepts comma-separated names, for example: <strong>Accurate 1, Pierce 2, Vicious 1</strong>.</p><div class="genesys-quality-entry"><input type="text" data-quality-text value="{{qualitiesText}}" placeholder="Accurate 1, Pierce 2" /><button type="button" data-action="applyQualities">Apply Qualities</button></div></section>{{/if}}
 
+  {{#if isTalent}}
+  <section class="genesys-panel genesys-item-fields"><h2>Character Notes</h2><textarea name="system.notes" rows="4" placeholder="Optional personal notes about this Talent">{{talentNotes}}</textarea></section>
+  {{else}}
   <section class="genesys-panel genesys-item-fields"><h2>Notes</h2><textarea name="system.notes" rows="5">{{system.notes}}</textarea></section>
+  {{/if}}
 </section>
