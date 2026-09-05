@@ -29,6 +29,34 @@ function comparable(value) {
         return Number.isFinite(value) ? value : 0;
     return value;
 }
+function readActiveSheetTab(sheet) {
+    const root = sheet?.element;
+    if (!root?.querySelector)
+        return "";
+    return String(root.dataset?.activeTab ?? root.querySelector("[data-genesys-tab].active")?.dataset?.genesysTab ?? "");
+}
+function restoreActiveSheetTab(sheet, tabId) {
+    const root = sheet?.element;
+    const id = String(tabId ?? "").trim();
+    if (!root?.querySelectorAll || !id)
+        return false;
+    const button = root.querySelector(`[data-genesys-tab="${id}"]`);
+    const panel = root.querySelector(`[data-genesys-tab-panel="${id}"]`);
+    if (!button || !panel)
+        return false;
+    root.dataset.activeTab = id;
+    for (const tabButton of root.querySelectorAll("[data-genesys-tab]")) {
+        const active = tabButton.dataset.genesysTab === id;
+        tabButton.classList.toggle("active", active);
+        tabButton.setAttribute("aria-selected", active ? "true" : "false");
+    }
+    for (const tabPanel of root.querySelectorAll("[data-genesys-tab-panel]")) {
+        const active = tabPanel.dataset.genesysTabPanel === id;
+        tabPanel.classList.toggle("active", active);
+        tabPanel.hidden = !active;
+    }
+    return true;
+}
 export function registerRenderedCharacterSheet(actor, sheet) {
     const key = actorSheetKey(actor);
     if (!key)
@@ -109,7 +137,9 @@ export async function rerenderRenderedCharacterSheet(actor) {
     const sheet = getRenderedCharacterSheet(actor);
     if (!sheet || typeof sheet.render !== "function")
         return false;
+    const activeTab = readActiveSheetTab(sheet);
     await sheet.render({ force: true });
+    restoreActiveSheetTab(sheet, activeTab);
     return true;
 }
 export async function rerenderAllRenderedCharacterSheets() {
@@ -119,7 +149,9 @@ export async function rerenderAllRenderedCharacterSheets() {
             actorSheets.delete(key);
             continue;
         }
+        const activeTab = readActiveSheetTab(sheet);
         await sheet.render({ force: true });
+        restoreActiveSheetTab(sheet, activeTab);
         count += 1;
     }
     return count;
