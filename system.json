@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1730 Advancement UI: connects the runtime XP engine to Character Sheet skill and Talent purchases, adds purchase confirmation with cost/remaining XP, read-only XP Available/Earned/Spent header status, an XP Ledger viewer, and keeps GM XP awards outside the character sheet for the future Genesys GM Dock.",
-  "version": "0.0.1730",
+  "description": "Genesys VTT 0.0.1731 Advancement UI hotfix: fixes Talent purchase rerender handling by resolving the refreshed live Character Sheet before restoring the Talents tab and reopening Talent Library, while preserving the 0.0.1730 XP purchase confirmations, Skill advancement, read-only XP status and XP Ledger.",
+  "version": "0.0.1731",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -41,7 +41,8 @@
     "dist/module/character-sheet-release-cleanup.js",
     "dist/module/character-sheet-actions-tab.js",
     "dist/module/character-sheet-tab-state.js",
-    "dist/module/character-sheet-advancement-ui.js"
+    "dist/module/character-sheet-advancement-ui.js",
+    "dist/module/character-sheet-advancement-ui-hotfix.js"
   ],
   "styles": [
     "styles/genesys.css",
