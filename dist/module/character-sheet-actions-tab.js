@@ -74,6 +74,43 @@ function makeSection(title, subtitle = "") {
     return section;
 }
 
+function buildRollTools(root) {
+    const section = makeSection("Roll Tools", "Quick Dice Pool and advanced check configuration live here instead of on the Skills page.");
+    section.classList.add("genesys-actions-roll-tools");
+
+    const quickPool = root.querySelector(".genesys-quick-pool");
+    if (quickPool) {
+        quickPool.classList.remove("genesys-skills-quick-pool");
+        quickPool.classList.add("genesys-actions-quick-pool");
+        section.append(quickPool);
+    }
+
+    const sourceAdvanced = root.querySelector("[data-genesys-tab-panel='skills'] .genesys-check-engine-lab");
+    if (sourceAdvanced) {
+        sourceAdvanced.hidden = true;
+        sourceAdvanced.classList.add("genesys-check-engine-source");
+        const advanced = sourceAdvanced.cloneNode(true);
+        advanced.hidden = false;
+        advanced.classList.remove("genesys-check-engine-source");
+        advanced.classList.add("genesys-actions-check-engine");
+        advanced.open = false;
+        for (const control of advanced.querySelectorAll("input, select")) {
+            control.addEventListener("change", () => {
+                const dataKey = Object.keys(control.dataset)[0];
+                if (!dataKey)
+                    return;
+                const source = sourceAdvanced.querySelector(`[data-${dataKey.replace(/[A-Z]/g, (char) => `-${char.toLowerCase()}`)}]`);
+                if (!source)
+                    return;
+                source.value = control.value;
+                source.dispatchEvent(new Event("change", { bubbles: true }));
+            });
+        }
+        section.append(advanced);
+    }
+    return section;
+}
+
 function addExplicitWeaponEditButtons(section) {
     for (const row of section.querySelectorAll(".genesys-item-row[data-item-id]")) {
         const actions = row.querySelector(".genesys-item-actions");
@@ -96,11 +133,9 @@ function buildCombatActions(root) {
         section.insertAdjacentHTML("beforeend", '<p class="genesys-empty-row">No combat actions available.</p>');
         return section;
     }
-
     const combatControls = inventory.querySelector(".genesys-combat-controls")?.cloneNode(true);
     if (combatControls)
         section.append(combatControls);
-
     const weaponDifficulty = inventory.querySelector(".genesys-weapon-difficulty")?.cloneNode(true);
     if (weaponDifficulty) {
         const advanced = document.createElement("details");
@@ -110,7 +145,6 @@ function buildCombatActions(root) {
         advanced.append(summary, weaponDifficulty);
         section.append(advanced);
     }
-
     const weaponGroup = Array.from(inventory.querySelectorAll(".genesys-item-group"))
         .find((group) => group.querySelector("summary")?.textContent?.trim()?.toLowerCase()?.startsWith("weapons"));
     if (weaponGroup) {
@@ -122,8 +156,6 @@ function buildCombatActions(root) {
     else {
         section.insertAdjacentHTML("beforeend", '<p class="genesys-empty-row">No weapons equipped.</p>');
     }
-
-    // Existing combat handlers resolve their controls through this class.
     section.classList.add("genesys-inventory-panel");
     return section;
 }
@@ -133,12 +165,10 @@ function buildTalentActions(root) {
     const source = root.querySelector("[data-genesys-tab-panel='talents']");
     const activeCards = Array.from(source?.querySelectorAll?.(".genesys-talent-card") ?? [])
         .filter((card) => card.querySelector("[data-action='useTalent']"));
-
     if (!activeCards.length) {
         section.insertAdjacentHTML("beforeend", '<p class="genesys-empty-row">No active Talent Actions available right now.</p>');
         return section;
     }
-
     const grid = document.createElement("div");
     grid.className = "genesys-actions-card-grid";
     for (const card of activeCards) {
@@ -166,7 +196,6 @@ function buildCustomActions(root) {
     const actions = customActions(actor);
     const grid = document.createElement("div");
     grid.className = "genesys-actions-card-grid genesys-custom-actions-grid";
-
     if (!actions.length) {
         const empty = document.createElement("p");
         empty.className = "genesys-empty-row";
@@ -174,21 +203,11 @@ function buildCustomActions(root) {
         section.append(empty);
         return section;
     }
-
     for (const action of actions) {
         const card = document.createElement("article");
         card.className = "genesys-general-action-card genesys-custom-action-card";
         card.dataset.customActionId = action.id;
-        card.innerHTML = `<i class="fa-solid fa-wand-sparkles" aria-hidden="true"></i>
-          <div class="genesys-custom-action-copy">
-            <strong>${esc(action.name)}</strong>
-            <p>${esc(action.activation)}${action.skillId ? ` · ${esc(action.skillId)}` : ""} · Difficulty ${action.difficulty}</p>
-            ${action.notes ? `<small>${esc(action.notes)}</small>` : ""}
-          </div>
-          <div class="genesys-custom-action-buttons">
-            <button type="button" data-custom-action-edit="${esc(action.id)}">Edit</button>
-            <button type="button" data-custom-action-delete="${esc(action.id)}" title="Delete Custom Action">×</button>
-          </div>`;
+        card.innerHTML = `<i class="fa-solid fa-wand-sparkles" aria-hidden="true"></i><div class="genesys-custom-action-copy"><strong>${esc(action.name)}</strong><p>${esc(action.activation)}${action.skillId ? ` · ${esc(action.skillId)}` : ""} · Difficulty ${action.difficulty}</p>${action.notes ? `<small>${esc(action.notes)}</small>` : ""}</div><div class="genesys-custom-action-buttons"><button type="button" data-custom-action-edit="${esc(action.id)}">Edit</button><button type="button" data-custom-action-delete="${esc(action.id)}" title="Delete Custom Action">×</button></div>`;
         grid.append(card);
     }
     section.append(grid);
@@ -217,8 +236,7 @@ function buildGeneralActions() {
 function buildActionsToolbar() {
     const toolbar = document.createElement("div");
     toolbar.className = "genesys-actions-toolbar";
-    toolbar.innerHTML = `<div><strong>Actions</strong><span>Live actions, actor-specific actions, and reusable templates.</span></div>
-      <button type="button" class="genesys-primary-action genesys-create-custom-action" data-custom-action-create><i class="fa-solid fa-plus" aria-hidden="true"></i> Custom Action</button>`;
+    toolbar.innerHTML = `<div><strong>Actions</strong><span>Live actions, actor-specific actions, and reusable templates.</span></div><button type="button" class="genesys-primary-action genesys-create-custom-action" data-custom-action-create><i class="fa-solid fa-plus" aria-hidden="true"></i> Custom Action</button>`;
     return toolbar;
 }
 
@@ -226,18 +244,7 @@ function buildActionEditor(root) {
     const dialog = document.createElement("dialog");
     dialog.className = "genesys-custom-action-editor";
     dialog.dataset.customActionEditor = "true";
-    dialog.innerHTML = `<form method="dialog" class="genesys-custom-action-form">
-      <header><div><strong data-custom-action-editor-title>Custom Action</strong><small>Actor-bound Action</small></div><button type="button" data-custom-action-cancel aria-label="Close">×</button></header>
-      <input type="hidden" name="actionId" value="" />
-      <div class="genesys-custom-action-form-grid">
-        <label>Name<input type="text" name="actionName" value="" required /></label>
-        <label>Activation<select name="activation"><option value="action">Action</option><option value="maneuver">Maneuver</option><option value="incidental">Incidental</option><option value="out-of-turn-incidental">Out-of-Turn Incidental</option></select></label>
-        <label>Skill<input type="text" name="skillId" value="" placeholder="e.g. athletics, melee-heavy" /></label>
-        <label>Difficulty<input type="number" name="difficulty" value="2" min="0" max="5" /></label>
-      </div>
-      <label class="genesys-custom-action-notes">Description<textarea name="notes" rows="5" placeholder="What does this Action do?"></textarea></label>
-      <footer><button type="button" data-custom-action-cancel>Cancel</button><button type="submit" class="genesys-primary-action">Save Action</button></footer>
-    </form>`;
+    dialog.innerHTML = `<form method="dialog" class="genesys-custom-action-form"><header><div><strong data-custom-action-editor-title>Custom Action</strong><small>Actor-bound Action</small></div><button type="button" data-custom-action-cancel aria-label="Close">×</button></header><input type="hidden" name="actionId" value="" /><div class="genesys-custom-action-form-grid"><label>Name<input type="text" name="actionName" value="" required /></label><label>Activation<select name="activation"><option value="action">Action</option><option value="maneuver">Maneuver</option><option value="incidental">Incidental</option><option value="out-of-turn-incidental">Out-of-Turn Incidental</option></select></label><label>Skill<input type="text" name="skillId" value="" placeholder="e.g. athletics, melee-heavy" /></label><label>Difficulty<input type="number" name="difficulty" value="2" min="0" max="5" /></label></div><label class="genesys-custom-action-notes">Description<textarea name="notes" rows="5" placeholder="What does this Action do?"></textarea></label><footer><button type="button" data-custom-action-cancel>Cancel</button><button type="submit" class="genesys-primary-action">Save Action</button></footer></form>`;
     root.append(dialog);
     return dialog;
 }
@@ -261,39 +268,32 @@ function rebuildActionsPanel(root) {
     root.querySelector("[data-custom-action-editor]")?.remove();
     delete root.dataset.genesysActionsTab;
     buildActionsPanel(root);
-    const button = root.querySelector("[data-genesys-tab='actions']");
-    button?.click?.();
+    root.querySelector("[data-genesys-tab='actions']")?.click?.();
 }
 
 function buildActionsPanel(root) {
     if (!root || root.dataset.genesysActionsTab === "true")
         return;
-
     const tabs = root.querySelector(".genesys-sheet-tabs");
     const equipmentTab = root.querySelector("[data-genesys-tab='equipment']");
     const equipmentPanel = root.querySelector("[data-genesys-tab-panel='equipment']");
     if (!tabs || !equipmentTab || !equipmentPanel)
         return;
-
     actorForRoot(root);
-
     const button = document.createElement("button");
     button.type = "button";
     button.dataset.genesysTab = "actions";
     button.textContent = "Actions";
     equipmentTab.before(button);
-
     const panel = document.createElement("div");
     panel.className = "genesys-tab-panel genesys-actions-panel";
     panel.dataset.genesysTabPanel = "actions";
     panel.hidden = true;
-
     const layout = document.createElement("div");
     layout.className = "genesys-actions-layout";
-    layout.append(buildCombatActions(root), buildTalentActions(root), buildCustomActions(root), buildGeneralActions());
+    layout.append(buildRollTools(root), buildCombatActions(root), buildTalentActions(root), buildCustomActions(root), buildGeneralActions());
     panel.append(buildActionsToolbar(), layout);
     equipmentPanel.before(panel);
-
     root.dataset.genesysActionsTab = "true";
 }
 
@@ -303,14 +303,7 @@ async function saveEditor(root, form) {
         throw new Error("Could not resolve this character Actor.");
     const id = String(form.elements.actionId?.value ?? "");
     const actions = customActions(actor);
-    const nextAction = normalizeCustomAction({
-        id: id || actionId(),
-        name: form.elements.actionName?.value,
-        activation: form.elements.activation?.value,
-        skillId: form.elements.skillId?.value,
-        difficulty: form.elements.difficulty?.value,
-        notes: form.elements.notes?.value
-    });
+    const nextAction = normalizeCustomAction({ id: id || actionId(), name: form.elements.actionName?.value, activation: form.elements.activation?.value, skillId: form.elements.skillId?.value, difficulty: form.elements.difficulty?.value, notes: form.elements.notes?.value });
     const index = actions.findIndex((entry) => entry.id === id);
     if (index >= 0)
         actions[index] = nextAction;
@@ -343,7 +336,6 @@ document.addEventListener("click", async (event) => {
             openActionEditor(root);
         return;
     }
-
     const edit = event.target?.closest?.("[data-custom-action-edit]");
     if (edit) {
         event.preventDefault();
@@ -355,7 +347,6 @@ document.addEventListener("click", async (event) => {
             openActionEditor(root, action);
         return;
     }
-
     const remove = event.target?.closest?.("[data-custom-action-delete]");
     if (remove) {
         event.preventDefault();
@@ -371,7 +362,6 @@ document.addEventListener("click", async (event) => {
         }
         return;
     }
-
     const cancel = event.target?.closest?.("[data-custom-action-cancel]");
     if (cancel) {
         event.preventDefault();
