@@ -1,0 +1,33 @@
+.genesys-vtt .genesys-character-quote{display:none!important}
+.genesys-vtt .genesys-v1752-story-integration{grid-column:1/-1;width:100%}
+.genesys-vtt .genesys-v1752-story-stack{display:grid;grid-template-columns:1fr;gap:12px;width:100%}
+.genesys-vtt .genesys-v1752-heroic-panel,.genesys-vtt .genesys-v1752-motivation-panel{width:100%}
+.genesys-vtt .genesys-v1752-heroic-name{display:grid;gap:3px;padding:8px 4px 10px;border-bottom:1px solid rgba(109,76,40,.25)}
+.genesys-vtt .genesys-v1752-heroic-name strong{font-size:1.05rem}
+.genesys-vtt .genesys-v1752-heroic-name span{font-size:.72rem;opacity:.72}
+.genesys-vtt .genesys-v1752-heroic-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:10px}
+.genesys-vtt .genesys-v1752-heroic-stats>div{padding:8px;border:1px solid rgba(109,76,40,.24);background:rgba(255,255,255,.12)}
+.genesys-vtt .genesys-v1752-heroic-stats span,.genesys-vtt .genesys-v1752-heroic-stats strong{display:block}
+.genesys-vtt .genesys-v1752-heroic-stats span{font-size:.6rem;text-transform:uppercase;opacity:.68}
+.genesys-vtt .genesys-v1752-heroic-details{display:grid;gap:4px;margin-top:9px;font-size:.74rem}
+.genesys-vtt .genesys-v1752-motivation-list{display:grid;grid-template-columns:1fr;gap:8px;padding-top:2px}
+.genesys-vtt .genesys-v1752-motivation-row{display:grid;grid-template-columns:100px minmax(0,1fr);align-items:start;gap:10px}
+.genesys-vtt .genesys-v1752-motivation-row>span{padding-top:8px;font-size:.68rem;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.genesys-vtt .genesys-v1752-motivation-row textarea{width:100%;min-height:54px;resize:vertical;background:rgba(255,250,236,.38);color:var(--genesys-ink);border:1px solid rgba(109,76,40,.32);padding:7px 9px;line-height:1.35}
+.genesys-vtt .genesys-actions-quick-pool{margin:10px 0 12px;width:100%}
+.genesys-vtt [data-genesys-tab-panel='actions'] .genesys-actions-quick-pool .genesys-panel-banner h2{margin:0}
+.genesys-vtt .genesys-v1752-wallet{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:0 0 10px;padding:10px 12px;border:1px solid rgba(109,76,40,.32);background:rgba(255,255,255,.16)}
+.genesys-vtt .genesys-v1752-wallet>div{display:flex;align-items:center;gap:7px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.genesys-vtt .genesys-v1752-wallet>strong{font-size:1rem}
+.genesys-vtt .genesys-v1752-implements{margin-top:8px}
+.genesys-vtt .genesys-v1752-equipped{display:inline-flex;align-items:center;gap:5px;white-space:nowrap;font-size:.7rem}
+.genesys-vtt .genesys-v1752-magic-access{margin:10px 0}
+.genesys-vtt .genesys-v1752-magic-grid{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.genesys-vtt .genesys-v1752-magic-card{display:grid;gap:6px;padding:9px;border:1px solid rgba(109,76,40,.28);background:rgba(255,255,255,.12)}
+.genesys-vtt .genesys-v1752-magic-card.available{box-shadow:inset 0 0 0 2px rgba(69,112,59,.14)}
+.genesys-vtt .genesys-v1752-magic-card.locked{opacity:.58}
+.genesys-vtt .genesys-v1752-magic-card header,.genesys-vtt .genesys-v1752-magic-status{display:flex;justify-content:space-between;gap:8px}
+.genesys-vtt .genesys-v1752-magic-card p,.genesys-vtt .genesys-v1752-magic-card small{margin:0;font-size:.67rem;line-height:1.3}
+.genesys-vtt .genesys-v1752-magic-status{font-size:.6rem;text-transform:uppercase}
+@media(max-width:1000px){.genesys-vtt .genesys-v1752-magic-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.genesys-vtt .genesys-v1752-heroic-stats{grid-template-columns:repeat(2,1fr)}.genesys-vtt .genesys-v1752-magic-grid{grid-template-columns:1fr}.genesys-vtt .genesys-v1752-motivation-row{grid-template-columns:1fr}.genesys-vtt .genesys-v1752-motivation-row>span{padding-top:0}}
