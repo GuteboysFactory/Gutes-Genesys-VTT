@@ -1,10 +1,5 @@
 <section class="genesys-sheet-body genesys-sheet-v15 genesys-theme-fantasy genesys-target-v153" data-genesys-sheet-tabs data-actor-name="{{actor.name}}">
-  <header class="genesys-hero-header">
-    <div class="genesys-brand-block" aria-label="Genesys Fantasy">
-      <div class="genesys-brand-mark">GENESYS</div>
-      <div class="genesys-brand-subtitle">FANTASY</div>
-    </div>
-
+  <header class="genesys-hero-header genesys-header-wizard-baseline">
     <div class="genesys-portrait-column">
       <div class="genesys-portrait-frame">
         <img class="genesys-portrait" src="{{actor.img}}" alt="{{actor.name}}" />
@@ -17,9 +12,6 @@
         <input type="text" name="system.profile.archetype" value="{{system.profile.archetype}}" placeholder="Archetype / Species" {{#unless editable}}disabled{{/unless}} />
         <span>·</span>
         <input type="text" name="system.profile.career" value="{{system.profile.career}}" placeholder="Career" {{#unless editable}}disabled{{/unless}} />
-      </div>
-      <div class="genesys-character-quote">
-        <input type="text" name="system.profile.motivation" value="{{system.profile.motivation}}" placeholder="Motivation, creed, or defining drive" {{#unless editable}}disabled{{/unless}} />
       </div>
       <div class="genesys-identity-meta">
         <span><strong>Role:</strong> {{actorProfile.roleLabel}}</span>
