@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1756 restores the Create Actor Wizard-era portrait-first Character Sheet header without the old Motivation line, hardens header rerenders, changes Dice Tools on Actions into a collapsed full-width dropdown, and arranges Combat above Custom on the left with Talent above General on the right.",
-  "version": "0.0.1756",
+  "description": "Genesys VTT 0.0.1757 fixes the Character Sheet header at the Handlebars source: removes the legacy GENESYS/FANTASY brand column and old Motivation field from the template, applies the Wizard-era portrait-first header class from first render, and leaves the 0.0.1756 Actions layout unchanged for focused QA.",
+  "version": "0.0.1757",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
