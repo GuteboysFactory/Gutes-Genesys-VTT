@@ -82,6 +82,7 @@ export function normalizeCharacterContentPack(pack = {}) {
         creationRules: normalizeCreationRules(pack.creationRules),
         creationSteps: Array.isArray(pack.creationSteps) ? clone(pack.creationSteps) : [],
         magicRules: pack.magicRules && typeof pack.magicRules === "object" ? clone(pack.magicRules) : {},
+        heroicRules: pack.heroicRules && typeof pack.heroicRules === "object" ? clone(pack.heroicRules) : {},
         metadata: { ...(pack.metadata ?? {}) }
     };
     for (const key of CONTENT_KEYS)
@@ -155,6 +156,13 @@ export function getSettingMagicRules(settingId) {
     return packs.reduce((merged, pack) => ({ ...merged, ...clone(pack.magicRules) }), {});
 }
 
+export function getSettingHeroicRules(settingId) {
+    const packs = Array.from(memoryPacks.values()).filter((entry) => entry.settingId === settingId && Object.keys(entry.heroicRules ?? {}).length);
+    if (!packs.length)
+        return {};
+    return packs.reduce((merged, pack) => ({ ...merged, ...clone(pack.heroicRules) }), {});
+}
+
 function persistedPacks() {
     try {
         const value = game.settings.get(SYSTEM_ID, PERSISTED_PACKS_SETTING);
@@ -208,6 +216,7 @@ function exposeApi() {
         getCreationRules: getSettingCreationRules,
         getCreationSteps: getSettingCreationSteps,
         getMagicRules: getSettingMagicRules,
+        getHeroicRules: getSettingHeroicRules,
         snapshot: characterContentRegistrySnapshot
     });
     Object.defineProperty(game, "genesysContent", { configurable: true, value: api });

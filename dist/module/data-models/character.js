@@ -90,6 +90,36 @@ function profileField() {
         notes: new StringField({ required: true, nullable: false, initial: "" })
     });
 }
+function motivationsField() {
+    return new SchemaField({
+        strength: new StringField({ required: true, nullable: false, initial: "" }),
+        flaw: new StringField({ required: true, nullable: false, initial: "" }),
+        desire: new StringField({ required: true, nullable: false, initial: "" }),
+        fear: new StringField({ required: true, nullable: false, initial: "" }),
+        notes: new StringField({ required: true, nullable: false, initial: "" })
+    });
+}
+function heroicAbilityField() {
+    return new SchemaField({
+        selected: new BooleanField({ required: true, nullable: false, initial: false }),
+        id: new StringField({ required: true, nullable: false, initial: "" }),
+        name: new StringField({ required: true, nullable: false, initial: "" }),
+        origins: new ArrayField(new StringField({ required: true, nullable: false, initial: "" }), { required: true, nullable: false, initial: [] }),
+        primaryEffectId: new StringField({ required: true, nullable: false, initial: "" }),
+        primaryEffectLabel: new StringField({ required: true, nullable: false, initial: "" }),
+        powerLevel: new StringField({ required: true, nullable: false, initial: "base" }),
+        secondaryEffectIds: new ArrayField(new StringField({ required: true, nullable: false, initial: "" }), { required: true, nullable: false, initial: [] }),
+        durationUpgrades: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        frequencyUpgrades: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        storyUpgradePurchased: new BooleanField({ required: true, nullable: false, initial: false }),
+        abilityPointsSpent: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        activation: new StringField({ required: true, nullable: false, initial: "incidental" }),
+        storyPointCost: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        usesThisSession: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        active: new BooleanField({ required: true, nullable: false, initial: false }),
+        activeTurnBudget: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 })
+    });
+}
 export class GenesysCharacterData extends foundry.abstract.TypeDataModel {
     static defineSchema() {
         return {
@@ -99,6 +129,8 @@ export class GenesysCharacterData extends foundry.abstract.TypeDataModel {
             extraActivations: new NumberField({ required: true, nullable: false, integer: true, min: 0, max: 10, initial: 0 }),
             minionGroup: minionGroupField(),
             profile: profileField(),
+            motivations: motivationsField(),
+            heroicAbility: heroicAbilityField(),
             xp: progressionField(),
             currency: currencyField(),
             characteristics: new SchemaField({

@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.169 Terrinoth Skills & Magic Foundation: adds the complete Realms of Terrinoth skill registry, validates all career skill IDs, registers the Terrinoth rules profile, models Arcana/Divine/Primal/Runes/Verse magic actions and career-only magic-skill access, and prepares Character Creation to enforce and expose magic access from archetypes, careers, and talents.",
-  "version": "0.0.169",
+  "description": "Genesys VTT 0.0.170 Heroic Abilities + Motivations: adds a generic Heroic Ability progression/activation foundation, structured Strength/Flaw/Desire/Fear motivations, Terrinoth Heroic Ability primary/secondary/origin catalog metadata, Ability Point upgrades, atomic multi-Story-Point activation preparation, session use tracking, and Character Creation integration without bundling copyrighted rules text.",
+  "version": "0.0.170",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -21,9 +21,12 @@
     "dist/module/content-packs/realms-of-terrinoth-character-creation.js",
     "dist/module/content-packs/realms-of-terrinoth-talents.js",
     "dist/module/content-packs/realms-of-terrinoth-skills-magic.js",
+    "dist/module/content-packs/realms-of-terrinoth-heroic-motivations.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",
     "dist/module/character-creation-magic.js",
+    "dist/module/character-creation-heroic-motivation.js",
+    "dist/module/heroic-service.js",
     "dist/module/talent-library.js",
     "dist/module/character-sheet-v15-controller.js",
     "dist/module/character-sheet-window-polish.js",
