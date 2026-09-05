@@ -1,7 +1,7 @@
 import { prepareSkillCheck } from "../domain/skills/index.js";
 import { formatPool, resultToChatHtml } from "./dice-ui.js";
 import { poolTraceToHtml } from "./pool-ui.js";
-import { buildSynchronizedSkillStates, getActiveSkillDefinitions } from "./skills-service.js";
+import { buildSynchronizedSkillStates, getActorSkillDefinitions } from "./skills-service.js";
 import { minionSkillRank, normalizeMinionGroup } from "../domain/adversaries/index.js";
 import { rollNarrativeWithPresentation } from "./dice-renderer-bridge.js";
 let transientCharacteristicOverride = null;
@@ -42,7 +42,7 @@ export function findSkillState(actor, skillId) {
 export function buildSkillSheetRows(actor) {
     const states = buildSynchronizedSkillStates(actor);
     const indexById = new Map(states.map((state, index) => [state.id, index]));
-    const definitions = getActiveSkillDefinitions();
+    const definitions = getActorSkillDefinitions(actor);
     const groups = { general: [], combat: [], knowledge: [], magic: [] };
     for (const definition of definitions) {
         const index = indexById.get(definition.id);
@@ -78,9 +78,9 @@ export function buildSkillSheetRows(actor) {
     return groups;
 }
 export function prepareActorSkillCheck(actor, skillId, difficulty = 2, rankOverride, characteristicOverrideId) {
-    const definition = getActiveSkillDefinitions().find((entry) => entry.id === skillId);
+    const definition = getActorSkillDefinitions(actor).find((entry) => entry.id === skillId);
     if (!definition)
-        throw new Error(`Unknown active skill '${skillId}'.`);
+        throw new Error(`Unknown active skill '${skillId}' for actor profile.`);
     const state = findSkillState(actor, skillId);
     if (!state)
         throw new Error(`Actor '${actor?.name ?? "Unknown"}' has no persistent state for skill '${skillId}'.`);
