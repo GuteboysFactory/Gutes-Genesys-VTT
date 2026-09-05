@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1682 QA hotfix: fixes the remaining parenthesis syntax error in the Realms of Terrinoth Character Creation catalog and validates the complete content-pack module with a JavaScript parser before publication. Preserves the 14 playable archetype/species profiles, 8 careers plus Runemaster variant, structured starting data, Scout errata, and the renderChatMessageHTML compatibility cleanup from 0.0.168.",
-  "version": "0.0.1682",
+  "description": "Genesys VTT 0.0.169 Terrinoth Skills & Magic Foundation: adds the complete Realms of Terrinoth skill registry, validates all career skill IDs, registers the Terrinoth rules profile, models Arcana/Divine/Primal/Runes/Verse magic actions and career-only magic-skill access, and prepares Character Creation to enforce and expose magic access from archetypes, careers, and talents.",
+  "version": "0.0.169",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -20,8 +20,10 @@
     "dist/module/content-registry.js",
     "dist/module/content-packs/realms-of-terrinoth-character-creation.js",
     "dist/module/content-packs/realms-of-terrinoth-talents.js",
+    "dist/module/content-packs/realms-of-terrinoth-skills-magic.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",
+    "dist/module/character-creation-magic.js",
     "dist/module/talent-library.js",
     "dist/module/character-sheet-v15-controller.js",
     "dist/module/character-sheet-window-polish.js",

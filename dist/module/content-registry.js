@@ -81,6 +81,7 @@ export function normalizeCharacterContentPack(pack = {}) {
         currency: normalizeCurrency(pack.currency),
         creationRules: normalizeCreationRules(pack.creationRules),
         creationSteps: Array.isArray(pack.creationSteps) ? clone(pack.creationSteps) : [],
+        magicRules: pack.magicRules && typeof pack.magicRules === "object" ? clone(pack.magicRules) : {},
         metadata: { ...(pack.metadata ?? {}) }
     };
     for (const key of CONTENT_KEYS)
@@ -133,18 +134,25 @@ export function getCharacterContent(kind, { packIds = null, settingId = "" } = {
 }
 
 export function getSettingCurrency(settingId) {
-    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId);
+    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId && entry.currency?.denominations?.length);
     return pack ? clone(pack.currency) : { mode: "single", label: "Funds", denominations: [] };
 }
 
 export function getSettingCreationRules(settingId) {
-    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId);
+    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId && entry.creationRules);
     return pack ? clone(pack.creationRules) : normalizeCreationRules({});
 }
 
 export function getSettingCreationSteps(settingId) {
-    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId);
+    const pack = Array.from(memoryPacks.values()).find((entry) => entry.settingId === settingId && entry.creationSteps?.length);
     return pack ? clone(pack.creationSteps) : [];
+}
+
+export function getSettingMagicRules(settingId) {
+    const packs = Array.from(memoryPacks.values()).filter((entry) => entry.settingId === settingId && Object.keys(entry.magicRules ?? {}).length);
+    if (!packs.length)
+        return {};
+    return packs.reduce((merged, pack) => ({ ...merged, ...clone(pack.magicRules) }), {});
 }
 
 function persistedPacks() {
@@ -199,6 +207,7 @@ function exposeApi() {
         getCurrency: getSettingCurrency,
         getCreationRules: getSettingCreationRules,
         getCreationSteps: getSettingCreationSteps,
+        getMagicRules: getSettingMagicRules,
         snapshot: characterContentRegistrySnapshot
     });
     Object.defineProperty(game, "genesysContent", { configurable: true, value: api });
