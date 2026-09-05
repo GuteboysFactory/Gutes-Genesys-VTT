@@ -1,0 +1,81 @@
+/* 0.0.1742 Skills layout polish
+   Keep the Advancement XP badge as its own responsive column so Career never wraps below Skill. */
+.genesys-vtt .genesys-skill-head,
+.genesys-vtt .genesys-skill-row {
+  grid-template-columns: minmax(190px, 1.55fr) minmax(100px, .78fr) 132px 58px 34px;
+  column-gap: 8px;
+}
+
+/* The header has four semantic labels; Career belongs over the fifth row column.
+   Column four is reserved for the compact Advancement XP cost badge. */
+.genesys-vtt .genesys-skill-head > :nth-child(1) { grid-column: 1; }
+.genesys-vtt .genesys-skill-head > :nth-child(2) { grid-column: 2; }
+.genesys-vtt .genesys-skill-head > :nth-child(3) { grid-column: 3; }
+.genesys-vtt .genesys-skill-head > :nth-child(4) {
+  grid-column: 5;
+  justify-self: center;
+}
+
+.genesys-vtt .genesys-skill-rank-pips {
+  justify-content: flex-start;
+  gap: 5px;
+}
+
+.genesys-vtt .genesys-skill-row .genesys-advancement-skill-cost {
+  min-width: 0;
+  width: 54px;
+  margin-left: 0;
+  justify-self: center;
+  white-space: nowrap;
+}
+
+.genesys-vtt .genesys-skill-row [data-skill-career],
+.genesys-vtt .genesys-skill-row [data-minion-group-skill] {
+  justify-self: center;
+  margin: 0;
+}
+
+/* The legacy bottom-right sheet ornament was viewport/scroll-position dependent and
+   could appear to terminate an arbitrary Skill row while resizing the sheet. */
+.genesys-vtt .genesys-sheet-v15::after {
+  display: none !important;
+}
+
+@media (max-width: 900px) {
+  .genesys-vtt .genesys-skill-head,
+  .genesys-vtt .genesys-skill-row {
+    grid-template-columns: minmax(145px, 1.4fr) minmax(88px, .78fr) 122px 52px 30px;
+    column-gap: 6px;
+  }
+
+  .genesys-vtt .genesys-skill-rank-pips { gap: 4px; }
+  .genesys-vtt .genesys-skill-rank-pip {
+    width: 18px;
+    min-width: 18px;
+    height: 18px;
+    min-height: 18px;
+  }
+  .genesys-vtt .genesys-skill-row .genesys-advancement-skill-cost {
+    width: 48px;
+    padding-inline: 3px;
+  }
+}
+
+@media (max-width: 680px) {
+  .genesys-vtt .genesys-skill-head,
+  .genesys-vtt .genesys-skill-row {
+    grid-template-columns: minmax(120px, 1.25fr) minmax(76px, .72fr) 108px 46px 28px;
+    column-gap: 4px;
+  }
+  .genesys-vtt .genesys-skill-rank-pips { gap: 2px; }
+  .genesys-vtt .genesys-skill-rank-pip {
+    width: 16px;
+    min-width: 16px;
+    height: 16px;
+    min-height: 16px;
+  }
+  .genesys-vtt .genesys-skill-row .genesys-advancement-skill-cost {
+    width: 44px;
+    font-size: 9px;
+  }
+}
