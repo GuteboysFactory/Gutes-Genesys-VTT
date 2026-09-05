@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1700 (0.0.170 milestone) Heroic Abilities + Motivations: adds a generic Heroic Ability progression/activation foundation, structured Strength/Flaw/Desire/Fear motivations, Terrinoth Heroic Ability primary/secondary/origin catalog metadata, Ability Point upgrades, atomic multi-Story-Point activation preparation, session use tracking, and Character Creation integration without bundling copyrighted rules text.",
-  "version": "0.0.1700",
+  "description": "Genesys VTT 0.0.1710 (0.0.171 milestone) Equipment + Terrinoth Wallet: adds a generic equipment/wallet foundation, Terrinoth weapons/armor/gear/potions and magic implements, starting-gear choice resolution, Silver Coin starting funds, Character Creation inventory finalization, hard-point capacity validation, single-slot craftsmanship metadata, and errata-aware implement material data.",
+  "version": "0.0.1710",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -15,6 +15,7 @@
   "download": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT/archive/refs/heads/qa.zip",
   "esmodules": [
     "dist/genesys.js",
+    "dist/module/implement-bootstrap.js",
     "dist/module/dice-renderer-bridge.js",
     "dist/module/talent-bootstrap.js",
     "dist/module/content-registry.js",
@@ -22,10 +23,13 @@
     "dist/module/content-packs/realms-of-terrinoth-talents.js",
     "dist/module/content-packs/realms-of-terrinoth-skills-magic.js",
     "dist/module/content-packs/realms-of-terrinoth-heroic-motivations.js",
+    "dist/module/content-packs/realms-of-terrinoth-equipment.js",
+    "dist/module/equipment-service.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",
     "dist/module/character-creation-magic.js",
     "dist/module/character-creation-heroic-motivation.js",
+    "dist/module/character-creation-equipment.js",
     "dist/module/heroic-service.js",
     "dist/module/talent-library.js",
     "dist/module/character-sheet-v15-controller.js",
@@ -58,6 +62,7 @@
       "armor": {},
       "gear": {},
       "attachment": {},
+      "implement": {},
       "talent": {}
     }
   }
