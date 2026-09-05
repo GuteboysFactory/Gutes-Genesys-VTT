@@ -54,8 +54,8 @@ Hooks.once("ready", () => {
         if (!validation.valid)
             throw new Error(validation.errors.join(" "));
         await actor.update(actorUpdate(draft));
-        if (base.finalizeEquipment)
-            await base.finalizeEquipment(actor, draft);
+        if (game?.genesysEquipment?.replaceCharacterCreationEquipment && draft.startingGearResolution)
+            await game.genesysEquipment.replaceCharacterCreationEquipment(actor, draft.startingGearResolution);
         await base.saveDraft(actor, { ...clone(draft), status: "complete", completedAt: Date.now() });
         Hooks.callAll("genesysCharacterCreationFinalized", actor, clone(draft));
         return { actor, draft: clone(draft), validation };
