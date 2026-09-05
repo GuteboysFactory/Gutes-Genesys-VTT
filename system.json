@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1710 (0.0.171 milestone) Equipment + Terrinoth Wallet: adds a generic equipment/wallet foundation, Terrinoth weapons/armor/gear/potions and magic implements, starting-gear choice resolution, Silver Coin starting funds, Character Creation inventory finalization, hard-point capacity validation, single-slot craftsmanship metadata, and errata-aware implement material data.",
-  "version": "0.0.1710",
+  "description": "Genesys VTT 0.0.1720 (0.0.172 milestone) XP & Advancement Foundation: adds a generic runtime XP transaction engine, earned/starting/spent separation, structured XP ledger, career/non-career Skill advancement, post-creation Characteristic purchase guards, GM XP awards/adjustments/refunds, Talent purchase ledger integration, legacy XP baseline reconciliation, and Heroic Ability progression derived from earned XP.",
+  "version": "0.0.1720",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -31,6 +31,8 @@
     "dist/module/character-creation-heroic-motivation.js",
     "dist/module/character-creation-equipment.js",
     "dist/module/heroic-service.js",
+    "dist/module/advancement-service.js",
+    "dist/module/character-creation-advancement.js",
     "dist/module/talent-library.js",
     "dist/module/character-sheet-v15-controller.js",
     "dist/module/character-sheet-window-polish.js",
