@@ -98,15 +98,15 @@ function buildMagicImplements(root, actor) {
     }
     if (panel.querySelector("[data-magic-implements-group]"))
         return;
-    const implements = Array.from(actor.items?.contents ?? []).filter((item) => item?.type === "implement");
+    const implementItems = Array.from(actor.items?.contents ?? []).filter((item) => item?.type === "implement");
     const details = document.createElement("details");
     details.className = "genesys-item-group genesys-v1752-implements";
     details.dataset.magicImplementsGroup = "true";
     details.open = true;
-    const rows = implements.length
-        ? implements.map((item) => `<div class="genesys-item-row genesys-simple-item-row" data-item-id="${item.id}"><button type="button" class="genesys-item-name" data-edit-magic-implement="${item.id}">${item.name}</button><span>Damage +${integer(item.system?.damage)} · Enc ${integer(item.system?.encumbrance)}</span><label class="genesys-v1752-equipped"><input type="checkbox" data-toggle-magic-implement="${item.id}" ${item.system?.equipped ? "checked" : ""}/> Equipped</label><span class="genesys-item-actions"><button type="button" data-delete-magic-implement="${item.id}">×</button></span></div>`).join("")
+    const rows = implementItems.length
+        ? implementItems.map((item) => `<div class="genesys-item-row genesys-simple-item-row" data-item-id="${item.id}"><button type="button" class="genesys-item-name" data-edit-magic-implement="${item.id}">${item.name}</button><span>Damage +${integer(item.system?.damage)} · Enc ${integer(item.system?.encumbrance)}</span><label class="genesys-v1752-equipped"><input type="checkbox" data-toggle-magic-implement="${item.id}" ${item.system?.equipped ? "checked" : ""}/> Equipped</label><span class="genesys-item-actions"><button type="button" data-delete-magic-implement="${item.id}">×</button></span></div>`).join("")
         : '<p class="genesys-empty-row">No magic implements yet.</p>';
-    details.innerHTML = `<summary>Magic Implements (${implements.length})</summary><div class="genesys-item-table">${rows}</div>`;
+    details.innerHTML = `<summary>Magic Implements (${implementItems.length})</summary><div class="genesys-item-table">${rows}</div>`;
     const attachments = Array.from(panel.querySelectorAll("details.genesys-item-group")).find((group) => group.querySelector("summary")?.textContent?.trim()?.toLowerCase()?.startsWith("attachments"));
     if (attachments)
         attachments.before(details);
