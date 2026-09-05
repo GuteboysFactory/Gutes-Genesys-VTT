@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1722 (0.0.172 milestone hotfix) XP & Advancement Foundation: preserves the active Character Sheet tab across both system-triggered and Foundry-triggered actor rerenders using persistent per-actor tab state, while retaining the XP transaction engine, ledger, Skill advancement, GM XP controls foundation, Talent ledger integration, and Heroic Ability earned-XP progression.",
-  "version": "0.0.1722",
+  "description": "Genesys VTT 0.0.1730 Advancement UI: connects the runtime XP engine to Character Sheet skill and Talent purchases, adds purchase confirmation with cost/remaining XP, read-only XP Available/Earned/Spent header status, an XP Ledger viewer, and keeps GM XP awards outside the character sheet for the future Genesys GM Dock.",
+  "version": "0.0.1730",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -40,7 +40,8 @@
     "dist/module/character-sheet-header-resources.js",
     "dist/module/character-sheet-release-cleanup.js",
     "dist/module/character-sheet-actions-tab.js",
-    "dist/module/character-sheet-tab-state.js"
+    "dist/module/character-sheet-tab-state.js",
+    "dist/module/character-sheet-advancement-ui.js"
   ],
   "styles": [
     "styles/genesys.css",
@@ -52,7 +53,8 @@
     "styles/character-sheet-v161.css",
     "styles/character-sheet-v162.css",
     "styles/character-sheet-v163.css",
-    "styles/character-sheet-v166.css"
+    "styles/character-sheet-v166.css",
+    "styles/character-sheet-v173.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
