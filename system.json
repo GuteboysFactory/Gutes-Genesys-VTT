@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1741 Character Creator Wizard hotfix: makes the Identity step validation reactive so Next unlocks immediately after entering a name, and shows Starting XP as pending until an archetype/species is selected while preserving the 0.0.1740 service-backed creation flow.",
-  "version": "0.0.1741",
+  "description": "Genesys VTT 0.0.1742 Character Sheet Skills layout polish: gives Advancement XP cost and Career their own responsive columns, shifts Rank slightly left, keeps Career checkboxes aligned at the far right, and removes the legacy fixed bottom-right sheet ornament that could appear attached to arbitrary Skill rows while resizing.",
+  "version": "0.0.1742",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -58,7 +58,8 @@
     "styles/character-sheet-v163.css",
     "styles/character-sheet-v166.css",
     "styles/character-sheet-v173.css",
-    "styles/character-creator-v174.css"
+    "styles/character-creator-v174.css",
+    "styles/character-sheet-v1742.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
