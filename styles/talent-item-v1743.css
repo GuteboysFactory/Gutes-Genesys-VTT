@@ -1,0 +1,68 @@
+/* 0.0.1743 Talent rules quick reference */
+.genesys-vtt.genesys-item-sheet .genesys-talent-reference {
+  display: grid;
+  gap: 12px;
+}
+
+.genesys-vtt.genesys-item-sheet .genesys-talent-reference-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.genesys-vtt.genesys-item-sheet .genesys-talent-reference-grid > div {
+  min-width: 0;
+  padding: 8px 10px;
+  border: 1px solid rgba(109, 76, 40, .28);
+  border-radius: 5px;
+  background: rgba(255, 250, 236, .2);
+}
+
+.genesys-vtt.genesys-item-sheet .genesys-talent-reference-grid span,
+.genesys-vtt.genesys-item-sheet .genesys-talent-reference-grid strong {
+  display: block;
+}
+
+.genesys-vtt.genesys-item-sheet .genesys-talent-reference-grid span {
+  margin-bottom: 3px;
+  opacity: .68;
+  font-size: .66rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt.genesys-item-sheet .genesys-talent-reference-grid strong {
+  overflow-wrap: anywhere;
+  font-size: .82rem;
+}
+
+.genesys-vtt.genesys-item-sheet .genesys-talent-rules-summary {
+  padding: 11px 12px;
+  border-left: 3px solid var(--genesys-gold, #d7ad52);
+  background: rgba(215, 173, 82, .08);
+}
+
+.genesys-vtt.genesys-item-sheet .genesys-talent-rules-summary h3 {
+  margin: 0 0 5px;
+  font-size: .74rem;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt.genesys-item-sheet .genesys-talent-rules-summary p {
+  margin: 0;
+  line-height: 1.48;
+}
+
+.genesys-vtt.genesys-item-sheet .genesys-talent-source-note {
+  margin: 0;
+  opacity: .64;
+  font-size: .68rem;
+}
+
+@media (max-width: 560px) {
+  .genesys-vtt.genesys-item-sheet .genesys-talent-reference-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
