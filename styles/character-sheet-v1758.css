@@ -1,0 +1,40 @@
+/* 0.0.1758 - restore the proven Wizard-era XP / currency header resource layout */
+.genesys-vtt .genesys-header-wizard-baseline .genesys-header-actions {
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  align-content: stretch;
+  gap: 7px;
+  padding: 12px;
+}
+
+.genesys-vtt .genesys-header-wizard-baseline .genesys-header-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
+  align-content: start;
+}
+
+.genesys-vtt .genesys-header-wizard-baseline .genesys-header-resource {
+  min-height: 52px;
+}
+
+.genesys-vtt .genesys-header-wizard-baseline .genesys-header-resource:last-child {
+  grid-column: 1 / -1;
+}
+
+.genesys-vtt .genesys-header-wizard-baseline .genesys-header-ledger-button,
+.genesys-vtt .genesys-header-wizard-baseline .genesys-header-button {
+  width: 100%;
+  min-height: 30px;
+  margin: 0;
+}
+
+@media (max-width: 980px) {
+  .genesys-vtt .genesys-header-wizard-baseline .genesys-header-resource-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .genesys-vtt .genesys-header-wizard-baseline .genesys-header-resource:last-child {
+    grid-column: 1 / -1;
+  }
+}
