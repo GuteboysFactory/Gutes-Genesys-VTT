@@ -1,16 +1,14 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.168 QA: adds the Realms of Terrinoth Character Creation catalog foundation with 14 playable archetype/species profiles, 8 careers plus the Runemaster Mage variant, structured characteristics, starting XP, wound/strain formulas, starting skill grants, special-ability metadata, career skills, starting-gear choice groups, and Terrinoth silver-currency metadata. Scout starting gear follows the official errata. Also removes the deprecated Foundry renderChatMessage compatibility hook from Narrative Spend and uses renderChatMessageHTML with native HTMLElement handling for v13+ compatibility. Preserves the 0.0.167 Terrinoth Talent Catalog, Talent Library, Character Creation Data Foundation, Actions, Rule Engine, combat, encounter, and narrative dice work.",
-  "version": "0.0.168",
+  "description": "Genesys VTT 0.0.1681 QA hotfix: fixes the syntax error in the Realms of Terrinoth Character Creation career catalog that prevented the 0.0.168 content-pack module from loading. Preserves the 14 playable archetype/species profiles, 8 careers plus Runemaster variant, structured starting data, Scout errata, and the renderChatMessageHTML compatibility cleanup from 0.0.168.",
+  "version": "0.0.1681",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
   },
   "authors": [
-    {
-      "name": "Genesys VTT Project"
-    }
+    { "name": "Genesys VTT Project" }
   ],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
   "manifest": "https://raw.githubusercontent.com/GuteboysFactory/Gutes-Genesys-VTT/qa/system.json",
@@ -45,21 +43,11 @@
     "styles/character-sheet-v166.css"
   ],
   "languages": [
-    {
-      "lang": "en",
-      "name": "English",
-      "path": "lang/en.json"
-    },
-    {
-      "lang": "sv",
-      "name": "Svenska",
-      "path": "lang/sv.json"
-    }
+    { "lang": "en", "name": "English", "path": "lang/en.json" },
+    { "lang": "sv", "name": "Svenska", "path": "lang/sv.json" }
   ],
   "documentTypes": {
-    "Actor": {
-      "character": {}
-    },
+    "Actor": { "character": {} },
     "Item": {
       "weapon": {},
       "armor": {},
