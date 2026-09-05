@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1750 Character / Item / Magic Integration: brings Character Creator output onto the live Character Sheet with Heroic Ability and structured Motivation on Biography, per-character Magic Access on Skills, Wallet and first-class Magic Implements on Equipment, while preserving the verified Advancement and Creator foundations.",
-  "version": "0.0.1750",
+  "description": "Genesys VTT 0.0.1751 Character / Item / Magic Integration hotfix: uses per-Actor setting profiles for Terrinoth skill rows and checks, hardens Biography/Skills/Equipment mounting, moves structured Motivation out of the long header line, and restores Magic Access, Wallet, and Magic Implements presentation on the live Character Sheet.",
+  "version": "0.0.1751",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
