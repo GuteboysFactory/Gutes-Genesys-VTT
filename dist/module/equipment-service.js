@@ -1,6 +1,7 @@
 import { depositWallet, normalizeEquipmentDefinition, normalizeWallet, replaceCraftsmanship, resolveStartingGearPackage, rollFundsFormula, spendWallet, validateHardPointCapacity } from "../domain/equipment/index.js";
 
 const SYSTEM_ID = "genesys-vtt";
+const EQUIPMENT_ITEM_TYPES = Object.freeze(["weapon", "armor", "gear", "implement", "attachment"]);
 
 function clone(value) {
     if (value === undefined) return undefined;
@@ -13,8 +14,22 @@ function settingEquipment(settingId) {
 
 export function listEquipmentDefinitions(settingId) {
     return settingEquipment(settingId)
-        .filter((entry) => ["weapon", "armor", "gear", "implement"].includes(String(entry?.itemType ?? "")))
+        .filter((entry) => EQUIPMENT_ITEM_TYPES.includes(String(entry?.itemType ?? "")))
         .map(normalizeEquipmentDefinition);
+}
+
+export function listAttachmentDefinitions(settingId, compatibleType = "") {
+    const type = String(compatibleType ?? "").trim().toLowerCase();
+    return listEquipmentDefinitions(settingId)
+        .filter((entry) => entry.itemType === "attachment")
+        .filter((entry) => {
+            if (!type) return true;
+            const compatible = String(entry.system?.compatibleTypes ?? "")
+                .split(",")
+                .map((value) => value.trim().toLowerCase())
+                .filter(Boolean);
+            return compatible.includes(type);
+        });
 }
 
 export function getEquipmentDefinition(settingId, equipmentId) {
@@ -65,7 +80,9 @@ Hooks.once("ready", () => {
     Object.defineProperty(game, "genesysEquipment", {
         configurable: true,
         value: Object.freeze({
+            itemTypes: EQUIPMENT_ITEM_TYPES,
             listDefinitions: listEquipmentDefinitions,
+            listAttachments: listAttachmentDefinitions,
             getDefinition: getEquipmentDefinition,
             getRuleEntries: equipmentRuleEntries,
             normalizeDefinition: normalizeEquipmentDefinition,
