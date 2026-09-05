@@ -1,0 +1,127 @@
+.genesys-character-creator,
+.genesys-character-creator-launcher {
+  padding: 0;
+  border: 1px solid rgba(68, 46, 27, 0.9);
+  border-radius: 10px;
+  background: #efe5c9;
+  color: #332419;
+  box-shadow: 0 22px 70px rgba(0, 0, 0, 0.46);
+}
+.genesys-character-creator {
+  width: min(1180px, 94vw);
+  height: min(820px, 92vh);
+  max-width: none;
+  max-height: none;
+}
+.genesys-character-creator::backdrop,
+.genesys-character-creator-launcher::backdrop { background: rgba(11, 8, 6, 0.66); }
+.genesys-creator-shell { height: 100%; display: grid; grid-template-rows: auto 1fr auto auto; overflow: hidden; background: linear-gradient(rgba(255,255,255,0.16), rgba(255,255,255,0.03)), #efe5c9; }
+.genesys-creator-header { display: flex; align-items: center; gap: 18px; min-height: 72px; padding: 12px 16px; border-bottom: 1px solid rgba(78, 52, 30, 0.42); background: rgba(75, 48, 29, 0.96); color: #f7edd6; }
+.genesys-creator-header > div:first-child { display: grid; min-width: 210px; }
+.genesys-creator-header strong { font-size: 20px; }
+.genesys-creator-header small { color: rgba(247, 237, 214, 0.72); }
+.genesys-creator-header > button,
+.genesys-creator-launcher-shell header > button { margin-left: auto; width: 32px; height: 32px; border: 0; background: transparent; color: inherit; font-size: 24px; }
+.genesys-creator-xp { display: flex; align-items: center; gap: 8px; margin-left: auto; }
+.genesys-creator-xp span { display: grid; min-width: 78px; padding: 5px 8px; border: 1px solid rgba(255,255,255,0.18); border-radius: 5px; text-align: center; font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; }
+.genesys-creator-xp strong { font-size: 16px; }
+.genesys-creator-xp .available { background: rgba(229, 186, 75, 0.17); border-color: rgba(229, 186, 75, 0.48); }
+.genesys-creator-layout { min-height: 0; display: grid; grid-template-columns: 190px 1fr; }
+.genesys-creator-steps { overflow-y: auto; padding: 12px 8px; border-right: 1px solid rgba(78, 52, 30, 0.28); background: rgba(72, 49, 31, 0.08); }
+.genesys-creator-steps button { width: 100%; display: flex; align-items: center; gap: 8px; padding: 8px; border: 0; border-radius: 5px; background: transparent; color: #4b3828; text-align: left; }
+.genesys-creator-steps button span { display: inline-grid; place-items: center; width: 24px; height: 24px; flex: 0 0 24px; border: 1px solid rgba(77, 52, 31, 0.36); border-radius: 50%; font-size: 11px; }
+.genesys-creator-steps button.active { background: rgba(88, 57, 33, 0.15); font-weight: 800; }
+.genesys-creator-steps button.active span,
+.genesys-creator-steps button.visited span { background: #65482d; color: #fff3d9; }
+.genesys-creator-main { min-width: 0; overflow: auto; padding: 18px 22px 28px; }
+.genesys-creator-panel > h2 { margin: 0 0 4px; font-size: 25px; color: #4c3422; }
+.genesys-creator-panel > p { margin: 0 0 16px; color: #6c5948; }
+.genesys-creator-form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.genesys-creator-form-grid label { display: grid; gap: 5px; font-weight: 700; }
+.genesys-creator-form-grid .wide { grid-column: 1 / -1; }
+.genesys-creator-form-grid input,
+.genesys-creator-form-grid select,
+.genesys-creator-form-grid textarea { width: 100%; border: 1px solid rgba(82, 56, 33, 0.36); border-radius: 5px; background: rgba(255, 252, 242, 0.78); color: #332419; }
+.genesys-creator-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.genesys-creator-card-grid.compact { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.genesys-creator-choice-card,
+.genesys-creator-talent-card { display: grid; gap: 5px; min-height: 82px; padding: 10px 12px; border: 1px solid rgba(80, 54, 32, 0.34); border-radius: 7px; background: rgba(255, 251, 239, 0.7); color: #3b291c; text-align: left; }
+.genesys-creator-choice-card:hover:not(:disabled),
+.genesys-creator-talent-card:hover:not(:disabled) { border-color: rgba(105, 69, 36, 0.72); background: rgba(255, 249, 229, 0.94); }
+.genesys-creator-choice-card.selected,
+.genesys-creator-skill-row .rank-buttons button.selected { border-color: #8c641f; background: rgba(208, 165, 73, 0.23); box-shadow: inset 0 0 0 1px rgba(140, 100, 31, 0.3); }
+.genesys-creator-choice-card strong { font-size: 15px; }
+.genesys-creator-choice-card span,
+.genesys-creator-choice-card small,
+.genesys-creator-talent-card small { color: #75614d; }
+.genesys-creator-characteristics { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.genesys-creator-characteristic { display: grid; justify-items: center; gap: 5px; padding: 12px; border: 1px solid rgba(82, 56, 33, 0.3); border-radius: 7px; background: rgba(255, 251, 239, 0.68); }
+.genesys-creator-characteristic > span { font-weight: 800; text-transform: uppercase; }
+.genesys-creator-characteristic > div { display: flex; align-items: center; gap: 12px; }
+.genesys-creator-characteristic button { width: 34px; height: 30px; }
+.genesys-creator-characteristic strong { min-width: 28px; font-size: 25px; text-align: center; }
+.genesys-creator-characteristic em { font-size: 11px; color: #765d3e; }
+.genesys-creator-choice-block,
+.genesys-creator-gear-group { margin-bottom: 14px; padding: 12px; border: 1px solid rgba(82, 56, 33, 0.25); border-radius: 7px; background: rgba(255, 252, 242, 0.45); }
+.genesys-creator-choice-block h3,
+.genesys-creator-gear-group h3 { margin: 0 0 6px; }
+.genesys-creator-choice-block p,
+.genesys-creator-gear-group p { margin: 0 0 8px; color: #705c48; }
+.genesys-creator-check-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 5px 10px; }
+.genesys-creator-check-grid label { display: flex; align-items: center; gap: 5px; min-width: 0; }
+.genesys-creator-skill-list,
+.genesys-creator-talent-list,
+.genesys-creator-selected-list { display: grid; gap: 5px; }
+.genesys-creator-skill-row { display: grid; grid-template-columns: minmax(190px, 1fr) auto; align-items: center; gap: 10px; padding: 7px 9px; border-bottom: 1px solid rgba(83, 57, 35, 0.16); }
+.genesys-creator-skill-row > div:first-child { display: grid; }
+.genesys-creator-skill-row small { color: #786451; }
+.genesys-creator-skill-row .rank-buttons { display: flex; gap: 4px; }
+.genesys-creator-skill-row .rank-buttons button { width: 30px; height: 28px; border: 1px solid rgba(79, 54, 33, 0.35); border-radius: 4px; background: rgba(255, 252, 242, 0.68); }
+.genesys-creator-talent-card { grid-template-columns: 1fr auto; align-items: center; min-height: 54px; }
+.genesys-creator-talent-card > span,
+.genesys-creator-selected-talent > span { display: grid; }
+.genesys-creator-talent-card:disabled { opacity: 0.45; }
+.genesys-creator-selected-list { margin-bottom: 12px; }
+.genesys-creator-selected-talent { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 7px 9px; border: 1px solid rgba(93, 64, 37, 0.24); border-radius: 5px; background: rgba(207, 166, 78, 0.12); }
+.genesys-creator-funds { display: flex; align-items: center; gap: 10px; margin-top: 15px; padding: 12px; border: 1px solid rgba(107, 76, 34, 0.36); border-radius: 7px; background: rgba(208, 165, 73, 0.15); }
+.genesys-creator-funds > div { display: grid; margin-right: auto; }
+.genesys-creator-funds b { font-size: 18px; }
+.genesys-creator-review-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; }
+.genesys-creator-review-grid > div { display: grid; gap: 3px; padding: 8px 10px; border: 1px solid rgba(82, 56, 33, 0.22); border-radius: 5px; background: rgba(255, 252, 242, 0.55); }
+.genesys-creator-review-grid span { color: #796551; font-size: 10px; text-transform: uppercase; }
+.genesys-creator-validation { margin-top: 12px; padding: 10px 12px; border-radius: 6px; }
+.genesys-creator-validation p { margin: 4px 0 0; }
+.genesys-creator-validation.error { border: 1px solid rgba(144, 46, 35, 0.45); background: rgba(168, 55, 42, 0.10); }
+.genesys-creator-validation.warning { border: 1px solid rgba(163, 115, 27, 0.44); background: rgba(191, 143, 42, 0.11); }
+.genesys-creator-validation.ok { border: 1px solid rgba(55, 112, 63, 0.4); background: rgba(55, 112, 63, 0.10); }
+.genesys-creator-step-warning { display: flex; flex-wrap: wrap; gap: 6px; padding: 7px 12px; border-top: 1px solid rgba(150, 99, 32, 0.3); background: rgba(211, 161, 56, 0.13); font-size: 11px; }
+.genesys-creator-step-warning span::before { content: "• "; }
+.genesys-creator-footer { min-height: 54px; display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 9px 14px; border-top: 1px solid rgba(78, 52, 30, 0.3); background: rgba(74, 49, 30, 0.08); }
+.genesys-creator-footer > div { display: flex; align-items: center; gap: 8px; }
+.genesys-creator-footer button,
+.genesys-character-creator-launcher button,
+.genesys-character-creator-directory-button { min-height: 30px; padding: 5px 10px; border: 1px solid rgba(80, 54, 32, 0.42); border-radius: 5px; }
+.genesys-creator-footer .genesys-primary-action,
+.genesys-character-creator .genesys-primary-action,
+.genesys-character-creator-launcher .genesys-primary-action { background: #684a2d; color: #fff2d6; }
+.genesys-creator-saved-actor { color: #725c47; font-size: 11px; }
+.genesys-character-creator-launcher { width: min(560px, 90vw); }
+.genesys-creator-launcher-shell { display: grid; gap: 12px; padding: 14px; }
+.genesys-creator-launcher-shell header { display: flex; align-items: center; gap: 10px; padding-bottom: 10px; border-bottom: 1px solid rgba(80, 54, 32, 0.28); }
+.genesys-creator-launcher-shell header > div { display: grid; }
+.genesys-creator-new { min-height: 42px !important; }
+.genesys-creator-draft-list { display: grid; gap: 6px; }
+.genesys-creator-draft-list h3 { margin: 3px 0; }
+.genesys-creator-draft-list > button { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 9px 10px; background: rgba(255, 252, 242, 0.64); color: #362619; text-align: left; }
+.genesys-creator-draft-list > button span { display: grid; }
+.genesys-character-creator-directory-button { width: 100%; margin-top: 5px; }
+@media (max-width: 900px) {
+  .genesys-creator-layout { grid-template-columns: 145px 1fr; }
+  .genesys-creator-card-grid,
+  .genesys-creator-form-grid,
+  .genesys-creator-review-grid { grid-template-columns: 1fr; }
+  .genesys-creator-form-grid .wide { grid-column: auto; }
+  .genesys-creator-characteristics { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .genesys-creator-check-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .genesys-creator-xp span { min-width: 62px; }
+}
