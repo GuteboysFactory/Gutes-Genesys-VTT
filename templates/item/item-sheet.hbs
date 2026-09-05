@@ -1,99 +1,34 @@
 <section class="genesys-sheet-body genesys-item-body">
-  <header class="genesys-sheet-header">
-    <div>
-      <p class="genesys-eyebrow">GENESYS VTT · v{{systemVersion}} · {{item.type}}</p>
-      <input class="genesys-name" type="text" name="name" value="{{item.name}}" {{#unless editable}}disabled{{/unless}} />
-    </div>
-  </header>
+  <header class="genesys-sheet-header"><div><p class="genesys-eyebrow">GENESYS VTT · v{{systemVersion}} · {{item.type}}</p><input class="genesys-name" type="text" name="name" value="{{item.name}}" {{#unless editable}}disabled{{/unless}} /></div></header>
 
   {{#if isWeapon}}
-  <section class="genesys-panel genesys-item-fields">
-    <h2>Weapon</h2>
-    <div class="genesys-item-grid">
-      <label>Skill
-        <select name="system.skillId" {{#unless editable}}disabled{{/unless}}>
-          {{#each skills}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}
-        </select>
-      </label>
-      <label>Attack Mode
-        <select name="system.attackMode">{{selectOptions attackModeOptions selected=system.attackMode}}</select>
-      </label>
-      <label>Engaged Ranged Profile
-        <select name="system.engagedProfile">{{selectOptions engagedProfileOptions selected=system.engagedProfile}}</select>
-      </label>
-      <label>Damage Characteristic
-        <select name="system.damageCharacteristic">{{selectOptions damageCharacteristicOptions selected=system.damageCharacteristic}}</select>
-      </label>
-      <label>Damage<input type="number" name="system.damage" value="{{system.damage}}" min="0" /></label>
-      <label>Critical<input type="number" name="system.critical" value="{{system.critical}}" min="0" /></label>
-      <label>Range
-        <select name="system.range">{{selectOptions rangeOptions selected=system.range}}</select>
-      </label>
-      <label>Encumbrance<input type="number" name="system.encumbrance" value="{{system.encumbrance}}" min="0" /></label>
-      <label>Hard Points<input type="number" name="system.hardPoints" value="{{system.hardPoints}}" min="0" /></label>
-      <label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label>
-      <label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label>
-      <label class="genesys-item-check">Equipped<input type="checkbox" name="system.equipped" {{checked system.equipped}} /></label>
-    </div>
-  </section>
-  {{/if}}
+  <section class="genesys-panel genesys-item-fields"><h2>Weapon</h2><div class="genesys-item-grid">
+    <label>Skill<select name="system.skillId" {{#unless editable}}disabled{{/unless}}>{{#each skills}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>
+    <label>Attack Mode<select name="system.attackMode">{{selectOptions attackModeOptions selected=system.attackMode}}</select></label>
+    <label>Engaged Ranged Profile<select name="system.engagedProfile">{{selectOptions engagedProfileOptions selected=system.engagedProfile}}</select></label>
+    <label>Damage Characteristic<select name="system.damageCharacteristic">{{selectOptions damageCharacteristicOptions selected=system.damageCharacteristic}}</select></label>
+    <label>Damage<input type="number" name="system.damage" value="{{system.damage}}" min="0" /></label><label>Critical<input type="number" name="system.critical" value="{{system.critical}}" min="0" /></label>
+    <label>Range<select name="system.range">{{selectOptions rangeOptions selected=system.range}}</select></label><label>Encumbrance<input type="number" name="system.encumbrance" value="{{system.encumbrance}}" min="0" /></label>
+    <label>Hard Points<input type="number" name="system.hardPoints" value="{{system.hardPoints}}" min="0" /></label><label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label><label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label>
+    <label>Craftsmanship<input type="text" name="system.craftsmanshipId" value="{{system.craftsmanshipId}}" placeholder="none" /></label><label class="genesys-item-check">Equipped<input type="checkbox" name="system.equipped" {{checked system.equipped}} /></label>
+  </div></section>{{/if}}
 
   {{#if isArmor}}
-  <section class="genesys-panel genesys-item-fields">
-    <h2>Armor</h2>
-    <div class="genesys-item-grid">
-      <label>Soak<input type="number" name="system.soak" value="{{system.soak}}" min="0" /></label>
-      <label>Defense<input type="number" name="system.defense" value="{{system.defense}}" min="0" /></label>
-      <label>Encumbrance<input type="number" name="system.encumbrance" value="{{system.encumbrance}}" min="0" /></label>
-      <label>Hard Points<input type="number" name="system.hardPoints" value="{{system.hardPoints}}" min="0" /></label>
-      <label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label>
-      <label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label>
-      <label class="genesys-item-check">Equipped<input type="checkbox" name="system.equipped" {{checked system.equipped}} /></label>
-    </div>
-  </section>
-  {{/if}}
+  <section class="genesys-panel genesys-item-fields"><h2>Armor</h2><div class="genesys-item-grid">
+    <label>Soak<input type="number" name="system.soak" value="{{system.soak}}" min="0" /></label><label>Defense<input type="number" name="system.defense" value="{{system.defense}}" min="0" /></label><label>Encumbrance<input type="number" name="system.encumbrance" value="{{system.encumbrance}}" min="0" /></label><label>Hard Points<input type="number" name="system.hardPoints" value="{{system.hardPoints}}" min="0" /></label><label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label><label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label><label>Craftsmanship<input type="text" name="system.craftsmanshipId" value="{{system.craftsmanshipId}}" placeholder="none" /></label><label class="genesys-item-check">Equipped<input type="checkbox" name="system.equipped" {{checked system.equipped}} /></label>
+  </div></section>{{/if}}
 
   {{#if isGear}}
-  <section class="genesys-panel genesys-item-fields">
-    <h2>Gear</h2>
-    <div class="genesys-item-grid">
-      <label>Quantity<input type="number" name="system.quantity" value="{{system.quantity}}" min="0" /></label>
-      <label>Encumbrance<input type="number" name="system.encumbrance" value="{{system.encumbrance}}" min="0" /></label>
-      <label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label>
-      <label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label>
-      <label class="genesys-item-check">Equipped<input type="checkbox" name="system.equipped" {{checked system.equipped}} /></label>
-    </div>
-  </section>
-  {{/if}}
+  <section class="genesys-panel genesys-item-fields"><h2>Gear</h2><div class="genesys-item-grid"><label>Quantity<input type="number" name="system.quantity" value="{{system.quantity}}" min="0" /></label><label>Encumbrance<input type="number" name="system.encumbrance" value="{{system.encumbrance}}" min="0" /></label><label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label><label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label><label>Category<input type="text" name="system.category" value="{{system.category}}" /></label><label class="genesys-item-check">Consumable<input type="checkbox" name="system.consumable" {{checked system.consumable}} /></label><label>Activation<input type="text" name="system.activation" value="{{system.activation}}" /></label><label class="genesys-item-check">Equipped<input type="checkbox" name="system.equipped" {{checked system.equipped}} /></label></div></section>{{/if}}
+
+  {{#if isImplement}}
+  <section class="genesys-panel genesys-item-fields"><h2>Magic Implement</h2><div class="genesys-item-grid"><label>Damage Bonus<input type="number" name="system.damage" value="{{system.damage}}" min="0" /></label><label>Encumbrance<input type="number" name="system.encumbrance" value="{{system.encumbrance}}" min="0" /></label><label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label><label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label><label>Price Mode<input type="text" name="system.priceMode" value="{{system.priceMode}}" /></label><label>Material<input type="text" name="system.materialId" value="{{system.materialId}}" /></label><label class="genesys-item-check">Equipped<input type="checkbox" name="system.equipped" {{checked system.equipped}} /></label></div></section>{{/if}}
 
   {{#if isAttachment}}
-  <section class="genesys-panel genesys-item-fields">
-    <h2>Attachment groundwork</h2>
-    <div class="genesys-item-grid">
-      <label>Hard Point Cost<input type="number" name="system.hardPointCost" value="{{system.hardPointCost}}" min="0" /></label>
-      <label>Host Item ID<input type="text" name="system.hostItemId" value="{{system.hostItemId}}" /></label>
-      <label>Compatible Types<input type="text" name="system.compatibleTypes" value="{{system.compatibleTypes}}" /></label>
-      <label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label>
-      <label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label>
-      <label class="genesys-item-check">Installed<input type="checkbox" name="system.installed" {{checked system.installed}} /></label>
-    </div>
-  </section>
-  {{/if}}
+  <section class="genesys-panel genesys-item-fields"><h2>Attachment groundwork</h2><div class="genesys-item-grid"><label>Hard Point Cost<input type="number" name="system.hardPointCost" value="{{system.hardPointCost}}" min="0" /></label><label>Host Item ID<input type="text" name="system.hostItemId" value="{{system.hostItemId}}" /></label><label>Compatible Types<input type="text" name="system.compatibleTypes" value="{{system.compatibleTypes}}" /></label><label>Price<input type="number" name="system.price" value="{{system.price}}" min="0" /></label><label>Rarity<input type="number" name="system.rarity" value="{{system.rarity}}" min="0" max="10" /></label><label class="genesys-item-check">Installed<input type="checkbox" name="system.installed" {{checked system.installed}} /></label></div></section>{{/if}}
 
-  {{#unless isGear}}
-  <section class="genesys-panel genesys-quality-editor">
-    <h2>Qualities</h2>
-    <p class="genesys-item-note">Structured internally. Dev editor accepts comma-separated names, for example: <strong>Accurate 1, Pierce 2, Vicious 1</strong>.</p>
-    <div class="genesys-quality-entry">
-      <input type="text" data-quality-text value="{{qualitiesText}}" placeholder="Accurate 1, Pierce 2" />
-      <button type="button" data-action="applyQualities">Apply Qualities</button>
-    </div>
-    <p class="genesys-item-note">0.0.7-1 also resolves Pierce, Breach, and Stun Damage in the basic single-hit combat resolver. Active qualities remain deferred.</p>
-  </section>
-  {{/unless}}
+  {{#if supportsQualities}}
+  <section class="genesys-panel genesys-quality-editor"><h2>Qualities</h2><p class="genesys-item-note">Structured internally. Editor accepts comma-separated names, for example: <strong>Accurate 1, Pierce 2, Vicious 1</strong>.</p><div class="genesys-quality-entry"><input type="text" data-quality-text value="{{qualitiesText}}" placeholder="Accurate 1, Pierce 2" /><button type="button" data-action="applyQualities">Apply Qualities</button></div></section>{{/if}}
 
-  <section class="genesys-panel genesys-item-fields">
-    <h2>Notes</h2>
-    <textarea name="system.notes" rows="5">{{system.notes}}</textarea>
-  </section>
+  <section class="genesys-panel genesys-item-fields"><h2>Notes</h2><textarea name="system.notes" rows="5">{{system.notes}}</textarea></section>
 </section>
