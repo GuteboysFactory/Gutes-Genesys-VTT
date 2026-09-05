@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1751 Character / Item / Magic Integration hotfix: uses per-Actor setting profiles for Terrinoth skill rows and checks, hardens Biography/Skills/Equipment mounting, moves structured Motivation out of the long header line, and restores Magic Access, Wallet, and Magic Implements presentation on the live Character Sheet.",
-  "version": "0.0.1751",
+  "description": "Genesys VTT 0.0.1752 Character Sheet Integration: direct-mounts Biography, Magic Access, Wallet, and Magic Implements on every sheet render, uses per-Actor setting profiles, stacks Motivation vertically in Biography, and moves Quick Dice Pool from Skills to Actions.",
+  "version": "0.0.1752",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -46,7 +46,7 @@
     "dist/module/character-sheet-advancement-ui-hotfix.js",
     "dist/module/character-creator-wizard.js",
     "dist/module/character-creator-wizard-hotfix.js",
-    "dist/module/character-sheet-integration-v175.js"
+    "dist/module/character-sheet-integration-v1752.js"
   ],
   "styles": [
     "styles/genesys.css",
@@ -63,7 +63,8 @@
     "styles/character-creator-v174.css",
     "styles/character-sheet-v1742.css",
     "styles/talent-item-v1743.css",
-    "styles/character-sheet-v175.css"
+    "styles/character-sheet-v175.css",
+    "styles/character-sheet-v1752.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
