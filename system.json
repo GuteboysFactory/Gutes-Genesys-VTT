@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1752 Character Sheet Integration: direct-mounts Biography, Magic Access, Wallet, and Magic Implements on every sheet render, uses per-Actor setting profiles, stacks Motivation vertically in Biography, and moves Quick Dice Pool from Skills to Actions.",
-  "version": "0.0.1752",
+  "description": "Genesys VTT 0.0.1753 Character Sheet Integration runtime hotfix: replaces the brittle direct class import with an import-free DOM integration runtime, restores Biography Heroic/Motivation mounting, Wallet and Magic Implements, keeps per-Actor Terrinoth skills, and moves Quick Dice Pool from Skills to Actions.",
+  "version": "0.0.1753",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
