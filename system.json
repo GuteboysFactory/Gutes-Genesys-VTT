@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1757 fixes the Character Sheet header at the Handlebars source: removes the legacy GENESYS/FANTASY brand column and old Motivation field from the template, applies the Wizard-era portrait-first header class from first render, and leaves the 0.0.1756 Actions layout unchanged for focused QA.",
-  "version": "0.0.1757",
+  "description": "Genesys VTT 0.0.1758 restores the Wizard-era XP/Currency/Ledger header resource block, fixes the ES-module strict-mode parse failure in character-sheet-header-resources.js, and preserves the 0.0.1757 header structure plus 0.0.1756 Actions layout for focused QA.",
+  "version": "0.0.1758",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -66,7 +66,8 @@
     "styles/character-sheet-v175.css",
     "styles/character-sheet-v1752.css",
     "styles/character-sheet-v1755.css",
-    "styles/character-sheet-v1756.css"
+    "styles/character-sheet-v1756.css",
+    "styles/character-sheet-v1758.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
