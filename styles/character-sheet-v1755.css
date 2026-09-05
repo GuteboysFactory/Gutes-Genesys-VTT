@@ -1,0 +1,130 @@
+/* 0.0.1755 - stable header resources + Actions Roll Tools */
+.genesys-vtt .genesys-hero-header.genesys-header-v1755 {
+  grid-template-columns: 180px minmax(0,1fr) 320px;
+  min-height: 190px;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-portrait-column {
+  grid-column: 1;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-character-identity {
+  grid-column: 2;
+  min-width: 0;
+  padding: 18px 24px;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-header-actions {
+  grid-column: 3;
+  display: grid;
+  grid-template-rows: auto auto auto auto;
+  align-content: center;
+  justify-items: stretch;
+  gap: 7px;
+  padding: 11px 12px;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-header-resource-grid {
+  display: grid;
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 6px;
+  width: 100%;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-header-resource {
+  min-width: 0;
+  min-height: 55px;
+  display: grid;
+  grid-template-columns: 24px minmax(0,1fr);
+  align-items: center;
+  gap: 5px;
+  padding: 6px 7px;
+  border: 1px solid rgba(215,173,82,.38);
+  background: rgba(8,18,25,.72);
+  color: #f0d687;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-header-resource:nth-child(4) {
+  grid-column: 1 / -1;
+  min-height: 42px;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-header-resource > i {
+  font-size: 1rem;
+  text-align: center;
+  color: #e6bd59;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-header-resource > div {
+  min-width: 0;
+  display: grid;
+  gap: 1px;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-header-resource small {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #d6bb7e;
+  font-size: .55rem;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-header-resource strong,
+.genesys-vtt .genesys-header-v1755 .genesys-header-resource input {
+  width: 100%;
+  min-width: 0;
+  height: 23px;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #fff0b5;
+  font: 700 1.05rem Georgia,serif;
+  text-align: left;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-header-ledger-button,
+.genesys-vtt .genesys-header-v1755 .genesys-header-button {
+  width: 100%;
+  min-height: 31px;
+}
+
+.genesys-vtt .genesys-header-v1755 .genesys-build-id {
+  justify-self: center;
+}
+
+.genesys-vtt [data-equipment-wallet] {
+  display: none !important;
+}
+
+.genesys-vtt .genesys-actions-roll-tools {
+  grid-row: span 2;
+}
+
+.genesys-vtt .genesys-actions-roll-tools > .genesys-actions-quick-pool {
+  margin: 0 0 10px;
+  width: 100%;
+}
+
+.genesys-vtt .genesys-actions-roll-tools > .genesys-actions-quick-pool .genesys-panel-banner {
+  margin-bottom: 10px;
+}
+
+.genesys-vtt .genesys-actions-roll-tools .genesys-actions-check-engine {
+  margin: 8px 0 0;
+}
+
+@media(max-width:900px) {
+  .genesys-vtt .genesys-hero-header.genesys-header-v1755 {
+    grid-template-columns: 150px minmax(0,1fr);
+  }
+  .genesys-vtt .genesys-header-v1755 .genesys-header-actions {
+    grid-column: 1 / -1;
+    border-left: 0;
+    border-top: 1px solid var(--genesys-gold-deep);
+  }
+}
