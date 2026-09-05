@@ -1,0 +1,61 @@
+/* 0.0.1759 - Actions top-order polish only.
+   GOLD header remains untouched. */
+.genesys-vtt .genesys-actions-panel {
+  display: grid;
+  grid-template-columns: minmax(0,1.25fr) minmax(320px,.75fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.genesys-vtt .genesys-actions-panel[hidden] {
+  display: none !important;
+}
+
+/* Flatten the existing layout wrapper so its children can be ordered
+   around the toolbar without rebuilding any Action runtime DOM. */
+.genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 {
+  display: contents;
+}
+
+/* Requested order:
+   1. Dice Tools
+   2. Actions toolbar / + Custom Action
+   3. Combat + Custom | Talent + General columns */
+.genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 > .genesys-actions-dice-tools {
+  grid-column: 1 / -1;
+  grid-row: 1;
+}
+
+.genesys-vtt .genesys-actions-panel > .genesys-actions-toolbar {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  margin: 0;
+}
+
+.genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 > .genesys-actions-column-left {
+  grid-column: 1;
+  grid-row: 3;
+}
+
+.genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 > .genesys-actions-column-right {
+  grid-column: 2;
+  grid-row: 3;
+}
+
+@media (max-width: 980px) {
+  .genesys-vtt .genesys-actions-panel {
+    grid-template-columns: 1fr;
+  }
+
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 > .genesys-actions-dice-tools,
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-toolbar,
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 > .genesys-actions-column-left,
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 > .genesys-actions-column-right {
+    grid-column: 1;
+  }
+
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 > .genesys-actions-dice-tools { grid-row: 1; }
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-toolbar { grid-row: 2; }
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 > .genesys-actions-column-left { grid-row: 3; }
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-layout-v1756 > .genesys-actions-column-right { grid-row: 4; }
+}
