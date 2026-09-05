@@ -78,11 +78,42 @@ function buildEquipmentWallet(root, actor) {
         panel.prepend(row);
 }
 
+function buildMagicImplements(root, actor) {
+    const panel = root.querySelector("[data-genesys-tab-panel='equipment'] .genesys-inventory-panel");
+    if (!panel)
+        return;
+    const createBar = panel.querySelector(".genesys-item-createbar");
+    if (createBar && !createBar.querySelector("[data-create-magic-implement]")) {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.dataset.createMagicImplement = "true";
+        button.textContent = "+ Magic Implement";
+        createBar.append(button);
+    }
+    if (panel.querySelector("[data-magic-implements-group]"))
+        return;
+    const implements = Array.from(actor?.items?.contents ?? []).filter((item) => item?.type === "implement");
+    const details = document.createElement("details");
+    details.className = "genesys-item-group genesys-v1752-implements";
+    details.dataset.magicImplementsGroup = "true";
+    details.open = true;
+    const rows = implements.length
+        ? implements.map((item) => `<div class="genesys-item-row genesys-simple-item-row" data-item-id="${item.id}"><button type="button" class="genesys-item-name" data-edit-magic-implement="${item.id}">${item.name}</button><span>Damage +${integer(item.system?.damage)} · Enc ${integer(item.system?.encumbrance)}</span><label class="genesys-v1752-equipped"><input type="checkbox" data-toggle-magic-implement="${item.id}" ${item.system?.equipped ? "checked" : ""}/> Equipped</label><span class="genesys-item-actions"><button type="button" data-delete-magic-implement="${item.id}">×</button></span></div>`).join("")
+        : '<p class="genesys-empty-row">No magic implements yet.</p>';
+    details.innerHTML = `<summary>Magic Implements (${implements.length})</summary><div class="genesys-item-table">${rows}</div>`;
+    const attachments = Array.from(panel.querySelectorAll("details.genesys-item-group")).find((group) => group.querySelector("summary")?.textContent?.trim()?.toLowerCase()?.startsWith("attachments"));
+    if (attachments)
+        attachments.before(details);
+    else
+        panel.append(details);
+}
+
 function buildHeaderResources(root) {
     if (!root)
         return;
     const actor = actorForRoot(root);
     buildEquipmentWallet(root, actor);
+    buildMagicImplements(root, actor);
     if (root.dataset.genesysHeaderResources === "true")
         return;
     const header = root.querySelector(".genesys-hero-header");
@@ -129,6 +160,44 @@ function init() {
     for (const root of document.querySelectorAll("[data-genesys-sheet-tabs]"))
         buildHeaderResources(root);
 }
+
+document.addEventListener("click", async (event) => {
+    const create = event.target?.closest?.("[data-create-magic-implement]");
+    const edit = event.target?.closest?.("[data-edit-magic-implement]");
+    const remove = event.target?.closest?.("[data-delete-magic-implement]");
+    if (!create && !edit && !remove)
+        return;
+    const root = event.target.closest("[data-genesys-sheet-tabs]");
+    const actor = actorForRoot(root);
+    if (!actor)
+        return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (create) {
+        const created = await actor.createEmbeddedDocuments("Item", [{ name: "New Magic Implement", type: "implement", system: { damage: 0, encumbrance: 0, priceMode: "priced", materialId: "", tags: [], equipped: false, notes: "" } }]);
+        created?.[0]?.sheet?.render?.({ force: true });
+        return;
+    }
+    const id = String(edit?.dataset.editMagicImplement ?? remove?.dataset.deleteMagicImplement ?? "");
+    const item = actor.items?.get?.(id);
+    if (!item)
+        return;
+    if (edit)
+        item.sheet?.render?.({ force: true });
+    if (remove)
+        await item.delete();
+}, true);
+
+document.addEventListener("change", async (event) => {
+    const toggle = event.target?.closest?.("[data-toggle-magic-implement]");
+    if (!toggle)
+        return;
+    const root = toggle.closest("[data-genesys-sheet-tabs]");
+    const actor = actorForRoot(root);
+    const item = actor?.items?.get?.(String(toggle.dataset.toggleMagicImplement ?? ""));
+    if (item)
+        await item.update({ "system.equipped": Boolean(toggle.checked) });
+});
 
 const observer = new MutationObserver(init);
 Hooks.once("ready", () => {
