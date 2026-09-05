@@ -103,7 +103,7 @@ export const REALMS_OF_TERRINOTH_ARCHETYPES = Object.freeze([
         abilities: [ability("small", "Small", { type: "silhouette", value: 0 }, { automationStatus: "creation-applied" }), ability("tricksy", "Tricksy", { type: "produce-item", storyPointCost: 1, timing: "turn", usage: { limit: 1, period: "encounter" }, constraints: { maxEncumbrance: 1, maxRarity: 4, weaponRequiresQuality: { id: "limited-ammo", rank: 1 } } })],
         tags: ["gnome", "wanderer", "small"]
     }
-].map((entry) => ({ ...entry, sourceId: entry.id, sourceType: SOURCE_TYPE, metadata: { printedSource: "Realms of Terrinoth pp. 60-69", automationStatus: "creation-metadata" } }))));
+].map((entry) => ({ ...entry, sourceId: entry.id, sourceType: SOURCE_TYPE, metadata: { printedSource: "Realms of Terrinoth pp. 60-69", automationStatus: "creation-metadata" } })));
 
 const TRAVELING_GEAR = Object.freeze([item("backpack"), item("bedroll"), item("rope"), item("flint-and-steel"), item("torch", 3), item("waterskin")]);
 
@@ -151,7 +151,7 @@ export const REALMS_OF_TERRINOTH_CAREERS = Object.freeze([
         careerSkills: ["brawl", "coercion", "leadership", "melee-heavy", "melee-light", "resilience", "riding", "vigilance"], freeSkillChoices: 4, freeSkillRank: 1,
         startingGear: [gearPackage([choice("weapon-set", "Sword and shield, axe and shield, or halberd", [[item("sword"), item("shield")], [item("axe"), item("shield")], [item("halberd")]]), { id: "armor", type: "fixed", items: [item("leather-armor")] }, { id: "healing", type: "fixed", items: [item("healing-elixir", 2)] }, { id: "traveling-gear", type: "fixed", items: [...TRAVELING_GEAR] }], "1d100")], tags: ["martial"]
     }
-].map((entry) => ({ ...entry, sourceId: entry.id, sourceType: SOURCE_TYPE, metadata: { printedSource: "Realms of Terrinoth pp. 70-73", ...(entry.metadata ?? {}) } }))));
+].map((entry) => ({ ...entry, sourceId: entry.id, sourceType: SOURCE_TYPE, metadata: { printedSource: "Realms of Terrinoth pp. 70-73", ...(entry.metadata ?? {}) } })));
 
 export const REALMS_OF_TERRINOTH_CHARACTER_CREATION_PACK = Object.freeze({
     id: PACK_ID,
