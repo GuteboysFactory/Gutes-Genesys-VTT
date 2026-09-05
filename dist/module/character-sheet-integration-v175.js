@@ -31,6 +31,8 @@ function actorForRoot(root) {
 function actorSettingId(actor) {
   const draftSetting = actor?.getFlag?.(SYSTEM_ID, "characterCreationDraft")?.settingId;
   if (draftSetting) return String(draftSetting);
+  const actorProfile = actor?.getFlag?.(SYSTEM_ID, "rulesProfile");
+  if (actorProfile) return String(actorProfile);
   try { return String(game?.settings?.get?.(SYSTEM_ID, "rulesProfile") ?? ""); }
   catch { return ""; }
 }
@@ -45,8 +47,10 @@ function motivationCard(facet, label, value) {
 }
 
 function buildBiographyIntegration(root, actor) {
-  const layout = root.querySelector("[data-genesys-tab-panel='summary'] .genesys-biography-layout");
-  if (!layout || layout.querySelector("[data-character-story-integration]")) return;
+  const summaryPanel = root.querySelector("[data-genesys-tab-panel='summary']");
+  if (!summaryPanel) return;
+  const host = summaryPanel.querySelector(".genesys-biography-layout") ?? summaryPanel;
+  if (host.querySelector("[data-character-story-integration]")) return;
 
   const settingId = actorSettingId(actor);
   const motivation = actor?.system?.motivations ?? {};
@@ -54,6 +58,8 @@ function buildBiographyIntegration(root, actor) {
   const originLabels = Array.from(heroic.origins ?? []).map((id) => contentLabel("heroicAbilities", id, settingId)).filter(Boolean);
   const secondaryLabels = Array.from(heroic.secondaryEffectIds ?? []).map((id) => contentLabel("heroicAbilities", id, settingId)).filter(Boolean);
   const selected = heroic.selected || heroic.primaryEffectId || heroic.name;
+
+  root.querySelector(".genesys-character-quote")?.classList.add("genesys-structured-motivation-active");
 
   const section = document.createElement("section");
   section.className = "genesys-character-story-integration";
@@ -71,7 +77,7 @@ function buildBiographyIntegration(root, actor) {
       <div class="genesys-integration-heroic-copy"><span><b>Origin:</b> ${esc(originLabels.join(" · ") || "—")}</span>${secondaryLabels.length ? `<span><b>Secondary:</b> ${esc(secondaryLabels.join(" · "))}</span>` : ""}</div>` : '<p class="genesys-empty-row">No Heroic Ability selected.</p>'}
     </section>
     <section class="genesys-fantasy-panel genesys-ornate-panel genesys-integration-motivations">
-      <div class="genesys-panel-banner"><div><h2>Motivation</h2><p>Strength · Flaw · Desire · Fear</p></div></div>
+      <div class="genesys-panel-banner"><div><h2>Motivation</h2><p>Structured character drives</p></div></div>
       <div class="genesys-integration-motivation-grid">
         ${motivationCard("strength", "Strength", motivation.strength)}
         ${motivationCard("flaw", "Flaw", motivation.flaw)}
@@ -81,9 +87,9 @@ function buildBiographyIntegration(root, actor) {
     </section>
   </div>`;
 
-  const storyPanel = layout.querySelector(".genesys-biography-story");
-  if (storyPanel) layout.insertBefore(section, storyPanel);
-  else layout.append(section);
+  const storyPanel = host.querySelector(".genesys-biography-story");
+  if (storyPanel) host.insertBefore(section, storyPanel);
+  else host.prepend(section);
 }
 
 function magicSkillState(actor, id) {
@@ -100,8 +106,10 @@ function magicActionsForSkill(rules, skillId) {
 }
 
 function buildMagicIntegration(root, actor) {
-  const skillsPanel = root.querySelector("[data-genesys-tab-panel='skills'] .genesys-skills-panel");
-  if (!skillsPanel || skillsPanel.querySelector("[data-magic-integration]")) return;
+  const skillsTab = root.querySelector("[data-genesys-tab-panel='skills']");
+  if (!skillsTab) return;
+  const skillsPanel = skillsTab.querySelector(".genesys-skills-panel") ?? skillsTab;
+  if (skillsPanel.querySelector("[data-magic-integration]")) return;
   const settingId = actorSettingId(actor);
   const rules = game?.genesysContent?.getMagicRules?.(settingId) ?? {};
   const magicIds = Array.from(rules.magicSkillIds ?? []);
@@ -129,7 +137,7 @@ function buildMagicIntegration(root, actor) {
   }).join("");
   section.innerHTML = `<div class="genesys-panel-banner"><div><h2>Magic Access</h2><p>Career access and registered action families for this character.</p></div></div><div class="genesys-magic-access-grid">${cards}</div>`;
 
-  const magicGroup = Array.from(skillsPanel.querySelectorAll("details.genesys-skill-group")).find((details) => /^magic$/i.test(text(details.querySelector(":scope > summary")?.textContent)));
+  const magicGroup = Array.from(skillsPanel.querySelectorAll("details.genesys-skill-group, details")).find((details) => /^magic$/i.test(text(details.querySelector(":scope > summary")?.textContent)));
   if (magicGroup) magicGroup.before(section);
   else skillsPanel.append(section);
 }
@@ -140,8 +148,9 @@ function walletLabel(actor) {
 }
 
 function buildEquipmentIntegration(root, actor) {
-  const panel = root.querySelector("[data-genesys-tab-panel='equipment'] .genesys-inventory-panel");
-  if (!panel) return;
+  const equipmentTab = root.querySelector("[data-genesys-tab-panel='equipment']");
+  if (!equipmentTab) return;
+  const panel = equipmentTab.querySelector(".genesys-inventory-panel") ?? equipmentTab;
 
   const banner = panel.querySelector(".genesys-panel-banner");
   if (banner && !banner.querySelector("[data-wallet-summary]")) {
@@ -172,7 +181,9 @@ function buildEquipmentIntegration(root, actor) {
     details.className = "genesys-item-group genesys-implements-group";
     details.dataset.implementsGroup = "true";
     details.innerHTML = `<summary>Magic Implements (${implements.length})</summary><div class="genesys-item-table">${implements.length ? implements.map((item) => `<div class="genesys-item-row genesys-simple-item-row" data-item-id="${esc(item.id)}"><button type="button" class="genesys-item-name" data-integration-edit-item="${esc(item.id)}">${esc(item.name)}</button><span>${item.system?.equipped ? "Equipped" : "Carried"} · Damage +${integer(item.system?.damage)} · Enc ${integer(item.system?.encumbrance)}${item.system?.materialId ? ` · ${esc(item.system.materialId)}` : ""}</span><span class="genesys-item-actions"><button type="button" data-integration-delete-item="${esc(item.id)}">×</button></span></div>`).join("") : '<p class="genesys-empty-row">No magic implements yet.</p>'}</div>`;
-    panel.append(details);
+    const attachmentGroup = Array.from(panel.querySelectorAll("details.genesys-item-group")).find((details) => /^attachments/i.test(text(details.querySelector(":scope > summary")?.textContent)));
+    if (attachmentGroup) attachmentGroup.after(details);
+    else panel.append(details);
   }
 }
 
@@ -233,7 +244,7 @@ Hooks.once("ready", () => {
   observer.observe(document.body, { childList: true, subtree: true });
   Object.defineProperty(game, "genesysCharacterIntegration", {
     configurable: true,
-    value: Object.freeze({ version: "1", refresh: initializeAll, actorSettingId })
+    value: Object.freeze({ version: "1.1", refresh: initializeAll, refreshRoot: initializeRoot, actorSettingId })
   });
-  console.log(`${SYSTEM_ID} | 0.0.1750 Character / Item / Magic integration ready`);
+  console.log(`${SYSTEM_ID} | 0.0.1751 Character / Item / Magic integration ready`);
 });
