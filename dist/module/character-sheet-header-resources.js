@@ -114,27 +114,7 @@ function buildMagicImplements(root, actor) {
         panel.append(details);
 }
 
-function buildHeaderResources(root) {
-    if (!root)
-        return;
-    for (const wallet of root.querySelectorAll("[data-equipment-wallet]"))
-        wallet.remove();
-    const actor = actorForRoot(root);
-    buildMagicImplements(root, actor);
-    if (root.dataset.genesysHeaderResources === "true")
-        return;
-    const header = root.querySelector(".genesys-hero-header");
-    const brand = root.querySelector(".genesys-brand-block");
-    const portrait = root.querySelector(".genesys-portrait-column");
-    const identity = root.querySelector(".genesys-character-identity");
-    const actions = root.querySelector(".genesys-header-actions");
-    if (!header || !portrait || !identity || !actions)
-        return;
-
-    brand?.remove();
-    header.classList.add("genesys-header-v1755");
-    header.prepend(portrait);
-
+function rebuildHeaderResources(root, actor, actions) {
     const configure = actions.querySelector(".genesys-header-button");
     const buildId = actions.querySelector(".genesys-build-id");
     actions.replaceChildren();
@@ -162,6 +142,35 @@ function buildHeaderResources(root) {
         actions.append(configure);
     if (buildId)
         actions.append(buildId);
+}
+
+function buildHeaderResources(root) {
+    if (!root)
+        return;
+    for (const wallet of root.querySelectorAll("[data-equipment-wallet]"))
+        wallet.remove();
+
+    const actor = actorForRoot(root);
+    buildMagicImplements(root, actor);
+
+    const header = root.querySelector(".genesys-hero-header");
+    const brand = root.querySelector(".genesys-brand-block");
+    const portrait = root.querySelector(".genesys-portrait-column");
+    const identity = root.querySelector(".genesys-character-identity");
+    const actions = root.querySelector(".genesys-header-actions");
+    if (!header || !portrait || !identity || !actions)
+        return;
+
+    brand?.remove();
+    header.classList.remove("genesys-header-v1755");
+    header.classList.add("genesys-header-wizard-baseline");
+    if (header.firstElementChild !== portrait)
+        header.prepend(portrait);
+
+    const hasResources = Boolean(actions.querySelector(".genesys-header-resource-grid"));
+    const hasLedger = Boolean(actions.querySelector("[data-open-xp-ledger]"));
+    if (!hasResources || !hasLedger)
+        rebuildHeaderResources(root, actor, actions);
 
     root.dataset.genesysHeaderResources = "true";
 }
@@ -213,5 +222,5 @@ const observer = new MutationObserver(init);
 Hooks.once("ready", () => {
     init();
     observer.observe(document.body, { childList: true, subtree: true });
-    console.log("genesys-vtt | 0.0.1755 header resources ready");
+    console.log("genesys-vtt | 0.0.1756 Wizard-era header restored");
 });
