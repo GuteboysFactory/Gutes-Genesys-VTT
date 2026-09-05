@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1758 restores the Wizard-era XP/Currency/Ledger header resource block, fixes the ES-module strict-mode parse failure in character-sheet-header-resources.js, and preserves the 0.0.1757 header structure plus 0.0.1756 Actions layout for focused QA.",
-  "version": "0.0.1758",
+  "description": "Genesys VTT 0.0.1759 locks the approved Wizard-era Character Sheet header and swaps only the Actions top order so Dice Tools appears above the Actions toolbar / + Custom Action row. Combat, Custom, Talent, General, Skills, Biography, Equipment, Magic, and header behavior are otherwise unchanged.",
+  "version": "0.0.1759",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -67,7 +67,8 @@
     "styles/character-sheet-v1752.css",
     "styles/character-sheet-v1755.css",
     "styles/character-sheet-v1756.css",
-    "styles/character-sheet-v1758.css"
+    "styles/character-sheet-v1758.css",
+    "styles/character-sheet-v1759.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
