@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1681 QA hotfix: fixes the syntax error in the Realms of Terrinoth Character Creation career catalog that prevented the 0.0.168 content-pack module from loading. Preserves the 14 playable archetype/species profiles, 8 careers plus Runemaster variant, structured starting data, Scout errata, and the renderChatMessageHTML compatibility cleanup from 0.0.168.",
-  "version": "0.0.1681",
+  "description": "Genesys VTT 0.0.1682 QA hotfix: fixes the remaining parenthesis syntax error in the Realms of Terrinoth Character Creation catalog and validates the complete content-pack module with a JavaScript parser before publication. Preserves the 14 playable archetype/species profiles, 8 careers plus Runemaster variant, structured starting data, Scout errata, and the renderChatMessageHTML compatibility cleanup from 0.0.168.",
+  "version": "0.0.1682",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
