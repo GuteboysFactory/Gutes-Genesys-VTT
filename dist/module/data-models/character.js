@@ -15,11 +15,32 @@ function resourceField(threshold) {
         threshold: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: threshold })
     });
 }
+function signedIntegerField(initial = 0) {
+    return new NumberField({ required: true, nullable: false, integer: true, initial });
+}
+function xpLedgerEntryField() {
+    return new SchemaField({
+        id: new StringField({ required: true, nullable: false, blank: false, initial: "xp-entry" }),
+        kind: new StringField({ required: true, nullable: false, initial: "adjustment" }),
+        bucket: new StringField({ required: true, nullable: false, initial: "earned" }),
+        amount: signedIntegerField(0),
+        label: new StringField({ required: true, nullable: false, initial: "XP transaction" }),
+        targetType: new StringField({ required: true, nullable: false, initial: "" }),
+        targetId: new StringField({ required: true, nullable: false, initial: "" }),
+        sourceId: new StringField({ required: true, nullable: false, initial: "" }),
+        ruleId: new StringField({ required: true, nullable: false, initial: "" }),
+        before: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        after: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        createdAt: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        createdBy: new StringField({ required: true, nullable: false, initial: "" })
+    });
+}
 function progressionField() {
     return new SchemaField({
         starting: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
         earned: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
-        spent: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 })
+        spent: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
+        ledger: new ArrayField(xpLedgerEntryField(), { required: true, nullable: false, initial: [] })
     });
 }
 function currencyField() {
