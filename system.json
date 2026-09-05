@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1731 Advancement UI hotfix: fixes Talent purchase rerender handling by resolving the refreshed live Character Sheet before restoring the Talents tab and reopening Talent Library, while preserving the 0.0.1730 XP purchase confirmations, Skill advancement, read-only XP status and XP Ledger.",
-  "version": "0.0.1731",
+  "description": "Genesys VTT 0.0.1740 Character Creator Wizard: adds a 10-step service-backed character creation flow for Identity, Archetype, Career, Characteristics, Skills, Talents, Heroic Ability, Story/Motivation, Equipment and Review, with Save Draft/Resume, XP rebuild/refund behavior, Terrinoth starting gear/funds integration, Talent Item synchronization and final Actor creation.",
+  "version": "0.0.1740",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -42,7 +42,8 @@
     "dist/module/character-sheet-actions-tab.js",
     "dist/module/character-sheet-tab-state.js",
     "dist/module/character-sheet-advancement-ui.js",
-    "dist/module/character-sheet-advancement-ui-hotfix.js"
+    "dist/module/character-sheet-advancement-ui-hotfix.js",
+    "dist/module/character-creator-wizard.js"
   ],
   "styles": [
     "styles/genesys.css",
@@ -55,7 +56,8 @@
     "styles/character-sheet-v162.css",
     "styles/character-sheet-v163.css",
     "styles/character-sheet-v166.css",
-    "styles/character-sheet-v173.css"
+    "styles/character-sheet-v173.css",
+    "styles/character-creator-v174.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
