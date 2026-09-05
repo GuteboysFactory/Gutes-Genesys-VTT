@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1740 Character Creator Wizard: adds a 10-step service-backed character creation flow for Identity, Archetype, Career, Characteristics, Skills, Talents, Heroic Ability, Story/Motivation, Equipment and Review, with Save Draft/Resume, XP rebuild/refund behavior, Terrinoth starting gear/funds integration, Talent Item synchronization and final Actor creation.",
-  "version": "0.0.1740",
+  "description": "Genesys VTT 0.0.1741 Character Creator Wizard hotfix: makes the Identity step validation reactive so Next unlocks immediately after entering a name, and shows Starting XP as pending until an archetype/species is selected while preserving the 0.0.1740 service-backed creation flow.",
+  "version": "0.0.1741",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -43,7 +43,8 @@
     "dist/module/character-sheet-tab-state.js",
     "dist/module/character-sheet-advancement-ui.js",
     "dist/module/character-sheet-advancement-ui-hotfix.js",
-    "dist/module/character-creator-wizard.js"
+    "dist/module/character-creator-wizard.js",
+    "dist/module/character-creator-wizard-hotfix.js"
   ],
   "styles": [
     "styles/genesys.css",
