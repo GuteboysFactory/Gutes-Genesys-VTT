@@ -45,6 +45,7 @@ export function equipmentRuleEntries(settingId, ruleKind = "") {
 export function embeddedItemData(definitionInput, quantity = 1, { characterCreation = false } = {}) {
     const definition = normalizeEquipmentDefinition(definitionInput);
     const system = clone(definition.system ?? {});
+    if (definition.itemType === "attachment") delete system.priceMode;
     system.provenance = { sourceId: definition.sourceId || definition.id, sourceType: definition.sourceType };
     if (definition.itemType === "gear") system.quantity = Math.max(1, Number(quantity) || 1);
     const flags = {
