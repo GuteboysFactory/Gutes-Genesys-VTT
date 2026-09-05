@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1721 (0.0.172 milestone hotfix) XP & Advancement Foundation: preserves the active Character Sheet tab across XP/advancement-triggered rerenders while retaining the 0.0.1720 transaction engine, XP ledger, Skill advancement, GM XP controls foundation, Talent ledger integration, and Heroic Ability earned-XP progression.",
-  "version": "0.0.1721",
+  "description": "Genesys VTT 0.0.1722 (0.0.172 milestone hotfix) XP & Advancement Foundation: preserves the active Character Sheet tab across both system-triggered and Foundry-triggered actor rerenders using persistent per-actor tab state, while retaining the XP transaction engine, ledger, Skill advancement, GM XP controls foundation, Talent ledger integration, and Heroic Ability earned-XP progression.",
+  "version": "0.0.1722",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -39,7 +39,8 @@
     "dist/module/character-sheet-biography-layout.js",
     "dist/module/character-sheet-header-resources.js",
     "dist/module/character-sheet-release-cleanup.js",
-    "dist/module/character-sheet-actions-tab.js"
+    "dist/module/character-sheet-actions-tab.js",
+    "dist/module/character-sheet-tab-state.js"
   ],
   "styles": [
     "styles/genesys.css",
