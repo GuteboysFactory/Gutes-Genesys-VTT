@@ -21,9 +21,35 @@ function actorForRoot(root) {
     return actor;
 }
 
-function makeResource(label, value, iconClass, inputName = "") {
+function actorSettingId(actor) {
+    const draft = actor?.getFlag?.("genesys-vtt", "characterCreationDraft") ?? actor?.flags?.["genesys-vtt"]?.characterCreationDraft ?? null;
+    const settingId = String(draft?.settingId ?? "").trim();
+    if (settingId)
+        return settingId;
+    const actorProfile = String(actor?.getFlag?.("genesys-vtt", "rulesProfile") ?? actor?.flags?.["genesys-vtt"]?.rulesProfile ?? "").trim();
+    if (actorProfile)
+        return actorProfile;
+    try {
+        return String(game?.settings?.get?.("genesys-vtt", "rulesProfile") ?? "").trim();
+    }
+    catch {
+        return "";
+    }
+}
+
+function currencyDisplay(actor) {
+    const resolved = game?.genesysCurrency?.resolve?.(actorSettingId(actor)) ?? null;
+    return {
+        label: String(resolved?.label ?? actor?.system?.currency?.label ?? "Funds"),
+        short: String(resolved?.short ?? "")
+    };
+}
+
+function makeResource(label, value, iconClass, inputName = "", titleText = "") {
     const box = document.createElement("div");
     box.className = "genesys-header-resource";
+    if (titleText)
+        box.title = titleText;
     const icon = document.createElement("i");
     icon.className = iconClass;
     icon.setAttribute("aria-hidden", "true");
@@ -58,29 +84,9 @@ function makeLedgerButton() {
     return button;
 }
 
-function buildEquipmentWallet(root, actor) {
-    const panel = root.querySelector("[data-genesys-tab-panel='equipment'] .genesys-inventory-panel");
-    if (!panel || panel.querySelector("[data-equipment-wallet]"))
-        return;
-    const currency = actor?.system?.currency ?? {};
-    const row = document.createElement("div");
-    row.className = "genesys-v1752-wallet";
-    row.dataset.equipmentWallet = "true";
-    const copy = document.createElement("div");
-    copy.innerHTML = '<i class="fa-solid fa-coins" aria-hidden="true"></i><span>Wallet</span>';
-    const value = document.createElement("strong");
-    value.textContent = `${integer(currency.value, 0)} ${String(currency.label ?? "Funds")}`;
-    row.append(copy, value);
-    const banner = panel.querySelector(".genesys-panel-banner");
-    if (banner)
-        banner.after(row);
-    else
-        panel.prepend(row);
-}
-
 function buildMagicImplements(root, actor) {
     const panel = root.querySelector("[data-genesys-tab-panel='equipment'] .genesys-inventory-panel");
-    if (!panel)
+    if (!panel || !actor)
         return;
     const createBar = panel.querySelector(".genesys-item-createbar");
     if (createBar && !createBar.querySelector("[data-create-magic-implement]")) {
@@ -92,7 +98,7 @@ function buildMagicImplements(root, actor) {
     }
     if (panel.querySelector("[data-magic-implements-group]"))
         return;
-    const implements = Array.from(actor?.items?.contents ?? []).filter((item) => item?.type === "implement");
+    const implements = Array.from(actor.items?.contents ?? []).filter((item) => item?.type === "implement");
     const details = document.createElement("details");
     details.className = "genesys-item-group genesys-v1752-implements";
     details.dataset.magicImplementsGroup = "true";
@@ -111,8 +117,9 @@ function buildMagicImplements(root, actor) {
 function buildHeaderResources(root) {
     if (!root)
         return;
+    for (const wallet of root.querySelectorAll("[data-equipment-wallet]"))
+        wallet.remove();
     const actor = actorForRoot(root);
-    buildEquipmentWallet(root, actor);
     buildMagicImplements(root, actor);
     if (root.dataset.genesysHeaderResources === "true")
         return;
@@ -125,6 +132,7 @@ function buildHeaderResources(root) {
         return;
 
     brand?.remove();
+    header.classList.add("genesys-header-v1755");
     header.prepend(portrait);
 
     const configure = actions.querySelector(".genesys-header-button");
@@ -139,12 +147,14 @@ function buildHeaderResources(root) {
     const spent = integer(actor?.system?.xp?.spent, numberValue(root, "system.xp.spent", 0));
     const available = Math.max(0, starting + earned - spent);
     const funds = integer(actor?.system?.currency?.value, numberValue(root, "system.currency.value", 0));
+    const currency = currencyDisplay(actor);
+    const currencyLabel = currency.short || currency.label;
 
     resources.append(
         makeResource("XP Available", available, "fa-solid fa-star"),
         makeResource("XP Earned", earned, "fa-solid fa-sparkles"),
         makeResource("XP Spent", spent, "fa-solid fa-arrow-trend-up"),
-        makeResource("Funds", funds, "fa-solid fa-sack-dollar", "system.currency.value")
+        makeResource(currencyLabel, funds, "fa-solid fa-coins", "system.currency.value", currency.label)
     );
 
     actions.append(resources, makeLedgerButton());
@@ -175,7 +185,7 @@ document.addEventListener("click", async (event) => {
     event.stopImmediatePropagation();
     if (create) {
         const created = await actor.createEmbeddedDocuments("Item", [{ name: "New Magic Implement", type: "implement", system: { damage: 0, encumbrance: 0, priceMode: "priced", materialId: "", tags: [], equipped: false, notes: "" } }]);
-        created?.[0]?.sheet?.render?.({ force: true });
+        created?.[0]?.sheet?.render?.(true);
         return;
     }
     const id = String(edit?.dataset.editMagicImplement ?? remove?.dataset.deleteMagicImplement ?? "");
@@ -183,7 +193,7 @@ document.addEventListener("click", async (event) => {
     if (!item)
         return;
     if (edit)
-        item.sheet?.render?.({ force: true });
+        item.sheet?.render?.(true);
     if (remove)
         await item.delete();
 }, true);
@@ -203,4 +213,5 @@ const observer = new MutationObserver(init);
 Hooks.once("ready", () => {
     init();
     observer.observe(document.body, { childList: true, subtree: true });
+    console.log("genesys-vtt | 0.0.1755 header resources ready");
 });
