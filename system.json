@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1720 (0.0.172 milestone) XP & Advancement Foundation: adds a generic runtime XP transaction engine, earned/starting/spent separation, structured XP ledger, career/non-career Skill advancement, post-creation Characteristic purchase guards, GM XP awards/adjustments/refunds, Talent purchase ledger integration, legacy XP baseline reconciliation, and Heroic Ability progression derived from earned XP.",
-  "version": "0.0.1720",
+  "description": "Genesys VTT 0.0.1721 (0.0.172 milestone hotfix) XP & Advancement Foundation: preserves the active Character Sheet tab across XP/advancement-triggered rerenders while retaining the 0.0.1720 transaction engine, XP ledger, Skill advancement, GM XP controls foundation, Talent ledger integration, and Heroic Ability earned-XP progression.",
+  "version": "0.0.1721",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
