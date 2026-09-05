@@ -92,9 +92,15 @@ function buildQuickDicePool() {
 }
 
 function buildRollTools(root) {
-    const section = makeSection("Roll Tools", "Quick Dice Pool and advanced check configuration live here instead of on the Skills page.");
-    section.classList.add("genesys-actions-roll-tools");
-    section.append(buildQuickDicePool());
+    const details = document.createElement("details");
+    details.className = "genesys-fantasy-panel genesys-ornate-panel genesys-actions-roll-tools genesys-actions-dice-tools";
+    details.open = false;
+    const summary = document.createElement("summary");
+    summary.className = "genesys-actions-dice-tools-summary";
+    summary.innerHTML = '<span><i class="fa-solid fa-dice" aria-hidden="true"></i><strong>Dice Tools</strong><small>Quick Dice Pool & Advanced Check Setup</small></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i>';
+    const body = document.createElement("div");
+    body.className = "genesys-actions-dice-tools-body";
+    body.append(buildQuickDicePool());
 
     const sourceAdvanced = root.querySelector("[data-genesys-tab-panel='skills'] .genesys-check-engine-lab");
     if (sourceAdvanced) {
@@ -117,9 +123,10 @@ function buildRollTools(root) {
                 source.dispatchEvent(new Event("change", { bubbles: true }));
             });
         }
-        section.append(advanced);
+        body.append(advanced);
     }
-    return section;
+    details.append(summary, body);
+    return details;
 }
 
 function addExplicitWeaponEditButtons(section) {
@@ -300,9 +307,18 @@ function buildActionsPanel(root) {
     panel.className = "genesys-tab-panel genesys-actions-panel";
     panel.dataset.genesysTabPanel = "actions";
     panel.hidden = true;
+
     const layout = document.createElement("div");
-    layout.className = "genesys-actions-layout";
-    layout.append(buildRollTools(root), buildCombatActions(root), buildTalentActions(root), buildCustomActions(root), buildGeneralActions());
+    layout.className = "genesys-actions-layout genesys-actions-layout-v1756";
+    const diceTools = buildRollTools(root);
+    const left = document.createElement("div");
+    left.className = "genesys-actions-column genesys-actions-column-left";
+    left.append(buildCombatActions(root), buildCustomActions(root));
+    const right = document.createElement("div");
+    right.className = "genesys-actions-column genesys-actions-column-right";
+    right.append(buildTalentActions(root), buildGeneralActions());
+    layout.append(diceTools, left, right);
+
     panel.append(buildActionsToolbar(), layout);
     equipmentPanel.before(panel);
     root.dataset.genesysActionsTab = "true";
@@ -401,5 +417,5 @@ const observer = new MutationObserver(() => initializeActionsTabs());
 Hooks.once("ready", () => {
     initializeActionsTabs();
     observer.observe(document.body, { childList: true, subtree: true });
-    console.log("genesys-vtt | 0.0.1755 Actions Roll Tools ready");
+    console.log("genesys-vtt | 0.0.1756 Actions layout ready");
 });
