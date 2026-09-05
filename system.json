@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1755 Character Sheet repair: restores the compact XP/currency header, removes the duplicate Equipment wallet, creates Quick Dice Pool directly inside Actions Roll Tools, keeps Advanced Check Setup in Actions, and adds world currency settings with Setting Default or Custom currency labels.",
-  "version": "0.0.1755",
+  "description": "Genesys VTT 0.0.1756 restores the Create Actor Wizard-era portrait-first Character Sheet header without the old Motivation line, hardens header rerenders, changes Dice Tools on Actions into a collapsed full-width dropdown, and arranges Combat above Custom on the left with Talent above General on the right.",
+  "version": "0.0.1756",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -65,7 +65,8 @@
     "styles/talent-item-v1743.css",
     "styles/character-sheet-v175.css",
     "styles/character-sheet-v1752.css",
-    "styles/character-sheet-v1755.css"
+    "styles/character-sheet-v1755.css",
+    "styles/character-sheet-v1756.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
