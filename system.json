@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1753 Character Sheet Integration runtime hotfix: replaces the brittle direct class import with an import-free DOM integration runtime, restores Biography Heroic/Motivation mounting, Wallet and Magic Implements, keeps per-Actor Terrinoth skills, and moves Quick Dice Pool from Skills to Actions.",
-  "version": "0.0.1753",
+  "description": "Genesys VTT 0.0.1754 Character Sheet source-layout fix: builds Heroic Ability and vertical Motivation directly in Biography, moves Quick Dice Pool and Advanced Check Setup into Actions through the stable Actions module, renders Wallet and Magic Implements directly from the stable sheet resources module, and removes the brittle standalone integration runtime from the load order.",
+  "version": "0.0.1754",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -45,8 +45,7 @@
     "dist/module/character-sheet-advancement-ui.js",
     "dist/module/character-sheet-advancement-ui-hotfix.js",
     "dist/module/character-creator-wizard.js",
-    "dist/module/character-creator-wizard-hotfix.js",
-    "dist/module/character-sheet-integration-v1752.js"
+    "dist/module/character-creator-wizard-hotfix.js"
   ],
   "styles": [
     "styles/genesys.css",
