@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.170 Heroic Abilities + Motivations: adds a generic Heroic Ability progression/activation foundation, structured Strength/Flaw/Desire/Fear motivations, Terrinoth Heroic Ability primary/secondary/origin catalog metadata, Ability Point upgrades, atomic multi-Story-Point activation preparation, session use tracking, and Character Creation integration without bundling copyrighted rules text.",
-  "version": "0.0.170",
+  "description": "Genesys VTT 0.0.1700 (0.0.170 milestone) Heroic Abilities + Motivations: adds a generic Heroic Ability progression/activation foundation, structured Strength/Flaw/Desire/Fear motivations, Terrinoth Heroic Ability primary/secondary/origin catalog metadata, Ability Point upgrades, atomic multi-Story-Point activation preparation, session use tracking, and Character Creation integration without bundling copyrighted rules text.",
+  "version": "0.0.1700",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
