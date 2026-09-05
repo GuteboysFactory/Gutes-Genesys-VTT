@@ -7,14 +7,10 @@ export class GenesysItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         classes: ["genesys-vtt", "genesys-item-sheet"],
         position: { width: 620, height: 640 },
         form: { closeOnSubmit: false, submitOnChange: true },
-        actions: {
-            applyQualities: this.#applyQualities
-        },
+        actions: { applyQualities: this.#applyQualities },
         window: { resizable: true }
     };
-    static PARTS = {
-        main: { template: "systems/genesys-vtt/templates/item/item-sheet.hbs" }
-    };
+    static PARTS = { main: { template: "systems/genesys-vtt/templates/item/item-sheet.hbs" } };
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
         const system = this.item.system ?? {};
@@ -27,6 +23,7 @@ export class GenesysItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             isArmor: this.item.type === "armor",
             isGear: this.item.type === "gear",
             isAttachment: this.item.type === "attachment",
+            isImplement: this.item.type === "implement",
             isTalent: this.item.type === "talent",
             talentRuleCount: Array.isArray(system.rules) ? system.rules.length : 0,
             supportsQualities: this.item.type === "weapon" || this.item.type === "armor",
@@ -37,18 +34,15 @@ export class GenesysItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             attackModeOptions: { auto: "Auto from skill/range", melee: "Melee", ranged: "Ranged" },
             engagedProfileOptions: { auto: "Auto", none: "No modifier", "one-handed": "One-handed (+1 difficulty)", "two-handed": "Two-handed (+2 difficulty)", heavy: "Heavy (cannot attack engaged)" },
             damageCharacteristicOptions: { auto: "Auto", none: "None / fixed damage", brawn: "Brawn", agility: "Agility", intellect: "Intellect", cunning: "Cunning", willpower: "Willpower", presence: "Presence" },
-            systemVersion: String(game?.system?.version ?? "0.0.141")
+            systemVersion: String(game?.system?.version ?? "0.0.1710")
         };
     }
     static async #applyQualities(_event, target) {
         const root = target.closest(".genesys-quality-editor");
         const input = root?.querySelector("[data-quality-text]");
-        if (!input)
-            return;
+        if (!input) return;
         const parsed = parseQualityText(input.value);
-        if (parsed.unknown.length) {
-            ui?.notifications?.warn?.(`Unknown qualities ignored: ${parsed.unknown.join(", ")}`);
-        }
+        if (parsed.unknown.length) ui?.notifications?.warn?.(`Unknown qualities ignored: ${parsed.unknown.join(", ")}`);
         await this.item.update({ "system.qualities": parsed.qualities });
     }
 }
