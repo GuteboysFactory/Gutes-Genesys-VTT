@@ -4,10 +4,8 @@ import { poolTraceToHtml } from "./pool-ui.js";
 import { prepareActorSkillCheck } from "./skill-ui.js";
 import { rollNarrativeWithPresentation } from "./dice-renderer-bridge.js";
 function itemCollection(actor) {
-    if (Array.isArray(actor?.items))
-        return actor.items;
-    if (Array.isArray(actor?.items?.contents))
-        return actor.items.contents;
+    if (Array.isArray(actor?.items)) return actor.items;
+    if (Array.isArray(actor?.items?.contents)) return actor.items.contents;
     return [];
 }
 function integer(value, fallback = 0) {
@@ -19,7 +17,7 @@ function capitalize(value) {
     return text.length ? `${text[0].toUpperCase()}${text.slice(1)}` : text;
 }
 export function buildInventoryRows(actor) {
-    const groups = { weapons: [], armor: [], gear: [], attachments: [] };
+    const groups = { weapons: [], armor: [], gear: [], attachments: [], implements: [] };
     for (const item of itemCollection(actor)) {
         const system = item?.system ?? {};
         const base = { id: item.id, name: item.name, type: item.type, editable: item.isOwner !== false };
@@ -33,14 +31,20 @@ export function buildInventoryRows(actor) {
                 encumbrance: integer(system.encumbrance),
                 hardPoints: integer(system.hardPoints),
                 equipped: system.equipped !== false,
+                craftsmanshipId: String(system.craftsmanshipId ?? ""),
                 qualitiesText: formatQualityText(system.qualities ?? []) || "—"
             });
         }
         else if (item.type === "armor") {
-            groups.armor.push({ ...base, soak: integer(system.soak), defense: integer(system.defense), encumbrance: integer(system.encumbrance), hardPoints: integer(system.hardPoints), equipped: Boolean(system.equipped), qualitiesText: formatQualityText(system.qualities ?? []) || "—" });
+            groups.armor.push({ ...base, soak: integer(system.soak), defense: integer(system.defense), encumbrance: integer(system.encumbrance), hardPoints: integer(system.hardPoints), equipped: Boolean(system.equipped), craftsmanshipId: String(system.craftsmanshipId ?? ""), qualitiesText: formatQualityText(system.qualities ?? []) || "—" });
         }
         else if (item.type === "gear") {
-            groups.gear.push({ ...base, quantity: integer(system.quantity, 1), encumbrance: integer(system.encumbrance), equipped: Boolean(system.equipped) });
+            groups.gear.push({ ...base, quantity: integer(system.quantity, 1), encumbrance: integer(system.encumbrance), equipped: Boolean(system.equipped), category: String(system.category ?? "gear"), consumable: Boolean(system.consumable) });
+        }
+        else if (item.type === "implement") {
+            const row = { ...base, quantity: 1, encumbrance: integer(system.encumbrance), equipped: Boolean(system.equipped), category: "implement", damage: integer(system.damage), materialId: String(system.materialId ?? "") };
+            groups.implements.push(row);
+            groups.gear.push(row);
         }
         else if (item.type === "attachment") {
             groups.attachments.push({ ...base, hardPointCost: integer(system.hardPointCost, 1), installed: Boolean(system.installed), hostItemId: String(system.hostItemId ?? ""), qualitiesText: formatQualityText(system.qualities ?? []) || "—" });
@@ -49,18 +53,13 @@ export function buildInventoryRows(actor) {
     return groups;
 }
 export function prepareActorWeaponAttack(actor, item, difficulty = 2, checkOptions = {}) {
-    if (!item || item.type !== "weapon")
-        throw new Error("A weapon Item is required.");
+    if (!item || item.type !== "weapon") throw new Error("A weapon Item is required.");
     const weapon = normalizeWeaponRuleData(item.system ?? {});
     const skill = prepareActorSkillCheck(actor, weapon.skillId, 0, checkOptions.rankOverride, checkOptions.characteristicOverrideId);
     const prepared = prepareWeaponAttack({
         weaponName: item.name ?? "Weapon",
         weapon,
-        actor: {
-            characteristic: skill.characteristicValue,
-            skillRank: skill.skillRank,
-            label: skill.skillLabel
-        },
+        actor: { characteristic: skill.characteristicValue, skillRank: skill.skillRank, label: skill.skillLabel },
         difficulty,
         contextTags: [weapon.equipped ? "equipped" : "unequipped"]
     });
@@ -101,8 +100,7 @@ export async function rollPreparedWeaponAttackToChat(prepared, speakerAlias) {
       ${resultToChatHtml(result)}
     </section>`;
     const data = { content };
-    if (speakerAlias)
-        data.speaker = { alias: speakerAlias };
+    if (speakerAlias) data.speaker = { alias: speakerAlias };
     await foundry.documents.ChatMessage.create(data);
     return { prepared, result };
 }
