@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1742 Character Sheet Skills layout polish: gives Advancement XP cost and Career their own responsive columns, shifts Rank slightly left, keeps Career checkboxes aligned at the far right, and removes the legacy fixed bottom-right sheet ornament that could appear attached to arbitrary Skill rows while resizing.",
-  "version": "0.0.1742",
+  "description": "Genesys VTT 0.0.1743 Talent Rules Summary / Item Detail: adds 112 concise source-grounded Talent quick-reference summaries, source and automation metadata on Talent Items, dynamic lookup for existing embedded Talents, and separates system rules summaries from Character Notes without bundling full rules text.",
+  "version": "0.0.1743",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -21,6 +21,7 @@
     "dist/module/content-registry.js",
     "dist/module/content-packs/realms-of-terrinoth-character-creation.js",
     "dist/module/content-packs/realms-of-terrinoth-talents.js",
+    "dist/module/content-packs/realms-of-terrinoth-talent-details.js",
     "dist/module/content-packs/realms-of-terrinoth-skills-magic.js",
     "dist/module/content-packs/realms-of-terrinoth-heroic-motivations.js",
     "dist/module/content-packs/realms-of-terrinoth-equipment.js",
@@ -59,7 +60,8 @@
     "styles/character-sheet-v166.css",
     "styles/character-sheet-v173.css",
     "styles/character-creator-v174.css",
-    "styles/character-sheet-v1742.css"
+    "styles/character-sheet-v1742.css",
+    "styles/talent-item-v1743.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
