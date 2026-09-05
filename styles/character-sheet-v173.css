@@ -1,0 +1,231 @@
+.genesys-vtt .genesys-header-actions {
+  gap: 6px;
+}
+
+.genesys-vtt .genesys-header-resource-grid {
+  grid-template-columns: repeat(4, minmax(72px, 1fr));
+}
+
+.genesys-vtt .genesys-header-ledger-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 4px 9px;
+  border: 1px solid rgba(96, 70, 43, 0.55);
+  border-radius: 5px;
+  background: rgba(249, 241, 218, 0.82);
+  color: #3d2b1f;
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.genesys-vtt .genesys-advancement-xp-chip {
+  margin-left: auto;
+  white-space: nowrap;
+}
+
+.genesys-vtt .genesys-skill-row .genesys-advancement-skill-cost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 48px;
+  margin-left: 5px;
+  padding: 2px 5px;
+  border: 1px solid rgba(96, 70, 43, 0.35);
+  border-radius: 999px;
+  background: rgba(249, 241, 218, 0.72);
+  color: #5a3e26;
+  font-size: 10px;
+  font-weight: 800;
+  line-height: 1.2;
+}
+
+.genesys-vtt .genesys-skill-row .genesys-advancement-skill-cost.is-blocked {
+  opacity: 0.55;
+}
+
+.genesys-vtt .genesys-skill-row .genesys-advancement-skill-cost.is-max {
+  opacity: 0.65;
+  letter-spacing: 0.06em;
+}
+
+.genesys-vtt [data-skill-rank-pip].advancement-buyable {
+  cursor: pointer;
+  box-shadow: 0 0 0 1px rgba(112, 78, 38, 0.22);
+}
+
+.genesys-vtt [data-skill-rank-pip].advancement-blocked {
+  cursor: not-allowed;
+  opacity: 0.42;
+}
+
+.genesys-vtt [data-skill-rank-pip].advancement-owned {
+  cursor: default;
+}
+
+.genesys-advancement-confirm,
+.genesys-xp-ledger {
+  border: 1px solid rgba(67, 45, 28, 0.75);
+  border-radius: 8px;
+  background: #f5ecd4;
+  color: #332317;
+  padding: 0;
+  box-shadow: 0 18px 50px rgba(0, 0, 0, 0.35);
+}
+
+.genesys-advancement-confirm::backdrop,
+.genesys-xp-ledger::backdrop {
+  background: rgba(12, 9, 7, 0.55);
+}
+
+.genesys-advancement-confirm-form {
+  width: min(460px, 82vw);
+  padding: 16px;
+}
+
+.genesys-advancement-confirm-form > header {
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(91, 62, 38, 0.28);
+}
+
+.genesys-advancement-confirm-form > header strong,
+.genesys-xp-ledger-shell > header strong {
+  display: block;
+  font-family: Georgia, serif;
+  font-size: 18px;
+}
+
+.genesys-advancement-confirm-form > header small,
+.genesys-xp-ledger-shell > header small {
+  display: block;
+  margin-top: 2px;
+  opacity: 0.7;
+}
+
+.genesys-advancement-confirm-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+  margin: 13px 0;
+}
+
+.genesys-advancement-confirm-grid > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 7px 9px;
+  border: 1px solid rgba(91, 62, 38, 0.18);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.genesys-advancement-confirm-grid span {
+  opacity: 0.72;
+}
+
+.genesys-advancement-confirm-note {
+  margin: 10px 0 14px;
+  font-size: 11px;
+  opacity: 0.72;
+}
+
+.genesys-advancement-confirm-form > footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+.genesys-xp-ledger-shell {
+  width: min(620px, 88vw);
+  max-height: 72vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.genesys-xp-ledger-shell > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid rgba(91, 62, 38, 0.28);
+}
+
+.genesys-xp-ledger-shell > header button {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+}
+
+.genesys-xp-ledger-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 7px;
+  padding: 12px 16px;
+}
+
+.genesys-xp-ledger-summary > div {
+  padding: 8px;
+  border: 1px solid rgba(91, 62, 38, 0.2);
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.3);
+}
+
+.genesys-xp-ledger-summary span,
+.genesys-xp-ledger-summary strong {
+  display: block;
+}
+
+.genesys-xp-ledger-summary span {
+  font-size: 10px;
+  text-transform: uppercase;
+  opacity: 0.68;
+}
+
+.genesys-xp-ledger-summary strong {
+  margin-top: 2px;
+  font-size: 18px;
+}
+
+.genesys-xp-ledger-summary .available {
+  border-width: 2px;
+}
+
+.genesys-xp-ledger-list {
+  overflow: auto;
+  padding: 0 16px 16px;
+}
+
+.genesys-xp-ledger-list article {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 9px 2px;
+  border-bottom: 1px solid rgba(91, 62, 38, 0.18);
+}
+
+.genesys-xp-ledger-list article > div strong,
+.genesys-xp-ledger-list article > div small {
+  display: block;
+}
+
+.genesys-xp-ledger-list article > div small {
+  margin-top: 2px;
+  opacity: 0.62;
+}
+
+.genesys-xp-ledger-list article > span {
+  min-width: 72px;
+  text-align: right;
+  font-weight: 800;
+}
+
+.genesys-xp-ledger-list article > span.earned {
+  color: #315d36;
+}
+
+.genesys-xp-ledger-list article > span.spent {
+  color: #7b372e;
+}
