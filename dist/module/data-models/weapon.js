@@ -14,6 +14,8 @@ export class GenesysWeaponData extends foundry.abstract.TypeDataModel {
             hardPoints: nonNegativeIntegerField(0),
             price: nonNegativeIntegerField(0),
             rarity: nonNegativeIntegerField(0, 10),
+            craftsmanshipId: new StringField({ required: true, nullable: false, initial: "" }),
+            craftsmanshipSourceId: new StringField({ required: true, nullable: false, initial: "" }),
             equipped: equippedField(true),
             qualities: qualitiesField(),
             provenance: provenanceField(),
