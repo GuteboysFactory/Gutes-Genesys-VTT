@@ -58,8 +58,32 @@ function makeLedgerButton() {
     return button;
 }
 
+function buildEquipmentWallet(root, actor) {
+    const panel = root.querySelector("[data-genesys-tab-panel='equipment'] .genesys-inventory-panel");
+    if (!panel || panel.querySelector("[data-equipment-wallet]"))
+        return;
+    const currency = actor?.system?.currency ?? {};
+    const row = document.createElement("div");
+    row.className = "genesys-v1752-wallet";
+    row.dataset.equipmentWallet = "true";
+    const copy = document.createElement("div");
+    copy.innerHTML = '<i class="fa-solid fa-coins" aria-hidden="true"></i><span>Wallet</span>';
+    const value = document.createElement("strong");
+    value.textContent = `${integer(currency.value, 0)} ${String(currency.label ?? "Funds")}`;
+    row.append(copy, value);
+    const banner = panel.querySelector(".genesys-panel-banner");
+    if (banner)
+        banner.after(row);
+    else
+        panel.prepend(row);
+}
+
 function buildHeaderResources(root) {
-    if (!root || root.dataset.genesysHeaderResources === "true")
+    if (!root)
+        return;
+    const actor = actorForRoot(root);
+    buildEquipmentWallet(root, actor);
+    if (root.dataset.genesysHeaderResources === "true")
         return;
     const header = root.querySelector(".genesys-hero-header");
     const brand = root.querySelector(".genesys-brand-block");
@@ -69,7 +93,6 @@ function buildHeaderResources(root) {
     if (!header || !portrait || !identity || !actions)
         return;
 
-    const actor = actorForRoot(root);
     brand?.remove();
     header.prepend(portrait);
 
