@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1754 Character Sheet source-layout fix: builds Heroic Ability and vertical Motivation directly in Biography, moves Quick Dice Pool and Advanced Check Setup into Actions through the stable Actions module, renders Wallet and Magic Implements directly from the stable sheet resources module, and removes the brittle standalone integration runtime from the load order.",
-  "version": "0.0.1754",
+  "description": "Genesys VTT 0.0.1755 Character Sheet repair: restores the compact XP/currency header, removes the duplicate Equipment wallet, creates Quick Dice Pool directly inside Actions Roll Tools, keeps Advanced Check Setup in Actions, and adds world currency settings with Setting Default or Custom currency labels.",
+  "version": "0.0.1755",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -19,6 +19,7 @@
     "dist/module/dice-renderer-bridge.js",
     "dist/module/talent-bootstrap.js",
     "dist/module/content-registry.js",
+    "dist/module/currency-service.js",
     "dist/module/content-packs/realms-of-terrinoth-character-creation.js",
     "dist/module/content-packs/realms-of-terrinoth-talents.js",
     "dist/module/content-packs/realms-of-terrinoth-talent-details.js",
@@ -63,7 +64,8 @@
     "styles/character-sheet-v1742.css",
     "styles/talent-item-v1743.css",
     "styles/character-sheet-v175.css",
-    "styles/character-sheet-v1752.css"
+    "styles/character-sheet-v1752.css",
+    "styles/character-sheet-v1755.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
