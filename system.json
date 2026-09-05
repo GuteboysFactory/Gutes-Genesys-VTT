@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1743 Talent Rules Summary / Item Detail: adds 112 concise source-grounded Talent quick-reference summaries, source and automation metadata on Talent Items, dynamic lookup for existing embedded Talents, and separates system rules summaries from Character Notes without bundling full rules text.",
-  "version": "0.0.1743",
+  "description": "Genesys VTT 0.0.1750 Character / Item / Magic Integration: brings Character Creator output onto the live Character Sheet with Heroic Ability and structured Motivation on Biography, per-character Magic Access on Skills, Wallet and first-class Magic Implements on Equipment, while preserving the verified Advancement and Creator foundations.",
+  "version": "0.0.1750",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -45,7 +45,8 @@
     "dist/module/character-sheet-advancement-ui.js",
     "dist/module/character-sheet-advancement-ui-hotfix.js",
     "dist/module/character-creator-wizard.js",
-    "dist/module/character-creator-wizard-hotfix.js"
+    "dist/module/character-creator-wizard-hotfix.js",
+    "dist/module/character-sheet-integration-v175.js"
   ],
   "styles": [
     "styles/genesys.css",
@@ -61,7 +62,8 @@
     "styles/character-sheet-v173.css",
     "styles/character-creator-v174.css",
     "styles/character-sheet-v1742.css",
-    "styles/talent-item-v1743.css"
+    "styles/talent-item-v1743.css",
+    "styles/character-sheet-v175.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
