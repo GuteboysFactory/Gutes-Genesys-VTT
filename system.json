@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1773 fixes Equipment Library artwork presentation by showing complete item art instead of cropped thumbnails and validates bundled image data before use so malformed assets fall back safely without browser ERR_INVALID_URL noise. The 0.0.1760 Character Sheet baseline and 0.0.1771 Equipment Library behavior remain unchanged.",
-  "version": "0.0.1773",
+  "description": "Genesys VTT 0.0.1774 rebuilds Equipment Library artwork around installed SVG sprite assets with stable system paths instead of runtime base64 images. Terrinoth equipment and new equipment Items resolve to portable system assets, Genesys Actor defaults use a separate installed SVG sprite, and Custom Item/Actor images remain untouched. Character Sheet 0.0.1760 and Equipment Library behavior remain unchanged.",
+  "version": "0.0.1774",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
