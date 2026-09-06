@@ -1,6 +1,7 @@
 const SYSTEM_ID = "genesys-vtt";
-const FORGE_VERSION = "0.0.1780";
-const ART_DIR = () => `worlds/${game.world.id}/genesys-vtt/actor-art`;
+const FORGE_VERSION = "0.0.1781";
+const ART_ROOT = () => `worlds/${game.world.id}/genesys-vtt`;
+const ART_DIR = () => `${ART_ROOT()}/actor-art`;
 const FALLBACK_ART = "systems/genesys-vtt/assets/items/v1775/actor-human.svg";
 const syncingActors = new Set();
 let activeForge = null;
@@ -12,6 +13,10 @@ function esc(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#039;");
+}
+
+function clamp(value, min, max) {
+  return Math.min(max, Math.max(min, Number(value) || 0));
 }
 
 function slug(value, fallback = "actor") {
@@ -42,6 +47,12 @@ function tokenPathFromPortrait(path = "") {
   return "";
 }
 
+function filePickerImplementation() {
+  const picker = globalThis.foundry?.applications?.apps?.FilePicker?.implementation;
+  if (!picker?.upload || !picker?.createDirectory) throw new Error("Foundry FilePicker implementation is not available.");
+  return picker;
+}
+
 function loadImage(src) {
   return new Promise((resolve, reject) => {
     const image = new Image();
@@ -53,7 +64,7 @@ function loadImage(src) {
 }
 
 function drawCover(ctx, image, size, state) {
-  const zoom = Number(state.zoom ?? 1) || 1;
+  const zoom = clamp(state.zoom ?? 1, 1, 5);
   const base = Math.max(size / image.naturalWidth, size / image.naturalHeight);
   const scale = base * zoom;
   const width = image.naturalWidth * scale;
@@ -64,6 +75,7 @@ function drawCover(ctx, image, size, state) {
 }
 
 function drawPortrait(canvas, image, state) {
+  if (!canvas) return;
   const size = canvas.width;
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, size, size);
@@ -84,6 +96,7 @@ function drawPortrait(canvas, image, state) {
 }
 
 function drawToken(canvas, image, state) {
+  if (!canvas) return;
   const size = canvas.width;
   const ctx = canvas.getContext("2d");
   ctx.clearRect(0, 0, size, size);
@@ -116,27 +129,44 @@ function renderPreviews(session) {
   if (!session?.image) return;
   drawPortrait(session.dialog.querySelector("[data-forge-portrait-canvas]"), session.image, session.state);
   drawToken(session.dialog.querySelector("[data-forge-token-canvas]"), session.image, session.state);
+  const zoomLabel = session.dialog.querySelector("[data-forge-zoom-label]");
+  if (zoomLabel) zoomLabel.textContent = `${Number(session.state.zoom ?? 1).toFixed(2)}×`;
 }
 
 function canvasBlob(canvas) {
   return new Promise((resolve, reject) => canvas.toBlob((blob) => blob ? resolve(blob) : reject(new Error("Canvas export failed.")), "image/png", 0.94));
 }
 
-async function ensureArtDirectory() {
-  const picker = globalThis.FilePicker;
-  if (!picker?.upload) throw new Error("Foundry FilePicker upload API is not available.");
-  if (picker.createDirectory) {
-    try { await picker.createDirectory("data", ART_DIR(), { notify: false }); }
-    catch { /* Existing directory is fine. */ }
+function ignorableDirectoryError(error) {
+  const message = String(error?.message ?? error ?? "").toLowerCase();
+  return message.includes("already exists") || message.includes("eexist") || message.includes("exists already");
+}
+
+async function ensureDirectory(picker, target) {
+  try { await picker.createDirectory("data", target, { notify: false }); }
+  catch (error) {
+    if (!ignorableDirectoryError(error)) throw error;
   }
 }
 
+async function ensureArtDirectory() {
+  const picker = filePickerImplementation();
+  await ensureDirectory(picker, ART_ROOT());
+  await ensureDirectory(picker, ART_DIR());
+  return picker;
+}
+
+function validUploadedImagePath(value) {
+  const path = String(value ?? "").trim();
+  return /\.(?:png|webp|jpe?g)(?:[?#].*)?$/i.test(path) ? path : "";
+}
+
 async function uploadBlob(blob, filename) {
-  await ensureArtDirectory();
+  const picker = await ensureArtDirectory();
   const file = new File([blob], filename, { type: "image/png" });
-  const result = await globalThis.FilePicker.upload("data", ART_DIR(), file, { notify: false });
-  const path = String(result?.path ?? result ?? "").trim();
-  if (!path) throw new Error(`Foundry did not return a path for ${filename}.`);
+  const result = await picker.upload("data", ART_DIR(), file, {}, { notify: false });
+  const path = validUploadedImagePath(typeof result === "string" ? result : result?.path);
+  if (!path) throw new Error(`Foundry did not return a valid image path for ${filename}.`);
   return path;
 }
 
@@ -162,9 +192,9 @@ async function updatePlacedTokens(actor, tokenPath) {
 }
 
 async function applyForge(session) {
+  if (session.actor && !canEditActor(session.actor)) throw new Error("You do not have permission to edit this Actor.");
   const { portraitPath, tokenPath } = await exportForgeArt(session);
   if (session.actor) {
-    if (!canEditActor(session.actor)) throw new Error("You do not have permission to edit this Actor.");
     await session.actor.update({ img: portraitPath, "prototypeToken.texture.src": tokenPath });
     if (session.dialog.querySelector("[data-forge-update-placed]")?.checked) await updatePlacedTokens(session.actor, tokenPath);
     ui?.notifications?.info?.(`${session.actor.name}: portrait and prototype token updated.`);
@@ -188,13 +218,11 @@ function forgeMarkup(session) {
     <header class="genesys-forge-header"><div><strong>Genesys Portrait &amp; Token Forge</strong><small>${esc(title)} · ${session.actor ? "Actor" : "Create Actor Wizard"}</small></div><button type="button" data-forge-close aria-label="Close">×</button></header>
     <div class="genesys-forge-grid">
       <section class="genesys-forge-source"><h3>Source Image</h3><div class="genesys-forge-dropzone" data-forge-dropzone tabindex="0"><i class="fa-solid fa-image"></i><strong>Drop image here</strong><span>or choose a file from your computer</span><button type="button" data-forge-choose-file>Choose Image</button><input type="file" accept="image/*" data-forge-file hidden /></div><p data-forge-source-label>${esc(session.initialSrc || "No image selected")}</p></section>
-      <section class="genesys-forge-preview"><h3>Actor Portrait</h3><canvas width="512" height="512" data-forge-portrait-canvas></canvas><small>Character Sheet / Actor portrait</small></section>
-      <section class="genesys-forge-preview"><h3>Prototype Token</h3><canvas width="512" height="512" data-forge-token-canvas></canvas><small>Foundry canvas token</small></section>
+      <section class="genesys-forge-preview"><h3>Actor Portrait</h3><canvas width="512" height="512" data-forge-portrait-canvas></canvas><small>Drag to position · Ctrl + mouse wheel to zoom</small></section>
+      <section class="genesys-forge-preview"><h3>Prototype Token</h3><canvas width="512" height="512" data-forge-token-canvas></canvas><small>Drag to position · Ctrl + mouse wheel to zoom</small></section>
     </div>
-    <div class="genesys-forge-controls">
-      <label>Zoom <input type="range" min="1" max="3" step="0.01" value="1" data-forge-control="zoom" /><output>1.00×</output></label>
-      <label>Horizontal <input type="range" min="-50" max="50" step="1" value="0" data-forge-control="offsetX" /><output>0</output></label>
-      <label>Vertical <input type="range" min="-50" max="50" step="1" value="0" data-forge-control="offsetY" /><output>0</output></label>
+    <div class="genesys-forge-controls genesys-forge-controls-v1781">
+      <div class="genesys-forge-direct-help"><i class="fa-solid fa-hand"></i><span><strong>Direct Crop</strong> Drag either preview to move the image. Hold <b>Ctrl</b> and use the mouse wheel to zoom. Current zoom: <b data-forge-zoom-label>1.00×</b></span></div>
       <label>Frame <select data-forge-control="frame"><option value="gold">Genesys Gold</option><option value="steel">Dark Steel</option><option value="none">No Frame</option></select></label>
       <label>Background <select data-forge-control="background"><option value="dark">Dark</option><option value="parchment">Parchment</option></select></label>
     </div>
@@ -218,9 +246,57 @@ async function setSource(session, src, label = "") {
   }
 }
 
+function wireCanvasManipulation(session, canvas) {
+  if (!canvas) return;
+  let drag = null;
+
+  canvas.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    event.preventDefault();
+    drag = { id: event.pointerId, x: event.clientX, y: event.clientY };
+    canvas.setPointerCapture?.(event.pointerId);
+    canvas.classList.add("dragging");
+  });
+
+  canvas.addEventListener("pointermove", (event) => {
+    if (!drag || drag.id !== event.pointerId) return;
+    event.preventDefault();
+    const rect = canvas.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    const dx = event.clientX - drag.x;
+    const dy = event.clientY - drag.y;
+    drag.x = event.clientX;
+    drag.y = event.clientY;
+    session.state.offsetX = clamp((session.state.offsetX ?? 0) + (dx / rect.width) * 100, -100, 100);
+    session.state.offsetY = clamp((session.state.offsetY ?? 0) + (dy / rect.height) * 100, -100, 100);
+    renderPreviews(session);
+  });
+
+  const stopDrag = (event) => {
+    if (drag && event.pointerId === drag.id) {
+      try { canvas.releasePointerCapture?.(event.pointerId); } catch {}
+      drag = null;
+      canvas.classList.remove("dragging");
+    }
+  };
+  canvas.addEventListener("pointerup", stopDrag);
+  canvas.addEventListener("pointercancel", stopDrag);
+
+  canvas.addEventListener("wheel", (event) => {
+    if (!event.ctrlKey) return;
+    event.preventDefault();
+    const factor = Math.exp(-event.deltaY * 0.0018);
+    session.state.zoom = clamp((session.state.zoom ?? 1) * factor, 1, 5);
+    renderPreviews(session);
+  }, { passive: false });
+}
+
 function wireForge(session) {
   const dialog = session.dialog;
   const fileInput = dialog.querySelector("[data-forge-file]");
+  wireCanvasManipulation(session, dialog.querySelector("[data-forge-portrait-canvas]"));
+  wireCanvasManipulation(session, dialog.querySelector("[data-forge-token-canvas]"));
+
   dialog.addEventListener("click", async (event) => {
     const button = event.target?.closest?.("button");
     if (!button) return;
@@ -228,11 +304,6 @@ function wireForge(session) {
     if (button.matches("[data-forge-choose-file]")) return fileInput?.click();
     if (button.matches("[data-forge-reset]")) {
       Object.assign(session.state, { zoom: 1, offsetX: 0, offsetY: 0 });
-      for (const key of ["zoom", "offsetX", "offsetY"]) {
-        const input = dialog.querySelector(`[data-forge-control='${key}']`);
-        if (input) input.value = String(session.state[key]);
-      }
-      for (const output of dialog.querySelectorAll(".genesys-forge-controls output")) output.textContent = output.previousElementSibling?.value ?? "";
       return renderPreviews(session);
     }
     if (button.matches("[data-forge-apply]")) {
@@ -263,10 +334,7 @@ function wireForge(session) {
   dialog.addEventListener("input", (event) => {
     const control = event.target?.closest?.("[data-forge-control]");
     if (!control) return;
-    const key = control.dataset.forgeControl;
-    session.state[key] = ["zoom", "offsetX", "offsetY"].includes(key) ? Number(control.value) : control.value;
-    const output = control.parentElement?.querySelector("output");
-    if (output) output.textContent = key === "zoom" ? `${Number(control.value).toFixed(2)}×` : control.value;
+    session.state[control.dataset.forgeControl] = control.value;
     renderPreviews(session);
   });
 
