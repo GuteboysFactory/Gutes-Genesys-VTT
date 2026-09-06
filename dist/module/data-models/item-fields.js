@@ -12,7 +12,10 @@ export function nonNegativeIntegerField(initial = 0, max) {
 export function provenanceField() {
     return new SchemaField({
         sourceId: new StringField({ required: true, nullable: false, initial: "custom" }),
-        sourceType: new StringField({ required: true, nullable: false, initial: "custom" })
+        sourceType: new StringField({ required: true, nullable: false, initial: "custom" }),
+        sourceUuid: new StringField({ required: true, nullable: false, initial: "" }),
+        sourceVersion: new StringField({ required: true, nullable: false, initial: "" }),
+        settingId: new StringField({ required: true, nullable: false, initial: "" })
     });
 }
 export function qualityStateField() {
