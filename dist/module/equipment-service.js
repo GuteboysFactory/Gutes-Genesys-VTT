@@ -1,4 +1,5 @@
 import { depositWallet, normalizeEquipmentDefinition, normalizeWallet, replaceCraftsmanship, resolveStartingGearPackage, rollFundsFormula, spendWallet, validateHardPointCapacity } from "../domain/equipment/index.js";
+import { equipmentArtFor } from "../../assets/art/equipment-art-index.js";
 
 const SYSTEM_ID = "genesys-vtt";
 const EQUIPMENT_ITEM_TYPES = Object.freeze(["weapon", "armor", "gear", "implement", "attachment"]);
@@ -46,7 +47,13 @@ export function embeddedItemData(definitionInput, quantity = 1, { characterCreat
     const definition = normalizeEquipmentDefinition(definitionInput);
     const system = clone(definition.system ?? {});
     if (definition.itemType === "attachment") delete system.priceMode;
-    system.provenance = { sourceId: definition.sourceId || definition.id, sourceType: definition.sourceType };
+    system.provenance = {
+        sourceId: definition.sourceId || definition.id,
+        sourceType: definition.sourceType,
+        sourceUuid: String(definition.sourceUuid ?? ""),
+        sourceVersion: String(definition.metadata?.sourceVersion ?? definition.version ?? ""),
+        settingId: String(definition.settingId ?? "")
+    };
     if (definition.itemType === "gear") system.quantity = Math.max(1, Number(quantity) || 1);
     const flags = {
         [SYSTEM_ID]: {
@@ -56,7 +63,7 @@ export function embeddedItemData(definitionInput, quantity = 1, { characterCreat
             metadata: clone(definition.metadata ?? {})
         }
     };
-    return { name: definition.label, type: definition.itemType, system, flags };
+    return { name: definition.label, type: definition.itemType, img: equipmentArtFor(definition), system, flags };
 }
 
 export async function replaceCharacterCreationEquipment(actor, resolved) {
@@ -86,6 +93,7 @@ Hooks.once("ready", () => {
             listAttachments: listAttachmentDefinitions,
             getDefinition: getEquipmentDefinition,
             getRuleEntries: equipmentRuleEntries,
+            artFor: equipmentArtFor,
             normalizeDefinition: normalizeEquipmentDefinition,
             normalizeWallet,
             depositWallet,
