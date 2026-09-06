@@ -1,0 +1,282 @@
+/* 0.0.1771 - Equipment Library */
+.genesys-equipment-library {
+  width: min(1180px, 94vw);
+  height: min(820px, 88vh);
+  padding: 0;
+  border: 1px solid #8e6425;
+  border-radius: 10px;
+  background: #0d171e;
+  color: #ead8b9;
+  box-shadow: 0 22px 70px rgba(0,0,0,.55);
+}
+
+.genesys-equipment-library::backdrop {
+  background: rgba(5,8,10,.72);
+}
+
+.genesys-equipment-library-shell {
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto auto minmax(0,1fr);
+}
+
+.genesys-equipment-library-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(215,173,82,.36);
+  background: linear-gradient(180deg,#16252f,#0d1820);
+}
+
+.genesys-equipment-library-header strong,
+.genesys-equipment-detail-title strong {
+  display: block;
+  color: #f1d88d;
+  font-family: Georgia, serif;
+  font-size: 18px;
+}
+
+.genesys-equipment-library-header small,
+.genesys-equipment-detail-title span {
+  display: block;
+  margin-top: 2px;
+  color: #cdbb97;
+}
+
+.genesys-equipment-library-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.genesys-equipment-library-header button,
+.genesys-equipment-library-card-actions button,
+.genesys-equipment-detail-actions button {
+  width: auto;
+  min-width: 0;
+  border: 1px solid rgba(215,173,82,.45);
+  background: #13222d;
+  color: #f1d88d;
+}
+
+.genesys-equipment-library-header [data-equipment-library-close] {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 20px;
+  line-height: 1;
+}
+
+.genesys-equipment-library-controls {
+  display: grid;
+  grid-template-columns: minmax(220px,1fr) 180px 180px 150px;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(215,173,82,.18);
+  background: #0a1218;
+}
+
+.genesys-equipment-library-controls input,
+.genesys-equipment-library-controls select {
+  min-height: 34px;
+  border: 1px solid rgba(215,173,82,.32);
+  background: #111d25;
+  color: #ead8b9;
+}
+
+.genesys-equipment-library-body {
+  min-height: 0;
+  display: grid;
+  grid-template-columns: minmax(0,1.45fr) minmax(310px,.7fr);
+}
+
+.genesys-equipment-library-list {
+  min-height: 0;
+  overflow: auto;
+  padding: 12px;
+}
+
+.genesys-equipment-library-detail {
+  min-height: 0;
+  overflow: auto;
+  padding: 14px;
+  border-left: 1px solid rgba(215,173,82,.24);
+  background: #101820;
+}
+
+.genesys-equipment-library-card {
+  display: grid;
+  grid-template-columns: 64px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 11px;
+  margin-bottom: 8px;
+  padding: 8px;
+  border: 1px solid rgba(215,173,82,.2);
+  border-radius: 7px;
+  background: linear-gradient(180deg,rgba(255,255,255,.035),rgba(255,255,255,.01)),#111c24;
+}
+
+.genesys-equipment-library-card[hidden] {
+  display: none !important;
+}
+
+.genesys-equipment-library-card > img,
+.genesys-equipment-detail-title > img {
+  width: 58px;
+  height: 58px;
+  object-fit: cover;
+  border: 1px solid #8e6425;
+  border-radius: 6px;
+  background: #071015;
+}
+
+.genesys-equipment-library-card-copy header {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.genesys-equipment-library-card-copy strong {
+  color: #f0d58a;
+}
+
+.genesys-equipment-library-card-copy header span,
+.genesys-equipment-library-card-copy small {
+  color: #bfae8f;
+  font-size: 11px;
+}
+
+.genesys-equipment-library-card-copy p {
+  margin: 4px 0;
+  color: #e4d6bb;
+}
+
+.genesys-equipment-library-card-actions,
+.genesys-equipment-detail-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.genesys-equipment-library .genesys-primary-action,
+.genesys-vtt [data-open-equipment-library] {
+  border-color: #d7ad52;
+  background: linear-gradient(180deg,#1c4c6e,#12344d);
+  color: #f5dda0;
+}
+
+.genesys-equipment-detail-placeholder {
+  min-height: 220px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  text-align: center;
+  opacity: .72;
+}
+
+.genesys-equipment-detail-placeholder i {
+  margin-bottom: 10px;
+  font-size: 32px;
+  color: #d7ad52;
+}
+
+.genesys-equipment-detail-title {
+  display: grid;
+  grid-template-columns: 66px minmax(0,1fr);
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(215,173,82,.2);
+}
+
+.genesys-equipment-library-detail dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+.genesys-equipment-library-detail dl > div {
+  padding: 7px 8px;
+  border: 1px solid rgba(215,173,82,.18);
+  border-radius: 5px;
+  background: rgba(255,255,255,.025);
+}
+
+.genesys-equipment-library-detail dt {
+  color: #a9997f;
+  font-size: 10px;
+  text-transform: uppercase;
+}
+
+.genesys-equipment-library-detail dd {
+  margin: 2px 0 0;
+  color: #f0dfbd;
+}
+
+.genesys-equipment-library-detail section {
+  margin: 12px 0;
+}
+
+.genesys-equipment-library-detail h3 {
+  margin: 0 0 5px;
+  color: #d7ad52;
+  font-size: 12px;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.genesys-item-image-drop {
+  display: grid;
+  grid-template-columns: 86px minmax(0,1fr);
+  align-items: center;
+  gap: 12px;
+  margin: 10px 0;
+  padding: 9px;
+  border: 1px dashed rgba(215,173,82,.6);
+  border-radius: 7px;
+  background: rgba(18,34,45,.78);
+  color: #ead8b9;
+  cursor: pointer;
+}
+
+.genesys-item-image-drop.is-dragover {
+  border-style: solid;
+  box-shadow: inset 0 0 0 2px rgba(215,173,82,.28),0 0 12px rgba(215,173,82,.18);
+}
+
+.genesys-item-image-drop img {
+  width: 82px;
+  height: 82px;
+  object-fit: cover;
+  border: 1px solid #d7ad52;
+  border-radius: 6px;
+  background: #071015;
+}
+
+.genesys-item-image-drop strong,
+.genesys-item-image-drop small {
+  display: block;
+}
+
+.genesys-item-image-drop strong {
+  color: #f1d88d;
+  font-family: Georgia,serif;
+}
+
+.genesys-item-image-drop small {
+  margin-top: 4px;
+  color: #cdbb97;
+}
+
+@media (max-width: 900px) {
+  .genesys-equipment-library-controls {
+    grid-template-columns: 1fr 1fr;
+  }
+  .genesys-equipment-library-body {
+    grid-template-columns: 1fr;
+  }
+  .genesys-equipment-library-detail {
+    display: none;
+  }
+}
