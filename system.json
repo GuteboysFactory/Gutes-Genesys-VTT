@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1781 improves Portrait & Token Forge with direct image manipulation: drag either preview to position the image and hold Ctrl while using the mouse wheel to zoom. The old crop sliders are removed. Saving now uses Foundry v13's namespaced FilePicker implementation, creates the actor-art directory hierarchy safely, validates uploaded image paths before updating Actor img/prototypeToken.texture.src, and preserves the shared Forge workflow for all Actor roles and the Create Actor Wizard.",
-  "version": "0.0.1781",
+  "description": "Genesys VTT 0.0.1790 introduces the first playable Magic Gameplay / Spell Composer foundation. Actors with valid setting magic access can compose legal Magic Actions from live skills, available action matrices, implements, and additional effects; difficulty is calculated live and blocked above Formidable 5, Rune casting requires a compatible runebound shard, key Terrinoth implement modifiers are applied automatically, spell rolls use the existing Genesys dice renderer, and the standard 2 strain casting cost is routed through the adversary service. Existing Character Sheet, Equipment, Advancement, and Portrait & Token Forge GOLD baselines remain otherwise unchanged.",
+  "version": "0.0.1790",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -47,7 +47,9 @@
     "dist/module/character-sheet-advancement-ui-hotfix.js",
     "dist/module/character-creator-wizard.js",
     "dist/module/character-creator-wizard-hotfix.js",
-    "dist/module/portrait-token-forge-v1780.js"
+    "dist/module/portrait-token-forge-v1780.js",
+    "dist/module/magic-action-service-v1790.js",
+    "dist/module/magic-action-composer-v1790.js"
   ],
   "styles": [
     "styles/genesys.css",
@@ -74,7 +76,8 @@
     "styles/equipment-library-v1771.css",
     "styles/equipment-library-v1773.css",
     "styles/equipment-toolbar-v1777.css",
-    "styles/portrait-token-forge-v1780.css"
+    "styles/portrait-token-forge-v1780.css",
+    "styles/magic-action-composer-v1790.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
