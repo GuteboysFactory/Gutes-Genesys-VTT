@@ -49,7 +49,8 @@ function renderInlineEditor(root, actor, resource) {
   if (existing) {
     if (document.activeElement !== existing) existing.value = String(currentValue(actor, resource));
     const thresholdLabel = strong.querySelector?.(".genesys-vital-inline-threshold-v1803");
-    if (thresholdLabel) thresholdLabel.textContent = String(thresholdValue(actor, resource));
+    const thresholdText = String(thresholdValue(actor, resource));
+    if (thresholdLabel && thresholdLabel.textContent !== thresholdText) thresholdLabel.textContent = thresholdText;
     stat.classList.toggle("threshold-exceeded", thresholdValue(actor, resource) > 0 && currentValue(actor, resource) > thresholdValue(actor, resource));
     return;
   }
@@ -138,3 +139,4 @@ Hooks.once("ready", () => {
   for (const delay of [0, 50, 150, 350]) setTimeout(enhanceSheets, delay);
   console.log(`${SYSTEM_ID} | ${VERSION} Character Sheet inline vitals editing ready`);
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";

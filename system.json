@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1811 is a Character Sheet stability and compatibility patch. It preserves the 0.0.1810 Magic Effect Runtime and existing character features while guarding the layered Character Sheet MutationObservers so they react to actual sheet mounts instead of repeatedly rescanning and reprocessing every DOM mutation. This reduces observer cascades, browser main-thread load, and the risk of Character Sheet lockups on remote/browser clients.",
-  "version": "0.0.1811",
+  "description": "Genesys VTT 0.0.1812 QA stability patch. Fixes repeated unchanged vitals threshold writes and replaces the global observer guard with an explicit shared UI enhancement coordinator. Preserves 0.0.1810 gameplay. Foundry live regression testing required.",
+  "version": "0.0.1812",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -26,7 +26,6 @@
     "dist/module/equipment-library.js",
     "dist/module/equipment-library-item-binding.js",
     "dist/module/equipment-art-runtime.js",
-    "dist/module/character-sheet-observer-guard-v1811.js",
     "dist/module/equipment-toolbar-v1777.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",

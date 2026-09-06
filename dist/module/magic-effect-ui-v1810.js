@@ -151,3 +151,4 @@ Hooks.once("ready", () => {
   Hooks.on("updateToken", () => queueMicrotask(enhanceSheets));
   console.log(`${SYSTEM_ID} | ${VERSION} Magic Effect UI ready`);
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";

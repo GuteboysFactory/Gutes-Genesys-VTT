@@ -419,3 +419,4 @@ Hooks.once("ready", () => {
     observer.observe(document.body, { childList: true, subtree: true });
     console.log("genesys-vtt | 0.0.1756 Actions layout ready");
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";

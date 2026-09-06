@@ -446,3 +446,4 @@ Hooks.on("createActor", (actor) => syncPrototypeFromForgePortrait(actor));
 Hooks.on("updateActor", (actor, changes) => {
   if (Object.prototype.hasOwnProperty.call(changes ?? {}, "img")) syncPrototypeFromForgePortrait(actor);
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";

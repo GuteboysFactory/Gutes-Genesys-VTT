@@ -340,3 +340,4 @@ Hooks.once("ready", () => {
     initializeExistingSheets();
     observer.observe(document.body, { childList: true, subtree: true });
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";

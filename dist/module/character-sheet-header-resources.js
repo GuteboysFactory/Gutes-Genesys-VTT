@@ -240,3 +240,4 @@ Hooks.once("ready", () => {
         setTimeout(init, delay);
     console.log("genesys-vtt | 0.0.1758 Wizard-era XP/Currency header resources ready");
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";

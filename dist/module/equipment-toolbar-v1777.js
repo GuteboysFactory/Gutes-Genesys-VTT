@@ -114,3 +114,4 @@ Hooks.once("ready", () => {
     observer.observe(document.body, { childList: true, subtree: true });
     console.log(`${SYSTEM_ID} | 0.0.1777 Equipment toolbar polish ready`);
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";

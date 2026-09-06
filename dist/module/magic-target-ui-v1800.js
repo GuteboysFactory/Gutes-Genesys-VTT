@@ -261,3 +261,4 @@ Hooks.once("ready", () => {
   });
   console.log(`${SYSTEM_ID} | ${VERSION} Magic target UI ready`);
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";

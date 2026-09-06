@@ -337,3 +337,4 @@ Hooks.once("ready", () => {
   observer.observe(document.body, { childList: true, subtree: true });
   console.log(`${SYSTEM_ID} | ${VERSION} Magic Action Composer ready`);
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";

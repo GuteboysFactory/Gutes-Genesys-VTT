@@ -35,3 +35,4 @@ Hooks.once("ready", () => {
     observer.observe(document.body, { childList: true, subtree: true });
     console.log(`${SYSTEM_ID} | Equipment Item image binding ready`);
 });
+import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";
