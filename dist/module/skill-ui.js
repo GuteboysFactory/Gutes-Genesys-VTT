@@ -4,6 +4,7 @@ import { poolTraceToHtml } from "./pool-ui.js";
 import { buildSynchronizedSkillStates, getActorSkillDefinitions } from "./skills-service.js";
 import { minionSkillRank, normalizeMinionGroup } from "../domain/adversaries/index.js";
 import { rollNarrativeWithPresentation } from "./dice-renderer-bridge.js";
+import { applyMagicAbilityEffectsToPrepared } from "./magic-effect-rules-v1810.js";
 let transientCharacteristicOverride = null;
 function capitalize(value) {
     return value.length ? `${value[0].toUpperCase()}${value.slice(1)}` : value;
@@ -103,12 +104,13 @@ export function prepareActorSkillCheck(actor, skillId, difficulty = 2, rankOverr
         rank: effectiveRank,
         ...(effectiveCharacteristicOverride ? { characteristicOverride: effectiveCharacteristicOverride } : {})
     };
-    return prepareSkillCheck({
+    const prepared = prepareSkillCheck({
         definition,
         state: effectiveState,
         characteristics: actor.system.characteristics,
         difficulty
     });
+    return applyMagicAbilityEffectsToPrepared(prepared, actor);
 }
 export async function rollPreparedSkillCheckToChat(prepared, speakerAlias) {
     const { result } = await rollNarrativeWithPresentation(prepared.construction.pool, {
