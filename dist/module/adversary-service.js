@@ -49,6 +49,76 @@ export function actorEffectiveSkillRank(actor, skillId, storedRank = 0) {
         groupSkillIds: actor?.system?.minionGroup?.groupSkillIds ?? []
     }, skillId);
 }
+/** Evaluate whether an Actor may voluntarily pay a strain cost without exceeding the relevant threshold. */
+export function evaluateActorVoluntaryStrainCost(actor, amount = 0) {
+    const cost = n(amount);
+    const context = actorAdversaryContext(actor);
+    const actorName = String(actor?.name ?? "Actor");
+    if (cost <= 0) {
+        return { allowed: true, cost, role: context.role, track: context.tracksStrain ? "strain" : "wounds", before: 0, after: 0, threshold: 0, convertedToWounds: false, reason: "" };
+    }
+    if (context.roleMinion) {
+        return {
+            allowed: false,
+            cost,
+            role: context.role,
+            track: "wounds",
+            before: n(actor?.system?.wounds?.value),
+            after: n(actor?.system?.wounds?.value) + cost,
+            threshold: n(actor?.system?.wounds?.threshold),
+            convertedToWounds: true,
+            reason: "Minions cannot voluntarily suffer strain."
+        };
+    }
+    if (context.tracksStrain) {
+        const before = n(actor?.system?.strain?.value);
+        const threshold = n(actor?.system?.strain?.threshold);
+        const after = before + cost;
+        if (threshold <= 0) {
+            return { allowed: false, cost, role: context.role, track: "strain", before, after, threshold, convertedToWounds: false, reason: `${actorName} has no valid Strain Threshold.` };
+        }
+        if (after > threshold) {
+            return {
+                allowed: false,
+                cost,
+                role: context.role,
+                track: "strain",
+                before,
+                after,
+                threshold,
+                convertedToWounds: false,
+                reason: `${actorName} cannot voluntarily suffer ${cost} strain: ${before}/${threshold} would become ${after}/${threshold}, exceeding Strain Threshold.`
+            };
+        }
+        return { allowed: true, cost, role: context.role, track: "strain", before, after, threshold, convertedToWounds: false, reason: "" };
+    }
+    const before = n(actor?.system?.wounds?.value);
+    const threshold = n(actor?.system?.wounds?.threshold);
+    const after = before + cost;
+    if (threshold <= 0) {
+        return { allowed: false, cost, role: context.role, track: "wounds", before, after, threshold, convertedToWounds: true, reason: `${actorName} has no valid Wound Threshold for routed strain costs.` };
+    }
+    if (after > threshold) {
+        return {
+            allowed: false,
+            cost,
+            role: context.role,
+            track: "wounds",
+            before,
+            after,
+            threshold,
+            convertedToWounds: true,
+            reason: `${actorName} cannot voluntarily pay ${cost} strain: this Rival routes strain to wounds and ${before}/${threshold} would become ${after}/${threshold}, exceeding Wound Threshold.`
+        };
+    }
+    return { allowed: true, cost, role: context.role, track: "wounds", before, after, threshold, convertedToWounds: true, reason: "" };
+}
+export function assertActorCanVoluntarilySufferStrain(actor, amount = 0) {
+    const evaluation = evaluateActorVoluntaryStrainCost(actor, amount);
+    if (!evaluation.allowed)
+        throw new Error(evaluation.reason || "Actor cannot voluntarily suffer this strain cost.");
+    return evaluation;
+}
 /** Apply direct strain/wound effects outside combat with the same role-routing rules. */
 export async function applyActorRoleDamage(actor, input) {
     const role = normalizeActorRole(actor?.system?.role);
