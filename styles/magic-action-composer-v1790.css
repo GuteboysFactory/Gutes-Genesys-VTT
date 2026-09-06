@@ -1,0 +1,84 @@
+/* 0.0.1790 - Magic Gameplay / Spell Composer foundation */
+.genesys-magic-actions-section .genesys-magic-actions-banner {
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+}
+.genesys-magic-actions-banner > div { min-width:0; }
+.genesys-magic-actions-banner p { margin:2px 0 0; opacity:.72; font-size:.76rem; font-weight:400; }
+.genesys-magic-actions-banner button { flex:0 0 auto; }
+.genesys-magic-skill-chips { display:flex; flex-wrap:wrap; gap:7px; padding:10px 12px 12px; }
+.genesys-magic-skill-chip { display:flex; flex-direction:column; gap:2px; padding:6px 9px; border:1px solid rgba(194,153,67,.46); border-radius:5px; background:rgba(14,36,45,.72); }
+.genesys-magic-skill-chip strong { color:#e8cc78; font-size:.78rem; }
+.genesys-magic-skill-chip small { opacity:.68; font-size:.68rem; }
+.genesys-magic-inline-warning { margin:0 12px 12px; padding:7px 9px; border-left:3px solid #b67b37; background:rgba(100,55,22,.18); font-size:.72rem; }
+
+.genesys-magic-composer {
+  width:min(1120px,94vw); max-height:92vh; padding:0; overflow:hidden;
+  border:1px solid #9e7733; border-radius:8px; background:#0b161d; color:#eadfbd;
+  box-shadow:0 18px 60px rgba(0,0,0,.62);
+}
+.genesys-magic-composer::backdrop { background:rgba(0,0,0,.7); }
+.genesys-magic-composer-shell { display:flex; flex-direction:column; max-height:92vh; min-height:680px; }
+.genesys-magic-composer-header { display:flex; justify-content:space-between; align-items:center; gap:16px; padding:14px 18px; border-bottom:1px solid #685025; background:#0d2631; }
+.genesys-magic-composer-header strong { display:block; color:#f0d27e; font-size:1.12rem; }
+.genesys-magic-composer-header small { display:block; margin-top:2px; opacity:.68; }
+.genesys-magic-composer-header button { width:34px; height:34px; border:0; background:transparent; color:#ead494; font-size:1.4rem; cursor:pointer; }
+.genesys-magic-composer-main { display:grid; grid-template-columns:minmax(0,1fr) 290px; gap:14px; padding:14px; overflow:auto; }
+.genesys-magic-composer-setup { min-width:0; }
+.genesys-magic-composer-selects { display:grid; grid-template-columns:1fr 1fr 1fr; gap:10px; }
+.genesys-magic-composer-selects label { display:flex; flex-direction:column; gap:5px; color:#dfc578; font-size:.74rem; text-transform:uppercase; letter-spacing:.04em; }
+.genesys-magic-composer-selects select { min-height:34px; border:1px solid #7e6230; border-radius:4px; background:#241f26; color:#f2e5c4; padding:4px 7px; }
+.genesys-magic-action-summary { margin:12px 0; padding:11px 12px; border:1px solid #5d4926; border-radius:6px; background:#102630; }
+.genesys-magic-action-summary > div { display:flex; gap:8px; align-items:center; flex-wrap:wrap; }
+.genesys-magic-action-summary strong { color:#efd17d; font-size:.95rem; }
+.genesys-magic-action-summary span { padding:2px 6px; border-radius:10px; background:rgba(217,174,77,.11); color:#d7c18a; font-size:.68rem; }
+.genesys-magic-action-summary p { margin:7px 0 0; opacity:.76; font-size:.77rem; line-height:1.35; }
+.genesys-magic-effects-heading { display:flex; justify-content:space-between; align-items:end; gap:12px; margin:10px 0 8px; }
+.genesys-magic-effects-heading strong { display:block; color:#efd17d; }
+.genesys-magic-effects-heading span { display:block; opacity:.62; font-size:.7rem; margin-top:2px; }
+.genesys-magic-effects-heading button { border:1px solid #735a2c; border-radius:4px; background:#173241; color:#ddc577; padding:5px 8px; cursor:pointer; font-size:.72rem; }
+.genesys-magic-effects-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:8px; }
+.genesys-magic-effect-card { position:relative; display:flex; flex-direction:column; gap:6px; min-height:104px; padding:10px; border:1px solid #564624; border-radius:6px; background:#0e2029; color:#eee0bd; text-align:left; }
+button.genesys-magic-effect-card { width:100%; cursor:pointer; }
+.genesys-magic-effect-card:hover { border-color:#96722f; background:#112a36; }
+.genesys-magic-effect-card.selected { border-color:#d0a246; box-shadow:inset 0 0 0 1px rgba(208,162,70,.28); background:#15313d; }
+.genesys-magic-effect-card > div:first-child { display:flex; align-items:center; justify-content:space-between; gap:8px; }
+.genesys-magic-effect-card strong { color:#eccb73; font-size:.8rem; }
+.genesys-magic-effect-card span { color:#cfb879; font-size:.66rem; white-space:nowrap; }
+.genesys-magic-effect-card p { margin:0; opacity:.7; font-size:.7rem; line-height:1.3; }
+.genesys-magic-effect-toggle > i { position:absolute; right:9px; bottom:8px; color:#d0a246; }
+.genesys-magic-effect-stepper { margin-top:auto; display:flex; justify-content:flex-end; align-items:center; gap:7px; }
+.genesys-magic-effect-stepper button { width:27px; height:25px; padding:0; border:1px solid #765d2e; border-radius:4px; background:#173241; color:#efd27d; cursor:pointer; }
+.genesys-magic-effect-stepper button:disabled { opacity:.35; cursor:default; }
+.genesys-magic-effect-stepper b { min-width:18px; text-align:center; }
+.genesys-magic-composer-sidebar { display:flex; flex-direction:column; gap:10px; }
+.genesys-magic-difficulty-card, .genesys-magic-roll-preview, .genesys-magic-validation { border:1px solid #5b4826; border-radius:6px; background:#0e222c; padding:11px; }
+.genesys-magic-difficulty-card { text-align:center; }
+.genesys-magic-difficulty-card > span { display:block; color:#d7bd75; text-transform:uppercase; letter-spacing:.06em; font-size:.68rem; }
+.genesys-magic-difficulty-card > strong { display:block; margin:5px 0; color:#f0ce6e; font-size:2.3rem; line-height:1; }
+.genesys-magic-difficulty-card > small { opacity:.66; }
+.genesys-magic-roll-preview { display:flex; flex-direction:column; gap:9px; }
+.genesys-magic-roll-preview > div { display:flex; flex-direction:column; gap:2px; padding-bottom:8px; border-bottom:1px solid rgba(136,105,46,.3); }
+.genesys-magic-roll-preview > div:last-child { border-bottom:0; padding-bottom:0; }
+.genesys-magic-roll-preview strong { color:#dec37a; font-size:.72rem; text-transform:uppercase; }
+.genesys-magic-roll-preview span { font-size:.74rem; opacity:.78; line-height:1.3; }
+.genesys-magic-validation { display:flex; flex-direction:column; gap:6px; }
+.genesys-magic-validation span { display:flex; gap:7px; align-items:flex-start; font-size:.72rem; line-height:1.3; }
+.genesys-magic-valid i { color:#87b77a; margin-top:1px; }
+.genesys-magic-invalid { color:#efb09a; }
+.genesys-magic-invalid i { color:#d98462; margin-top:1px; }
+.genesys-magic-composer-footer { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-top:auto; padding:12px 15px; border-top:1px solid #5c4825; background:#09151c; }
+.genesys-magic-composer-footer > div { display:flex; align-items:center; gap:8px; }
+.genesys-magic-composer-footer > div:first-child { flex-direction:column; align-items:flex-start; gap:1px; }
+.genesys-magic-composer-footer > div:first-child strong { color:#dfc479; font-size:.7rem; text-transform:uppercase; }
+.genesys-magic-composer-footer > div:first-child span { font-size:.78rem; }
+.genesys-magic-composer-footer button { border:1px solid #82642e; border-radius:4px; background:#173342; color:#efd17c; padding:7px 12px; cursor:pointer; }
+.genesys-magic-composer-footer button:disabled { opacity:.4; cursor:default; }
+.genesys-magic-composer-footer .genesys-primary-action { background:#175170; border-color:#c89c40; }
+.genesys-magic-chat-notes { display:flex; flex-direction:column; gap:2px; margin:6px 0; }
+
+@media (max-width:900px) {
+  .genesys-magic-composer-shell { min-height:0; }
+  .genesys-magic-composer-main { grid-template-columns:1fr; }
+  .genesys-magic-composer-selects { grid-template-columns:1fr; }
+  .genesys-magic-effects-grid { grid-template-columns:1fr; }
+}
