@@ -1,0 +1,122 @@
+/* 0.0.1777 - Equipment toolbar polish.
+   Raw Roll Difficulty remains in the Equipment DOM as the source for Actions > Raw Roll Options,
+   but is intentionally hidden from the Equipment banner. */
+
+.genesys-vtt [data-genesys-tab-panel='equipment'] .genesys-inventory-panel > .genesys-panel-banner > .genesys-weapon-difficulty {
+  display: none !important;
+}
+
+.genesys-vtt [data-genesys-tab-panel='equipment'] .genesys-equipment-createbar-source-v1777 {
+  display: none !important;
+}
+
+.genesys-vtt .genesys-equipment-toolbar-v1777 {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
+.genesys-vtt .genesys-equipment-toolbar-v1777 > button,
+.genesys-vtt .genesys-equipment-create-custom > summary {
+  min-height: 32px;
+  border: 1px solid var(--genesys-gold-deep, #9d742f);
+  border-radius: 4px;
+  background: #153247;
+  color: var(--genesys-gold-light, #f2d98b);
+  padding: 5px 12px;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: .02em;
+  cursor: pointer;
+}
+
+.genesys-vtt .genesys-equipment-toolbar-v1777 > button:hover,
+.genesys-vtt .genesys-equipment-create-custom > summary:hover,
+.genesys-vtt .genesys-equipment-create-custom[open] > summary {
+  background: #1c4058;
+  border-color: var(--genesys-gold, #d7ad52);
+}
+
+.genesys-vtt .genesys-equipment-library-top-button {
+  margin: 0 !important;
+  white-space: nowrap;
+}
+
+.genesys-vtt .genesys-equipment-create-custom {
+  position: relative;
+  margin: 0;
+}
+
+.genesys-vtt .genesys-equipment-create-custom > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.genesys-vtt .genesys-equipment-create-custom > summary::-webkit-details-marker {
+  display: none;
+}
+
+.genesys-vtt .genesys-equipment-create-chevron {
+  font-size: .72em;
+  transition: transform 120ms ease;
+}
+
+.genesys-vtt .genesys-equipment-create-custom[open] .genesys-equipment-create-chevron {
+  transform: rotate(180deg);
+}
+
+.genesys-vtt .genesys-equipment-create-menu {
+  position: absolute;
+  z-index: 40;
+  top: calc(100% + 5px);
+  right: 0;
+  min-width: 190px;
+  padding: 5px;
+  border: 1px solid var(--genesys-gold-deep, #9d742f);
+  border-radius: 4px;
+  background: #0d1d27;
+  box-shadow: 0 8px 22px rgba(0, 0, 0, .42);
+}
+
+.genesys-vtt .genesys-equipment-create-menu button {
+  display: block;
+  width: 100%;
+  min-height: 30px;
+  margin: 0;
+  padding: 5px 9px;
+  border: 0;
+  border-radius: 3px;
+  background: transparent;
+  color: #efe2bf;
+  text-align: left;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.genesys-vtt .genesys-equipment-create-menu button:hover:not(:disabled) {
+  background: #18384c;
+  color: #ffd77b;
+}
+
+.genesys-vtt .genesys-equipment-create-menu button:disabled {
+  opacity: .4;
+  cursor: default;
+}
+
+@media (max-width: 900px) {
+  .genesys-vtt [data-genesys-tab-panel='equipment'] .genesys-inventory-panel > .genesys-panel-banner {
+    align-items: flex-start;
+  }
+
+  .genesys-vtt .genesys-equipment-toolbar-v1777 {
+    flex-wrap: wrap;
+  }
+}
