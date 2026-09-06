@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1803 restores manual current Wounds and Strain editing in the locked Character Sheet quick-stat strip for GMs and Actor owners. The visible current values are now compact inline number fields while thresholds remain read-only in that strip; updates persist to the Actor and rerender the sheet. The 0.0.1802 voluntary-strain safety gate, 0.0.1801 live target synchronization, and 0.0.1800 target resolution behavior remain unchanged.",
-  "version": "0.0.1803",
+  "description": "Genesys VTT 0.0.1804 fixes manual current Wounds and Strain editing in the locked Character Sheet quick-stat strip. The inline editor now binds directly to Actor data and GM/owner permissions rather than depending on hidden legacy form fields, and it retries after sheet render so the visible Health & Defense values become editable reliably. Thresholds remain read-only. Magic target resolution and the voluntary-strain safety gate remain unchanged.",
+  "version": "0.0.1804",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
