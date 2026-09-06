@@ -1,4 +1,5 @@
 import { advanceTurnConditionDurations, conditionRules, makeConditionState, summarizeConditions } from "../domain/conditions/index.js";
+import { getMagicAbilityDelta } from "./magic-effect-rules-v1810.js";
 function actorConditions(actor) {
     const raw = actor?.system?.conditions;
     return Array.isArray(raw) ? raw.map((entry) => ({ ...entry })) : [];
@@ -17,7 +18,14 @@ export function getActorConditionRules(actor) {
     return conditionRules(getActorConditions(actor));
 }
 export function getActorConditionCheckModifiers(actor) {
-    return getActorConditionRules(actor).checkModifiers;
+    const base = getActorConditionRules(actor).checkModifiers;
+    const delta = getMagicAbilityDelta(actor);
+    const magic = delta > 0
+        ? [{ id: "magic:augment", priority: 10, pool: { add: { ability: 1 } } }]
+        : delta < 0
+            ? [{ id: "magic:curse", priority: 10, pool: { remove: { ability: 1 } } }]
+            : [];
+    return [...base, ...magic];
 }
 export async function addActorCondition(actor, conditionId, options = {}) {
     const current = actorConditions(actor);
