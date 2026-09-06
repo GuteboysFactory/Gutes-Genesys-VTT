@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1801 hotfixes Magic target synchronization. An open Spell Composer now follows the current Foundry target live through the targetToken hook, rechecks the single active Foundry target at cast time to prevent stale target usage, and still allows an explicit manual dropdown target when no single Foundry target is active. The 0.0.1800 Magic Effects & Target Resolution behavior otherwise remains unchanged.",
-  "version": "0.0.1801",
+  "description": "Genesys VTT 0.0.1802 adds a reusable voluntary-strain safety gate and applies it to Magic casting. PCs and Nemeses may pay the standard 2-strain spell cost only when doing so does not exceed Strain Threshold; Rivals are checked against the wound track because strain costs route to wounds; Minions remain blocked from voluntary strain. Spell Composer validation now surfaces the threshold reason before rolling, while the 0.0.1801 live target synchronization and 0.0.1800 target resolution behavior remain unchanged.",
+  "version": "0.0.1802",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -51,6 +51,7 @@
     "dist/module/magic-action-service-v1790.js",
     "dist/module/magic-action-composer-v1790.js",
     "dist/module/magic-resolution-service-v1800.js",
+    "dist/module/magic-strain-gate-v1802.js",
     "dist/module/magic-target-ui-v1800.js"
   ],
   "styles": [
