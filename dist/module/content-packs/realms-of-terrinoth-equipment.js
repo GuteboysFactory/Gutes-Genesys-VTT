@@ -17,7 +17,7 @@ const base = (id, label, itemType, system, page, table, metadata = {}) => ({
 
 const weapon = (id, label, skillId, damage, critical, range, encumbrance, hardPoints, price, rarity, qualities = [], metadata = {}) => base(
     id, label, "weapon",
-    { skillId, attackMode: range === "engaged" ? "melee" : "ranged", engagedProfile: "auto", damageCharacteristic: metadata.fixedDamage ? "none" : "brawn", damage, critical, range, encumbrance, hardPoints, price, rarity, equipped: false, qualities, craftsmanshipId: "", craftsmanshipSourceId: "", notes: "" },
+    { skillId, attackMode: skillId === "ranged" ? "ranged" : "melee", engagedProfile: "auto", damageCharacteristic: metadata.fixedDamage ? "none" : "brawn", damage, critical, range, encumbrance, hardPoints, price, rarity, equipped: false, qualities, craftsmanshipId: "", craftsmanshipSourceId: "", notes: "" },
     metadata.page ?? (range === "engaged" || metadata.meleeTable ? 94 : 95), metadata.table ?? (range === "engaged" || metadata.meleeTable ? "2-5" : "2-6"), metadata
 );
 const armor = (id, label, defense, soak, encumbrance, hardPoints, price, rarity, metadata = {}) => base(
@@ -111,36 +111,30 @@ export const REALMS_OF_TERRINOTH_EQUIPMENT = Object.freeze([
     gear("invisibility-potion", "Invisibility Potion", 1, 1000, 9, { table: "2-10", page: 102, category: "potion", consumable: true, activation: "maneuver" }),
     gear("poison", "Poison", 0, 200, 5, { table: "2-10", page: 102, category: "consumable", consumable: true, activation: "maneuver" }),
     gear("power-potion", "Power Potion", 1, 250, 6, { table: "2-10", page: 102, category: "potion", consumable: true, activation: "maneuver" }),
-    gear("protective-tonic", "Protective Tonic", 1, 125, 6, { table: "2-10", page: 102, category: "potion", consumable: true, activation: "maneuver" }),
-    gear("regeneration-elixir", "Regeneration Elixir", 1, 50, 4, { table: "2-10", page: 102, category: "elixir", consumable: true, activation: "maneuver" }),
-    gear("smokebomb-vial", "Smokebomb Vial", 0, 25, 4, { table: "2-10", page: 102, category: "consumable", consumable: true, activation: "maneuver" }),
-    gear("speed-potion", "Speed Potion", 1, 200, 7, { table: "2-10", page: 102, category: "potion", consumable: true, activation: "maneuver" }),
-    gear("stamina-elixir", "Stamina Elixir", 0, 50, 3, { table: "2-10", page: 102, category: "elixir", consumable: true, activation: "maneuver", errata: "Usable to heal strain during a social encounter." }),
+    gear("protective-tonic", "Protective Tonic", 1, 125, 6, { table: "2-10", page: 102, category: "tonic", consumable: true, activation: "maneuver" }),
+    gear("regeneration-elixir", "Regeneration Elixir", 1, 500, 8, { table: "2-10", page: 102, category: "elixir", consumable: true, activation: "maneuver" }),
+    gear("smokebomb-vial", "Smokebomb Vial", 0, 100, 5, { table: "2-10", page: 102, category: "consumable", consumable: true, activation: "maneuver" }),
+    gear("speed-potion", "Speed Potion", 1, 350, 7, { table: "2-10", page: 102, category: "potion", consumable: true, activation: "maneuver" }),
+    gear("stamina-elixir", "Stamina Elixir", 0, 25, 3, { table: "2-10", page: 102, category: "elixir", consumable: true, activation: "maneuver" }),
 
-    ruleData("craftsmanship-ancient", "Ancient Craftsmanship", "craftsmanship", { id: "ancient", compatibleItemTypes: ["weapon", "armor"], priceMultiplier: 20, rarityMode: "set", rarityValue: 10, singleSlot: true }, 97),
-    ruleData("craftsmanship-dwarven", "Dwarven Craftsmanship", "craftsmanship", { id: "dwarven", compatibleItemTypes: ["weapon", "armor"], priceMultiplier: 2, rarityMode: "add", rarityValue: 2, singleSlot: true }, 97),
-    ruleData("craftsmanship-elven", "Elven Craftsmanship", "craftsmanship", { id: "elven", compatibleItemTypes: ["weapon", "armor"], priceMultiplier: 2, rarityMode: "add", rarityValue: 3, singleSlot: true }, 97),
-    ruleData("implement-material-bone", "Bone Implement Material", "implement-material", { id: "bone", priceMultiplier: 1.5, rarityDelta: 2, errataApplied: true }, 99),
-    ruleData("implement-material-oak", "Oak Implement Material", "implement-material", { id: "oak", priceMultiplier: 1, rarityDelta: 0 }, 99),
-    ruleData("implement-material-hazel", "Hazel Implement Material", "implement-material", { id: "hazel", priceMultiplier: 1.5, rarityDelta: 1, errataApplied: true }, 99),
-    ruleData("implement-material-willow", "Willow Implement Material", "implement-material", { id: "willow", priceMultiplier: 2, rarityDelta: 2 }, 99),
-    ruleData("implement-material-yew", "Yew Implement Material", "implement-material", { id: "yew", priceMultiplier: 1.5, rarityDelta: 1, errataApplied: true }, 99)
+    ruleData("craftsmanship-dwarven", "Dwarven Craftsmanship", "craftsmanship", { id: "dwarven", appliesTo: ["weapon", "armor"], priceMultiplier: 2, rarityModifier: 2, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197),
+    ruleData("craftsmanship-elven", "Elven Craftsmanship", "craftsmanship", { id: "elven", appliesTo: ["weapon", "armor"], priceMultiplier: 2, rarityModifier: 2, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197),
+    ruleData("craftsmanship-bone", "Bone Craftsmanship", "craftsmanship", { id: "bone", appliesTo: ["weapon", "armor"], priceMultiplier: 1.5, rarityModifier: 0, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197),
+    ruleData("craftsmanship-hazel", "Hazel Craftsmanship", "craftsmanship", { id: "hazel", appliesTo: ["weapon", "armor"], priceMultiplier: 1.5, rarityModifier: 0, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197),
+    ruleData("craftsmanship-yew", "Yew Craftsmanship", "craftsmanship", { id: "yew", appliesTo: ["weapon", "armor"], priceMultiplier: 1.5, rarityModifier: 0, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197)
 ]);
 
 export const REALMS_OF_TERRINOTH_EQUIPMENT_PACK = Object.freeze({
     id: PACK_ID,
-    label: "Realms of Terrinoth - Equipment & Wallet",
+    label: "Realms of Terrinoth - Equipment",
     version: "1.0",
     settingId: SETTING_ID,
-    sourceType: "official-setting-catalog",
+    sourceType: SOURCE_TYPE,
     complete: true,
-    currency: { mode: "single", label: "Silver Coins", denominations: [{ id: "silver", label: "Silver Coins", abbreviation: "sp", baseValue: 1, icon: "fa-solid fa-coins" }] },
     metadata: {
-        content: "Weapons, armor, magic implements, adventuring gear, potions/elixirs, craftsmanship and implement-material metadata",
-        authority: "Realms of Terrinoth Tables 2-5 through 2-10 and Table 2-19 + official FAQ/errata",
-        bundledRulesText: false,
-        equipmentEntryCount: REALMS_OF_TERRINOTH_EQUIPMENT.filter((entry) => entry.itemType !== "rule-data").length,
-        ruleDataCount: REALMS_OF_TERRINOTH_EQUIPMENT.filter((entry) => entry.itemType === "rule-data").length
+        source: "Realms of Terrinoth",
+        scope: "Terrinoth equipment catalog foundation",
+        bundledRulesText: false
     },
     equipment: REALMS_OF_TERRINOTH_EQUIPMENT
 });
@@ -148,9 +142,9 @@ export const REALMS_OF_TERRINOTH_EQUIPMENT_PACK = Object.freeze({
 Hooks.once("ready", () => {
     try {
         game?.genesysContent?.registerPack?.(REALMS_OF_TERRINOTH_EQUIPMENT_PACK, { replace: true });
-        console.log(`genesys-vtt | Registered ${REALMS_OF_TERRINOTH_EQUIPMENT_PACK.metadata.equipmentEntryCount} Terrinoth equipment entries`);
+        console.log(`genesys-vtt | Registered ${REALMS_OF_TERRINOTH_EQUIPMENT.length} Terrinoth equipment/rule entries`);
     }
     catch (error) {
-        console.error("genesys-vtt | Failed to register Terrinoth equipment catalog", error);
+        console.error("genesys-vtt | Failed to register Terrinoth equipment pack", error);
     }
 });
