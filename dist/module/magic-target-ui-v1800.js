@@ -1,5 +1,5 @@
 const SYSTEM_ID = "genesys-vtt";
-const VERSION = "0.0.1800";
+const VERSION = "0.0.1801";
 let pendingCasterId = "";
 
 function esc(value) {
@@ -26,11 +26,14 @@ function inferCaster(dialog) {
   return Array.from(game?.actors ?? []).find((actor) => actor?.name === name && (actor?.isOwner || game?.user?.isGM)) ?? null;
 }
 
-function currentTargetRef() {
+function currentTargetState() {
   const targets = Array.from(game?.user?.targets ?? []);
   const token = targets.length === 1 ? targets[0] : null;
   const id = String(token?.id ?? token?.document?.id ?? "");
-  return id ? `token:${id}` : "";
+  return {
+    count: targets.length,
+    ref: id ? `token:${id}` : ""
+  };
 }
 
 function actionId(dialog) {
@@ -41,6 +44,32 @@ function targetRows(caster, action) {
   const all = game?.genesysMagicResolution?.listTargets?.(caster) ?? [];
   const selfAllowed = ["heal", "barrier", "augment"].includes(action);
   return all.filter((entry) => selfAllowed || entry.id !== "self");
+}
+
+function applyFoundryTarget(dialog, { clearStale = true } = {}) {
+  const caster = inferCaster(dialog);
+  const select = dialog.querySelector("[data-magic-target]");
+  const wrap = dialog.querySelector("[data-magic-target-wrap]");
+  if (!caster || !select || !wrap) return false;
+  const action = actionId(dialog);
+  const required = game?.genesysMagicResolution?.actionNeedsTarget?.(action) ?? false;
+  if (!required) return false;
+
+  const rows = targetRows(caster, action);
+  const state = currentTargetState();
+  if (state.count === 1 && rows.some((entry) => entry.id === state.ref)) {
+    select.value = state.ref;
+    select.dataset.magicTargetSource = "foundry";
+    populateDispelSelect(dialog);
+    return true;
+  }
+
+  if (clearStale && select.dataset.magicTargetSource === "foundry") {
+    select.value = "";
+    select.dataset.magicTargetSource = "";
+    populateDispelSelect(dialog);
+  }
+  return false;
 }
 
 function populateTargetSelect(dialog, { preserve = true } = {}) {
@@ -54,18 +83,31 @@ function populateTargetSelect(dialog, { preserve = true } = {}) {
   select.disabled = !required;
   if (!required) {
     select.innerHTML = '<option value="">No target required</option>';
+    select.dataset.magicTargetSource = "";
     populateDispelSelect(dialog);
     return;
   }
+
   const previous = preserve ? select.value : "";
+  const previousSource = preserve ? String(select.dataset.magicTargetSource ?? "") : "";
   const rows = targetRows(caster, action);
   select.innerHTML = `<option value="">Choose target…</option>${rows.map((entry) => `<option value="${esc(entry.id)}">${esc(entry.name)}</option>`).join("")}`;
-  const valid = rows.some((entry) => entry.id === previous);
-  const sceneTarget = currentTargetRef();
-  if (valid) select.value = previous;
-  else if (rows.some((entry) => entry.id === sceneTarget)) select.value = sceneTarget;
-  else if (["heal", "barrier", "augment"].includes(action) && rows.some((entry) => entry.id === "self")) select.value = "self";
-  else select.value = "";
+
+  const validPrevious = rows.some((entry) => entry.id === previous);
+  if (validPrevious) {
+    select.value = previous;
+    select.dataset.magicTargetSource = previousSource;
+  } else {
+    select.value = "";
+    select.dataset.magicTargetSource = "";
+  }
+
+  if (!applyFoundryTarget(dialog, { clearStale: false })) {
+    if (!select.value && ["heal", "barrier", "augment"].includes(action) && rows.some((entry) => entry.id === "self")) {
+      select.value = "self";
+      select.dataset.magicTargetSource = "self";
+    }
+  }
   populateDispelSelect(dialog);
 }
 
@@ -105,7 +147,7 @@ function ensureTargetControls(dialog) {
   selects.append(target, dispel);
   const hint = document.createElement("div");
   hint.className = "genesys-magic-target-hint-v1800";
-  hint.innerHTML = '<i class="fa-solid fa-crosshairs"></i><span>Target-aware casting is active. A single Foundry target is selected automatically when possible.</span>';
+  hint.innerHTML = '<i class="fa-solid fa-crosshairs"></i><span>Target-aware casting is active. A single current Foundry target stays synchronized live; manual dropdown choice remains available when no single Foundry target is active.</span>';
   selects.after(hint);
   dialog.dataset.magicTargetsV1800 = "true";
   populateTargetSelect(dialog, { preserve: false });
@@ -114,6 +156,14 @@ function ensureTargetControls(dialog) {
 function ensureOpenComposers() {
   if (!game?.genesysMagicResolution) return;
   for (const dialog of document.querySelectorAll("dialog.genesys-magic-composer")) ensureTargetControls(dialog);
+}
+
+function syncOpenComposersFromFoundryTarget() {
+  if (!game?.genesysMagicResolution) return;
+  for (const dialog of document.querySelectorAll("dialog.genesys-magic-composer")) {
+    ensureTargetControls(dialog);
+    applyFoundryTarget(dialog, { clearStale: true });
+  }
 }
 
 function readEffects(dialog) {
@@ -144,6 +194,9 @@ function readSpecification(dialog) {
 async function castFromComposer(dialog, button) {
   const caster = inferCaster(dialog);
   if (!caster) throw new Error("Could not resolve the caster Actor for this Magic Action.");
+
+  applyFoundryTarget(dialog, { clearStale: true });
+
   const input = readSpecification(dialog);
   if (game.genesysMagicResolution.actionNeedsTarget(input.actionId) && !input.targetRef) throw new Error("Choose a target before rolling this spell.");
   const original = button.innerHTML;
@@ -177,7 +230,10 @@ document.addEventListener("change", (event) => {
     queueMicrotask(() => populateTargetSelect(dialog, { preserve: false }));
     return;
   }
-  if (event.target.matches("[data-magic-target]")) populateDispelSelect(dialog);
+  if (event.target.matches("[data-magic-target]")) {
+    event.target.dataset.magicTargetSource = event.isTrusted ? "manual" : String(event.target.dataset.magicTargetSource ?? "");
+    populateDispelSelect(dialog);
+  }
 }, true);
 
 document.addEventListener("click", async (event) => {
@@ -199,5 +255,9 @@ const observer = new MutationObserver(() => ensureOpenComposers());
 Hooks.once("ready", () => {
   ensureOpenComposers();
   observer.observe(document.body, { childList: true, subtree: true });
+  Hooks.on("targetToken", (user) => {
+    if (user?.id !== game?.user?.id) return;
+    queueMicrotask(() => syncOpenComposersFromFoundryTarget());
+  });
   console.log(`${SYSTEM_ID} | ${VERSION} Magic target UI ready`);
 });
