@@ -1,4 +1,4 @@
-import { equipmentArtFor, equipmentArtForType, GENESYS_DEFAULT_ACTOR_ART, GENESYS_DEFAULT_PC_ART, isFoundryDefaultArt } from "../../assets/art/equipment-art-index.js";
+import { equipmentArtFor, equipmentArtForType, GENESYS_DEFAULT_ACTOR_ART, GENESYS_DEFAULT_PC_ART, isFoundryDefaultArt } from "./equipment-art-paths-v1774.js";
 
 const SYSTEM_ID = "genesys-vtt";
 
@@ -16,7 +16,7 @@ function decorateDefinition(row) {
 
 function wrapEquipmentService() {
     const base = game?.genesysEquipment;
-    if (!base || base.__artRuntime1772) return;
+    if (!base || base.__artRuntime1774) return;
     const listDefinitions = (settingId) => (base.listDefinitions?.(settingId) ?? []).map(decorateDefinition);
     const getDefinition = (settingId, equipmentId) => {
         const direct = base.getDefinition?.(settingId, equipmentId);
@@ -32,7 +32,7 @@ function wrapEquipmentService() {
         configurable: true,
         value: Object.freeze({
             ...base,
-            __artRuntime1772: true,
+            __artRuntime1774: true,
             listDefinitions,
             getDefinition,
             listAttachments,
@@ -76,5 +76,5 @@ Hooks.on("preCreateItem", (_document, data) => {
 Hooks.once("ready", async () => {
     wrapEquipmentService();
     await migrateActorDefaultArt();
-    console.log(`${SYSTEM_ID} | 0.0.1772 bundled equipment art and Genesys actor defaults ready`);
+    console.log(`${SYSTEM_ID} | 0.0.1774 installed SVG equipment art and Genesys actor defaults ready`);
 });
