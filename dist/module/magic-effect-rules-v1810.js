@@ -1,4 +1,4 @@
-import { addDice, downgradePositive, removeDice } from "../domain/pool/index.js";
+import { addDice, removeDice } from "../domain/pool/index.js";
 
 const SYSTEM_ID = "genesys-vtt";
 const EFFECT_FLAG = "activeMagicEffectsV1800";
@@ -15,23 +15,16 @@ export function getActorMagicEffects(actor) {
 
 export function getMagicAbilityDelta(actor) {
   const effects = getActorMagicEffects(actor);
-  let augment = 0;
-  let curse = 0;
-  for (const effect of effects) {
-    if (effect.actionId === "augment") augment += 1;
-    if (effect.actionId === "curse") curse += 1;
-  }
-  return augment - curse;
+  const augmented = effects.some((effect) => effect.actionId === "augment");
+  const cursed = effects.some((effect) => effect.actionId === "curse");
+  return (augmented ? 1 : 0) - (cursed ? 1 : 0);
 }
 
 export function applyMagicAbilityDeltaToPool(inputPool, delta) {
   let pool = { ...inputPool };
   const amount = Math.trunc(Number(delta ?? 0));
-  if (amount > 0) return addDice(pool, { ability: amount });
-  for (let i = 0; i < Math.abs(amount); i += 1) {
-    if (n(pool.ability) > 0) pool = removeDice(pool, { ability: 1 });
-    else if (n(pool.proficiency) > 0) pool = downgradePositive(pool, 1);
-  }
+  if (amount > 0) return addDice(pool, { ability: Math.min(1, amount) });
+  if (amount < 0 && n(pool.ability) > 0) pool = removeDice(pool, { ability: 1 });
   return pool;
 }
 
@@ -57,19 +50,16 @@ function hasSelectedEffect(effect, id) {
 }
 
 export function getMagicBarrierState(actor) {
-  const barriers = getActorMagicEffects(actor).filter((entry) => entry.actionId === "barrier");
-  let reduction = 0;
-  const sources = [];
-  for (const barrier of barriers) {
-    const successes = n(barrier.success);
-    if (successes <= 0) continue;
-    const empowered = hasSelectedEffect(barrier, "empowered");
-    const amount = empowered ? successes : 1 + Math.floor(Math.max(0, successes - 1) / 2);
-    if (amount <= 0) continue;
-    reduction += amount;
-    sources.push({ id: barrier.id, casterName: barrier.casterName ?? "Caster", amount, empowered });
-  }
-  return { reduction, sources };
+  const barrier = getActorMagicEffects(actor).find((entry) => entry.actionId === "barrier") ?? null;
+  if (!barrier) return { reduction: 0, sources: [] };
+  const successes = n(barrier.success);
+  if (successes <= 0) return { reduction: 0, sources: [] };
+  const empowered = hasSelectedEffect(barrier, "empowered");
+  const amount = empowered ? successes : 1 + Math.floor(Math.max(0, successes - 1) / 2);
+  return {
+    reduction: amount,
+    sources: amount > 0 ? [{ id: barrier.id, casterName: barrier.casterName ?? "Caster", amount, empowered }] : []
+  };
 }
 
 export function getMagicBarrierDamageReduction(actor) {
@@ -95,8 +85,8 @@ export function getMagicBarrierReaction(actor) {
 
 export function summarizeMagicEffect(effect) {
   const action = String(effect?.actionId ?? "magic");
-  if (action === "augment") return "+1 ability to skill checks";
-  if (action === "curse") return "-1 ability to skill checks";
+  if (action === "augment") return "+1 Ability die to skill checks";
+  if (action === "curse") return "-1 Ability die from skill checks";
   if (action === "barrier") {
     const successes = n(effect?.success);
     const empowered = hasSelectedEffect(effect, "empowered");
