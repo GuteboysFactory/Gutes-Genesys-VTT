@@ -97,6 +97,9 @@ export async function promptReactionChoice(actor, context, reactions, summary = 
     const eligible = getEligibleReactions(reactions, context);
     if (!eligible.length)
         return null;
+    const mandatory = eligible.find((reaction) => reaction?.optional === false);
+    if (mandatory)
+        return String(mandatory.id);
     const damageLine = summary.incomingDamage === undefined
         ? ""
         : `<p><strong>Incoming Damage:</strong> ${integer(summary.incomingDamage)}</p>`;
