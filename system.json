@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1775 replaces the failed SVG-fragment sprite artwork with standalone Foundry-valid SVG assets for equipment and Actor defaults. Equipment Library previews and temporary/embedded Items now use normal file-extension-safe paths; existing 0.0.1774 sprite references are migrated without touching custom artwork. Character Sheet 0.0.1760 and Equipment Library behavior remain unchanged.",
-  "version": "0.0.1775",
+  "description": "Genesys VTT 0.0.1776 audits and enforces Realms of Terrinoth weapon skill mappings so official weapons use the correct combat skill (including Melee Light, Melee Heavy, Brawl, and Ranged), repairs existing provenance-linked Terrinoth weapon Items, and derives attack mode from the weapon skill instead of range. It also keeps Character Creator equipment on the current standalone art path. Equipment Library and Character Sheet layout remain unchanged.",
+  "version": "0.0.1776",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
