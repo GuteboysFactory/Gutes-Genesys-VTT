@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1771 adds a Foundry Equipment Library for setting and custom equipment, Actor add/view workflows, provenance links for future library updates, and drag-and-drop Item images, while preserving the approved 0.0.1760 Character Sheet baseline.",
-  "version": "0.0.1771",
+  "description": "Genesys VTT 0.0.1772 bundles Genesys/Terrinoth equipment artwork directly with the system, assigns artwork to setting equipment and new equipment Items, and replaces Foundry's generic default Character portrait only when no custom Actor image is present. Custom Item and Actor images remain untouched.",
+  "version": "0.0.1772",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -30,6 +30,7 @@
     "dist/module/equipment-service.js",
     "dist/module/equipment-library.js",
     "dist/module/equipment-library-item-binding.js",
+    "dist/module/equipment-art-runtime.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",
     "dist/module/character-creation-magic.js",
