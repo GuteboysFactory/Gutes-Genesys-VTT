@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1770 expands Terrinoth equipment content with recommended weapon and armor attachments, the complete runebound-shard catalog, mount and service references, provenance and official errata metadata, while preserving the approved 0.0.1760 Character Sheet baseline.",
-  "version": "0.0.1770",
+  "description": "Genesys VTT 0.0.1771 adds a Foundry Equipment Library for setting and custom equipment, Actor add/view workflows, provenance links for future library updates, and drag-and-drop Item images, while preserving the approved 0.0.1760 Character Sheet baseline.",
+  "version": "0.0.1771",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -28,6 +28,8 @@
     "dist/module/content-packs/realms-of-terrinoth-equipment.js",
     "dist/module/content-packs/realms-of-terrinoth-equipment-expansion.js",
     "dist/module/equipment-service.js",
+    "dist/module/equipment-library.js",
+    "dist/module/equipment-library-item-binding.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",
     "dist/module/character-creation-magic.js",
@@ -70,7 +72,8 @@
     "styles/character-sheet-v1756.css",
     "styles/character-sheet-v1758.css",
     "styles/character-sheet-v1759.css",
-    "styles/character-sheet-v1760.css"
+    "styles/character-sheet-v1760.css",
+    "styles/equipment-library-v1771.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
