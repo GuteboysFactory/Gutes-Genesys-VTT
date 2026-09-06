@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1776 audits and enforces Realms of Terrinoth weapon skill mappings so official weapons use the correct combat skill (including Melee Light, Melee Heavy, Brawl, and Ranged), repairs existing provenance-linked Terrinoth weapon Items, and derives attack mode from the weapon skill instead of range. It also keeps Character Creator equipment on the current standalone art path. Equipment Library and Character Sheet layout remain unchanged.",
-  "version": "0.0.1776",
+  "description": "Genesys VTT 0.0.1777 polishes the Equipment tab by moving Equipment Library into the top Equipment banner, replacing the five separate custom-create buttons with a single Create Custom dropdown, and hiding Raw Roll Difficulty from the Equipment header while preserving its source DOM for Actions > Raw Roll Options. Character Sheet GOLD layout and Equipment Library behavior remain otherwise unchanged.",
+  "version": "0.0.1777",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -26,6 +26,7 @@
     "dist/module/equipment-library.js",
     "dist/module/equipment-library-item-binding.js",
     "dist/module/equipment-art-runtime.js",
+    "dist/module/equipment-toolbar-v1777.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",
     "dist/module/character-creation-magic.js",
@@ -70,7 +71,8 @@
     "styles/character-sheet-v1759.css",
     "styles/character-sheet-v1760.css",
     "styles/equipment-library-v1771.css",
-    "styles/equipment-library-v1773.css"
+    "styles/equipment-library-v1773.css",
+    "styles/equipment-toolbar-v1777.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
