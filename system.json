@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1810 adds the first live Magic Effect Runtime. Successful Augment and Curse spells now modify skill checks while active, Barrier automatically reduces incoming combat damage through the existing reaction pipeline, and persistent magic effects are visible from the Character Sheet with GM/owner removal. Concentration spells cast during a structured encounter now track the caster turn, can be sustained with a real Concentrate maneuver, and expire after the caster's next turn when not sustained. Heal and Dispel continue to resolve directly through the 0.0.1800 target-resolution service, while 0.0.1805 PC token-link integrity and 0.0.1804 manual vitals editing remain in place.",
-  "version": "0.0.1810",
+  "description": "Genesys VTT 0.0.1811 is a Character Sheet stability and compatibility patch. It preserves the 0.0.1810 Magic Effect Runtime and existing character features while guarding the layered Character Sheet MutationObservers so they react to actual sheet mounts instead of repeatedly rescanning and reprocessing every DOM mutation. This reduces observer cascades, browser main-thread load, and the risk of Character Sheet lockups on remote/browser clients.",
+  "version": "0.0.1811",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -26,6 +26,7 @@
     "dist/module/equipment-library.js",
     "dist/module/equipment-library-item-binding.js",
     "dist/module/equipment-art-runtime.js",
+    "dist/module/character-sheet-observer-guard-v1811.js",
     "dist/module/equipment-toolbar-v1777.js",
     "dist/module/character-creation-service.js",
     "dist/module/character-creation-state.js",
