@@ -1,15 +1,10 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1774 rebuilds Equipment Library artwork around installed SVG sprite assets with stable system paths instead of runtime base64 images. Terrinoth equipment and new equipment Items resolve to portable system assets, Genesys Actor defaults use a separate installed SVG sprite, and Custom Item/Actor images remain untouched. Character Sheet 0.0.1760 and Equipment Library behavior remain unchanged.",
-  "version": "0.0.1774",
-  "compatibility": {
-    "minimum": "13.351",
-    "verified": "13.351"
-  },
-  "authors": [
-    { "name": "Genesys VTT Project" }
-  ],
+  "description": "Genesys VTT 0.0.1775 replaces the failed SVG-fragment sprite artwork with standalone Foundry-valid SVG assets for equipment and Actor defaults. Equipment Library previews and temporary/embedded Items now use normal file-extension-safe paths; existing 0.0.1774 sprite references are migrated without touching custom artwork. Character Sheet 0.0.1760 and Equipment Library behavior remain unchanged.",
+  "version": "0.0.1775",
+  "compatibility": { "minimum": "13.351", "verified": "13.351" },
+  "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
   "manifest": "https://raw.githubusercontent.com/GuteboysFactory/Gutes-Genesys-VTT/qa/system.json",
   "download": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT/archive/refs/heads/qa.zip",
@@ -83,13 +78,6 @@
   ],
   "documentTypes": {
     "Actor": { "character": {} },
-    "Item": {
-      "weapon": {},
-      "armor": {},
-      "gear": {},
-      "attachment": {},
-      "implement": {},
-      "talent": {}
-    }
+    "Item": { "weapon": {}, "armor": {}, "gear": {}, "attachment": {}, "implement": {}, "talent": {} }
   }
 }
