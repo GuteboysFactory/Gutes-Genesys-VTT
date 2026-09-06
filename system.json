@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1805 fixes PC token/Actor health divergence. PC prototype tokens are now linked to their base Actor, already placed PC tokens are repaired to linked state, and Magic target resolution translates PC token targets back to the base Actor so Wounds and Strain always land on the same document shown in the Character Sheet. Minion, Rival, and Nemesis tokens remain unchanged so adversary tokens can continue using independent unlinked state. The 0.0.1804 manual vitals editor, 0.0.1802 voluntary-strain safety gate, and 0.0.1801 live target sync remain in place.",
-  "version": "0.0.1805",
+  "description": "Genesys VTT 0.0.1810 adds the first live Magic Effect Runtime. Successful Augment and Curse spells now modify skill checks while active, Barrier automatically reduces incoming combat damage through the existing reaction pipeline, and persistent magic effects are visible from the Character Sheet with GM/owner removal. Concentration spells cast during a structured encounter now track the caster turn, can be sustained with a real Concentrate maneuver, and expire after the caster's next turn when not sustained. Heal and Dispel continue to resolve directly through the 0.0.1800 target-resolution service, while 0.0.1805 PC token-link integrity and 0.0.1804 manual vitals editing remain in place.",
+  "version": "0.0.1810",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -54,7 +54,11 @@
     "dist/module/magic-resolution-service-v1800.js",
     "dist/module/magic-strain-gate-v1802.js",
     "dist/module/magic-target-ui-v1800.js",
-    "dist/module/pc-token-link-integrity-v1805.js"
+    "dist/module/pc-token-link-integrity-v1805.js",
+    "dist/module/magic-effect-rules-v1810.js",
+    "dist/module/magic-effect-combat-v1810.js",
+    "dist/module/magic-concentration-runtime-v1810.js",
+    "dist/module/magic-effect-ui-v1810.js"
   ],
   "styles": [
     "styles/genesys.css",
@@ -84,7 +88,8 @@
     "styles/equipment-toolbar-v1777.css",
     "styles/portrait-token-forge-v1780.css",
     "styles/magic-action-composer-v1790.css",
-    "styles/magic-resolution-v1800.css"
+    "styles/magic-resolution-v1800.css",
+    "styles/magic-effect-runtime-v1810.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
