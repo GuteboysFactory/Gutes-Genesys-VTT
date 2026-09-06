@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1810 adds the first live Magic Effect Runtime. Successful Augment and Curse spells now modify skill checks while active, Barrier automatically reduces incoming combat damage through the existing reaction pipeline, and persistent magic effects are visible from the Character Sheet with GM/owner removal. Concentration spells cast during a structured encounter now track the caster turn, can be sustained with a real Concentrate maneuver, and expire after the caster's next turn when not sustained. Heal and Dispel continue to resolve directly through the 0.0.1800 target-resolution service, while 0.0.1805 PC token-link integrity and 0.0.1804 manual vitals editing remain in place.",
-  "version": "0.0.1810",
+  "description": "Genesys VTT 0.0.1811 restores Equipment Library toolbar visibility after sheet rerenders. The visible Equipment toolbar now owns and repairs the Equipment Library entry point directly, preventing observer/render ordering from leaving the button inside the hidden legacy createbar. The 0.0.1810 Magic Effect Runtime remains unchanged.",
+  "version": "0.0.1811",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
