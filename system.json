@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1800 extends Magic Gameplay with target-aware spell resolution. Attack and Heal can apply live Actor changes, Dispel can remove tracked magic effects, Augment, Barrier, and Curse create persistent caster/source/duration records, Conjure records a pending conjuration for GM follow-up, and a single Foundry target can be selected automatically in the Spell Composer. The 0.0.1790 Spell Composer remains the proven casting foundation; automatic Concentrate expiry, full spell-quality automation, and concrete Conjure spawning remain follow-up work.",
-  "version": "0.0.1800",
+  "description": "Genesys VTT 0.0.1801 hotfixes Magic target synchronization. An open Spell Composer now follows the current Foundry target live through the targetToken hook, rechecks the single active Foundry target at cast time to prevent stale target usage, and still allows an explicit manual dropdown target when no single Foundry target is active. The 0.0.1800 Magic Effects & Target Resolution behavior otherwise remains unchanged.",
+  "version": "0.0.1801",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
