@@ -1,0 +1,86 @@
+/* 0.0.1780 - Genesys Portrait & Token Forge foundation */
+.genesys-portrait-token-forge {
+  width: min(1180px, 94vw);
+  max-height: 92vh;
+  padding: 0;
+  border: 1px solid #a27a32;
+  border-radius: 8px;
+  background: #0b151d;
+  color: #eadfbe;
+  box-shadow: 0 18px 55px rgba(0,0,0,.55);
+}
+.genesys-portrait-token-forge::backdrop { background: rgba(0,0,0,.68); }
+.genesys-forge-shell { display: flex; flex-direction: column; min-height: 660px; }
+.genesys-forge-header {
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:14px 18px; border-bottom:1px solid #6f5425; background:#0e202b;
+}
+.genesys-forge-header strong { display:block; color:#f0d17c; font-size:1.15rem; }
+.genesys-forge-header small { display:block; opacity:.72; margin-top:2px; }
+.genesys-forge-header button { width:34px; height:34px; border:0; background:transparent; color:#e9d7a0; font-size:1.4rem; cursor:pointer; }
+.genesys-forge-grid {
+  display:grid; grid-template-columns:minmax(250px,.8fr) minmax(260px,1fr) minmax(260px,1fr);
+  gap:14px; padding:16px;
+}
+.genesys-forge-grid section {
+  min-width:0; border:1px solid #5f4a24; border-radius:6px; background:#10222d; padding:12px;
+}
+.genesys-forge-grid h3 { margin:0 0 10px; color:#e5c36d; font-size:.9rem; text-transform:uppercase; letter-spacing:.05em; }
+.genesys-forge-dropzone {
+  min-height:310px; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px;
+  padding:18px; border:1px dashed #8e6a2d; border-radius:6px; background:#09131a; text-align:center;
+}
+.genesys-forge-dropzone.dragover { border-color:#efc65f; background:#112b38; box-shadow:inset 0 0 0 2px rgba(239,198,95,.18); }
+.genesys-forge-dropzone i { font-size:2.5rem; color:#c99a3e; }
+.genesys-forge-dropzone span { opacity:.68; font-size:.82rem; }
+.genesys-forge-dropzone button,
+.genesys-forge-footer button,
+.genesys-wizard-art-forge button {
+  border:1px solid #98702c; border-radius:4px; background:#163447; color:#f1d57f; padding:7px 12px; cursor:pointer;
+}
+.genesys-forge-source > p { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; margin:9px 0 0; opacity:.6; font-size:.72rem; }
+.genesys-forge-preview { text-align:center; }
+.genesys-forge-preview canvas {
+  display:block; width:min(100%,320px); aspect-ratio:1; margin:0 auto 8px; border:1px solid #8f6a2b; border-radius:6px; background:#050a0d;
+}
+.genesys-forge-preview:nth-child(3) canvas { border-radius:50%; }
+.genesys-forge-preview small { opacity:.68; }
+.genesys-forge-controls {
+  display:grid; grid-template-columns:repeat(5,minmax(130px,1fr)); gap:10px;
+  margin:0 16px 16px; padding:12px; border:1px solid #5f4a24; border-radius:6px; background:#0d1c25;
+}
+.genesys-forge-controls label { display:flex; flex-direction:column; gap:6px; color:#dbc27a; font-size:.78rem; }
+.genesys-forge-controls output { color:#eee2bf; font-size:.72rem; }
+.genesys-forge-controls select { min-height:30px; background:#2e2730; color:#f3e8cb; border:1px solid #84642b; }
+.genesys-forge-footer {
+  display:flex; justify-content:space-between; align-items:center; gap:14px; margin-top:auto; padding:12px 16px; border-top:1px solid #5f4a24; background:#0a161e;
+}
+.genesys-forge-footer > div { display:flex; align-items:center; gap:8px; }
+.genesys-forge-check { display:flex; align-items:center; gap:6px; font-size:.78rem; opacity:.82; }
+.genesys-forge-footer .genesys-primary-action { background:#174f70; border-color:#d3a441; }
+
+.genesys-portrait-frame { position:relative; }
+.genesys-portrait-forge-button {
+  position:absolute; left:50%; bottom:5px; transform:translateX(-50%); z-index:4;
+  display:flex; align-items:center; gap:5px; min-height:26px; padding:3px 8px;
+  border:1px solid #9b722b; border-radius:14px; background:rgba(7,18,24,.92); color:#f1d477;
+  font-size:.68rem; cursor:pointer; opacity:.18; transition:opacity 120ms ease, background 120ms ease;
+}
+.genesys-portrait-frame:hover .genesys-portrait-forge-button,
+.genesys-portrait-forge-button:focus-visible { opacity:1; }
+
+.genesys-wizard-art-forge {
+  grid-column:1 / -1; display:grid; grid-template-columns:82px 1fr; gap:12px; align-items:center;
+  padding:10px; border:1px solid #8b682b; border-radius:6px; background:#102630;
+}
+.genesys-wizard-art-forge img { width:82px; height:82px; object-fit:cover; border:1px solid #b88a37; border-radius:6px; background:#071016; }
+.genesys-wizard-art-forge > div { display:flex; flex-wrap:wrap; align-items:center; gap:7px 10px; }
+.genesys-wizard-art-forge strong { color:#e6c36b; }
+.genesys-wizard-art-forge span { flex-basis:100%; opacity:.72; font-size:.78rem; }
+.genesys-wizard-art-forge button { width:max-content; }
+
+@media (max-width: 900px) {
+  .genesys-forge-grid { grid-template-columns:1fr; }
+  .genesys-forge-controls { grid-template-columns:1fr 1fr; }
+  .genesys-forge-shell { min-height:0; }
+}
