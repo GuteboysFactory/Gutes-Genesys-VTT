@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1804 fixes manual current Wounds and Strain editing in the locked Character Sheet quick-stat strip. The inline editor now binds directly to Actor data and GM/owner permissions rather than depending on hidden legacy form fields, and it retries after sheet render so the visible Health & Defense values become editable reliably. Thresholds remain read-only. Magic target resolution and the voluntary-strain safety gate remain unchanged.",
-  "version": "0.0.1804",
+  "description": "Genesys VTT 0.0.1805 fixes PC token/Actor health divergence. PC prototype tokens are now linked to their base Actor, already placed PC tokens are repaired to linked state, and Magic target resolution translates PC token targets back to the base Actor so Wounds and Strain always land on the same document shown in the Character Sheet. Minion, Rival, and Nemesis tokens remain unchanged so adversary tokens can continue using independent unlinked state. The 0.0.1804 manual vitals editor, 0.0.1802 voluntary-strain safety gate, and 0.0.1801 live target sync remain in place.",
+  "version": "0.0.1805",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -53,7 +53,8 @@
     "dist/module/magic-action-composer-v1790.js",
     "dist/module/magic-resolution-service-v1800.js",
     "dist/module/magic-strain-gate-v1802.js",
-    "dist/module/magic-target-ui-v1800.js"
+    "dist/module/magic-target-ui-v1800.js",
+    "dist/module/pc-token-link-integrity-v1805.js"
   ],
   "styles": [
     "styles/genesys.css",
