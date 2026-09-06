@@ -1,0 +1,45 @@
+/* 0.0.1803 - Inline Wounds / Strain editing in locked Character Sheet snapshot */
+.genesys-header-vitals .genesys-vital-inline-value-v1803 {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.12rem;
+  min-width: 0;
+}
+
+.genesys-header-vitals input[data-vital-inline-edit] {
+  width: 2.7rem;
+  min-width: 0;
+  padding: 0;
+  border: 0;
+  border-bottom: 1px solid transparent;
+  border-radius: 0;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  font-weight: 700;
+  line-height: 1;
+  text-align: right;
+  box-shadow: none;
+}
+
+.genesys-header-vitals input[data-vital-inline-edit]:hover,
+.genesys-header-vitals input[data-vital-inline-edit]:focus {
+  border-bottom-color: currentColor;
+  outline: none;
+  box-shadow: none;
+}
+
+.genesys-header-vitals input[data-vital-inline-edit]::-webkit-outer-spin-button,
+.genesys-header-vitals input[data-vital-inline-edit]::-webkit-inner-spin-button {
+  margin: 0;
+}
+
+.genesys-vital-inline-slash-v1803,
+.genesys-vital-inline-threshold-v1803 {
+  pointer-events: none;
+}
+
+.genesys-header-vitals .genesys-header-stat.threshold-exceeded input[data-vital-inline-edit] {
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+}
