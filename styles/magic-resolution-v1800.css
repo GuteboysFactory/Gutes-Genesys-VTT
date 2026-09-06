@@ -1,0 +1,56 @@
+/* 0.0.1800 - Magic Effects & Target Resolution */
+.genesys-magic-actions-banner > div {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+.genesys-magic-actions-banner p {
+  white-space: normal;
+  word-break: normal;
+  overflow-wrap: normal;
+  max-width: 36rem;
+}
+.genesys-magic-composer-selects:has([data-magic-target-wrap]) {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.genesys-magic-composer-selects [data-magic-dispel-wrap] {
+  grid-column: span 2;
+}
+.genesys-magic-target-hint-v1800 {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 8px 0 0;
+  padding: 7px 9px;
+  border: 1px solid rgba(126,98,48,.68);
+  border-radius: 5px;
+  background: rgba(15,39,49,.72);
+  color: #cfbd8b;
+  font-size: .7rem;
+}
+.genesys-magic-target-hint-v1800 i { color: #e3c56d; }
+.genesys-magic-check-v1800 > .genesys-chat-roll > p:first-of-type {
+  margin-top: 4px;
+}
+.genesys-magic-resolution-summary {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  margin-top: 8px;
+  padding: 8px 9px;
+  border-left: 3px solid #9c7332;
+  background: rgba(74,54,24,.12);
+}
+.genesys-magic-resolution-summary strong {
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  font-size: .72rem;
+}
+.genesys-magic-resolution-summary span {
+  font-size: .78rem;
+}
+@media (max-width: 920px) {
+  .genesys-magic-composer-selects:has([data-magic-target-wrap]) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .genesys-magic-composer-selects [data-magic-dispel-wrap] { grid-column: span 1; }
+}
