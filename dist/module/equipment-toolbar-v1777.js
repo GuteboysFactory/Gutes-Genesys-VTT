@@ -1,4 +1,5 @@
 const SYSTEM_ID = "genesys-vtt";
+const VERSION = "0.0.1811";
 const TOOLBAR_SELECTOR = "[data-genesys-equipment-toolbar]";
 const CUSTOM_TYPES = Object.freeze([
     ["weapon", "Custom Weapon"],
@@ -18,6 +19,15 @@ function sourceCreatebar(panel) {
 
 function sourceCreateButton(panel, type) {
     return sourceCreatebar(panel)?.querySelector?.(`[data-action='createItem'][data-item-type='${type}']`) ?? null;
+}
+
+function buildLibraryButton() {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "genesys-primary-action genesys-equipment-library-top-button";
+    button.dataset.openEquipmentLibrary = "true";
+    button.innerHTML = '<i class="fa-solid fa-box-open" aria-hidden="true"></i> Equipment Library';
+    return button;
 }
 
 function buildCustomMenu() {
@@ -60,10 +70,18 @@ function ensureToolbar(root) {
         banner.append(toolbar);
     }
 
-    const library = panel.querySelector("[data-open-equipment-library]");
-    if (library && library.parentElement !== toolbar) {
-        library.classList.add("genesys-equipment-library-top-button");
-        toolbar.prepend(library);
+    // 0.0.1811 visibility integrity: the toolbar owns the visible Library entry point.
+    // The Equipment Library module may also seed the same delegated-action button in the
+    // hidden source createbar. Reuse it when present; otherwise create the visible button
+    // directly so render/observer ordering can never hide the Library.
+    let library = panel.querySelector("[data-open-equipment-library]");
+    if (!library) library = buildLibraryButton();
+    library.classList.add("genesys-equipment-library-top-button");
+    if (library.parentElement !== toolbar) toolbar.prepend(library);
+
+    // Remove any duplicate Library entry points left behind by a rerender race.
+    for (const duplicate of panel.querySelectorAll("[data-open-equipment-library]")) {
+        if (duplicate !== library) duplicate.remove();
     }
 
     const customMenu = toolbar.querySelector("[data-equipment-create-custom]");
@@ -112,5 +130,6 @@ Hooks.once("ready", () => {
     initializeEquipmentToolbars();
     const observer = new MutationObserver(() => initializeEquipmentToolbars());
     observer.observe(document.body, { childList: true, subtree: true });
-    console.log(`${SYSTEM_ID} | 0.0.1777 Equipment toolbar polish ready`);
+    Hooks.on("renderActorSheet", () => queueMicrotask(initializeEquipmentToolbars));
+    console.log(`${SYSTEM_ID} | ${VERSION} Equipment toolbar visibility integrity ready`);
 });
