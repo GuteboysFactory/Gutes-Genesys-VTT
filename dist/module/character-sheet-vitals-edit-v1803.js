@@ -1,7 +1,7 @@
 import { rerenderRenderedCharacterSheet } from "./live-sheet-state.js";
 
 const SYSTEM_ID = "genesys-vtt";
-const VERSION = "0.0.1803";
+const VERSION = "0.0.1804";
 
 function n(value, fallback = 0) {
   const parsed = Number(value ?? fallback);
@@ -12,7 +12,9 @@ function actorForRoot(root) {
   const id = String(root?.dataset?.actorId ?? "");
   if (id && game?.actors?.get?.(id)) return game.actors.get(id);
   const name = String(root?.dataset?.actorName ?? "").trim();
-  const actor = Array.from(game?.actors ?? []).find((entry) => entry?.name === name && (entry?.isOwner || game?.user?.isGM)) ?? null;
+  const actor = Array.from(game?.actors ?? []).find((entry) => entry?.name === name && (entry?.isOwner || game?.user?.isGM))
+    ?? Array.from(globalThis.canvas?.tokens?.placeables ?? []).map((token) => token?.actor).find((entry) => entry?.name === name && (entry?.isOwner || game?.user?.isGM))
+    ?? null;
   if (actor && root) root.dataset.actorId = String(actor.id ?? "");
   return actor;
 }
@@ -21,31 +23,39 @@ function mayEdit(actor) {
   return Boolean(game?.user?.isGM || actor?.isOwner);
 }
 
-function sourceInput(root, resource) {
-  return root?.querySelector?.(`input[name="system.${resource}.value"]`) ?? null;
-}
-
-function thresholdFor(root, actor, resource) {
-  const sourceThreshold = root?.querySelector?.(`input[name="system.${resource}.threshold"]`);
-  if (sourceThreshold) return n(sourceThreshold.value);
-  if (resource === "wounds") return n(actor?.system?.wounds?.threshold);
-  if (resource === "strain") return n(actor?.system?.strain?.threshold);
-  return 0;
-}
-
 function statFor(root, resource) {
-  return root?.querySelector?.(`.genesys-header-vitals .genesys-header-stat.${resource}`) ?? null;
+  const direct = root?.querySelector?.(`.genesys-header-vitals .genesys-header-stat.${resource}`) ?? null;
+  if (direct) return direct;
+  const wanted = resource === "wounds" ? "wounds" : "strain";
+  return Array.from(root?.querySelectorAll?.(".genesys-header-vitals .genesys-header-stat") ?? [])
+    .find((stat) => String(stat.querySelector("small")?.textContent ?? "").trim().toLowerCase() === wanted) ?? null;
+}
+
+function currentValue(actor, resource) {
+  return n(actor?.system?.[resource]?.value);
+}
+
+function thresholdValue(actor, resource) {
+  return n(actor?.system?.[resource]?.threshold);
 }
 
 function renderInlineEditor(root, actor, resource) {
+  if (!mayEdit(actor)) return;
   const stat = statFor(root, resource);
-  const source = sourceInput(root, resource);
   const strong = stat?.querySelector?.("strong");
-  if (!stat || !source || !strong || strong.dataset.vitalsEditV1803 === "true") return;
-  if (!mayEdit(actor) || source.disabled) return;
+  if (!stat || !strong) return;
 
-  const current = n(source.value);
-  const threshold = thresholdFor(root, actor, resource);
+  const existing = strong.querySelector?.(`[data-vital-inline-edit="${resource}"]`);
+  if (existing) {
+    if (document.activeElement !== existing) existing.value = String(currentValue(actor, resource));
+    const thresholdLabel = strong.querySelector?.(".genesys-vital-inline-threshold-v1803");
+    if (thresholdLabel) thresholdLabel.textContent = String(thresholdValue(actor, resource));
+    stat.classList.toggle("threshold-exceeded", thresholdValue(actor, resource) > 0 && currentValue(actor, resource) > thresholdValue(actor, resource));
+    return;
+  }
+
+  const current = currentValue(actor, resource);
+  const threshold = thresholdValue(actor, resource);
   strong.dataset.vitalsEditV1803 = "true";
   strong.classList.add("genesys-vital-inline-value-v1803");
   strong.replaceChildren();
@@ -76,7 +86,7 @@ function renderInlineEditor(root, actor, resource) {
 function enhanceRoot(root) {
   if (!root) return;
   const actor = actorForRoot(root);
-  if (!actor) return;
+  if (!actor || !mayEdit(actor)) return;
   renderInlineEditor(root, actor, "wounds");
   renderInlineEditor(root, actor, "strain");
 }
@@ -125,5 +135,6 @@ const observer = new MutationObserver(() => enhanceSheets());
 Hooks.once("ready", () => {
   enhanceSheets();
   observer.observe(document.body, { childList: true, subtree: true });
+  for (const delay of [0, 50, 150, 350]) setTimeout(enhanceSheets, delay);
   console.log(`${SYSTEM_ID} | ${VERSION} Character Sheet inline vitals editing ready`);
 });
