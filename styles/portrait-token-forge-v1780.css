@@ -1,4 +1,4 @@
-/* 0.0.1780 - Genesys Portrait & Token Forge foundation */
+/* 0.0.1781 - Genesys Portrait & Token Forge direct crop hotfix */
 .genesys-portrait-token-forge {
   width: min(1180px, 94vw);
   max-height: 92vh;
@@ -42,13 +42,19 @@
 .genesys-forge-preview { text-align:center; }
 .genesys-forge-preview canvas {
   display:block; width:min(100%,320px); aspect-ratio:1; margin:0 auto 8px; border:1px solid #8f6a2b; border-radius:6px; background:#050a0d;
+  cursor:grab; touch-action:none; user-select:none;
 }
+.genesys-forge-preview canvas.dragging { cursor:grabbing; box-shadow:0 0 0 2px rgba(239,198,95,.24); }
 .genesys-forge-preview:nth-child(3) canvas { border-radius:50%; }
 .genesys-forge-preview small { opacity:.68; }
 .genesys-forge-controls {
   display:grid; grid-template-columns:repeat(5,minmax(130px,1fr)); gap:10px;
   margin:0 16px 16px; padding:12px; border:1px solid #5f4a24; border-radius:6px; background:#0d1c25;
 }
+.genesys-forge-controls-v1781 { grid-template-columns:minmax(320px,1.8fr) minmax(150px,.6fr) minmax(150px,.6fr); align-items:end; }
+.genesys-forge-direct-help { display:flex; align-items:center; gap:10px; min-height:38px; padding:8px 10px; border:1px solid #4f6a77; border-radius:5px; background:#0b202b; color:#d8e4e8; }
+.genesys-forge-direct-help i { color:#d8b050; font-size:1.05rem; }
+.genesys-forge-direct-help span { font-size:.78rem; line-height:1.25; }
 .genesys-forge-controls label { display:flex; flex-direction:column; gap:6px; color:#dbc27a; font-size:.78rem; }
 .genesys-forge-controls output { color:#eee2bf; font-size:.72rem; }
 .genesys-forge-controls select { min-height:30px; background:#2e2730; color:#f3e8cb; border:1px solid #84642b; }
@@ -81,6 +87,7 @@
 
 @media (max-width: 900px) {
   .genesys-forge-grid { grid-template-columns:1fr; }
-  .genesys-forge-controls { grid-template-columns:1fr 1fr; }
+  .genesys-forge-controls,
+  .genesys-forge-controls-v1781 { grid-template-columns:1fr; }
   .genesys-forge-shell { min-height:0; }
 }
