@@ -1,0 +1,27 @@
+/* 0.0.1773 - Equipment Library art framing hotfix.
+   Show the complete bundled icon instead of cropping shields/armor. */
+.genesys-equipment-library-card > img,
+.genesys-equipment-detail-title > img {
+  object-fit: contain;
+  object-position: center;
+  padding: 2px;
+  box-sizing: border-box;
+  background: #071015;
+}
+
+.genesys-equipment-library-card > img {
+  width: 58px;
+  height: 58px;
+}
+
+.genesys-equipment-detail-title > img {
+  width: 62px;
+  height: 62px;
+}
+
+.genesys-item-image-drop img {
+  object-fit: contain;
+  object-position: center;
+  padding: 2px;
+  box-sizing: border-box;
+}
