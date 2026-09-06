@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1780 introduces the shared Portrait & Token Forge foundation for all Actor roles, including PCs, Minions, Rivals, Nemeses, NPCs, and creatures. The same Forge is available from existing Actor sheets and the Create Actor Wizard Identity step, supports drag/drop or file selection, crop/zoom/position, Genesys frames, portrait/token previews, PNG export to the Foundry Data folder, Actor portrait + Prototype Token application, optional placed-token updates, and deterministic Wizard draft/resume token synchronization. Existing Character Sheet and Equipment baselines remain otherwise unchanged.",
-  "version": "0.0.1780",
+  "description": "Genesys VTT 0.0.1781 improves Portrait & Token Forge with direct image manipulation: drag either preview to position the image and hold Ctrl while using the mouse wheel to zoom. The old crop sliders are removed. Saving now uses Foundry v13's namespaced FilePicker implementation, creates the actor-art directory hierarchy safely, validates uploaded image paths before updating Actor img/prototypeToken.texture.src, and preserves the shared Forge workflow for all Actor roles and the Create Actor Wizard.",
+  "version": "0.0.1781",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
