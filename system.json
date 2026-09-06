@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1772 bundles Genesys/Terrinoth equipment artwork directly with the system, assigns artwork to setting equipment and new equipment Items, and replaces Foundry's generic default Character portrait only when no custom Actor image is present. Custom Item and Actor images remain untouched.",
-  "version": "0.0.1772",
+  "description": "Genesys VTT 0.0.1773 fixes Equipment Library artwork presentation by showing complete item art instead of cropped thumbnails and validates bundled image data before use so malformed assets fall back safely without browser ERR_INVALID_URL noise. The 0.0.1760 Character Sheet baseline and 0.0.1771 Equipment Library behavior remain unchanged.",
+  "version": "0.0.1773",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -74,7 +74,8 @@
     "styles/character-sheet-v1758.css",
     "styles/character-sheet-v1759.css",
     "styles/character-sheet-v1760.css",
-    "styles/equipment-library-v1771.css"
+    "styles/equipment-library-v1771.css",
+    "styles/equipment-library-v1773.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
