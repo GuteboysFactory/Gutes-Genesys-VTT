@@ -1,0 +1,26 @@
+/* 0.0.1820 - General Actions at 25%; Combat, Custom and Talent stacked at 75%. */
+.genesys-vtt .genesys-actions-panel > .genesys-actions-content-v1820 {
+  grid-template-columns: minmax(210px, 1fr) minmax(0, 3fr);
+  grid-template-areas: "general main";
+}
+
+.genesys-vtt .genesys-actions-content-v1820 > .genesys-actions-general-column-v1819 {
+  grid-area: general;
+}
+
+.genesys-vtt .genesys-actions-content-v1820 > .genesys-actions-main-column-v1820 {
+  grid-area: main;
+  display: grid;
+  gap: 10px;
+  align-content: start;
+  min-width: 0;
+}
+
+@media (max-width: 760px) {
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-content-v1820 {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "general"
+      "main";
+  }
+}

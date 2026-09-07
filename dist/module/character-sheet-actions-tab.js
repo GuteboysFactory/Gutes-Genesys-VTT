@@ -343,17 +343,14 @@ function buildActionsPanel(root) {
     topRow.append(buildActionsToolbar(), diceTools);
 
     const content = document.createElement("div");
-    content.className = "genesys-actions-content-v1819";
+    content.className = "genesys-actions-content-v1819 genesys-actions-content-v1820";
     const generalColumn = document.createElement("div");
     generalColumn.className = "genesys-actions-column genesys-actions-general-column-v1819";
     generalColumn.append(buildGeneralActions());
-    const combatColumn = document.createElement("div");
-    combatColumn.className = "genesys-actions-column genesys-actions-combat-column-v1819";
-    combatColumn.append(buildCombatActions(root));
-    const actorColumn = document.createElement("div");
-    actorColumn.className = "genesys-actions-column genesys-actions-actor-column-v1819";
-    actorColumn.append(buildCustomActions(root), buildTalentActions(root));
-    content.append(generalColumn, combatColumn, actorColumn);
+    const mainColumn = document.createElement("div");
+    mainColumn.className = "genesys-actions-column genesys-actions-main-column-v1820";
+    mainColumn.append(buildCombatActions(root), buildCustomActions(root), buildTalentActions(root));
+    content.append(generalColumn, mainColumn);
 
     panel.append(topRow, content);
     equipmentPanel.before(panel);

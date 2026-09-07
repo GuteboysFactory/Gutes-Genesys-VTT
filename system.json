@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1819 Actions Layout Correction. Places Actions and Dice Tools side-by-side at 50/50, then arranges General, Combat, and Actor-specific actions in a stable 25/50/25 workspace.",
-  "version": "0.0.1819",
+  "description": "Genesys VTT 0.0.1820 Actions Column Correction. Keeps the 50/50 Actions and Dice Tools top row, with General Actions at 25% and Combat, Custom, and Talent Actions stacked in the remaining 75%.",
+  "version": "0.0.1820",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -89,6 +89,7 @@
     "styles/character-sheet-polish-v1813.css",
     "styles/character-sheet-polish-v1814.css",
     "styles/character-sheet-layout-v1819.css",
+    "styles/character-sheet-layout-v1820.css",
     "styles/narrative-dice-transfer-v1818.css",
     "styles/equipment-library-v1771.css",
     "styles/equipment-library-v1773.css",
