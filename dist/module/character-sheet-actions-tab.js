@@ -337,21 +337,25 @@ function buildActionsPanel(root) {
     panel.dataset.genesysTabPanel = "actions";
     panel.hidden = true;
 
-    const layout = document.createElement("div");
-    layout.className = "genesys-actions-layout genesys-actions-layout-v1756 genesys-actions-workspace-v1814";
     const diceTools = buildRollTools(root);
-    const actionsMain = document.createElement("div");
-    actionsMain.className = "genesys-actions-main-v1814";
-    const left = document.createElement("div");
-    left.className = "genesys-actions-column genesys-actions-column-left";
-    left.append(buildCombatActions(root), buildCustomActions(root));
-    const right = document.createElement("div");
-    right.className = "genesys-actions-column genesys-actions-column-right";
-    right.append(buildTalentActions(root), buildGeneralActions());
-    actionsMain.append(left, right);
-    layout.append(actionsMain, diceTools);
+    const topRow = document.createElement("div");
+    topRow.className = "genesys-actions-top-row-v1819";
+    topRow.append(buildActionsToolbar(), diceTools);
 
-    panel.append(buildActionsToolbar(), layout);
+    const content = document.createElement("div");
+    content.className = "genesys-actions-content-v1819";
+    const generalColumn = document.createElement("div");
+    generalColumn.className = "genesys-actions-column genesys-actions-general-column-v1819";
+    generalColumn.append(buildGeneralActions());
+    const combatColumn = document.createElement("div");
+    combatColumn.className = "genesys-actions-column genesys-actions-combat-column-v1819";
+    combatColumn.append(buildCombatActions(root));
+    const actorColumn = document.createElement("div");
+    actorColumn.className = "genesys-actions-column genesys-actions-actor-column-v1819";
+    actorColumn.append(buildCustomActions(root), buildTalentActions(root));
+    content.append(generalColumn, combatColumn, actorColumn);
+
+    panel.append(topRow, content);
     equipmentPanel.before(panel);
     root.dataset.genesysActionsTab = "true";
 }

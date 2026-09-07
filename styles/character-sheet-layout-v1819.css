@@ -1,0 +1,80 @@
+/* 0.0.1819 - deterministic Actions layout: 50/50 controls, 25/50/25 content. */
+.genesys-vtt .genesys-actions-panel > .genesys-actions-top-row-v1819 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  align-items: start;
+  margin: 0 0 10px;
+}
+
+.genesys-vtt .genesys-actions-top-row-v1819 > .genesys-actions-toolbar,
+.genesys-vtt .genesys-actions-top-row-v1819 > .genesys-actions-dice-tools {
+  position: static;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  z-index: auto;
+}
+
+.genesys-vtt .genesys-actions-top-row-v1819 > .genesys-actions-dice-tools[open] {
+  position: static;
+}
+
+.genesys-vtt .genesys-actions-top-row-v1819 .genesys-actions-dice-tools-body,
+.genesys-vtt .genesys-actions-top-row-v1819 .genesys-actions-quick-pool,
+.genesys-vtt .genesys-actions-top-row-v1819 .genesys-actions-check-engine,
+.genesys-vtt .genesys-actions-top-row-v1819 .genesys-narrative-dice-transfer {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.genesys-vtt .genesys-actions-panel > .genesys-actions-content-v1819 {
+  display: grid;
+  grid-template-columns: minmax(210px, 1fr) minmax(0, 2fr) minmax(210px, 1fr);
+  grid-template-areas: "general combat actor";
+  gap: 10px;
+  align-items: start;
+  width: 100%;
+  min-width: 0;
+}
+
+.genesys-vtt .genesys-actions-general-column-v1819 {
+  grid-area: general;
+}
+
+.genesys-vtt .genesys-actions-combat-column-v1819 {
+  grid-area: combat;
+}
+
+.genesys-vtt .genesys-actions-actor-column-v1819 {
+  grid-area: actor;
+}
+
+.genesys-vtt .genesys-actions-content-v1819 > .genesys-actions-column,
+.genesys-vtt .genesys-actions-content-v1819 .genesys-actions-section {
+  min-width: 0;
+  width: 100%;
+}
+
+@media (max-width: 1050px) {
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-content-v1819 {
+    grid-template-columns: minmax(190px, 1fr) minmax(0, 2fr);
+    grid-template-areas:
+      "general combat"
+      "actor combat";
+  }
+}
+
+@media (max-width: 760px) {
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-top-row-v1819,
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-content-v1819 {
+    grid-template-columns: 1fr;
+  }
+
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-content-v1819 {
+    grid-template-areas:
+      "general"
+      "combat"
+      "actor";
+  }
+}
