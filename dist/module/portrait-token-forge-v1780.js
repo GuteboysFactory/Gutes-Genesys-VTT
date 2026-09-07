@@ -1,5 +1,5 @@
 const SYSTEM_ID = "genesys-vtt";
-const FORGE_VERSION = "0.0.1781";
+const FORGE_VERSION = "0.0.1817";
 const ART_ROOT = () => `worlds/${game.world.id}/genesys-vtt`;
 const ART_DIR = () => `${ART_ROOT()}/actor-art`;
 const FALLBACK_ART = "systems/genesys-vtt/assets/items/v1775/actor-human.svg";
@@ -74,11 +74,13 @@ function drawCover(ctx, image, width, height, state) {
   ctx.drawImage(image, (width - drawnWidth) / 2 + offsetX, (height - drawnHeight) / 2 + offsetY, drawnWidth, drawnHeight);
 }
 
+export function portraitCanvasDimensions() {
+  return { width: 512, height: 512 };
+}
+
 function drawPortrait(canvas, image, state) {
   if (!canvas) return;
-  const aspect = clamp(image.naturalWidth / Math.max(1, image.naturalHeight), 0.67, 1.78);
-  const width = 512;
-  const height = Math.round(width / aspect);
+  const { width, height } = portraitCanvasDimensions();
   if (canvas.width !== width) canvas.width = width;
   if (canvas.height !== height) canvas.height = height;
   const ctx = canvas.getContext("2d");
@@ -225,7 +227,7 @@ function forgeMarkup(session) {
     <header class="genesys-forge-header"><div><strong>Genesys Portrait &amp; Token Forge</strong><small>${esc(title)} · ${session.actor ? "Actor" : "Create Actor Wizard"}</small></div><button type="button" data-forge-close aria-label="Close">×</button></header>
     <div class="genesys-forge-grid">
       <section class="genesys-forge-source"><h3>Source Image</h3><div class="genesys-forge-dropzone" data-forge-dropzone tabindex="0"><i class="fa-solid fa-image"></i><strong>Drop image here</strong><span>or choose a file from your computer</span><button type="button" data-forge-choose-file>Choose Image</button><input type="file" accept="image/*" data-forge-file hidden /></div><p data-forge-source-label>${esc(session.initialSrc || "No image selected")}</p></section>
-      <section class="genesys-forge-preview genesys-forge-portrait-preview"><h3>Actor Portrait</h3><canvas width="512" height="512" data-forge-portrait-canvas></canvas><small>Independent portrait crop · source aspect preserved</small></section>
+      <section class="genesys-forge-preview genesys-forge-portrait-preview"><h3>Actor Portrait</h3><canvas width="512" height="512" data-forge-portrait-canvas></canvas><small>Independent square crop · matches the character sheet</small></section>
       <section class="genesys-forge-preview genesys-forge-token-preview"><h3>Prototype Token</h3><canvas width="512" height="512" data-forge-token-canvas></canvas><small>Independent circular token crop</small></section>
     </div>
     <div class="genesys-forge-controls genesys-forge-controls-v1781">

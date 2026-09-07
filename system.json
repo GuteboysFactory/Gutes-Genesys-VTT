@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1816 Talent Guide Details. Preserves the verified 0.0.1815 behavior and exposes the same Talent descriptions, activation, source, requirements, and automation information in Character Creator that is used by Talent Library.",
-  "version": "0.0.1816",
+  "description": "Genesys VTT 0.0.1817 Square Portrait Forge Hotfix. Preserves the verified 0.0.1816 behavior and makes the Forge portrait preview and exported Actor portrait use the same square crop as the character sheet.",
+  "version": "0.0.1817",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
