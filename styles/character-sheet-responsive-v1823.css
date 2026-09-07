@@ -1,0 +1,79 @@
+/* 0.0.1823 - narrow Magic Actions and Biography status-bar polish. */
+
+/* Match the Magic Actions banner: copy first, full-width action beneath it. */
+.genesys-vtt .genesys-actions-general-column-v1819
+  .genesys-magic-concentration-controls-v1810 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 8px;
+}
+
+.genesys-vtt .genesys-actions-general-column-v1819
+  .genesys-magic-concentration-controls-v1810 > div,
+.genesys-vtt .genesys-actions-general-column-v1819
+  .genesys-magic-concentration-controls-v1810 span {
+  width: 100%;
+  min-width: 0;
+  white-space: normal;
+}
+
+.genesys-vtt .genesys-actions-general-column-v1819
+  .genesys-magic-concentration-controls-v1810 button {
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+}
+
+/* Foundry sheets resize independently of the browser viewport. */
+.genesys-vtt .genesys-biography-layout-wide {
+  container-type: inline-size;
+  container-name: genesys-biography-sheet;
+}
+
+@container genesys-biography-sheet (max-width: 900px) {
+  .genesys-vtt .genesys-biography-statusbar {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .genesys-vtt .genesys-biography-initiative-status {
+    grid-column: 1 / -1;
+  }
+}
+
+@container genesys-biography-sheet (max-width: 560px) {
+  .genesys-vtt .genesys-biography-statusbar {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .genesys-vtt .genesys-biography-initiative-status {
+    grid-template-columns: 22px minmax(0, 1fr) auto;
+    grid-template-areas:
+      "initiative-icon initiative-label initiative-gm"
+      "initiative-controls initiative-controls initiative-controls";
+  }
+
+  .genesys-vtt .genesys-biography-initiative-status > i:first-child {
+    grid-area: initiative-icon;
+  }
+
+  .genesys-vtt .genesys-biography-initiative-status > .genesys-biography-status-label {
+    grid-area: initiative-label;
+  }
+
+  .genesys-vtt .genesys-biography-initiative-controls {
+    grid-area: initiative-controls;
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .genesys-vtt .genesys-biography-gm-initiative {
+    grid-area: initiative-gm;
+  }
+}
+
+@container genesys-biography-sheet (max-width: 420px) {
+  .genesys-vtt .genesys-biography-initiative-controls {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

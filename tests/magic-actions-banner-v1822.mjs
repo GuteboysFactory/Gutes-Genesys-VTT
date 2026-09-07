@@ -13,7 +13,7 @@ assert.match(css, /genesys-magic-actions-banner p\s*\{[\s\S]*?white-space:\s*nor
 const copyPosition = composer.indexOf("Build a spell from live skill access");
 const buttonPosition = composer.indexOf("Compose Spell");
 assert.ok(copyPosition >= 0 && buttonPosition > copyPosition, "explanatory copy must precede Compose Spell");
-assert.equal(manifest.version, "0.0.1822");
+assert.ok(Number(manifest.version.split(".").at(-1)) >= 1822);
 assert.ok(manifest.styles.includes("styles/magic-actions-placement-v1822.css"));
 assert.ok(
   manifest.styles.indexOf("styles/magic-actions-placement-v1822.css")

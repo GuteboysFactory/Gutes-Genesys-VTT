@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1822 Magic Actions Banner Layout. Places the explanatory copy above a full-width Compose Spell button in the narrow Magic Actions column.",
-  "version": "0.0.1822",
+  "description": "Genesys VTT 0.0.1823 Narrow Sheet Polish. Stacks Concentration copy above its action and makes the Biography initiative bar respond to the sheet width.",
+  "version": "0.0.1823",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -98,7 +98,8 @@
     "styles/magic-action-composer-v1790.css",
     "styles/magic-actions-placement-v1822.css",
     "styles/magic-resolution-v1800.css",
-    "styles/magic-effect-runtime-v1810.css"
+    "styles/magic-effect-runtime-v1810.css",
+    "styles/character-sheet-responsive-v1823.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },
