@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1821 Magic Actions Placement. Restores the existing Magic Action Composer entry above General Actions for magic-enabled Actors while preserving the approved Actions layout.",
-  "version": "0.0.1821",
+  "description": "Genesys VTT 0.0.1822 Magic Actions Banner Layout. Places the explanatory copy above a full-width Compose Spell button in the narrow Magic Actions column.",
+  "version": "0.0.1822",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -96,6 +96,7 @@
     "styles/equipment-toolbar-v1777.css",
     "styles/portrait-token-forge-v1780.css",
     "styles/magic-action-composer-v1790.css",
+    "styles/magic-actions-placement-v1822.css",
     "styles/magic-resolution-v1800.css",
     "styles/magic-effect-runtime-v1810.css"
   ],

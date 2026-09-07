@@ -1,5 +1,5 @@
 const SYSTEM_ID = "genesys-vtt";
-const VERSION = "0.0.1821";
+const VERSION = "0.0.1822";
 let activeComposer = null;
 
 function esc(value) {
