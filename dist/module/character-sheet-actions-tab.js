@@ -346,6 +346,7 @@ function buildActionsPanel(root) {
     content.className = "genesys-actions-content-v1819 genesys-actions-content-v1820";
     const generalColumn = document.createElement("div");
     generalColumn.className = "genesys-actions-column genesys-actions-general-column-v1819";
+    generalColumn.dataset.genesysMagicColumn = "true";
     generalColumn.append(buildGeneralActions());
     const mainColumn = document.createElement("div");
     mainColumn.className = "genesys-actions-column genesys-actions-main-column-v1820";

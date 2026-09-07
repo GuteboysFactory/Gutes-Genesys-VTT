@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1820 Actions Column Correction. Keeps the 50/50 Actions and Dice Tools top row, with General Actions at 25% and Combat, Custom, and Talent Actions stacked in the remaining 75%.",
-  "version": "0.0.1820",
+  "description": "Genesys VTT 0.0.1821 Magic Actions Placement. Restores the existing Magic Action Composer entry above General Actions for magic-enabled Actors while preserving the approved Actions layout.",
+  "version": "0.0.1821",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",

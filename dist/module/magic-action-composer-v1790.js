@@ -1,5 +1,5 @@
 const SYSTEM_ID = "genesys-vtt";
-const VERSION = "0.0.1790";
+const VERSION = "0.0.1821";
 let activeComposer = null;
 
 function esc(value) {
@@ -42,15 +42,16 @@ function makeMagicSection(actor, state) {
 function ensureMagicSections() {
   if (!game?.genesysMagic) return;
   for (const root of document.querySelectorAll("[data-genesys-sheet-tabs]")) {
-    const right = root.querySelector("[data-genesys-tab-panel='actions'] .genesys-actions-column-right");
-    if (!right || right.querySelector("[data-genesys-magic-actions]")) continue;
+    const column = root.querySelector("[data-genesys-tab-panel='actions'] [data-genesys-magic-column]")
+      ?? root.querySelector("[data-genesys-tab-panel='actions'] .genesys-actions-column-right");
+    if (!column || column.querySelector("[data-genesys-magic-actions]")) continue;
     const actor = actorForRoot(root);
     if (!actor) continue;
     let state;
     try { state = game.genesysMagic.getActorState(actor); }
     catch { continue; }
     if (!state.hasMagicAccess) continue;
-    right.prepend(makeMagicSection(actor, state));
+    column.prepend(makeMagicSection(actor, state));
   }
 }
 
