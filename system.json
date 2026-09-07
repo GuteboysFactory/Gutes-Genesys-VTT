@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1824 Encounter Tracker Overhaul. Rebuilds the tracker around initiative slots, active-turn focus, PC/NPC rosters, bounded activation budgets, and compact GM controls.",
-  "version": "0.0.1824",
+  "description": "Genesys VTT 0.0.1825 Extra Activation Completion. Keeps extra turns actionable during End of Round and provides an explicit Mark Extra Activation Used control.",
+  "version": "0.0.1825",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",

@@ -45,7 +45,7 @@ assert.deepEqual(stack, [], "unclosed Handlebars block");
 assert.match(css, /genesys-slot-track-v1824\s*\{[\s\S]*?display:\s*grid/);
 assert.match(css, /genesys-encounter-rosters-v1824\s*\{[\s\S]*?grid-template-columns:/);
 assert.match(css, /@container \(max-width:\s*560px\)/);
-assert.equal(manifest.version, "0.0.1824");
+assert.ok(Number(manifest.version.split(".").at(-1)) >= 1824);
 assert.ok(manifest.styles.includes("styles/encounter-tracker-overhaul-v1824.css"));
 
 console.log("PASS: Encounter Tracker overhaul preserves controls and responsive structure");

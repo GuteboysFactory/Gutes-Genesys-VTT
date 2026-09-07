@@ -83,18 +83,38 @@
     {{/if}}
 
     {{#if endRound}}
-      <section class="genesys-turn-focus-v1824 genesys-end-round-focus-v1824">
-        <div>
-          <small>End of round</small>
-          <h2>Round {{round}} complete</h2>
-          {{#if pendingSpecialCount}}
-            <p><strong>{{pendingSpecialCount}} Extra Activation(s) remain.</strong> Use them now or leave them unused when starting the next round.</p>
-          {{else}}
-            <p>All normal activations are complete. Resolve end-of-round effects before continuing.</p>
-          {{/if}}
-        </div>
-        {{#if isGM}}<button type="button" data-action="startNextRound">Start Round {{nextRound}}</button>{{/if}}
-      </section>
+      {{#if hasActiveActor}}
+        <section class="genesys-turn-focus-v1824 genesys-extra-turn-focus-v1825">
+          <div class="genesys-turn-copy-v1824">
+            <small>{{activeActivationLabel}}</small>
+            <h2>{{activeActorLabel}}</h2>
+            <div class="genesys-turn-budget-v1824">
+              <span>Action <strong>{{#if activeActionBlocked}}Blocked{{else}}{{#if turn.actionUsed}}Used{{else}}Available{{/if}}{{/if}}</strong></span>
+              <span>Maneuvers <strong>{{#if activeManeuverBlocked}}Blocked{{else}}{{turn.maneuversUsed}} / 2{{/if}}</strong></span>
+            </div>
+            <p>Complete this extra turn to mark its activation budget as used.</p>
+          </div>
+          <div class="genesys-active-turn-actions genesys-turn-actions-v1824">
+            <button type="button" data-action="useAction" {{#unless canUseAction}}disabled{{/unless}}>Use Action</button>
+            <button type="button" data-action="useManeuver" {{#unless canUseManeuver}}disabled{{/unless}}>Use Maneuver</button>
+            <button type="button" data-action="endTurn">Mark Extra Activation Used</button>
+            {{#if isGM}}<button type="button" data-action="unclaim">Unclaim</button>{{/if}}
+          </div>
+        </section>
+      {{else}}
+        <section class="genesys-turn-focus-v1824 genesys-end-round-focus-v1824">
+          <div>
+            <small>End of round</small>
+            <h2>Round {{round}} complete</h2>
+            {{#if pendingSpecialCount}}
+              <p><strong>{{pendingSpecialCount}} Extra Activation(s) remain.</strong> Use them now or leave them unused when starting the next round.</p>
+            {{else}}
+              <p>All normal activations are complete. Resolve end-of-round effects before continuing.</p>
+            {{/if}}
+          </div>
+          {{#if isGM}}<button type="button" data-action="startNextRound">Start Round {{nextRound}}</button>{{/if}}
+        </section>
+      {{/if}}
     {{else}}
       <section class="genesys-turn-focus-v1824">
         <div class="genesys-turn-copy-v1824">

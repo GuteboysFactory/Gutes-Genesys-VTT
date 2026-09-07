@@ -277,6 +277,9 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
         const state = readSceneInitiativeState();
         const participants = state.entries.map((entry) => participantContext(state, entry));
         const activeActor = state.activeActorRef ? resolveInitiativeActorReference(state.activeActorRef) : null;
+        const activeActivation = state.activeActivationId
+            ? state.activationEntitlements.find((row) => row.id === state.activeActivationId) ?? null
+            : null;
         const activeActionEligibility = activeActor ? getSceneTurnActionEligibility(activeActor, "action") : { allowed: false, reason: "No active actor." };
         const activeManeuverEligibility = activeActor ? getSceneTurnActionEligibility(activeActor, "maneuver") : { allowed: false, reason: "No active actor." };
         const isGM = Boolean(game?.user?.isGM);
@@ -312,6 +315,8 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
             activeActorLabel: state.activeActorLabel || "Awaiting claim",
             hasActiveActor: Boolean(state.activeActorRef),
             activeActorRef: state.activeActorRef,
+            activeActivationLabel: activeActivation?.sourceLabel ?? "Activation",
+            activeExtraActivation: activeActivation?.kind === "extra",
             turn: state.turn,
             activeActionBlocked: Boolean(state.activeActorRef && !activeActionEligibility.allowed),
             activeManeuverBlocked: Boolean(state.activeActorRef && !activeManeuverEligibility.allowed),
