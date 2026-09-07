@@ -1,0 +1,110 @@
+/* 0.0.1816 - Shared Talent Library explanations in Character Creator. */
+.genesys-character-creator .genesys-creator-talent-entry {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: center;
+  gap: 8px 12px;
+  padding: 9px 10px;
+  border: 1px solid rgba(80, 54, 32, .34);
+  border-radius: 7px;
+  background: rgba(255, 251, 239, .7);
+  color: #3b291c;
+}
+
+.genesys-character-creator .genesys-creator-talent-entry.blocked {
+  background: rgba(120, 103, 84, .08);
+}
+
+.genesys-character-creator .genesys-creator-talent-heading {
+  display: grid;
+  min-width: 0;
+}
+
+.genesys-character-creator .genesys-creator-talent-heading small {
+  color: #75614d;
+}
+
+.genesys-character-creator .genesys-creator-talent-cost {
+  white-space: nowrap;
+}
+
+.genesys-character-creator .genesys-creator-talent-buy {
+  min-width: 64px;
+  min-height: 30px;
+}
+
+.genesys-character-creator .genesys-creator-talent-buy:disabled {
+  opacity: .46;
+  cursor: not-allowed;
+}
+
+.genesys-character-creator .genesys-creator-talent-details {
+  grid-column: 1 / -1;
+  border-top: 1px solid rgba(83, 57, 35, .16);
+}
+
+.genesys-character-creator .genesys-creator-talent-details > summary {
+  padding: 7px 2px 2px;
+  color: #65482d;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.genesys-character-creator .genesys-creator-talent-details > div {
+  display: grid;
+  gap: 8px;
+  padding: 8px 2px 3px;
+}
+
+.genesys-character-creator .genesys-creator-talent-details p {
+  margin: 0;
+  line-height: 1.4;
+  white-space: pre-line;
+}
+
+.genesys-character-creator .genesys-creator-talent-details dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px 14px;
+  margin: 0;
+}
+
+.genesys-character-creator .genesys-creator-talent-details dl > div {
+  display: grid;
+  gap: 1px;
+}
+
+.genesys-character-creator .genesys-creator-talent-details dt {
+  color: #765d3e;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.genesys-character-creator .genesys-creator-talent-details dd {
+  margin: 0;
+}
+
+.genesys-character-creator .genesys-creator-talent-warning {
+  padding: 7px 9px;
+  border: 1px solid rgba(144, 46, 35, .35);
+  border-radius: 5px;
+  background: rgba(168, 55, 42, .08);
+  color: #71362d;
+}
+
+@media (max-width: 700px) {
+  .genesys-character-creator .genesys-creator-talent-entry {
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .genesys-character-creator .genesys-creator-talent-buy {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .genesys-character-creator .genesys-creator-talent-details dl {
+    grid-template-columns: 1fr;
+  }
+}

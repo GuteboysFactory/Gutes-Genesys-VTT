@@ -348,6 +348,22 @@ function talentDefinitionsById() {
   return new Map((library()?.list?.() ?? []).map((entry) => [entry.id, entry]));
 }
 
+export function talentExplanation(talent = {}) {
+  return text(talent.notes || talent.description, "No description supplied by this content pack.");
+}
+
+function talentRequirementText(requirements) {
+  if (!requirements || (Array.isArray(requirements) && !requirements.length)) return "None listed";
+  if (typeof requirements === "string") return requirements;
+  if (Array.isArray(requirements)) return requirements.map((row) => typeof row === "string" ? row : row?.label ?? row?.id ?? JSON.stringify(row)).join(" · ");
+  return requirements.label ?? requirements.id ?? JSON.stringify(requirements);
+}
+
+function talentAutomationText(talent) {
+  if (!talent.rules?.length) return "Manual / no automated Rule Elements";
+  return talent.rules.map((rule) => `${rule.type} @ ${rule.timing}`).join(" · ");
+}
+
 function draftTalentCounts(purchaseIds, definitions) {
   const counts = { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 };
   const ranks = new Map();
@@ -648,7 +664,16 @@ function renderTalents(session) {
   }).join("");
   const cards = talents.map((talent) => {
     const evaluation = evaluateDraftTalentPurchase(draft, state, talent);
-    return `<button type="button" class="genesys-creator-talent-card" data-creator-buy-talent="${esc(talent.id)}" ${evaluation.allowed ? "" : "disabled"} title="${esc(evaluation.reasons.join(" "))}"><span><strong>${esc(talent.label)}</strong><small>${talent.ranked ? `Ranked · next rank ${evaluation.currentRank + 1}` : "Non-Ranked"}</small></span><b>T${evaluation.effectiveTier} · ${evaluation.cost} XP</b></button>`;
+    const purchaseReason = evaluation.reasons.join(" ");
+    return `<article class="genesys-creator-talent-entry ${evaluation.allowed ? "" : "blocked"}">
+      <div class="genesys-creator-talent-heading"><strong>${esc(talent.label)}</strong><small>${talent.ranked ? `Ranked · next rank ${evaluation.currentRank + 1}` : "Non-Ranked"}</small></div>
+      <b class="genesys-creator-talent-cost">T${evaluation.effectiveTier} · ${evaluation.cost} XP</b>
+      <button type="button" class="genesys-primary-action genesys-creator-talent-buy" data-creator-buy-talent="${esc(talent.id)}" ${evaluation.allowed ? "" : "disabled"} title="${esc(purchaseReason)}">Add</button>
+      <details class="genesys-creator-talent-details">
+        <summary>View explanation</summary>
+        <div><p>${esc(talentExplanation(talent))}</p><dl><div><dt>Activation</dt><dd>${esc(talent.activation || "passive")}</dd></div><div><dt>Source</dt><dd>${esc(talent.librarySource || talent.sourceType || "Unknown")}</dd></div><div><dt>Requirements</dt><dd>${esc(talentRequirementText(talent.requirements))}</dd></div><div><dt>Automation</dt><dd>${esc(talentAutomationText(talent))}</dd></div></dl>${purchaseReason ? `<p class="genesys-creator-talent-warning">${esc(purchaseReason)}</p>` : ""}</div>
+      </details>
+    </article>`;
   }).join("");
   return `<section class="genesys-creator-panel"><h2>Talents</h2><p>Talent purchases use effective Tier, XP cost and Talent Pyramid validation. Talents can be removed here before final creation.</p><div class="genesys-creator-selected-list">${selected || '<p class="genesys-empty-row">No Talents selected.</p>'}</div><div class="genesys-creator-talent-list">${cards}</div></section>`;
 }
