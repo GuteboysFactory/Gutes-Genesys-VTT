@@ -236,8 +236,8 @@ function buildHeaderSnapshot(root) {
     const vitals = document.createElement("div");
     vitals.className = "genesys-header-stat-group genesys-header-vitals";
     vitals.append(
-        createSnapshotStat("Wounds", resourceSnapshot(root, "wounds"), "fa-solid fa-heart", "wounds"),
-        createSnapshotStat("Strain", resourceSnapshot(root, "strain"), "fa-solid fa-circle-notch", "strain"),
+        createSnapshotStat("Wounds Taken", resourceSnapshot(root, "wounds"), "fa-solid fa-heart", "wounds"),
+        createSnapshotStat("Strain Taken", resourceSnapshot(root, "strain"), "fa-solid fa-circle-notch", "strain"),
         createSnapshotStat("Soak", inputValue(root, "system.soak"), "fa-solid fa-shield-halved"),
         createSnapshotStat("Melee Def", inputValue(root, "system.defense.melee"), "fa-solid fa-shield"),
         createSnapshotStat("Ranged Def", inputValue(root, "system.defense.ranged"), "fa-regular fa-compass")

@@ -63,34 +63,38 @@ function loadImage(src) {
   });
 }
 
-function drawCover(ctx, image, size, state) {
+function drawCover(ctx, image, width, height, state) {
   const zoom = clamp(state.zoom ?? 1, 1, 5);
-  const base = Math.max(size / image.naturalWidth, size / image.naturalHeight);
+  const base = Math.max(width / image.naturalWidth, height / image.naturalHeight);
   const scale = base * zoom;
-  const width = image.naturalWidth * scale;
-  const height = image.naturalHeight * scale;
-  const offsetX = (Number(state.offsetX ?? 0) / 100) * size;
-  const offsetY = (Number(state.offsetY ?? 0) / 100) * size;
-  ctx.drawImage(image, (size - width) / 2 + offsetX, (size - height) / 2 + offsetY, width, height);
+  const drawnWidth = image.naturalWidth * scale;
+  const drawnHeight = image.naturalHeight * scale;
+  const offsetX = (Number(state.offsetX ?? 0) / 100) * width;
+  const offsetY = (Number(state.offsetY ?? 0) / 100) * height;
+  ctx.drawImage(image, (width - drawnWidth) / 2 + offsetX, (height - drawnHeight) / 2 + offsetY, drawnWidth, drawnHeight);
 }
 
 function drawPortrait(canvas, image, state) {
   if (!canvas) return;
-  const size = canvas.width;
+  const aspect = clamp(image.naturalWidth / Math.max(1, image.naturalHeight), 0.67, 1.78);
+  const width = 512;
+  const height = Math.round(width / aspect);
+  if (canvas.width !== width) canvas.width = width;
+  if (canvas.height !== height) canvas.height = height;
   const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, size, size);
+  ctx.clearRect(0, 0, width, height);
   ctx.fillStyle = state.background === "parchment" ? "#d6c39a" : "#0b141a";
-  ctx.fillRect(0, 0, size, size);
-  drawCover(ctx, image, size, state);
+  ctx.fillRect(0, 0, width, height);
+  drawCover(ctx, image, width, height, state);
   if (state.frame !== "none") {
     ctx.save();
     const steel = state.frame === "steel";
     ctx.strokeStyle = steel ? "#87949a" : "#d4a84d";
     ctx.lineWidth = 14;
-    ctx.strokeRect(8, 8, size - 16, size - 16);
+    ctx.strokeRect(8, 8, width - 16, height - 16);
     ctx.strokeStyle = steel ? "#27343a" : "#62461d";
     ctx.lineWidth = 4;
-    ctx.strokeRect(22, 22, size - 44, size - 44);
+    ctx.strokeRect(22, 22, width - 44, height - 44);
     ctx.restore();
   }
 }
@@ -106,7 +110,7 @@ function drawToken(canvas, image, state) {
   ctx.clip();
   ctx.fillStyle = state.background === "parchment" ? "#d6c39a" : "#0b141a";
   ctx.fillRect(0, 0, size, size);
-  drawCover(ctx, image, size, state);
+  drawCover(ctx, image, size, size, state);
   ctx.restore();
   if (state.frame !== "none") {
     const steel = state.frame === "steel";
@@ -127,10 +131,13 @@ function drawToken(canvas, image, state) {
 
 function renderPreviews(session) {
   if (!session?.image) return;
-  drawPortrait(session.dialog.querySelector("[data-forge-portrait-canvas]"), session.image, session.state);
-  drawToken(session.dialog.querySelector("[data-forge-token-canvas]"), session.image, session.state);
-  const zoomLabel = session.dialog.querySelector("[data-forge-zoom-label]");
-  if (zoomLabel) zoomLabel.textContent = `${Number(session.state.zoom ?? 1).toFixed(2)}×`;
+  const shared = { frame: session.state.frame, background: session.state.background };
+  drawPortrait(session.dialog.querySelector("[data-forge-portrait-canvas]"), session.image, { ...session.state.portrait, ...shared });
+  drawToken(session.dialog.querySelector("[data-forge-token-canvas]"), session.image, { ...session.state.token, ...shared });
+  for (const kind of ["portrait", "token"]) {
+    const zoomLabel = session.dialog.querySelector(`[data-forge-zoom-label="${kind}"]`);
+    if (zoomLabel) zoomLabel.textContent = `${Number(session.state[kind]?.zoom ?? 1).toFixed(2)}×`;
+  }
 }
 
 function canvasBlob(canvas) {
@@ -218,15 +225,15 @@ function forgeMarkup(session) {
     <header class="genesys-forge-header"><div><strong>Genesys Portrait &amp; Token Forge</strong><small>${esc(title)} · ${session.actor ? "Actor" : "Create Actor Wizard"}</small></div><button type="button" data-forge-close aria-label="Close">×</button></header>
     <div class="genesys-forge-grid">
       <section class="genesys-forge-source"><h3>Source Image</h3><div class="genesys-forge-dropzone" data-forge-dropzone tabindex="0"><i class="fa-solid fa-image"></i><strong>Drop image here</strong><span>or choose a file from your computer</span><button type="button" data-forge-choose-file>Choose Image</button><input type="file" accept="image/*" data-forge-file hidden /></div><p data-forge-source-label>${esc(session.initialSrc || "No image selected")}</p></section>
-      <section class="genesys-forge-preview"><h3>Actor Portrait</h3><canvas width="512" height="512" data-forge-portrait-canvas></canvas><small>Drag to position · Ctrl + mouse wheel to zoom</small></section>
-      <section class="genesys-forge-preview"><h3>Prototype Token</h3><canvas width="512" height="512" data-forge-token-canvas></canvas><small>Drag to position · Ctrl + mouse wheel to zoom</small></section>
+      <section class="genesys-forge-preview genesys-forge-portrait-preview"><h3>Actor Portrait</h3><canvas width="512" height="512" data-forge-portrait-canvas></canvas><small>Independent portrait crop · source aspect preserved</small></section>
+      <section class="genesys-forge-preview genesys-forge-token-preview"><h3>Prototype Token</h3><canvas width="512" height="512" data-forge-token-canvas></canvas><small>Independent circular token crop</small></section>
     </div>
     <div class="genesys-forge-controls genesys-forge-controls-v1781">
-      <div class="genesys-forge-direct-help"><i class="fa-solid fa-hand"></i><span><strong>Direct Crop</strong> Drag either preview to move the image. Hold <b>Ctrl</b> and use the mouse wheel to zoom. Current zoom: <b data-forge-zoom-label>1.00×</b></span></div>
+      <div class="genesys-forge-direct-help"><i class="fa-solid fa-hand"></i><span><strong>Independent Crops</strong> Drag each preview separately. Hold <b>Ctrl</b> and use the mouse wheel to zoom. Portrait: <b data-forge-zoom-label="portrait">1.00×</b> · Token: <b data-forge-zoom-label="token">1.00×</b></span></div>
       <label>Frame <select data-forge-control="frame"><option value="gold">Genesys Gold</option><option value="steel">Dark Steel</option><option value="none">No Frame</option></select></label>
       <label>Background <select data-forge-control="background"><option value="dark">Dark</option><option value="parchment">Parchment</option></select></label>
     </div>
-    <footer class="genesys-forge-footer"><div><button type="button" data-forge-reset>Reset Crop</button>${session.actor ? '<label class="genesys-forge-check"><input type="checkbox" data-forge-update-placed /> Update placed tokens</label>' : ""}</div><div><button type="button" data-forge-close>Cancel</button><button type="button" class="genesys-primary-action" data-forge-apply>${session.actor ? "Save & Apply" : "Use in Wizard"}</button></div></footer>
+    <footer class="genesys-forge-footer"><div><button type="button" data-forge-reset="portrait">Reset Portrait</button><button type="button" data-forge-reset="token">Reset Token</button>${session.actor ? '<label class="genesys-forge-check"><input type="checkbox" data-forge-update-placed /> Update placed tokens</label>' : ""}</div><div><button type="button" data-forge-close>Cancel</button><button type="button" class="genesys-primary-action" data-forge-apply>${session.actor ? "Save & Apply" : "Use in Wizard"}</button></div></footer>
   </div>`;
 }
 
@@ -246,7 +253,7 @@ async function setSource(session, src, label = "") {
   }
 }
 
-function wireCanvasManipulation(session, canvas) {
+function wireCanvasManipulation(session, canvas, kind) {
   if (!canvas) return;
   let drag = null;
 
@@ -267,8 +274,9 @@ function wireCanvasManipulation(session, canvas) {
     const dy = event.clientY - drag.y;
     drag.x = event.clientX;
     drag.y = event.clientY;
-    session.state.offsetX = clamp((session.state.offsetX ?? 0) + (dx / rect.width) * 100, -100, 100);
-    session.state.offsetY = clamp((session.state.offsetY ?? 0) + (dy / rect.height) * 100, -100, 100);
+    const crop = session.state[kind];
+    crop.offsetX = clamp((crop.offsetX ?? 0) + (dx / rect.width) * 100, -100, 100);
+    crop.offsetY = clamp((crop.offsetY ?? 0) + (dy / rect.height) * 100, -100, 100);
     renderPreviews(session);
   });
 
@@ -286,7 +294,8 @@ function wireCanvasManipulation(session, canvas) {
     if (!event.ctrlKey) return;
     event.preventDefault();
     const factor = Math.exp(-event.deltaY * 0.0018);
-    session.state.zoom = clamp((session.state.zoom ?? 1) * factor, 1, 5);
+    const crop = session.state[kind];
+    crop.zoom = clamp((crop.zoom ?? 1) * factor, 1, 5);
     renderPreviews(session);
   }, { passive: false });
 }
@@ -294,8 +303,8 @@ function wireCanvasManipulation(session, canvas) {
 function wireForge(session) {
   const dialog = session.dialog;
   const fileInput = dialog.querySelector("[data-forge-file]");
-  wireCanvasManipulation(session, dialog.querySelector("[data-forge-portrait-canvas]"));
-  wireCanvasManipulation(session, dialog.querySelector("[data-forge-token-canvas]"));
+  wireCanvasManipulation(session, dialog.querySelector("[data-forge-portrait-canvas]"), "portrait");
+  wireCanvasManipulation(session, dialog.querySelector("[data-forge-token-canvas]"), "token");
 
   dialog.addEventListener("click", async (event) => {
     const button = event.target?.closest?.("button");
@@ -303,7 +312,8 @@ function wireForge(session) {
     if (button.matches("[data-forge-close]")) return dialog.close();
     if (button.matches("[data-forge-choose-file]")) return fileInput?.click();
     if (button.matches("[data-forge-reset]")) {
-      Object.assign(session.state, { zoom: 1, offsetX: 0, offsetY: 0 });
+      const kind = button.dataset.forgeReset;
+      if (session.state[kind]) Object.assign(session.state[kind], { zoom: 1, offsetX: 0, offsetY: 0 });
       return renderPreviews(session);
     }
     if (button.matches("[data-forge-apply]")) {
@@ -353,7 +363,12 @@ export function openPortraitTokenForge({ actor = null, wizardInput = null, wizar
     sourceSrc: "",
     image: null,
     dialog,
-    state: { zoom: 1, offsetX: 0, offsetY: 0, frame: "gold", background: "dark" }
+    state: {
+      portrait: { zoom: 1, offsetX: 0, offsetY: 0 },
+      token: { zoom: 1, offsetX: 0, offsetY: 0 },
+      frame: "gold",
+      background: "dark"
+    }
   };
   dialog.innerHTML = forgeMarkup(session);
   document.body.append(dialog);

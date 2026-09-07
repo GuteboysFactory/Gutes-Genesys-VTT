@@ -1,0 +1,27 @@
+/* 0.0.1813 - Compact quick statistics and explicit damage-track terminology. */
+.genesys-vtt .genesys-header-characteristics {
+  grid-template-columns: repeat(6, minmax(78px, 108px));
+  justify-content: center;
+}
+
+.genesys-vtt .genesys-header-characteristics .genesys-header-stat {
+  grid-template-columns: 24px minmax(0, 1fr);
+  gap: 5px;
+  padding-inline: 7px;
+}
+
+.genesys-vtt .genesys-header-characteristics .genesys-header-stat i {
+  font-size: .94rem;
+}
+
+@media (max-width: 980px) {
+  .genesys-vtt .genesys-header-characteristics {
+    grid-template-columns: repeat(3, minmax(90px, 1fr));
+  }
+}
+
+@media (max-width: 620px) {
+  .genesys-vtt .genesys-header-characteristics {
+    grid-template-columns: repeat(2, minmax(90px, 1fr));
+  }
+}

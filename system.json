@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1812 QA stability patch. Fixes repeated unchanged vitals threshold writes and replaces the global observer guard with an explicit shared UI enhancement coordinator. Preserves 0.0.1810 gameplay. Foundry live regression testing required.",
-  "version": "0.0.1812",
+  "description": "Genesys VTT 0.0.1813 Character Sheet and Portrait/Token polish. Preserves the verified 0.0.1812 stability fix, compacts Characteristic presentation, clarifies Wounds/Strain Taken, and gives portrait and token crops independent positioning and zoom while preserving portrait aspect ratio.",
+  "version": "0.0.1813",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -83,6 +83,7 @@
     "styles/character-sheet-v1759.css",
     "styles/character-sheet-v1760.css",
     "styles/character-sheet-vitals-edit-v1803.css",
+    "styles/character-sheet-polish-v1813.css",
     "styles/equipment-library-v1771.css",
     "styles/equipment-library-v1773.css",
     "styles/equipment-toolbar-v1777.css",
