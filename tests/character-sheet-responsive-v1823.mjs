@@ -13,7 +13,7 @@ assert.match(css, /@container genesys-biography-sheet \(max-width:\s*560px\)/);
 assert.match(css, /"initiative-controls initiative-controls initiative-controls"/);
 assert.match(css, /@container genesys-biography-sheet \(max-width:\s*420px\)/);
 
-assert.equal(manifest.version, "0.0.1823");
+assert.ok(Number(manifest.version.split(".").at(-1)) >= 1823);
 assert.ok(manifest.styles.includes("styles/character-sheet-responsive-v1823.css"));
 assert.ok(
   manifest.styles.indexOf("styles/character-sheet-responsive-v1823.css")

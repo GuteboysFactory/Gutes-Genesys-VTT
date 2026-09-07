@@ -1,184 +1,233 @@
-<section class="genesys-encounter-shell">
-  <header class="genesys-encounter-header">
-    <div>
+<section class="genesys-encounter-shell genesys-encounter-overhaul-v1824">
+  <header class="genesys-encounter-header-v1824">
+    <div class="genesys-encounter-title-v1824">
       <h1>Encounter Tracker</h1>
-      <p>{{modeLabel}} · {{state.status}}</p>
+      <span class="genesys-encounter-mode-v1824">{{modeLabel}}</span>
+      <span class="genesys-encounter-state-v1824">{{state.status}}</span>
     </div>
     {{#if active}}
-      <div class="genesys-encounter-counter">
-        <strong>ROUND {{round}}</strong>
-        {{#if endRound}}<span>END OF ROUND</span>{{else}}<span>TURN {{turnNumber}} / {{totalTurns}}</span>{{/if}}
-        {{#if isGM}}<span>ACTIVATIONS {{activationUsedCount}} / {{activationTotalCount}} used</span>{{else}}<span>ACTED {{actedCount}} / {{participantCount}}</span>{{/if}}
+      <div class="genesys-encounter-counter-v1824">
+        <strong>Round {{round}}</strong>
+        {{#if endRound}}<span>End of round</span>{{else}}<span>Turn {{turnNumber}} / {{totalTurns}}</span>{{/if}}
+        {{#if isGM}}<span>Activations {{activationUsedCount}} / {{activationTotalCount}}</span>{{else}}<span>Acted {{actedCount}} / {{participantCount}}</span>{{/if}}
       </div>
     {{/if}}
   </header>
 
   {{#if encounterComplete}}
-    <section class="genesys-encounter-complete-card">
+    <section class="genesys-encounter-complete-card genesys-encounter-complete-v1824">
       <div>
-        <small>ENCOUNTER STATUS</small>
+        <small>Encounter status</small>
         <h2>{{encounterOutcomeLabel}}</h2>
         <p>{{outcome.reason}}</p>
       </div>
       {{#if isGM}}
         <div class="genesys-active-turn-actions">
           <button type="button" data-action="endEncounter">End Encounter</button>
-          <span class="genesys-gm-note">Or keep it open for aftermath, reinforcements, surrender, or special rules.</span>
+          <span class="genesys-gm-note">Keep it open only for aftermath, reinforcements, surrender, or special rules.</span>
         </div>
       {{/if}}
     </section>
   {{/if}}
 
   {{#if collecting}}
-    <section class="genesys-encounter-toolbar">
+    <section class="genesys-encounter-setup-v1824">
+      <div>
+        <h2>Prepare Encounter</h2>
+        <p>Choose an initiative mode, add participants, then roll Cool or Vigilance from their sheets.</p>
+      </div>
       <div class="genesys-mode-choice">
         <button type="button" data-action="setModeSide" class="{{#if modeSide}}is-selected{{/if}}">Core Side Slots</button>
         <button type="button" data-action="setModePopcorn" class="{{#if modePopcorn}}is-selected{{/if}}">Popcorn Initiative</button>
       </div>
       {{#if isGM}}
         <div class="genesys-toolbar-actions">
+          <button type="button" data-action="addSelectedTokens">+ Selected Tokens</button>
           <button type="button" data-action="startEncounter" {{#unless participantCount}}disabled{{/unless}}>Start Encounter</button>
           <button type="button" data-action="resetEncounter">Reset</button>
-          <button type="button" data-action="addSelectedTokens">+ Selected Tokens</button>
         </div>
       {{/if}}
     </section>
-    <p class="genesys-encounter-note">Roll Cool/Vigilance from each Character Sheet. The tracker collects all rolls for the active Scene.</p>
   {{/if}}
 
   {{#if active}}
+    {{#if modeSide}}
+      <section class="genesys-slot-stage-v1824">
+        <div class="genesys-encounter-section-title-v1824">
+          <div><h2>Initiative Slots</h2><p>Any eligible participant may claim a slot belonging to their side.</p></div>
+          <span>Success → Advantage · PC wins exact tie</span>
+        </div>
+        <div class="genesys-slot-track-v1824">
+          {{#each slots}}
+            <article class="genesys-tracker-slot-v1824 {{#if active}}is-active{{/if}} {{#if completed}}is-complete{{/if}}" data-slot-index="{{index}}">
+              <div class="genesys-slot-number-v1824">{{number}}</div>
+              <div class="genesys-slot-copy-v1824">
+                <strong>{{sideLabel}} Slot</strong>
+                <span>Success {{success}} · Advantage {{advantage}}</span>
+                <small>{{statusLabel}}</small>
+              </div>
+              {{#if @root.isGM}}
+                <details class="genesys-slot-menu-v1824">
+                  <summary aria-label="Slot controls"><i class="fa-solid fa-ellipsis-vertical"></i></summary>
+                  <div>
+                    <button type="button" data-action="slotUp">Move Up</button>
+                    <button type="button" data-action="slotDown">Move Down</button>
+                    <button type="button" data-action="slotToggleSide">Change PC/NPC</button>
+                  </div>
+                </details>
+              {{/if}}
+            </article>
+          {{/each}}
+        </div>
+      </section>
+    {{/if}}
+
     {{#if endRound}}
-      <section class="genesys-active-turn-card genesys-end-round-card">
+      <section class="genesys-turn-focus-v1824 genesys-end-round-focus-v1824">
         <div>
-          <small>END OF ROUND</small>
+          <small>End of round</small>
           <h2>Round {{round}} complete</h2>
           {{#if pendingSpecialCount}}
-            <p><strong>{{pendingSpecialCount}} Extra Activation(s) still available.</strong> Use any you want, or start the next round and leave them unused.</p>
+            <p><strong>{{pendingSpecialCount}} Extra Activation(s) remain.</strong> Use them now or leave them unused when starting the next round.</p>
           {{else}}
-            <p>All normal activations are complete. Resolve any end-of-round effects, then start the next round.</p>
+            <p>All normal activations are complete. Resolve end-of-round effects before continuing.</p>
           {{/if}}
         </div>
-        {{#if isGM}}
-          <div class="genesys-active-turn-actions">
-            <button type="button" data-action="startNextRound">Start Round {{nextRound}}</button>
-          </div>
-        {{/if}}
+        {{#if isGM}}<button type="button" data-action="startNextRound">Start Round {{nextRound}}</button>{{/if}}
       </section>
     {{else}}
-      <section class="genesys-active-turn-card">
-        <div>
-          <small>ACTIVE TURN</small>
+      <section class="genesys-turn-focus-v1824">
+        <div class="genesys-turn-copy-v1824">
+          <small>{{#if hasActiveActor}}Active turn{{else}}Current activation{{/if}}</small>
           <h2>{{activeActorLabel}}</h2>
           {{#if hasActiveActor}}
-            <p>Action: <strong>{{#if activeActionBlocked}}BLOCKED{{else}}{{#if turn.actionUsed}}USED{{else}}Available{{/if}}{{/if}}</strong> · Maneuvers: <strong>{{#if activeManeuverBlocked}}BLOCKED{{else}}{{turn.maneuversUsed}} / 2{{/if}}</strong></p>
+            <div class="genesys-turn-budget-v1824">
+              <span>Action <strong>{{#if activeActionBlocked}}Blocked{{else}}{{#if turn.actionUsed}}Used{{else}}Available{{/if}}{{/if}}</strong></span>
+              <span>Maneuvers <strong>{{#if activeManeuverBlocked}}Blocked{{else}}{{turn.maneuversUsed}} / 2{{/if}}</strong></span>
+            </div>
             {{#if activeActionBlocked}}<small class="genesys-blocked-note">Action blocked — {{activeActionBlockedReason}}</small>{{/if}}
             {{#if activeManeuverBlocked}}<small class="genesys-blocked-note">Maneuver blocked — {{activeManeuverBlockedReason}}</small>{{/if}}
           {{else}}
-            <p>Waiting for an eligible participant to claim an available activation.</p>
+            <p>Select an eligible participant below to claim the open activation.</p>
           {{/if}}
         </div>
-        <div class="genesys-active-turn-actions">
-          {{#if hasActiveActor}}
+        {{#if hasActiveActor}}
+          <div class="genesys-active-turn-actions genesys-turn-actions-v1824">
             <button type="button" data-action="useAction" {{#unless canUseAction}}disabled{{/unless}}>Use Action</button>
             <button type="button" data-action="useManeuver" {{#unless canUseManeuver}}disabled{{/unless}}>Use Maneuver</button>
             <button type="button" data-action="endTurn">End Turn</button>
             {{#if isGM}}<button type="button" data-action="unclaim">Unclaim</button>{{/if}}
-          {{/if}}
-        </div>
+          </div>
+        {{/if}}
       </section>
     {{/if}}
   {{/if}}
 
-  <section class="genesys-encounter-participants">
-    <div class="genesys-encounter-section-title">
-      <h2>Participants</h2>
-      <span>{{participantCount}} total</span>
-    </div>
-    {{#each participants}}
-      <article class="genesys-participant-row health-{{healthId}} {{#if isActive}}is-active{{/if}} {{#if acted}}has-acted{{/if}}" data-actor-ref="{{actorRef}}">
-        <div class="genesys-participant-main">
-          <div class="genesys-participant-name">
-            <strong>{{label}}</strong>
-            <span class="genesys-side-badge">{{sideLabel}}</span>
-            {{#if @root.isGM}}<span class="genesys-side-badge">{{roleLabel}}</span>{{/if}}
-            {{#if isActive}}<span class="genesys-active-badge">ACTIVE</span>{{/if}}
-            {{#if acted}}<span class="genesys-acted-badge">ACTED</span>{{/if}}
-            {{#unless statusActive}}<span class="genesys-participant-status-badge status-{{encounterStatus}}">{{encounterStatusLabel}}</span>{{/unless}}
-          </div>
-          <div class="genesys-health-state">{{healthLabel}}</div>
-          {{#if incapacitated}}{{#if @root.isGM}}<small class="genesys-blocked-note">Normal activations blocked — {{activationBlockedReason}}</small>{{/if}}{{/if}}
-          <small>{{skillLabel}} · Success {{success}} · Advantage {{advantage}}</small>
-          {{#if conditionLabels.length}}<small>Conditions: {{#each conditionLabels}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</small>{{/if}}
-        </div>
-        {{#if @root.isGM}}
-          <div class="genesys-participant-exact">
-            <span>Wounds <strong>{{wounds}} / {{threshold}}</strong></span>
-            <span>Strain <strong>{{strain}} / {{strainThreshold}}</strong></span>
-            <span>Criticals <strong>{{criticalCount}}</strong></span>
-            {{#if minionMembersTotal}}<span>Minions <strong>{{minionMembersRemaining}} / {{minionMembersTotal}}</strong></span>{{/if}}
-            <span>Silhouette <strong>{{silhouette}}</strong></span>
-            <span>Adversary <strong>{{adversaryRank}}</strong></span>
-            <span>Activations <strong>{{activationBudgetUsed}} / {{activationBudgetTotal}}</strong></span>
-          </div>
-        {{/if}}
-
-        {{#if hasExtraActivation}}
-          <div class="genesys-activation-list">
-            {{#with extraActivation}}
-              <div class="genesys-activation-row" data-activation-id="{{id}}">
-                <span><strong>{{activationLabel}} — Extra Activation</strong> · {{statusLabel}}</span>
-                {{#if available}}
-                  <button type="button" data-action="useActivation">Use Extra Activation</button>
+  <div class="genesys-encounter-workspace-v1824">
+    <main class="genesys-encounter-rosters-v1824">
+      <section class="genesys-roster-v1824 genesys-roster-pc-v1824">
+        <header><h2>Player Characters</h2><span>PC</span></header>
+        <div class="genesys-roster-list-v1824">
+          {{#each participants}}
+            {{#if sidePc}}
+              <article class="genesys-participant-card-v1824 health-{{healthId}} {{#if isActive}}is-active{{/if}} {{#if acted}}has-acted{{/if}}" data-actor-ref="{{actorRef}}">
+                <div class="genesys-participant-heading-v1824">
+                  <div><strong>{{label}}</strong><small>{{roleLabel}} · {{skillLabel}} {{success}}S / {{advantage}}A</small></div>
+                  <div class="genesys-participant-state-v1824"><span>{{healthLabel}}</span><strong>{{activationBudgetUsed}} / {{activationBudgetTotal}}</strong><small>activations</small></div>
+                </div>
+                {{#if conditionLabels.length}}<small class="genesys-condition-line-v1824">Conditions: {{#each conditionLabels}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</small>{{/if}}
+                {{#unless statusActive}}<span class="genesys-participant-status-badge status-{{encounterStatus}}">{{encounterStatusLabel}}</span>{{/unless}}
+                {{#if canClaim}}<button type="button" class="genesys-claim-v1824" data-action="claimActor">Claim Turn</button>{{/if}}
+                {{#if @root.isGM}}
+                  <details class="genesys-participant-details-v1824">
+                    <summary>GM details & controls</summary>
+                    <div class="genesys-participant-exact-v1824">
+                      <span>Wounds <strong>{{wounds}} / {{threshold}}</strong></span><span>Strain <strong>{{strain}} / {{strainThreshold}}</strong></span>
+                      <span>Criticals <strong>{{criticalCount}}</strong></span><span>Silhouette <strong>{{silhouette}}</strong></span>
+                    </div>
+                    <div class="genesys-participant-actions">
+                      {{#unless isActive}}<button type="button" data-action="forceClaimActor">GM Override</button>{{/unless}}
+                      {{#if acted}}<button type="button" data-action="markUnacted">Mark Unacted</button>{{else}}<button type="button" data-action="markActed">Mark Acted</button>{{/if}}
+                      {{#if statusActive}}<button type="button" data-action="markDefeated">Defeated</button><button type="button" data-action="markOutOfFight">Out of Fight</button><button type="button" data-action="markDead">Dead</button>{{else}}<button type="button" data-action="reactivateParticipant">Reactivate</button>{{/if}}
+                      <button type="button" data-action="removeParticipant">Remove</button>
+                    </div>
+                  </details>
                 {{/if}}
-              </div>
-            {{/with}}
-          </div>
-        {{/if}}
-
-        <div class="genesys-participant-actions">
-          {{#if canClaim}}<button type="button" data-action="claimActor">Claim Turn</button>{{/if}}
-          {{#if @root.isGM}}
-            {{#unless isActive}}<button type="button" data-action="forceClaimActor">GM Force Override</button>{{/unless}}
-            {{#if acted}}<button type="button" data-action="markUnacted">Mark Unacted</button>{{else}}<button type="button" data-action="markActed">Mark Acted</button>{{/if}}
-            {{#if statusActive}}
-              <button type="button" data-action="markDefeated">Defeated</button>
-              <button type="button" data-action="markOutOfFight">Out of Fight</button>
-              <button type="button" data-action="markDead">Dead</button>
-            {{else}}
-              <button type="button" data-action="reactivateParticipant">Reactivate</button>
+                {{#if hasActor}}<button type="button" class="genesys-open-sheet-v1824" data-action="openActor">Open Sheet</button>{{/if}}
+              </article>
             {{/if}}
-            <button type="button" data-action="removeParticipant">Remove</button>
-          {{/if}}
-          {{#if hasActor}}<button type="button" data-action="openActor">Open Sheet</button>{{/if}}
+          {{/each}}
         </div>
-      </article>
-    {{else}}
-      <p class="genesys-empty-row">No initiative participants yet.</p>
-    {{/each}}
-  </section>
+      </section>
 
-  {{#if modeSide}}
-    <section class="genesys-encounter-slots">
-      <div class="genesys-encounter-section-title"><h2>Side Slots</h2><span>Success → Advantage · PC wins exact tie</span></div>
-      {{#each slots}}
-        <div class="genesys-tracker-slot {{#if active}}is-active{{/if}}" data-slot-index="{{index}}">
-          <strong>#{{number}} · {{sideLabel}}</strong>
-          <span>Success {{success}} · Advantage {{advantage}}</span>
-          <span>{{statusLabel}}</span>
-          {{#if @root.isGM}}
-            <div>
-              <button type="button" data-action="slotUp">↑</button>
-              <button type="button" data-action="slotDown">↓</button>
-              <button type="button" data-action="slotToggleSide">PC/NPC</button>
-            </div>
-          {{/if}}
+      <section class="genesys-roster-v1824 genesys-roster-npc-v1824">
+        <header><h2>Hostile NPCs</h2><span>NPC</span></header>
+        <div class="genesys-roster-list-v1824">
+          {{#each participants}}
+            {{#if sideNpc}}
+              <article class="genesys-participant-card-v1824 health-{{healthId}} {{#if isActive}}is-active{{/if}} {{#if acted}}has-acted{{/if}}" data-actor-ref="{{actorRef}}">
+                <div class="genesys-participant-heading-v1824">
+                  <div><strong>{{label}}</strong><small>{{roleLabel}} · {{skillLabel}} {{success}}S / {{advantage}}A</small></div>
+                  <div class="genesys-participant-state-v1824"><span>{{healthLabel}}</span><strong>{{activationBudgetUsed}} / {{activationBudgetTotal}}</strong><small>activations</small></div>
+                </div>
+                {{#if minionMembersTotal}}<small class="genesys-condition-line-v1824">Minions {{minionMembersRemaining}} / {{minionMembersTotal}}</small>{{/if}}
+                {{#if conditionLabels.length}}<small class="genesys-condition-line-v1824">Conditions: {{#each conditionLabels}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</small>{{/if}}
+                {{#unless statusActive}}<span class="genesys-participant-status-badge status-{{encounterStatus}}">{{encounterStatusLabel}}</span>{{/unless}}
+                {{#if hasExtraActivation}}
+                  <div class="genesys-activation-list-v1824">
+                    {{#with extraActivation}}
+                      <div data-activation-id="{{id}}"><span><strong>{{activationLabel}}</strong><small>{{statusLabel}}</small></span>{{#if available}}<button type="button" data-action="useActivation">Use Extra</button>{{/if}}</div>
+                    {{/with}}
+                  </div>
+                {{/if}}
+                {{#if canClaim}}<button type="button" class="genesys-claim-v1824" data-action="claimActor">Claim Turn</button>{{/if}}
+                {{#if @root.isGM}}
+                  <details class="genesys-participant-details-v1824">
+                    <summary>GM details & controls</summary>
+                    <div class="genesys-participant-exact-v1824">
+                      <span>Wounds <strong>{{wounds}} / {{threshold}}</strong></span><span>Strain <strong>{{strain}} / {{strainThreshold}}</strong></span>
+                      <span>Criticals <strong>{{criticalCount}}</strong></span>{{#if minionMembersTotal}}<span>Minions <strong>{{minionMembersRemaining}} / {{minionMembersTotal}}</strong></span>{{/if}}
+                      <span>Silhouette <strong>{{silhouette}}</strong></span><span>Adversary <strong>{{adversaryRank}}</strong></span>
+                    </div>
+                    <div class="genesys-participant-actions">
+                      {{#unless isActive}}<button type="button" data-action="forceClaimActor">GM Override</button>{{/unless}}
+                      {{#if acted}}<button type="button" data-action="markUnacted">Mark Unacted</button>{{else}}<button type="button" data-action="markActed">Mark Acted</button>{{/if}}
+                      {{#if statusActive}}<button type="button" data-action="markDefeated">Defeated</button><button type="button" data-action="markOutOfFight">Out of Fight</button><button type="button" data-action="markDead">Dead</button>{{else}}<button type="button" data-action="reactivateParticipant">Reactivate</button>{{/if}}
+                      <button type="button" data-action="removeParticipant">Remove</button>
+                    </div>
+                  </details>
+                {{/if}}
+                {{#if hasActor}}<button type="button" class="genesys-open-sheet-v1824" data-action="openActor">Open Sheet</button>{{/if}}
+              </article>
+            {{/if}}
+          {{/each}}
         </div>
-      {{/each}}
-    </section>
-  {{/if}}
+      </section>
+
+      {{#unless participantCount}}<p class="genesys-empty-row">No initiative participants yet.</p>{{/unless}}
+    </main>
+
+    <aside class="genesys-encounter-sidebar-v1824">
+      <section>
+        <h2>Round Status</h2>
+        {{#if active}}
+          <div class="genesys-round-metric-v1824"><span>Regular activations</span><strong>{{activationUsedCount}} / {{activationTotalCount}}</strong></div>
+          <div class="genesys-round-metric-v1824"><span>Pending extras</span><strong>{{pendingSpecialCount}}</strong></div>
+          <div class="genesys-round-metric-v1824"><span>Active participants</span><strong>{{activeParticipantCount}}</strong></div>
+        {{else}}
+          <p>Add selected tokens and collect initiative rolls before starting.</p>
+        {{/if}}
+      </section>
+      <section>
+        <h2>Encounter Rules</h2>
+        {{#if modeSide}}<p>Slots belong to a side, not to the Actor who rolled them.</p>{{else}}<p>The initiative winner starts. Afterwards, any eligible participant who has not acted may claim.</p>{{/if}}
+        <p>Wounds and encounter status are separate. The GM decides when someone is Defeated, Out of Fight, or Dead.</p>
+      </section>
+    </aside>
+  </div>
 
   {{#if isGM}}
-    <footer class="genesys-gm-encounter-controls">
+    <footer class="genesys-gm-encounter-controls genesys-gm-controls-v1824">
       {{#if active}}
         <button type="button" data-action="rewindTurn">Previous / Reopen Turn</button>
         <button type="button" data-action="roundDown">Round −</button>

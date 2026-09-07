@@ -1,0 +1,412 @@
+/* 0.0.1824 - Encounter Tracker presentation overhaul. The initiative engine is unchanged. */
+.genesys-encounter-overhaul-v1824 {
+  container-type: inline-size;
+  display: grid;
+  gap: 10px;
+  min-height: 100%;
+  padding: 10px;
+  color: var(--genesys-parchment-light, #ead8ac);
+  background:
+    linear-gradient(rgba(6, 15, 21, .94), rgba(6, 15, 21, .94)),
+    var(--genesys-sheet-texture, none);
+}
+
+.genesys-encounter-overhaul-v1824 h1,
+.genesys-encounter-overhaul-v1824 h2,
+.genesys-encounter-overhaul-v1824 p {
+  margin: 0;
+}
+
+.genesys-encounter-header-v1824 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-width: 0;
+  padding: 12px 14px;
+  border: 1px solid var(--genesys-gold-deep, #8b6428);
+  background: linear-gradient(180deg, #172731, #0b151c);
+}
+
+.genesys-encounter-title-v1824,
+.genesys-encounter-counter-v1824 {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.genesys-encounter-title-v1824 h1 {
+  width: 100%;
+  color: #efd790;
+  font: 700 1.35rem Georgia, serif;
+}
+
+.genesys-encounter-mode-v1824,
+.genesys-encounter-state-v1824 {
+  padding: 3px 7px;
+  border: 1px solid rgba(215, 173, 82, .34);
+  background: #132630;
+  color: #dbc68f;
+  font-size: .68rem;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.genesys-encounter-state-v1824 { opacity: .72; }
+
+.genesys-encounter-counter-v1824 {
+  justify-content: flex-end;
+  color: #d9c69a;
+  font-size: .72rem;
+  text-transform: uppercase;
+}
+
+.genesys-encounter-counter-v1824 strong {
+  color: #f0cf72;
+  font-size: 1rem;
+}
+
+.genesys-encounter-setup-v1824,
+.genesys-turn-focus-v1824,
+.genesys-encounter-complete-v1824 {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--genesys-gold-deep, #8b6428);
+  background: var(--genesys-parchment, #ead8b9);
+  color: var(--genesys-ink, #302216);
+}
+
+.genesys-encounter-setup-v1824 {
+  grid-template-columns: minmax(220px, 1fr) auto auto;
+}
+
+.genesys-encounter-setup-v1824 h2,
+.genesys-turn-focus-v1824 h2,
+.genesys-encounter-complete-v1824 h2 {
+  margin: 2px 0 4px;
+  color: #4d3419;
+  font: 700 1.05rem Georgia, serif;
+}
+
+.genesys-encounter-setup-v1824 p,
+.genesys-turn-focus-v1824 p,
+.genesys-encounter-complete-v1824 p {
+  font-size: .76rem;
+}
+
+.genesys-turn-focus-v1824 {
+  border-left: 5px solid #28648b;
+  background: linear-gradient(180deg, rgba(255,255,255,.18), rgba(109,76,40,.04)), var(--genesys-parchment, #ead8b9);
+}
+
+.genesys-end-round-focus-v1824 { border-left-color: #b37a22; }
+
+.genesys-turn-copy-v1824 > small,
+.genesys-encounter-complete-v1824 small {
+  color: #765323;
+  font-size: .66rem;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.genesys-turn-budget-v1824 {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.genesys-turn-budget-v1824 span {
+  padding: 5px 8px;
+  border: 1px solid rgba(109, 76, 40, .35);
+  background: rgba(255, 255, 255, .18);
+  font-size: .72rem;
+}
+
+.genesys-turn-actions-v1824 {
+  justify-content: flex-end;
+  max-width: 430px;
+}
+
+.genesys-slot-stage-v1824,
+.genesys-roster-v1824,
+.genesys-encounter-sidebar-v1824 > section {
+  min-width: 0;
+  border: 1px solid var(--genesys-gold-deep, #8b6428);
+}
+
+.genesys-slot-stage-v1824 { background: #0d1a22; }
+
+.genesys-encounter-section-title-v1824,
+.genesys-roster-v1824 > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 11px;
+  border-bottom: 1px solid var(--genesys-gold-deep, #8b6428);
+  background: linear-gradient(180deg, #172731, #0d1820);
+}
+
+.genesys-encounter-section-title-v1824 h2,
+.genesys-roster-v1824 > header h2,
+.genesys-encounter-sidebar-v1824 h2 {
+  color: #e7c56c;
+  font: 700 .82rem Georgia, serif;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.genesys-encounter-section-title-v1824 p,
+.genesys-encounter-section-title-v1824 > span,
+.genesys-roster-v1824 > header span {
+  color: #cdbb91;
+  font-size: .65rem;
+}
+
+.genesys-slot-track-v1824 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 7px;
+  padding: 9px;
+}
+
+.genesys-tracker-slot-v1824 {
+  position: relative;
+  display: grid;
+  grid-template-columns: 30px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  min-height: 58px;
+  padding: 7px;
+  border: 1px solid rgba(215, 173, 82, .24);
+  background: #142630;
+  color: #ddc898;
+}
+
+.genesys-tracker-slot-v1824.is-active {
+  border-color: #e2b54c;
+  background: linear-gradient(180deg, #205a7c, #153c55);
+  box-shadow: inset 0 -3px 0 #e2b54c;
+  color: #fff0bd;
+}
+
+.genesys-tracker-slot-v1824.is-complete { opacity: .5; }
+.genesys-tracker-slot-v1824.is-active.is-complete { opacity: 1; }
+
+.genesys-slot-number-v1824 {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid rgba(215, 173, 82, .45);
+  border-radius: 50%;
+  color: #efcf75;
+  font-weight: 800;
+}
+
+.genesys-slot-copy-v1824 {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.genesys-slot-copy-v1824 strong { font-size: .75rem; }
+.genesys-slot-copy-v1824 span,
+.genesys-slot-copy-v1824 small { overflow: hidden; font-size: .63rem; text-overflow: ellipsis; white-space: nowrap; }
+
+.genesys-slot-menu-v1824 { position: relative; }
+.genesys-slot-menu-v1824 > summary { display: grid; place-items: center; width: 26px; height: 28px; list-style: none; cursor: pointer; }
+.genesys-slot-menu-v1824 > summary::-webkit-details-marker { display: none; }
+.genesys-slot-menu-v1824 > div {
+  position: absolute;
+  top: calc(100% + 4px);
+  right: 0;
+  z-index: 20;
+  display: grid;
+  gap: 4px;
+  width: 150px;
+  padding: 6px;
+  border: 1px solid var(--genesys-gold-deep, #8b6428);
+  background: #101d25;
+}
+
+.genesys-encounter-workspace-v1824 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, .28fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.genesys-encounter-rosters-v1824 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  min-width: 0;
+}
+
+.genesys-roster-v1824 { background: var(--genesys-parchment, #ead8b9); }
+.genesys-roster-list-v1824 { display: grid; }
+
+.genesys-participant-card-v1824 {
+  position: relative;
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+  padding: 9px 10px;
+  border-bottom: 1px solid rgba(109, 76, 40, .22);
+  color: var(--genesys-ink, #302216);
+}
+
+.genesys-participant-card-v1824:last-child { border-bottom: 0; }
+.genesys-participant-card-v1824.is-active { box-shadow: inset 4px 0 0 #b77b20; background: rgba(255, 255, 255, .16); }
+.genesys-participant-card-v1824.has-acted:not(.is-active) { opacity: .64; }
+
+.genesys-participant-heading-v1824 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+}
+
+.genesys-participant-heading-v1824 > div:first-child {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.genesys-participant-heading-v1824 strong { overflow: hidden; font-size: .88rem; text-overflow: ellipsis; white-space: nowrap; }
+.genesys-participant-heading-v1824 small,
+.genesys-condition-line-v1824 { font-size: .65rem; opacity: .72; }
+
+.genesys-participant-state-v1824 {
+  display: grid;
+  justify-items: end;
+  align-content: start;
+  color: #694718;
+  font-size: .64rem;
+}
+
+.genesys-participant-state-v1824 strong { font-size: .84rem; }
+
+.genesys-claim-v1824 {
+  width: 100%;
+  border-color: var(--genesys-gold-deep, #8b6428);
+  background: linear-gradient(180deg, #1d5478, #123a56);
+  color: #f5df9b;
+  font-family: Georgia, serif;
+  text-transform: uppercase;
+}
+
+.genesys-open-sheet-v1824 {
+  justify-self: start;
+  width: auto;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  color: #66461e;
+  text-decoration: underline;
+}
+
+.genesys-participant-details-v1824 > summary {
+  color: #694718;
+  cursor: pointer;
+  font-size: .68rem;
+  font-weight: 700;
+}
+
+.genesys-participant-exact-v1824 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+  margin: 7px 0;
+  padding: 7px;
+  border: 1px solid rgba(109, 76, 40, .25);
+  font-size: .65rem;
+}
+
+.genesys-activation-list-v1824 > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 7px;
+  padding: 6px 7px;
+  border: 1px solid rgba(109, 76, 40, .34);
+  background: rgba(109, 76, 40, .07);
+  font-size: .68rem;
+}
+
+.genesys-activation-list-v1824 span { display: grid; gap: 2px; }
+.genesys-activation-list-v1824 button { width: auto; min-width: 0; }
+
+.genesys-encounter-sidebar-v1824 {
+  display: grid;
+  gap: 10px;
+}
+
+.genesys-encounter-sidebar-v1824 > section {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  background: linear-gradient(180deg, #172731, #0d1820);
+}
+
+.genesys-encounter-sidebar-v1824 p {
+  color: #cdbb91;
+  font-size: .68rem;
+  line-height: 1.35;
+}
+
+.genesys-round-metric-v1824 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 7px;
+  background: #132630;
+  font-size: .68rem;
+}
+
+.genesys-round-metric-v1824 strong { color: #efcf75; }
+
+.genesys-gm-controls-v1824 {
+  margin-top: auto;
+  border: 1px solid var(--genesys-gold-deep, #8b6428);
+  background: #0b151c;
+}
+
+@container (max-width: 780px) {
+  .genesys-encounter-overhaul-v1824 .genesys-encounter-setup-v1824,
+  .genesys-encounter-overhaul-v1824 .genesys-turn-focus-v1824,
+  .genesys-encounter-overhaul-v1824 .genesys-encounter-complete-v1824,
+  .genesys-encounter-overhaul-v1824 .genesys-encounter-workspace-v1824 {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .genesys-encounter-overhaul-v1824 .genesys-turn-actions-v1824 { justify-content: flex-start; max-width: none; }
+  .genesys-encounter-overhaul-v1824 .genesys-encounter-sidebar-v1824 { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+}
+
+@container (max-width: 560px) {
+  .genesys-encounter-overhaul-v1824 .genesys-encounter-header-v1824,
+  .genesys-encounter-overhaul-v1824 .genesys-encounter-section-title-v1824 {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .genesys-encounter-overhaul-v1824 .genesys-encounter-counter-v1824 { justify-content: flex-start; }
+  .genesys-encounter-overhaul-v1824 .genesys-encounter-rosters-v1824,
+  .genesys-encounter-overhaul-v1824 .genesys-encounter-sidebar-v1824 { grid-template-columns: minmax(0, 1fr); }
+  .genesys-encounter-overhaul-v1824 .genesys-slot-track-v1824 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@container (max-width: 380px) {
+  .genesys-encounter-overhaul-v1824 .genesys-slot-track-v1824 { grid-template-columns: minmax(0, 1fr); }
+  .genesys-encounter-overhaul-v1824 .genesys-participant-heading-v1824 { grid-template-columns: minmax(0, 1fr); }
+  .genesys-encounter-overhaul-v1824 .genesys-participant-state-v1824 { justify-items: start; }
+}

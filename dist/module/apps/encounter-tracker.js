@@ -184,6 +184,8 @@ function participantContext(state, entry) {
         actorRef: entry.actorRef,
         label: entry.label,
         side: entry.side,
+        sidePc: entry.side === "pc",
+        sideNpc: entry.side === "npc",
         sideLabel: entry.side.toUpperCase(),
         role,
         roleLabel: actorRoleLabel(role),
