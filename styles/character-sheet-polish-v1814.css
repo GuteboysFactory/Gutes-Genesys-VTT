@@ -1,0 +1,83 @@
+/* 0.0.1814 - Square sheet portrait and contained Actions/Dice Tools workspace. */
+.genesys-vtt .genesys-header-wizard-baseline .genesys-portrait-frame {
+  border-radius: 4px;
+}
+
+.genesys-vtt .genesys-header-wizard-baseline .genesys-portrait {
+  border-radius: 1px;
+}
+
+/* Restore a real layout container after the v1759 display:contents treatment. */
+.genesys-vtt .genesys-actions-panel {
+  display: block;
+}
+
+.genesys-vtt .genesys-actions-panel[hidden] {
+  display: none !important;
+}
+
+.genesys-vtt .genesys-actions-panel > .genesys-actions-toolbar {
+  margin: 0 0 10px;
+}
+
+.genesys-vtt .genesys-actions-panel > .genesys-actions-workspace-v1814 {
+  display: grid;
+  grid-template-columns: minmax(0, 7fr) minmax(280px, 3fr);
+  gap: 10px;
+  align-items: start;
+}
+
+.genesys-vtt .genesys-actions-main-v1814 {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(280px, .75fr);
+  gap: 10px;
+  min-width: 0;
+  align-items: start;
+}
+
+.genesys-vtt .genesys-actions-workspace-v1814 > .genesys-actions-dice-tools {
+  position: static;
+  grid-column: 2;
+  grid-row: 1;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  z-index: auto;
+}
+
+.genesys-vtt .genesys-actions-workspace-v1814 > .genesys-actions-dice-tools[open] {
+  position: static;
+}
+
+.genesys-vtt .genesys-actions-workspace-v1814 .genesys-actions-dice-tools-body,
+.genesys-vtt .genesys-actions-workspace-v1814 .genesys-actions-quick-pool,
+.genesys-vtt .genesys-actions-workspace-v1814 .genesys-actions-check-engine {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@media (max-width: 1180px) {
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-workspace-v1814 {
+    grid-template-columns: minmax(0, 1fr) minmax(260px, .42fr);
+  }
+
+  .genesys-vtt .genesys-actions-main-v1814 {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 860px) {
+  .genesys-vtt .genesys-actions-panel > .genesys-actions-workspace-v1814 {
+    grid-template-columns: 1fr;
+  }
+
+  .genesys-vtt .genesys-actions-workspace-v1814 > .genesys-actions-dice-tools {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .genesys-vtt .genesys-actions-main-v1814 {
+    grid-column: 1;
+    grid-row: 2;
+  }
+}

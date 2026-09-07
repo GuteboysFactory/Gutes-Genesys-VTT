@@ -309,15 +309,18 @@ function buildActionsPanel(root) {
     panel.hidden = true;
 
     const layout = document.createElement("div");
-    layout.className = "genesys-actions-layout genesys-actions-layout-v1756";
+    layout.className = "genesys-actions-layout genesys-actions-layout-v1756 genesys-actions-workspace-v1814";
     const diceTools = buildRollTools(root);
+    const actionsMain = document.createElement("div");
+    actionsMain.className = "genesys-actions-main-v1814";
     const left = document.createElement("div");
     left.className = "genesys-actions-column genesys-actions-column-left";
     left.append(buildCombatActions(root), buildCustomActions(root));
     const right = document.createElement("div");
     right.className = "genesys-actions-column genesys-actions-column-right";
     right.append(buildTalentActions(root), buildGeneralActions());
-    layout.append(diceTools, left, right);
+    actionsMain.append(left, right);
+    layout.append(actionsMain, diceTools);
 
     panel.append(buildActionsToolbar(), layout);
     equipmentPanel.before(panel);
