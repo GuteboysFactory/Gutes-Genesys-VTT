@@ -296,6 +296,7 @@ export async function castMagicAction(caster, input = {}) {
     sourceId: prepared.action.id,
     sourceLabel: `${prepared.action.label} (${prepared.skill.label})`,
     actorName: caster.name,
+    actorId: caster.id,
     speakerAlias: caster.name,
     metadata: {
       settingId: prepared.settingId,

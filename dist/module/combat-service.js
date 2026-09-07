@@ -12,6 +12,7 @@ import { getRenderedActorResourceDebug, getRenderedActorFieldValue, rerenderRend
 import { consumeSceneEncounterAction } from "./initiative-service.js";
 import { normalizeActorRole, normalizeMinionGroup, suffersAutomaticThresholdCritical } from "../domain/adversaries/index.js";
 import { createCombatNarrativeSpendState, narrativeSpendMessageFlags, promptCombatNarrativeSpend, withNarrativeSpendSummary } from "./narrative-spend-service.js";
+import { consumeNarrativeDiceForActor } from "./narrative-dice-transfer-v1818.js";
 
 const scheduledSecondaryPrompts = new Set();
 export function scheduleCriticalSecondaryPrompt(actor, criticalId) {
@@ -311,7 +312,11 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
     item = reacquireEmbeddedItem(attacker, item);
     const prepared = prepareActorCombatAttack(attacker, item, target, targetRange, checkOptions);
     await consumeSceneEncounterAction(attacker);
-    const result = rollNarrativePool(prepared.preparedWeaponAttack.check.construction.pool);
+    const transfer = await consumeNarrativeDiceForActor(attacker, prepared.preparedWeaponAttack.check.construction.pool);
+    prepared.preparedWeaponAttack.check.construction.pool = transfer.pool;
+    prepared.preparedWeaponAttack.check.construction.trace.afterRemovals = transfer.pool;
+    const result = rollNarrativePool(transfer.pool);
+    result.transferredDice = transfer.consumed;
     let pending = createPendingCombatResolution(prepared, result);
     if (pending.hit)
         pending = await resolveCombatReactionWindow(prepared, pending, target, "pre-soak");

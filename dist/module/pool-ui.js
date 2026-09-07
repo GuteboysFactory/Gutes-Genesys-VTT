@@ -46,13 +46,14 @@ export function poolTraceToHtml(construction) {
       </ol>
     </details>`;
 }
-export async function constructAndRollToChat(input, speakerAlias) {
+export async function constructAndRollToChat(input, speakerAlias, actorId = "") {
     const construction = constructStandardPool(input);
     const { result } = await rollNarrativeWithPresentation(construction.pool, {
         sourceType: "constructed-pool",
         sourceLabel: "Constructed Pool",
         speakerAlias,
         actorName: speakerAlias,
+        actorId,
         metadata: { characteristic: input.characteristic, skillRank: input.skillRank, difficulty: input.difficulty ?? 0 }
     });
     const content = `

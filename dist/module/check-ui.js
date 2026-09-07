@@ -142,13 +142,14 @@ export function prepareActorSkillEngineCheck(actor, skillId, options = {}) {
         check
     };
 }
-export async function rollPreparedActorCheckToChat(prepared, speakerAlias) {
+export async function rollPreparedActorCheckToChat(prepared, speakerAlias, actorId = "") {
     const { result } = await rollNarrativeWithPresentation(prepared.check.construction.pool, {
         sourceType: `${prepared.check.kind ?? "standard"}-check`,
         sourceId: prepared.skillId,
         sourceLabel: prepared.skillLabel,
         speakerAlias,
         actorName: speakerAlias,
+        actorId,
         metadata: {
             characteristicId: prepared.characteristicId,
             checkKind: prepared.check.kind,

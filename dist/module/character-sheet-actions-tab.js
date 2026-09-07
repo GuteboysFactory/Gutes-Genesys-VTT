@@ -91,6 +91,35 @@ function buildQuickDicePool() {
     return pool;
 }
 
+function buildNarrativeDiceTransfer(root) {
+    const actor = actorForRoot(root);
+    const service = game?.genesysNarrativeDice;
+    const inbox = service?.readInbox?.(actor) ?? [];
+    const inboxSummary = service?.summarizeInbox?.(inbox) ?? { boost: 0, setback: 0 };
+    const inboxCount = inboxSummary.boost + inboxSummary.setback;
+    const recipients = service?.listRecipients?.() ?? [];
+    const section = document.createElement("section");
+    section.className = "genesys-narrative-dice-transfer";
+
+    const inboxRows = inbox.length
+        ? `<ul class="genesys-narrative-dice-inbox-list">${inbox.map((entry) => `<li><span class="genesys-transfer-die genesys-transfer-die-${esc(entry.dieType)}">${entry.dieType === "setback" ? "●" : "◆"}</span><strong>${entry.count} ${entry.dieType === "setback" ? "Setback" : "Boost"}</strong><span>from ${esc(entry.sourceActorName)}</span></li>`).join("")}</ul>`
+        : '<p class="genesys-narrative-dice-empty">No transferred dice waiting.</p>';
+    const options = recipients.map((recipient) => {
+        const self = recipient.uuid === actor?.uuid || recipient.id === actor?.id;
+        return `<option value="${esc(recipient.uuid)}"${self ? " selected" : ""}>${esc(recipient.name)}${self ? " (self)" : ""}</option>`;
+    }).join("");
+
+    section.innerHTML = `<div class="genesys-narrative-dice-heading"><div><strong><i class="fa-solid fa-share-nodes" aria-hidden="true"></i> Narrative Dice Transfer</strong><small>Waiting dice are added to the recipient's next roll and consumed once.</small></div><span class="genesys-narrative-dice-count">${inboxCount}</span></div>
+      <div class="genesys-narrative-dice-inbox"><span class="genesys-narrative-dice-label">Incoming</span>${inboxRows}</div>
+      <div class="genesys-narrative-dice-send">
+        <label>Die<select data-transfer-die><option value="boost">Boost</option><option value="setback">Setback</option></select></label>
+        <label>Amount<input type="number" min="1" max="5" value="1" data-transfer-count /></label>
+        <label>Recipient<select data-transfer-recipient>${options}</select></label>
+        <button type="button" class="genesys-primary-action" data-transfer-send${actor && recipients.length ? "" : " disabled"}><i class="fa-solid fa-paper-plane" aria-hidden="true"></i> Send</button>
+      </div>`;
+    return section;
+}
+
 function buildRollTools(root) {
     const details = document.createElement("details");
     details.className = "genesys-fantasy-panel genesys-ornate-panel genesys-actions-roll-tools genesys-actions-dice-tools";
@@ -100,7 +129,7 @@ function buildRollTools(root) {
     summary.innerHTML = '<span><i class="fa-solid fa-dice" aria-hidden="true"></i><strong>Dice Tools</strong><small>Quick Dice Pool & Advanced Check Setup</small></span><i class="fa-solid fa-chevron-down" aria-hidden="true"></i>';
     const body = document.createElement("div");
     body.className = "genesys-actions-dice-tools-body";
-    body.append(buildQuickDicePool());
+    body.append(buildQuickDicePool(), buildNarrativeDiceTransfer(root));
 
     const sourceAdvanced = root.querySelector("[data-genesys-tab-panel='skills'] .genesys-check-engine-lab");
     if (sourceAdvanced) {
@@ -357,6 +386,31 @@ function initializeActionsTabs() {
 }
 
 document.addEventListener("click", async (event) => {
+    const sendTransfer = event.target?.closest?.("[data-transfer-send]");
+    if (sendTransfer) {
+        event.preventDefault();
+        event.stopPropagation();
+        const root = sendTransfer.closest("[data-genesys-sheet-tabs]");
+        const actor = actorForRoot(root);
+        const panel = sendTransfer.closest(".genesys-narrative-dice-transfer");
+        const targetUuid = panel?.querySelector?.("[data-transfer-recipient]")?.value;
+        const dieType = panel?.querySelector?.("[data-transfer-die]")?.value;
+        const count = Number(panel?.querySelector?.("[data-transfer-count]")?.value ?? 1);
+        try {
+            const recipient = game.genesysNarrativeDice.listRecipients().find((entry) => entry.uuid === targetUuid);
+            await game.genesysNarrativeDice.send(actor, targetUuid, dieType, count);
+            ui?.notifications?.info?.(`${Math.max(1, Math.min(5, Math.trunc(count) || 1))} ${dieType === "setback" ? "Setback" : "Boost"} sent to ${recipient?.name ?? "the recipient"}.`);
+            rebuildActionsPanel(root);
+            const rebuiltDiceTools = root.querySelector(".genesys-actions-dice-tools");
+            if (rebuiltDiceTools)
+                rebuiltDiceTools.open = true;
+        }
+        catch (error) {
+            console.error("genesys-vtt | Narrative Dice Transfer failed", error);
+            ui?.notifications?.error?.(String(error?.message ?? error));
+        }
+        return;
+    }
     const create = event.target?.closest?.("[data-custom-action-create]");
     if (create) {
         event.preventDefault();

@@ -112,13 +112,14 @@ export function prepareActorSkillCheck(actor, skillId, difficulty = 2, rankOverr
     });
     return applyMagicAbilityEffectsToPrepared(prepared, actor);
 }
-export async function rollPreparedSkillCheckToChat(prepared, speakerAlias) {
+export async function rollPreparedSkillCheckToChat(prepared, speakerAlias, actorId = "") {
     const { result } = await rollNarrativeWithPresentation(prepared.construction.pool, {
         sourceType: "skill-check",
         sourceId: prepared.skillId,
         sourceLabel: prepared.skillLabel,
         speakerAlias,
         actorName: speakerAlias,
+        actorId,
         metadata: { difficulty: prepared.difficulty, characteristicId: prepared.characteristicId }
     });
     const content = `

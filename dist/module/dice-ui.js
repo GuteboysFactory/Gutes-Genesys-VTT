@@ -32,6 +32,20 @@ export function formatPool(pool) {
 function resultHeading(result) {
     return result.succeeded ? "SUCCESS" : "FAILURE";
 }
+function escapeHtml(value) {
+    return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+}
+function transferredDiceHtml(transfers = []) {
+    if (!Array.isArray(transfers) || !transfers.length)
+        return "";
+    const labels = transfers.map((transfer) => `${Number(transfer.count ?? 1)} ${LABELS[transfer.dieType] ?? transfer.dieType} from ${escapeHtml(transfer.sourceActorName ?? "Unknown sender")}`);
+    return `<p class="genesys-transferred-dice-used"><i class="fa-solid fa-share-nodes" aria-hidden="true"></i> <strong>Transferred dice:</strong> ${labels.join(" · ")}</p>`;
+}
 export function resultToChatHtml(result) {
     const dice = result.dice.map((die) => {
         const symbols = Object.entries(die.symbols)
@@ -43,6 +57,7 @@ export function resultToChatHtml(result) {
     <section class="genesys-chat-roll">
       <h3>${resultHeading(result)}</h3>
       <p><strong>Pool:</strong> ${formatPool(result.pool)}</p>
+      ${transferredDiceHtml(result.transferredDice)}
       <div class="genesys-chat-result-grid">
         <span>Success <strong>${result.net.success}</strong></span>
         <span>Failure <strong>${result.net.failure}</strong></span>
@@ -57,12 +72,13 @@ export function resultToChatHtml(result) {
       </details>
     </section>`;
 }
-export async function rollPoolToChat(pool, speakerAlias) {
+export async function rollPoolToChat(pool, speakerAlias, actorId = "") {
     const { result } = await rollNarrativeWithPresentation(pool, {
         sourceType: "quick-dice-pool",
         sourceLabel: "Quick Dice Pool",
         speakerAlias,
-        actorName: speakerAlias
+        actorName: speakerAlias,
+        actorId
     });
     const data = {
         content: resultToChatHtml(result)

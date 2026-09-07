@@ -76,13 +76,14 @@ export function prepareActorWeaponAttack(actor, item, difficulty = 2, checkOptio
         }
     };
 }
-export async function rollPreparedWeaponAttackToChat(prepared, speakerAlias) {
+export async function rollPreparedWeaponAttackToChat(prepared, speakerAlias, actorId = "") {
     const { result } = await rollNarrativeWithPresentation(prepared.check.construction.pool, {
         sourceType: "weapon-check",
         sourceId: prepared.checkContext?.skillId,
         sourceLabel: prepared.weaponName,
         speakerAlias,
         actorName: speakerAlias,
+        actorId,
         metadata: { weaponName: prepared.weaponName, range: prepared.weapon.range, difficulty: prepared.check?.difficulty ?? null }
     });
     const qualities = formatQualityText(prepared.weapon.qualities) || "None";
@@ -106,6 +107,6 @@ export async function rollPreparedWeaponAttackToChat(prepared, speakerAlias) {
 }
 export async function rollActorWeaponToChat(actor, item, difficulty = 2, checkOptions = {}) {
     const prepared = prepareActorWeaponAttack(actor, item, difficulty, checkOptions);
-    return rollPreparedWeaponAttackToChat(prepared, actor?.name ?? "Genesys Weapon Check");
+    return rollPreparedWeaponAttackToChat(prepared, actor?.name ?? "Genesys Weapon Check", actor?.id ?? "");
 }
 //# sourceMappingURL=items-service.js.map

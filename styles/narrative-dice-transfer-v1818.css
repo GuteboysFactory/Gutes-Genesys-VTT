@@ -1,0 +1,119 @@
+/* 0.0.1818 - persistent Boost/Setback transfer inside fixed Dice Tools. */
+.genesys-vtt .genesys-narrative-dice-transfer {
+  display: grid;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid rgba(215,173,82,.34);
+  background: rgba(7,18,25,.9);
+  color: #ead9aa;
+}
+
+.genesys-vtt .genesys-narrative-dice-heading {
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.genesys-vtt .genesys-narrative-dice-heading > div {
+  display: grid;
+  gap: 2px;
+}
+
+.genesys-vtt .genesys-narrative-dice-heading strong {
+  color: #f1c75b;
+  font: 700 .86rem Georgia,"Times New Roman",serif;
+}
+
+.genesys-vtt .genesys-narrative-dice-heading small,
+.genesys-vtt .genesys-narrative-dice-empty {
+  margin: 0;
+  color: #b9ad92;
+  font-size: .7rem;
+}
+
+.genesys-vtt .genesys-narrative-dice-count {
+  min-width: 24px;
+  padding: 3px 6px;
+  border: 1px solid rgba(215,173,82,.38);
+  border-radius: 999px;
+  color: #fff0bd;
+  text-align: center;
+}
+
+.genesys-vtt .genesys-narrative-dice-inbox {
+  padding: 7px;
+  border: 1px solid rgba(215,173,82,.2);
+  background: rgba(255,255,255,.035);
+}
+
+.genesys-vtt .genesys-narrative-dice-label {
+  display: block;
+  margin-bottom: 4px;
+  color: #cdb775;
+  font: 700 .62rem Arial,sans-serif;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-narrative-dice-inbox-list {
+  display: grid;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.genesys-vtt .genesys-narrative-dice-inbox-list li {
+  display: grid;
+  grid-template-columns: 18px auto 1fr;
+  gap: 5px;
+  align-items: center;
+  font-size: .72rem;
+}
+
+.genesys-vtt .genesys-transfer-die-boost { color: #69b8e7; }
+.genesys-vtt .genesys-transfer-die-setback { color: #8d8994; }
+
+.genesys-vtt .genesys-narrative-dice-send {
+  display: grid;
+  grid-template-columns: minmax(82px,.7fr) 64px minmax(120px,1.3fr) auto;
+  gap: 6px;
+  align-items: end;
+}
+
+.genesys-vtt .genesys-narrative-dice-send label {
+  display: grid;
+  gap: 2px;
+  color: #cdb775;
+  font: 700 .6rem Arial,sans-serif;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+}
+
+.genesys-vtt .genesys-narrative-dice-send select,
+.genesys-vtt .genesys-narrative-dice-send input {
+  width: 100%;
+  min-width: 0;
+  height: 29px;
+  margin: 0;
+  color: #f5ecd3;
+  background: #2a222d;
+}
+
+.genesys-chat-roll .genesys-transferred-dice-used {
+  padding: 5px 7px;
+  border-left: 3px solid #397fab;
+  background: rgba(57,127,171,.1);
+}
+
+@media (max-width: 1100px) {
+  .genesys-vtt .genesys-narrative-dice-send {
+    grid-template-columns: 1fr 64px;
+  }
+
+  .genesys-vtt .genesys-narrative-dice-send label:nth-child(3),
+  .genesys-vtt .genesys-narrative-dice-send button {
+    grid-column: 1 / -1;
+  }
+}

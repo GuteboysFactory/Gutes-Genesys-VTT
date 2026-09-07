@@ -372,6 +372,7 @@ export async function rollMagicAction(actor, input = {}) {
     sourceId: prepared.action.id,
     sourceLabel: `${prepared.action.label} (${prepared.skill.label})`,
     actorName: actor.name,
+    actorId: actor.id,
     speakerAlias: actor.name,
     metadata: {
       settingId: prepared.settingId,

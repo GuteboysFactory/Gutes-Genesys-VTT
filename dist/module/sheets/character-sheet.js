@@ -207,13 +207,13 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         const root = target.closest(".genesys-dice-lab");
         if (!root)
             return;
-        await rollPoolToChat(parsePoolFromElement(root), this.actor?.name ?? "Genesys Roll");
+        await rollPoolToChat(parsePoolFromElement(root), this.actor?.name ?? "Genesys Roll", this.actor?.id ?? "");
     }
     static async #constructAndRoll(_event, target) {
         const root = target.closest(".genesys-pool-builder");
         if (!root)
             return;
-        await constructAndRollToChat(parseStandardPoolInput(root), this.actor?.name ?? "Genesys Check");
+        await constructAndRollToChat(parseStandardPoolInput(root), this.actor?.name ?? "Genesys Check", this.actor?.id ?? "");
     }
     static async #rollSkill(_event, target) {
         const row = target.closest("[data-skill-id]");
@@ -236,7 +236,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             assistantSkillRank: readInteger(panel, "[data-assistant-skill-rank]", 2),
             extraHelpers: readInteger(panel, "[data-extra-helpers]", 0)
         });
-        await rollPreparedActorCheckToChat(prepared, this.actor?.name ?? "Genesys Skill Check");
+        await rollPreparedActorCheckToChat(prepared, this.actor?.name ?? "Genesys Skill Check", this.actor?.id ?? "");
     }
     static async #createItem(_event, target) {
         const type = String(target.dataset.itemType ?? "gear");

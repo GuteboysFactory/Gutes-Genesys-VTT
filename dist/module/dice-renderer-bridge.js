@@ -1,4 +1,5 @@
 import { normalizeDicePool, rollNarrativePool } from "../domain/dice/index.js";
+import { consumeNarrativeDiceForContext } from "./narrative-dice-transfer-v1818.js";
 
 export const DICE_RENDERER_PROTOCOL = "genesys-dice-renderer-v1";
 const RENDER_TIMEOUT_MS = 15000;
@@ -173,9 +174,14 @@ export async function presentResolvedNarrativeRoll(result, context = {}) {
 }
 
 export async function rollNarrativeWithPresentation(pool, context = {}) {
-    const result = rollNarrativePool(pool);
-    const presentation = await presentResolvedNarrativeRoll(result, context);
-    return { result, presentation };
+    const transfer = await consumeNarrativeDiceForContext(context, pool);
+    const result = rollNarrativePool(transfer.pool);
+    result.transferredDice = transfer.consumed;
+    const presentation = await presentResolvedNarrativeRoll(result, {
+        ...context,
+        metadata: { ...(context.metadata ?? {}), transferredDice: transfer.consumed }
+    });
+    return { result, presentation, transferredDice: transfer.consumed };
 }
 
 export function diceRendererBridgeApi() {

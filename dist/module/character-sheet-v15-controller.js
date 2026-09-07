@@ -318,7 +318,7 @@ document.addEventListener("click", async (event) => {
         }
         const speaker = String(sheetRoot?.dataset.actorName ?? "Genesys Roll");
         try {
-            await rollPoolToChat(pool, speaker);
+            await rollPoolToChat(pool, speaker, String(sheetRoot?.dataset.actorId ?? ""));
         }
         catch (error) {
             console.error("genesys-vtt | Quick Dice Pool roll failed", error);

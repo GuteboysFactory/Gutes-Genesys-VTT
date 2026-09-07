@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1817 Square Portrait Forge Hotfix. Preserves the verified 0.0.1816 behavior and makes the Forge portrait preview and exported Actor portrait use the same square crop as the character sheet.",
-  "version": "0.0.1817",
+  "description": "Genesys VTT 0.0.1818 Narrative Dice Transfer. Send persistent Boost or Setback dice to your own or another Actor; they show their sender, survive reloads, and are consumed once by the recipient's next roll.",
+  "version": "0.0.1818",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -11,6 +11,7 @@
   "esmodules": [
     "dist/genesys.js",
     "dist/module/implement-bootstrap.js",
+    "dist/module/narrative-dice-transfer-v1818.js",
     "dist/module/dice-renderer-bridge.js",
     "dist/module/talent-bootstrap.js",
     "dist/module/content-registry.js",
@@ -87,6 +88,7 @@
     "styles/character-sheet-vitals-edit-v1803.css",
     "styles/character-sheet-polish-v1813.css",
     "styles/character-sheet-polish-v1814.css",
+    "styles/narrative-dice-transfer-v1818.css",
     "styles/equipment-library-v1771.css",
     "styles/equipment-library-v1773.css",
     "styles/equipment-toolbar-v1777.css",
