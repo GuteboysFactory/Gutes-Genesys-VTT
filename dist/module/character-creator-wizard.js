@@ -1,5 +1,7 @@
 const SYSTEM_ID = "genesys-vtt";
 const WIZARD_PROTOCOL = "genesys-character-creator-v1";
+const CUSTOM_ARCHETYPE_ID = "custom:archetype";
+const CUSTOM_CAREER_ID = "custom:career";
 const STEPS = Object.freeze([
   { id: "identity", label: "Identity" },
   { id: "archetype", label: "Archetype" },
@@ -107,15 +109,93 @@ function skillsFor(state) {
   return settingContent("skills", state.settingId).sort((a, b) => text(a.label, a.id).localeCompare(text(b.label, b.id)));
 }
 
+function defaultCustomArchetype() {
+  return {
+    label: "Custom Archetype",
+    characteristics: Object.fromEntries(Object.keys(CHARACTERISTIC_LABELS).map((id) => [id, 2])),
+    startingXp: 100,
+    woundsBase: 10,
+    strainBase: 10,
+    silhouette: 1,
+    meleeDefense: 0,
+    rangedDefense: 0,
+    startingSkillIds: [],
+    startingSkillRank: 1,
+    abilityName: "",
+    abilityDescription: ""
+  };
+}
+
+function defaultCustomCareer() {
+  return {
+    label: "Custom Career",
+    careerSkills: []
+  };
+}
+
+function customArchetypeDefinition(state) {
+  const custom = state.customArchetype ?? defaultCustomArchetype();
+  const abilityName = text(custom.abilityName);
+  return {
+    id: CUSTOM_ARCHETYPE_ID,
+    label: text(custom.label, "Custom Archetype"),
+    characteristics: Object.fromEntries(Object.keys(CHARACTERISTIC_LABELS).map((id) => [id, integer(custom.characteristics?.[id], 2, 1, 5)])),
+    startingXp: integer(custom.startingXp, 100, 0, 1000),
+    wounds: { base: integer(custom.woundsBase, 10, 0, 100), characteristicId: "brawn" },
+    strain: { base: integer(custom.strainBase, 10, 0, 100), characteristicId: "willpower" },
+    silhouette: integer(custom.silhouette, 1, 0, 10),
+    defense: {
+      melee: integer(custom.meleeDefense, 0, 0, 10),
+      ranged: integer(custom.rangedDefense, 0, 0, 10)
+    },
+    startingSkills: [...new Set(custom.startingSkillIds ?? [])].map((skillId) => ({
+      skillId,
+      rank: integer(custom.startingSkillRank, 1, 0, 2),
+      creationCap: 2,
+      career: false
+    })),
+    abilities: abilityName ? [{
+      id: "custom-archetype-ability",
+      label: abilityName,
+      description: text(custom.abilityDescription),
+      mechanic: { type: "custom", description: text(custom.abilityDescription) },
+      automationStatus: "catalog-only"
+    }] : [],
+    choices: [],
+    tags: ["custom"],
+    sourceId: CUSTOM_ARCHETYPE_ID,
+    sourceType: "custom"
+  };
+}
+
+function customCareerDefinition(state) {
+  const custom = state.customCareer ?? defaultCustomCareer();
+  const rules = content()?.getCreationRules?.(state.settingId) ?? creation()?.rules ?? {};
+  return {
+    id: CUSTOM_CAREER_ID,
+    label: text(custom.label, "Custom Career"),
+    careerSkills: [...new Set(custom.careerSkills ?? [])],
+    freeSkillChoices: integer(rules.careerSkillGrantCount, 4, 0, 20),
+    freeSkillRank: integer(rules.careerSkillGrantRank, 1, 0, 5),
+    startingGear: [],
+    variants: [],
+    tags: ["custom"],
+    sourceId: CUSTOM_CAREER_ID,
+    sourceType: "custom"
+  };
+}
+
 function heroicsFor(state, kind) {
   return settingContent("heroicAbilities", state.settingId).filter((entry) => entry.kind === kind);
 }
 
 function currentArchetype(state) {
+  if (state.archetypeId === CUSTOM_ARCHETYPE_ID) return customArchetypeDefinition(state);
   return archetypesFor(state).find((entry) => entry.id === state.archetypeId) ?? null;
 }
 
 function currentCareerBase(state) {
+  if (state.careerId === CUSTOM_CAREER_ID) return customCareerDefinition(state);
   return careersFor(state).find((entry) => entry.id === state.careerId) ?? null;
 }
 
@@ -159,9 +239,11 @@ function initialState(draft = null) {
       portrait: text(saved.identity?.portrait ?? draft?.identity?.portrait)
     },
     archetypeId: text(saved.archetypeId ?? draft?.archetypeId),
+    customArchetype: clone(saved.customArchetype ?? draft?.customArchetype ?? defaultCustomArchetype()),
     archetypeSkillChoices: clone(saved.archetypeSkillChoices ?? []),
     archetypeAbilityChoices: clone(saved.archetypeAbilityChoices ?? {}),
     careerId: text(saved.careerId ?? draft?.careerId),
+    customCareer: clone(saved.customCareer ?? draft?.customCareer ?? defaultCustomCareer()),
     careerVariantId: text(saved.careerVariantId ?? draft?.careerVariantId),
     freeCareerSkills: clone(saved.freeCareerSkills ?? draft?.freeCareerSkills ?? []),
     characteristicTargets: clone(saved.characteristicTargets ?? draft?.characteristics ?? {}),
@@ -184,9 +266,11 @@ function wizardSnapshot(state) {
     settingId: state.settingId,
     identity: clone(state.identity),
     archetypeId: state.archetypeId,
+    customArchetype: clone(state.customArchetype),
     archetypeSkillChoices: clone(state.archetypeSkillChoices),
     archetypeAbilityChoices: clone(state.archetypeAbilityChoices),
     careerId: state.careerId,
+    customCareer: clone(state.customCareer),
     careerVariantId: state.careerVariantId,
     freeCareerSkills: clone(state.freeCareerSkills),
     characteristicTargets: clone(state.characteristicTargets),
@@ -363,6 +447,11 @@ function wizardValidation(session) {
   if (!text(state.identity.name)) errors.push("Enter a character name.");
   if (!state.archetypeId) errors.push("Choose an archetype/species.");
   if (!state.careerId) errors.push("Choose a career.");
+  if (state.archetypeId === CUSTOM_ARCHETYPE_ID && !text(state.customArchetype?.label)) errors.push("Enter a name for the custom archetype/species.");
+  if (state.careerId === CUSTOM_CAREER_ID) {
+    if (!text(state.customCareer?.label)) errors.push("Enter a name for the custom career.");
+    if (new Set(state.customCareer?.careerSkills ?? []).size !== 8) errors.push("Choose exactly 8 skills for the custom career.");
+  }
   const archetype = currentArchetype(state);
   const career = currentCareer(state);
   for (const choice of archetype?.choices ?? []) {
@@ -388,8 +477,19 @@ function stepRequirements(session) {
   const career = currentCareer(state);
   switch (STEPS[state.step]?.id) {
     case "identity": return text(state.identity.name) ? [] : ["Enter a character name."];
-    case "archetype": return state.archetypeId ? [] : ["Choose an archetype/species."];
-    case "career": return state.careerId ? [] : ["Choose a career."];
+    case "archetype": {
+      if (!state.archetypeId) return ["Choose an archetype/species."];
+      if (state.archetypeId === CUSTOM_ARCHETYPE_ID && !text(state.customArchetype?.label)) return ["Enter a name for the custom archetype/species."];
+      return [];
+    }
+    case "career": {
+      if (!state.careerId) return ["Choose a career."];
+      if (state.careerId !== CUSTOM_CAREER_ID) return [];
+      const errors = [];
+      if (!text(state.customCareer?.label)) errors.push("Enter a name for the custom career.");
+      if (new Set(state.customCareer?.careerSkills ?? []).size !== 8) errors.push("Choose exactly 8 skills for the custom career.");
+      return errors;
+    }
     case "skills": {
       const errors = [];
       for (const choice of archetype?.choices ?? []) {
@@ -440,8 +540,19 @@ function characteristicSummary(characteristics = {}) {
 function renderArchetype(session) {
   const state = session.state;
   const rows = archetypesFor(state);
+  const custom = state.customArchetype ?? defaultCustomArchetype();
+  const skills = skillsFor(state);
+  const characteristicFields = Object.entries(CHARACTERISTIC_LABELS).map(([id, label]) => `<label>${esc(label)}<input type="number" min="1" max="5" data-creator-field="customArchetype.characteristics.${esc(id)}" value="${integer(custom.characteristics?.[id], 2, 1, 5)}" /></label>`).join("");
+  const skillChecks = skills.map((entry) => `<label><input type="checkbox" data-creator-custom-archetype-skill="${esc(entry.id)}" ${(custom.startingSkillIds ?? []).includes(entry.id) ? "checked" : ""} />${esc(entry.label)}</label>`).join("");
   return `<section class="genesys-creator-panel"><h2>Archetype / Species</h2><p>Choose the species/archetype foundation. Starting characteristics and starting XP are applied by the creation service.</p>
     <div class="genesys-creator-card-grid">${rows.map((entry) => `<button type="button" class="genesys-creator-choice-card ${entry.id === state.archetypeId ? "selected" : ""}" data-creator-archetype="${esc(entry.id)}"><strong>${esc(entry.label)}</strong><span>${esc(characteristicSummary(entry.characteristics))}</span><small>${integer(entry.startingXp, 0)} starting XP · Wounds ${integer(entry.wounds?.base, 10)} + ${esc(entry.wounds?.characteristicId ?? "Brawn")} · Strain ${integer(entry.strain?.base, 10)} + ${esc(entry.strain?.characteristicId ?? "Willpower")}</small></button>`).join("")}</div>
+    <details class="genesys-creator-custom-builder" ${state.archetypeId === CUSTOM_ARCHETYPE_ID ? "open" : ""}><summary><strong>Create Custom Archetype / Species</strong><small>Build a homebrew foundation using the same XP engine.</small></summary>
+      <div class="genesys-creator-custom-body">
+        <div class="genesys-creator-form-grid"><label class="wide">Name<input type="text" data-creator-field="customArchetype.label" value="${esc(custom.label)}" /></label>${characteristicFields}<label>Starting XP<input type="number" min="0" max="1000" data-creator-field="customArchetype.startingXp" value="${integer(custom.startingXp, 100, 0, 1000)}" /></label><label>Wound Base (+ Brawn)<input type="number" min="0" max="100" data-creator-field="customArchetype.woundsBase" value="${integer(custom.woundsBase, 10, 0, 100)}" /></label><label>Strain Base (+ Willpower)<input type="number" min="0" max="100" data-creator-field="customArchetype.strainBase" value="${integer(custom.strainBase, 10, 0, 100)}" /></label><label>Silhouette<input type="number" min="0" max="10" data-creator-field="customArchetype.silhouette" value="${integer(custom.silhouette, 1, 0, 10)}" /></label><label>Melee Defense<input type="number" min="0" max="10" data-creator-field="customArchetype.meleeDefense" value="${integer(custom.meleeDefense, 0, 0, 10)}" /></label><label>Ranged Defense<input type="number" min="0" max="10" data-creator-field="customArchetype.rangedDefense" value="${integer(custom.rangedDefense, 0, 0, 10)}" /></label><label>Starting Skill Rank<input type="number" min="0" max="2" data-creator-field="customArchetype.startingSkillRank" value="${integer(custom.startingSkillRank, 1, 0, 2)}" /></label><label>Special Ability Name<input type="text" data-creator-field="customArchetype.abilityName" value="${esc(custom.abilityName)}" placeholder="Optional" /></label><label class="wide">Special Ability Description<textarea rows="3" data-creator-field="customArchetype.abilityDescription" placeholder="Optional; recorded as a custom rule">${esc(custom.abilityDescription)}</textarea></label></div>
+        <div class="genesys-creator-choice-block"><h3>Starting Skill Grants</h3><p>Select any skills granted by this archetype. All selected skills use the Starting Skill Rank above.</p><div class="genesys-creator-check-grid">${skillChecks}</div></div>
+        <button type="button" class="genesys-primary-action genesys-creator-use-custom ${state.archetypeId === CUSTOM_ARCHETYPE_ID ? "selected" : ""}" data-creator-archetype="${CUSTOM_ARCHETYPE_ID}" data-creator-career-variant="">${state.archetypeId === CUSTOM_ARCHETYPE_ID ? "Custom Archetype Selected" : "Use Custom Archetype"}</button>
+      </div>
+    </details>
   </section>`;
 }
 
@@ -453,6 +564,8 @@ function skillLabels(ids, state) {
 function renderCareer(session) {
   const state = session.state;
   const rows = careersFor(state);
+  const custom = state.customCareer ?? defaultCustomCareer();
+  const skills = skillsFor(state);
   const cards = [];
   for (const career of rows) {
     cards.push(`<button type="button" class="genesys-creator-choice-card ${career.id === state.careerId && !state.careerVariantId ? "selected" : ""}" data-creator-career="${esc(career.id)}" data-creator-career-variant=""><strong>${esc(career.label)}</strong><span>${esc(skillLabels(career.careerSkills ?? [], state))}</span><small>Choose ${integer(career.freeSkillChoices, 4)} free career skills at rank ${integer(career.freeSkillRank, 1)}.</small></button>`);
@@ -461,7 +574,15 @@ function renderCareer(session) {
       cards.push(`<button type="button" class="genesys-creator-choice-card variant ${career.id === state.careerId && variant.id === state.careerVariantId ? "selected" : ""}" data-creator-career="${esc(career.id)}" data-creator-career-variant="${esc(variant.id)}"><strong>${esc(variant.label)}</strong><span>${esc(skillLabels(resolved.careerSkills ?? [], state))}</span><small>${esc(career.label)} variant</small></button>`);
     }
   }
-  return `<section class="genesys-creator-panel"><h2>Career</h2><p>Your Career marks career skills and supplies the four free starting ranks plus starting gear choices.</p><div class="genesys-creator-card-grid">${cards.join("")}</div></section>`;
+  const skillChecks = skills.map((entry) => `<label><input type="checkbox" data-creator-custom-career-skill="${esc(entry.id)}" ${(custom.careerSkills ?? []).includes(entry.id) ? "checked" : ""} />${esc(entry.label)}</label>`).join("");
+  return `<section class="genesys-creator-panel"><h2>Career</h2><p>Your Career marks career skills and supplies the four free starting ranks plus starting gear choices.</p><div class="genesys-creator-card-grid">${cards.join("")}</div>
+    <details class="genesys-creator-custom-builder" ${state.careerId === CUSTOM_CAREER_ID ? "open" : ""}><summary><strong>Create Custom Career</strong><small>Choose exactly eight Career Skills; four receive a free starting rank.</small></summary>
+      <div class="genesys-creator-custom-body"><div class="genesys-creator-form-grid"><label class="wide">Career Name<input type="text" data-creator-field="customCareer.label" value="${esc(custom.label)}" /></label></div>
+        <div class="genesys-creator-choice-block"><h3>Career Skills</h3><p>Selected: <strong data-creator-custom-career-count>${new Set(custom.careerSkills ?? []).size}</strong>/8</p><div class="genesys-creator-check-grid">${skillChecks}</div></div>
+        <button type="button" class="genesys-primary-action genesys-creator-use-custom ${state.careerId === CUSTOM_CAREER_ID ? "selected" : ""}" data-creator-career="${CUSTOM_CAREER_ID}" data-creator-career-variant="">${state.careerId === CUSTOM_CAREER_ID ? "Custom Career Selected" : "Use Custom Career"}</button>
+      </div>
+    </details>
+  </section>`;
 }
 
 function renderCharacteristics(session) {
@@ -729,6 +850,13 @@ function actorDrafts() {
   return Array.from(game?.actors?.contents ?? []).map((actor) => ({ actor, draft: api?.getDraft?.(actor) })).filter(({ draft }) => draft && draft.status !== "complete");
 }
 
+function draftChoiceLabel(draft, kind) {
+  const id = text(draft?.[`${kind}Id`]);
+  if (kind === "archetype" && id === CUSTOM_ARCHETYPE_ID) return text(draft?.wizard?.customArchetype?.label, "Custom Archetype");
+  if (kind === "career" && id === CUSTOM_CAREER_ID) return text(draft?.wizard?.customCareer?.label, "Custom Career");
+  return id || `No ${kind}`;
+}
+
 function closeActiveSession() {
   if (activeSession?.dialog?.open) activeSession.dialog.close();
 }
@@ -760,6 +888,27 @@ function openWizard({ actor = null, draft = null } = {}) {
     if (motivation) session.state.motivation[motivation] = event.target.value;
   });
   dialog.addEventListener("change", (event) => {
+    const customArchetypeSkill = event.target?.dataset?.creatorCustomArchetypeSkill;
+    if (customArchetypeSkill) {
+      const selected = new Set(session.state.customArchetype?.startingSkillIds ?? []);
+      if (event.target.checked) selected.add(customArchetypeSkill); else selected.delete(customArchetypeSkill);
+      session.state.customArchetype.startingSkillIds = [...selected];
+      return;
+    }
+    const customCareerSkill = event.target?.dataset?.creatorCustomCareerSkill;
+    if (customCareerSkill) {
+      const selected = new Set(session.state.customCareer?.careerSkills ?? []);
+      if (event.target.checked) selected.add(customCareerSkill); else selected.delete(customCareerSkill);
+      if (selected.size > 8) {
+        event.target.checked = false;
+        ui?.notifications?.warn?.("A Genesys Career must contain exactly 8 Career Skills.");
+        return;
+      }
+      session.state.customCareer.careerSkills = [...selected];
+      const counter = dialog.querySelector("[data-creator-custom-career-count]");
+      if (counter) counter.textContent = String(selected.size);
+      return;
+    }
     if (event.target?.matches?.("[data-creator-setting]")) {
       session.state.settingId = event.target.value;
       resetAfterSetting(session.state);
@@ -894,7 +1043,7 @@ function openLauncher() {
   const drafts = actorDrafts();
   const dialog = document.createElement("dialog");
   dialog.className = "genesys-character-creator-launcher";
-  dialog.innerHTML = `<div class="genesys-creator-launcher-shell"><header><div><strong>Genesys Character Creator</strong><small>Create a new character or resume a saved draft.</small></div><button type="button" data-launcher-close>×</button></header><button type="button" class="genesys-primary-action genesys-creator-new" data-launcher-new><i class="fa-solid fa-user-plus"></i> New Character</button><div class="genesys-creator-draft-list"><h3>Saved Drafts</h3>${drafts.length ? drafts.map(({ actor, draft }) => `<button type="button" data-launcher-resume="${esc(actor.id)}"><span><strong>${esc(draft.identity?.name || actor.name)}</strong><small>${esc(draft.archetypeId || "No archetype")} · ${esc(draft.careerId || "No career")}</small></span><b>Resume</b></button>`).join("") : '<p class="genesys-empty-row">No unfinished character drafts.</p>'}</div></div>`;
+  dialog.innerHTML = `<div class="genesys-creator-launcher-shell"><header><div><strong>Genesys Character Creator</strong><small>Create a new character or resume a saved draft.</small></div><button type="button" data-launcher-close>×</button></header><button type="button" class="genesys-primary-action genesys-creator-new" data-launcher-new><i class="fa-solid fa-user-plus"></i> New Character</button><div class="genesys-creator-draft-list"><h3>Saved Drafts</h3>${drafts.length ? drafts.map(({ actor, draft }) => `<button type="button" data-launcher-resume="${esc(actor.id)}"><span><strong>${esc(draft.identity?.name || actor.name)}</strong><small>${esc(draftChoiceLabel(draft, "archetype"))} · ${esc(draftChoiceLabel(draft, "career"))}</small></span><b>Resume</b></button>`).join("") : '<p class="genesys-empty-row">No unfinished character drafts.</p>'}</div></div>`;
   document.body.append(dialog);
   dialog.addEventListener("click", (event) => {
     const button = event.target?.closest?.("button");

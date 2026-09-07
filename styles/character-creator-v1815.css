@@ -1,0 +1,79 @@
+/* 0.0.1815 - Custom Archetype/Species and Career builders. */
+.genesys-character-creator .genesys-creator-custom-builder {
+  margin-top: 14px;
+  border: 1px solid rgba(104, 74, 45, .45);
+  border-radius: 7px;
+  overflow: hidden;
+  background: rgba(104, 74, 45, .06);
+}
+
+.genesys-character-creator .genesys-creator-custom-builder > summary {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 46px;
+  padding: 9px 12px;
+  cursor: pointer;
+  color: #4c3422;
+  list-style: none;
+  background: rgba(104, 74, 45, .10);
+}
+
+.genesys-character-creator .genesys-creator-custom-builder > summary::-webkit-details-marker {
+  display: none;
+}
+
+.genesys-character-creator .genesys-creator-custom-builder > summary::after {
+  content: "▾";
+  margin-left: auto;
+  transition: transform .15s ease;
+}
+
+.genesys-character-creator .genesys-creator-custom-builder[open] > summary::after {
+  transform: rotate(180deg);
+}
+
+.genesys-character-creator .genesys-creator-custom-builder > summary small {
+  color: #75614d;
+  font-weight: 400;
+}
+
+.genesys-character-creator .genesys-creator-custom-body {
+  display: grid;
+  gap: 14px;
+  padding: 14px;
+}
+
+.genesys-character-creator .genesys-creator-custom-body .genesys-creator-choice-block {
+  margin: 0;
+}
+
+.genesys-character-creator .genesys-creator-use-custom {
+  justify-self: end;
+  min-width: 210px;
+  min-height: 36px;
+}
+
+.genesys-character-creator .genesys-creator-use-custom.selected {
+  background: #315f3b;
+  border-color: #234a2c;
+}
+
+@media (max-width: 900px) {
+  .genesys-character-creator .genesys-creator-custom-builder > summary {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .genesys-character-creator .genesys-creator-custom-builder > summary::after {
+    position: absolute;
+    right: 14px;
+  }
+
+  .genesys-character-creator .genesys-creator-use-custom {
+    justify-self: stretch;
+    width: 100%;
+  }
+}

@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1814 Actions workspace and portrait polish. Preserves the verified 0.0.1813 behavior, uses a square character-sheet portrait, and contains the collapsible Dice Tools in a dedicated responsive side column so it never covers Actions.",
-  "version": "0.0.1814",
+  "description": "Genesys VTT 0.0.1815 Character Creator Flexibility. Preserves the verified 0.0.1814 sheet behavior and adds persistent Custom Archetype/Species and Custom Career builders backed by the existing creation, XP, derived-stat, skill-grant, and validation services.",
+  "version": "0.0.1815",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -73,6 +73,7 @@
     "styles/character-sheet-v166.css",
     "styles/character-sheet-v173.css",
     "styles/character-creator-v174.css",
+    "styles/character-creator-v1815.css",
     "styles/character-sheet-v1742.css",
     "styles/talent-item-v1743.css",
     "styles/character-sheet-v175.css",
