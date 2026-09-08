@@ -86,7 +86,8 @@ export function criticalRollBonus(modifiers = {}) {
     const viciousBonus = count(modifiers.viciousRank) * 10;
     const extraActivationBonus = count(modifiers.extraActivations) * 10;
     const flatModifier = integer(modifiers.flatModifier, 0);
-    return { unresolvedBonus, viciousBonus, extraActivationBonus, flatModifier, total: unresolvedBonus + viciousBonus + extraActivationBonus + flatModifier };
+    const durableReduction = count(modifiers.durableRank) * 10;
+    return { unresolvedBonus, viciousBonus, extraActivationBonus, flatModifier, durableReduction, total: unresolvedBonus + viciousBonus + extraActivationBonus + flatModifier - durableReduction };
 }
 export function resolveCriticalInjury(rawRoll, modifiers = {}) {
     const roll = integer(rawRoll, 1);
@@ -100,6 +101,7 @@ export function resolveCriticalInjury(rawRoll, modifiers = {}) {
         viciousBonus: bonus.viciousBonus,
         extraActivationBonus: bonus.extraActivationBonus,
         flatModifier: bonus.flatModifier,
+        durableReduction: bonus.durableReduction,
         total,
         injury: lookupCriticalInjury(total)
     };

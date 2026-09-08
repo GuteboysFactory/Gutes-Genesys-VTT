@@ -1,3 +1,4 @@
+import { talentRank } from './recovery-talents-v1881.js';
 import { suppressedCriticals } from '../domain/heroic/primary-effects.js';
 import { activeCriticalCount, applyPermanentCharacteristicReduction, lookupCriticalInjury, rollCriticalInjury, rollCriticalSecondary, toCriticalInjuryState } from "../domain/criticals/index.js";
 import { addActorCondition, removeConditionsBySource } from "./condition-service.js";
@@ -80,7 +81,7 @@ export function getActorCriticalModifier(actor) {
 }
 export async function inflictCriticalInjury(actor, modifiers = {}, sourceId = "core:critical-injury", rng = Math.random) {
     const current = actorCriticals(actor);
-    const resolution = rollCriticalInjury({ ...modifiers, unresolvedCount: getActorCriticalModifier(actor) / 10 }, rng);
+    const resolution = rollCriticalInjury({ ...modifiers, unresolvedCount: getActorCriticalModifier(actor) / 10, durableRank: talentRank(actor, "core-talent:durable") }, rng);
     const state = toCriticalInjuryState(resolution, id(), sourceId);
     await actor.update({ "system.criticalInjuries": [...current, state] });
     const conditionTag = resolution.injury.tags?.find((tag) => tag.startsWith("condition:"));
@@ -277,7 +278,7 @@ export async function criticalToChat(actor, result) {
     const content = `<section class="genesys-critical-card">
     <p><strong>${actor?.name ?? "Actor"}</strong> suffers a Critical Injury</p>
     <p><strong>d100:</strong> ${r.rawRoll} · <strong>Total:</strong> ${r.total}</p>
-    <p>Existing Criticals +${r.unresolvedBonus} · Vicious +${r.viciousBonus} · Extra activations +${r.extraActivationBonus}${r.flatModifier ? ` · Modifier ${r.flatModifier >= 0 ? "+" : ""}${r.flatModifier}` : ""}</p>
+    <p>Existing Criticals +${r.unresolvedBonus} · Vicious +${r.viciousBonus} · Additional Critical activations +${r.extraActivationBonus}${r.durableReduction ? ` · Durable −${r.durableReduction}` : ""}${r.flatModifier ? ` · Modifier ${r.flatModifier >= 0 ? "+" : ""}${r.flatModifier}` : ""}</p>
     <h3>${r.injury.name}</h3>
     <p><strong>Severity:</strong> ${r.injury.severity}${r.injury.difficulty ? ` · Healing difficulty ${r.injury.difficulty}` : ""}</p>
     <p>${r.injury.effect}</p>

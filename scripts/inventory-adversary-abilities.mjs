@@ -20,5 +20,5 @@ for(const actor of actors){
  }
 }
 const counts={};for(const r of rows)counts[r.status]=(counts[r.status]??0)+1;
-fs.writeFileSync('docs/npc-ability-coverage.json',JSON.stringify({version:'0.0.1881',source:'Existing 79 Terrinoth template references; printed book page numbers',scope:'Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. Only new-runtime entries were rechecked against the supplied PDF in this package. Manual references are not executed.',templates:actors.length,counts,entries:rows},null,2)+'\n');
+fs.writeFileSync('docs/npc-ability-coverage.json',JSON.stringify({version:'0.0.1882',source:'Existing 79 Terrinoth template references; printed book page numbers',scope:'Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. New-runtime entries were checked in v1881. Flying Mount Dodge 2 removed in v1882 per official FAQ/Errata v1.1. Manual references are not executed.',templates:actors.length,counts,entries:rows},null,2)+'\n');
 console.log(JSON.stringify({templates:actors.length,clauses:rows.length,counts}));

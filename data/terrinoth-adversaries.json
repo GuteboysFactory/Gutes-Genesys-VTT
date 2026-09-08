@@ -196,20 +196,6 @@
         }
       },
       {
-        "name": "Talents — Flying Mount",
-        "type": "gear",
-        "system": {
-          "notes": "Dodge 2.",
-          "equipped": false
-        },
-        "flags": {
-          "genesys-vtt": {
-            "adversaryReference": true,
-            "automation": "manual"
-          }
-        }
-      },
-      {
         "name": "Abilities — Flying Mount",
         "type": "gear",
         "system": {

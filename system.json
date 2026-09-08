@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1881 \u2014 Concentration recovery, authoritative Renewal, recovery talents and NPC ability support.",
-  "version": "0.0.1881",
+  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1882 \u2014 Durable Critical Injury support and Flying Mount errata.",
+  "version": "0.0.1882",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -146,5 +146,14 @@
       "talent": {},
       "actionTemplate": {}
     }
-  }
+  },
+  "media": [
+    {
+      "type": "setup",
+      "url": "https://raw.githubusercontent.com/GuteboysFactory/Gutes-Genesys-VTT/qa/assets/system/forge-the-story.webp",
+      "thumbnail": "https://raw.githubusercontent.com/GuteboysFactory/Gutes-Genesys-VTT/qa/assets/system/forge-the-story.webp",
+      "caption": "Forge the Story",
+      "loop": true
+    }
+  ]
 }

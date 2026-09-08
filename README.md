@@ -1,9 +1,10 @@
-# Genesys VTT — QA v0.0.1881
+# Genesys VTT — QA v0.0.1882
 
 Foundry target: v13.351. v14 remains unverified.
 
-Current delivery: Concentration interruption recovery, authoritative Renewal, Desperate Recovery/Apothecary support and reviewed NPC ability integration.
+Current delivery: original animated Forge the Story system information artwork, native Durable Critical Injury reduction and Flying Mount errata. Previous v1881 combat/recovery work is retained.
 
+- [v1882 scope and QA](TEST_PROTOCOL_v0.0.1882.md)
 - [Current roadmap](ROADMAP.md)
 - [Package 4 scope and test report](docs/PACKAGE_4_QA.md)
 - [Combined live QA protocol](TEST_PROTOCOL_v0.0.1881.md)

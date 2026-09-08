@@ -3,7 +3,8 @@ import {createCoreSecondWindTalent} from '../rules/index.js';
 export function addSupportedAdversaryAbilities(raw) {
  const id=raw.flags?.['genesys-vtt']?.adversaryTemplate?.id;
  const references=(raw.items??[]).filter(i=>i.flags?.['genesys-vtt']?.adversaryReference===true);
- const items=[...(raw.items??[])];
+ // Correct only the exact unedited legacy source reference in a copied Forge draft.
+ const items=(raw.items??[]).filter(i=>!(id==='rot:flying-mount' && i.flags?.['genesys-vtt']?.adversaryReference===true && i.type==='gear' && i.system?.notes==='Dodge 2.'));
  const add=item=>{if(!items.some(i=>i.type==='talent'&&i.system?.sourceId===item.system.sourceId))items.push(item);};
  if(id==='rot:ogre' && references.some(i=>i.system?.notes?.includes('Regeneration (at the beginning of its turn, this creature automatically heals 3 wounds)'))) {
   add({name:'Regeneration',type:'talent',system:{sourceId:'terrinoth-npc:ogre-regeneration',sourceType:'realms-of-terrinoth',enabled:true,activation:'passive',tier:1,rank:1,ranked:false,rules:[],notes:'Realms of Terrinoth p.202. Automatically heals 3 wounds at the beginning of each tracked activation. Does not change defeated/dead status.'}});

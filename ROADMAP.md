@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1881** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1882** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -463,3 +463,12 @@ Eleven native Heroic shortcut Items, upgrade-safe installation, matching-ability
 - Forge adds selectable native Ogre Regeneration and Orc Spiritspeaker Second Wind when intact reviewed source references qualify. Existing source compendiums/Actors are not rewritten. Second Wind now saves healing and usage together through the authority queue.
 - NPC inventory: 266 recorded talent/ability/spell clauses across 79 source templates, with explicit status in docs/npc-ability-coverage.json. This is not full-book certification.
 - See docs/PACKAGE_4_QA.md and TEST_PROTOCOL_v0.0.1881.md for scope, tests and remaining live gates. Same-account concurrent GM tabs, arbitrary external state writes and all-or-nothing multi-Actor rollback are not claimed.
+
+## v0.0.1882 — System information artwork and reviewed corrections
+
+- Original animated WebP copied without re-encoding; native system description and Setup media configured.
+- Enabled native Durable rank reduces incoming Critical Injury results by 10/rank, minimum 01, with chat breakdown.
+- Official Flying Mount errata removes the obsolete Dodge 2 source reference from the shipped template and unedited legacy Forge drafts. Existing Actors and custom talents are not migrated.
+- 68 test files passed; one Chromium-dependent test blocked. Live Foundry QA remains pending. See TEST_PROTOCOL_v0.0.1882.md.
+- Next functional block: source-checked Terrifying/Fear semiautomation (17 recorded NPC references), continued NPC and recovery-talent audit. Full rule coverage is not claimed.
+- Live gates remain: Heroic request/GM approval, Tome import/source opening, multiplayer/reconnect/GM handover, large encounters and interrupted multi-target recovery. Foundry v14 unverified.

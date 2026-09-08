@@ -67,6 +67,8 @@ for j,e in enumerate(entries):
             skills.append({'id':skill(v),'rank':0,'group':False})
     if e['name']=='Onoit Shaman':issues.append('Source uses unspecialized Melee 2; mapped to Melee (Light) for its hatchet. GM may change this.')
     talents=sec.get('Talents','None.'); abilities=sec.get('Abilities','None.')
+    # Official Genesys FAQ/Errata v1.1 removes Flying Mount Dodge 2.
+    if e['name']=='Flying Mount':talents='None.'
     equipment=sec.get('Equipment','None.')
     depth=0
     for pos,c in enumerate(equipment):
