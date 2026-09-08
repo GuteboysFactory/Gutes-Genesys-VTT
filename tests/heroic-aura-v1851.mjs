@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {auraModifiers} from '../dist/module/heroic-aura-v1851.js';
+let timing={};
+const source={id:'s',x:0,y:0,actor:{system:{heroicAbility:{active:true,secondaryEffectIds:['rot-heroic-secondary:empower-allies','rot-heroic-secondary:diminish']}},getFlag:()=>timing}};
+const target={id:'t',x:1,y:1,actor:{uuid:'Actor.t'}};
+let rows=[{sourceId:'s',kind:'allies',sourcePosition:'0:0:0:0:0',timing:'{}',targets:[{id:'t',position:'1:1:0:0:0'}]}];
+const scene={tokens:[source,target],getFlag:()=>rows};
+assert.equal(auraModifiers(target.actor,scene)[0].pool.add.boost,1);
+assert.equal(auraModifiers({uuid:'other'},scene).length,0);
+target.x=2;assert.equal(auraModifiers(target.actor,scene).length,0);target.x=1;
+source.x=2;assert.equal(auraModifiers(target.actor,scene).length,0);source.x=0;
+timing={lastTurn:'next'};assert.equal(auraModifiers(target.actor,scene).length,0);timing={};
+source.actor.system.heroicAbility.active=false;assert.equal(auraModifiers(target.actor,scene).length,0);source.actor.system.heroicAbility.active=true;
+rows[0].kind='enemies';assert.equal(auraModifiers(target.actor,scene)[0].pool.add.setback,1);
+console.log('PASS: aura target identity, Boost/Setback, movement, timing and active-state checks');

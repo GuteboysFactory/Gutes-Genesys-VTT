@@ -1,3 +1,4 @@
+import { configureAura } from "../heroic-aura-v1851.js";
 import { parsePoolFromElement, rollPoolToChat } from "../dice-ui.js";
 import { constructAndRollToChat, parseStandardPoolInput } from "../pool-ui.js";
 import { buildSkillSheetRows } from "../skill-ui.js";
@@ -101,6 +102,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         actions: {
             activateHeroic: this.#activateHeroic,
             upgradeHeroic: this.#upgradeHeroic,
+            heroicAura: this.#heroicAura,
             rollNarrativeDice: this.#rollNarrativeDice,
             constructAndRoll: this.#constructAndRoll,
             rollSkill: this.#rollSkill,
@@ -125,6 +127,12 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         },
         window: { resizable: true }
     };
+    static async #heroicAura(_event, target) {
+        target.disabled=true;
+        try { await configureAura(this.actor,target.dataset.kind); }
+        catch(error){ui.notifications.warn(error.message);}
+        finally{target.disabled=false;}
+    }
     static async #upgradeHeroic(_event, target) {
         target.disabled = true;
         try { if (await game.genesysHeroicLive.purchaseUpgrade(this.actor, target.dataset.upgrade, target.dataset.effectId)) this.render(false); }
