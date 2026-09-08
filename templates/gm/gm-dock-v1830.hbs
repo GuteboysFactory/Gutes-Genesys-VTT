@@ -47,6 +47,22 @@
           <li>End: review recovery and award Party XP below.</li>
           <li>Session controls record session status. Recovery and ability resets are handled separately.</li>
         </ul>
+        <div class="genesys-night-rest-v1837">
+          <strong>End-of-Encounter Strain Recovery</strong>
+          <p>One Simple Cool or Discipline check per participant. Each Success recovers 1 strain. GM enters any approved talent bonus separately.</p>
+          {{#if encounterRecovery.ready}}
+            {{#each encounterRecovery.rows}}
+              <div class="genesys-encounter-recovery-row-v1838" data-encounter-recovery-row>
+                <strong>{{name}}</strong>
+                {{#if done}}<small>Recovery completed · {{recovered}} strain recovered</small>{{else}}
+                  <label>Skill <select><option value="cool">Cool</option><option value="discipline">Discipline</option></select></label>
+                  <label>Talent bonus <input type="number" min="0" max="20" step="1" value="0" /></label>
+                  <button type="button" data-action="recoverEncounterStrain" data-actor-ref="{{actorRef}}" {{#if blocked}}disabled{{/if}}>Roll &amp; Recover</button>
+                {{/if}}
+              </div>
+            {{else}}<p>No player participants in this encounter.</p>{{/each}}
+          {{else}}<p>{{encounterRecovery.reason}}</p>{{/if}}
+        </div>
         <div class="genesys-night-rest-v1837" data-night-rest>
           <strong>Full Night’s Rest</strong>
           <p>Core recovery: heal 1 wound and recover all strain. Review talents or other special recovery rules separately.</p>

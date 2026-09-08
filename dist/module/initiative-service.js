@@ -251,7 +251,12 @@ export async function restoreSceneInitiativeActivation(activationId, scene = act
     return writeSceneInitiativeState(restoreInitiativeActivation(readSceneInitiativeState(scene), activationId), scene);
 }
 export async function endSceneInitiativeEncounter(scene = activeScene()) {
-    const next = await writeSceneInitiativeState(endInitiativeEncounter(readSceneInitiativeState(scene)), scene);
+    const current = readSceneInitiativeState(scene);
+    if (current.status === "active" && scene?.setFlag) {
+        const id = scene.getFlag(SYSTEM_ID, "ruleEncounterId") || foundry.utils.randomID();
+        await scene.setFlag(SYSTEM_ID, "recoveryEncounterId", id);
+    }
+    const next = await writeSceneInitiativeState(endInitiativeEncounter(current), scene);
     await endRuleEncounter(scene);
     return next;
 }

@@ -71,9 +71,17 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Does not change criticals, conditions, Heroic state or encounter status
 - Automated QA plus manual Foundry protocol; runtime QA pending
 
+### v0.0.1838 — End-of-encounter strain recovery
+
+- Simple Cool/Discipline via existing check and narrative dice engines
+- Persistent per-encounter receipts, including zero-success rolls, on actor/token actor
+- GM-approved talent bonus input; no automatic talent detection or alternate-skill talents yet
+- Existing ended encounters need a new start/end cycle to establish a recovery ID
+- Automated coverage complete; Foundry multi-client/reconnect QA remains pending
+
 ### Remaining GM Dock backlog
 
-- End-of-encounter strain recovery: Simple Cool/Discipline check integration and recovery talent handling remain
+- Recovery talent automation and alternate recovery skills remain tracked
 - Special natural-healing modifiers (e.g. Apothecary) remain GM-managed
 - Complete permission, multi-client and reconnect QA
 - Heroic reset/status integration in v0.0.184x

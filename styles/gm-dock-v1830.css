@@ -394,3 +394,8 @@
 .genesys-rest-roster-v1837 label { padding: 6px; background: #e4cfa4; }
 .genesys-rest-roster-v1837 span { display: grid; gap: 3px; }
 .genesys-rest-roster-v1837 small { font-size: .67rem; }
+
+.genesys-encounter-recovery-row-v1838 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 7px; padding: 8px; background: #e4cfa4; }
+.genesys-encounter-recovery-row-v1838 > strong, .genesys-encounter-recovery-row-v1838 > small, .genesys-encounter-recovery-row-v1838 > button { grid-column: 1 / -1; }
+.genesys-encounter-recovery-row-v1838 label { display: grid; }
+.genesys-encounter-recovery-row-v1838 select, .genesys-encounter-recovery-row-v1838 input { width: 100%; min-width: 0; background: #f3e5c7; color: #342714; }

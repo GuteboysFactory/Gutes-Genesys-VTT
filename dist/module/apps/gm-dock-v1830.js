@@ -127,6 +127,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       awardPartyXp: this.#awardPartyXp,
       sessionControl: this.#sessionControl,
       applyNightRest: this.#applyNightRest,
+      recoverEncounterStrain: this.#recoverEncounterStrain,
       refresh: this.#refresh,
       unavailable: this.#unavailable
     }
@@ -166,6 +167,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       })),
       actors,
       pcs,
+      encounterRecovery: game.genesysEncounterRecovery?.recoveryRoster() ?? { ready: false },
       recoveryRows: characterActors().filter(actor => actor.system?.role === "pc").map(actor => {
         try { return game.genesysRecovery.nightRestPreview(actor); }
         catch (error) { return { id: actor.id, name: actor.name, blocked: true, reason: error.message }; }
@@ -330,6 +332,16 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       target.disabled = false;
       if (gmDockApp?.rendered) await gmDockApp.render({ force: true });
     }
+  }
+
+  static async #recoverEncounterStrain(_event, target) {
+    if (!requireGm() || target.disabled) return;
+    const row = target.closest("[data-encounter-recovery-row]");
+    target.disabled = true;
+    try {
+      await game.genesysEncounterRecovery.recover(target.dataset.actorRef, row.querySelector("select").value, Number(row.querySelector("input").value));
+    } catch (error) { ui.notifications.warn(error.message); }
+    finally { target.disabled = false; refreshOpenDock(); }
   }
 
   static async #applyNightRest(_event, target) {
