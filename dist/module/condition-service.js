@@ -1,3 +1,4 @@
+import { heroicCheckModifiers } from "../domain/heroic/combat-effects.js";
 import { advanceTurnConditionDurations, conditionRules, makeConditionState, summarizeConditions } from "../domain/conditions/index.js";
 import { getMagicAbilityDelta } from "./magic-effect-rules-v1810.js";
 function actorConditions(actor) {
@@ -25,7 +26,7 @@ export function getActorConditionCheckModifiers(actor) {
         : delta < 0
             ? [{ id: "magic:curse", priority: 10, pool: { remove: { ability: 1 } } }]
             : [];
-    return [...base, ...magic];
+    return [...base, ...magic, ...heroicCheckModifiers(actor?.system?.heroicAbility)];
 }
 export async function addActorCondition(actor, conditionId, options = {}) {
     const current = actorConditions(actor);

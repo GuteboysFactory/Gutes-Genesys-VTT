@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1849** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1850** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -167,6 +167,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Rule checked: Terrinoth p.79, +2 damage to one hit per attack while active
 - Automated on the standard Combat weapon attack resolved hit before soak; chat identifies bonus
 - Magic attacks and additional-hit selection remain manual; live QA pending
+
+### v0.0.1850 — Empowered skill-check modifier
+
+- Terrinoth p.79 checked visually: one Boost while active
+- Shared condition/check modifier pipeline includes Empowered for engine skill checks and Combat weapon checks
+- Arbitrary raw dice pools are not modified; other roll entry points require coverage audit
+- Live QA pending. Heroic work continues before broader combat hardening; version bands are estimates
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 
