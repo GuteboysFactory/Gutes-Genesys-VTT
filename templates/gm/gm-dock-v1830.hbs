@@ -108,8 +108,20 @@
         <div class="genesys-gm-dock-encounter-state-v1830 {{#if encounter.active}}is-active{{/if}}">
           <strong>{{encounter.statusLabel}}</strong><span>{{encounter.modeLabel}}</span>
           <small>Round {{encounter.round}} · {{encounter.participantCount}} participants</small>
+          <small>{{encounter.activeCount}} active · {{encounter.outCount}} out · Activations {{encounter.usedCount}}/{{encounter.totalCount}} used</small>
         </div>
         <div class="genesys-gm-dock-state-v1830"><span>Current activation</span><strong>{{encounter.activeActorLabel}}</strong></div>
+        {{#if encounter.activeSourceLabel}}<div class="genesys-gm-dock-state-v1830"><span>Activation source</span><strong>{{encounter.activeSourceLabel}}</strong></div>{{/if}}
+        {{#if encounter.endRound}}<p class="genesys-gm-round-alert-v1836">End of Round — finish any active extra activation and review remaining extras in Encounter Tracker before starting the next round.</p>{{/if}}
+        <div class="genesys-gm-dock-button-row-v1830">
+          <button type="button" data-action="openParticipant" data-actor-ref="{{encounter.activeActorRef}}" {{#unless encounter.activeActorRef}}disabled{{/unless}}>Open Active Character</button>
+          <button type="button" data-action="addEncounterTokens">Add Selected Tokens</button>
+        </div>
+        <div class="genesys-gm-participants-v1836">
+          {{#each encounter.participants}}
+            <button type="button" data-action="openParticipant" data-actor-ref="{{actorRef}}" class="{{#if isCurrent}}is-current{{/if}} {{#if isOut}}is-out{{/if}}"><strong>{{name}}</strong><small>{{sideLabel}} · {{statusLabel}}{{#if isCurrent}} · Current turn{{/if}}</small></button>
+          {{else}}<p>No encounter participants yet. Select tokens and add them above.</p>{{/each}}
+        </div>
         <button type="button" class="genesys-gm-dock-primary-v1830" data-action="openEncounter" {{#unless encounterReady}}disabled{{/unless}}><i class="fa-solid fa-up-right-from-square"></i> Open Encounter Tracker</button>
       </div>
     </section>

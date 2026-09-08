@@ -11,6 +11,7 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Encounter Tracker overhaul
 - Explicit completion of extra activations
 - QA publication workflow and regression tests
+- GM Dock through v0.0.1835: user reports current functions working (2026-09-08)
 
 ## Current — GM Tools foundation
 
@@ -55,11 +56,19 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Scroll only Dock content, allowing for the sticky navigation bar
 - Prevent native Foundry client from opening an external browser on section navigation
 
-### v0.0.1836 — Remaining GM Dock Live Tools
+### v0.0.1836 — Live encounter overview
 
-- Session controls, reminders and recovery helpers
-- Encounter shortcuts and GM-facing status indicators
-- Permission, multi-client and reconnect testing
+- Participant status, active turn/source, activation counters and End-of-Round reminder
+- Token-aware actor sheet shortcuts and selected-token preparation via existing initiative service
+- Live updates on scene, actor and token changes
+- Automated regression and manual QA protocol; Foundry QA pending
+
+### Remaining GM Dock backlog
+
+- Recovery helpers: explicit rule audit and selected-character workflow still required
+- Complete permission, multi-client and reconnect QA
+- Heroic reset/status integration in v0.0.184x
+- Conditions/Critical overview and broader actor management remain tracked
 
 ## Next — character and encounter depth
 

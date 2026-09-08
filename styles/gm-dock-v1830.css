@@ -377,3 +377,12 @@
 .genesys-story-point-counter-v1833 .genesys-sp-pool-v1834 button:disabled { opacity: .45; }
 .genesys-session-history-v1834 { display: grid; gap: 5px; font-size: .7rem; }
 .genesys-session-reminders-v1834 { margin: 0; padding-left: 20px; font-size: .75rem; }
+
+.genesys-gm-participants-v1836 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; max-height: 240px; overflow: auto; }
+.genesys-gm-participants-v1836 button { display: grid; text-align: left; padding: 8px; height: auto; white-space: normal; }
+.genesys-gm-participants-v1836 button strong { overflow-wrap: anywhere; }
+.genesys-gm-participants-v1836 button small { font-size: .65rem; font-weight: 400; }
+.genesys-gm-participants-v1836 button.is-current { border-color: #f0d784; box-shadow: inset 3px 0 #f0d784; }
+.genesys-gm-participants-v1836 button.is-out { color: #c2b49a; background: #23282a; }
+.genesys-gm-round-alert-v1836 { border-left: 3px solid #b48736; padding: 9px; background: #ead39e; color: #3e2e15; font-size: .75rem; }
+@container (max-width: 470px) { .genesys-gm-participants-v1836 { grid-template-columns: 1fr; } }

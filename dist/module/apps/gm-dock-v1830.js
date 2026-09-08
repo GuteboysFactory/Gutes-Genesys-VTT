@@ -7,6 +7,7 @@ let gmDockApp = null;
 let gmDockLauncher = null;
 let storyPointActionPending = false;
 let partyXpActionPending = false;
+let encounterAddPending = false;
 
 function integer(value, fallback = 0) {
   const number = Number(value ?? fallback);
@@ -56,10 +57,16 @@ function actorSummary(actor) {
   };
 }
 
-function encounterSummary() {
+export function encounterSummary() {
   const state = game?.genesysVtt?.initiative?.sceneState?.() ?? {};
   const status = String(state.status ?? "collecting");
   const mode = String(state.mode ?? "side-slots");
+  const entries = Array.from(state.entries ?? []);
+  const activeRefs = new Set(entries.filter(entry => (entry.encounterStatus ?? "active") === "active").map(entry => entry.actorRef));
+  const activations = Array.from(state.activationEntitlements ?? []);
+  const regular = activations.filter(row => row.kind !== "gm-override" && activeRefs.has(row.actorRef));
+  const current = activations.find(row => row.id === state.activeActivationId);
+  const labels = { active: "Active", defeated: "Defeated", "out-of-fight": "Out of Fight", dead: "Dead" };
   return {
     status,
     statusLabel: status === "active" ? "Active" : status === "ended" ? "Ended" : "Preparing",
@@ -67,8 +74,22 @@ function encounterSummary() {
     mode,
     modeLabel: mode === "popcorn" ? "Popcorn Initiative" : "Core Side Slots",
     round: integer(state.round, 1),
-    participantCount: Array.from(state.entries ?? []).length,
-    activeActorLabel: String(state.activeActorLabel ?? "Awaiting claim")
+    participantCount: entries.length,
+    activeCount: activeRefs.size,
+    outCount: entries.length - activeRefs.size,
+    usedCount: regular.filter(row => row.used).length,
+    totalCount: regular.length,
+    endRound: status === "active" && state.roundPhase === "end-round",
+    activeActorRef: String(state.activeActorRef ?? ""),
+    activeActorLabel: String(state.activeActorLabel || "Awaiting claim"),
+    activeSourceLabel: current?.sourceLabel ?? "",
+    participants: entries.map(entry => ({
+      actorRef: entry.actorRef, name: entry.label || "Unnamed participant",
+      sideLabel: entry.side === "pc" ? "PC" : "NPC",
+      statusLabel: labels[entry.encounterStatus ?? "active"] ?? "Unknown",
+      isOut: !activeRefs.has(entry.actorRef),
+      isCurrent: state.activeActorRef === entry.actorRef
+    }))
   };
 }
 
@@ -95,6 +116,8 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     actions: {
       navigateSection: this.#navigateSection,
       openEncounter: this.#openEncounter,
+      openParticipant: this.#openParticipant,
+      addEncounterTokens: this.#addEncounterTokens,
       openActors: this.#openActors,
       openCharacterCreator: this.#openCharacterCreator,
       openActor: this.#openActor,
@@ -176,6 +199,39 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     if (!section || !content) return;
     const top = content.scrollTop + section.getBoundingClientRect().top - content.getBoundingClientRect().top - (nav?.getBoundingClientRect().height ?? 0) - 8;
     content.scrollTo({ top: Math.max(0, top), behavior: "auto" });
+  }
+
+  static async #openParticipant(_event, target) {
+    if (!requireGm()) return;
+    const actor = game.genesysVtt?.initiative?.resolveActorRef?.(target.dataset.actorRef);
+    if (!actor?.sheet) return ui.notifications.warn("Participant is no longer available in this scene.");
+    actor.sheet.render(true);
+  }
+
+  static async #addEncounterTokens(_event, target) {
+    if (!requireGm() || encounterAddPending) return;
+    const scene = canvas?.scene;
+    const service = game.genesysVtt?.initiative;
+    if (!scene || !service?.addSceneParticipant) return ui.notifications.warn("Open a scene before adding participants.");
+    if (service.sceneState(scene).status !== "collecting") return ui.notifications.warn("Use Encounter Tracker to change participants after encounter start.");
+    const selected = [...(canvas?.tokens?.controlled ?? [])];
+    if (!selected.length) return ui.notifications.warn("Select one or more tokens on the canvas first.");
+    encounterAddPending = true;
+    target.disabled = true;
+    let added = 0;
+    try {
+      for (const token of selected) {
+        const actor = token.actor;
+        if (!actor?.uuid) continue;
+        const state = service.sceneState(scene);
+        if (state.status !== "collecting") throw new Error("Encounter started. Remaining tokens were not added.");
+        if (state.entries.some(entry => entry.actorRef === actor.uuid)) continue;
+        await service.addSceneParticipant(actor, undefined, "vigilance", scene);
+        added++;
+      }
+      ui.notifications.info(`Added ${added} participant${added === 1 ? "" : "s"} with manual initiative 0/0.`);
+    } catch (error) { ui.notifications.warn(`${error.message} (${added} added.)`); }
+    finally { encounterAddPending = false; target.disabled = false; refreshOpenDock(); }
   }
 
   static async #openEncounter() {
@@ -419,3 +475,7 @@ Hooks.once("ready", () => {
 });
 
 Hooks.on("genesysSessionChanged", refreshOpenDock);
+
+Hooks.on("canvasReady", refreshOpenDock);
+Hooks.on("updateToken", refreshOpenDock);
+Hooks.on("deleteToken", refreshOpenDock);
