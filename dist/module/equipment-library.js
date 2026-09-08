@@ -96,8 +96,26 @@ function customEntries(actor) {
         }));
 }
 
+let packEquipment=[];
+export async function loadEquipmentCompendiums(){
+    const next=[];
+    for(const pack of game.packs.values()){
+        if(pack.documentName!=='Item'||!(game.user.isGM||pack.visible))continue;
+        const docs=await pack.getDocuments();
+        if(game.user.isGM||pack.visible)next.push(...docs.filter(i=>ITEM_TYPES.includes(i.type)).map(document=>({document,packId:pack.collection})));
+    }
+    packEquipment=next;
+    return next.length;
+}
+function compendiumEntries(actor){
+    const setting=actorSettingId(actor);
+    return packEquipment.filter(({document:i,packId})=>{
+        const pack=game.packs.get(packId),source=i.system?.provenance?.settingId;
+        return pack&&(game.user.isGM||pack.visible)&&(!source||!setting||source===setting);
+    }).map(({document:i,packId})=>({id:i.uuid||`Compendium.${packId}.${i.id}`,sourceKind:'custom',document:i,documentId:i.id,label:i.name,itemType:i.type,img:i.img,sourceLabel:game.packs.get(packId).metadata?.label||packId,sourceId:i.uuid||`Compendium.${packId}.${i.id}`,sourceUuid:i.uuid,sourceType:'compendium',settingId:setting,system:clone(i.system),metadata:clone(i.getFlag?.(SYSTEM_ID,'libraryMetadata')??{})}));
+}
 export function listEquipmentLibraryEntries(actor) {
-    return [...settingEntries(actor), ...customEntries(actor)]
+    return [...settingEntries(actor), ...customEntries(actor), ...compendiumEntries(actor)]
         .sort((a, b) => a.itemType.localeCompare(b.itemType) || a.label.localeCompare(b.label));
 }
 
@@ -131,7 +149,7 @@ function libraryHtml(actor) {
     return `<dialog class="genesys-equipment-library" data-equipment-library-dialog>
       <div class="genesys-equipment-library-shell">
         <header class="genesys-equipment-library-header"><div><strong>Equipment Library</strong><small>${esc(actor?.name ?? "Character")} · ${entries.length} registered entries</small></div><div class="genesys-equipment-library-header-actions">${game?.user?.isGM ? `<button type="button" data-equipment-new-custom><i class="fa-solid fa-plus"></i> Custom Item</button><button type="button" data-equipment-install>Install catalog as Items</button>` : ""}<button type="button" data-equipment-library-close aria-label="Close">×</button></div></header>
-        <div class="genesys-equipment-library-controls"><input type="search" data-equipment-search placeholder="Search equipment…"/><select data-equipment-type><option value="all">All Types</option>${types}</select><select data-equipment-source><option value="all">All Sources</option><option value="setting">Setting Content</option><option value="custom">World Items</option></select><select data-equipment-rarity><option value="all">All Rarities</option>${Array.from({length:11},(_,i)=>`<option value="${i}">Rarity ${i}</option>`).join("")}</select></div>
+        <div class="genesys-equipment-library-controls"><button type="button" data-equipment-load-packs>Load / refresh Compendiums</button><input type="search" data-equipment-search placeholder="Search equipment…"/><select data-equipment-type><option value="all">All Types</option>${types}</select><select data-equipment-source><option value="all">All Sources</option><option value="setting">Setting Content</option><option value="custom">World Items / Compendiums</option></select><select data-equipment-rarity><option value="all">All Rarities</option>${Array.from({length:11},(_,i)=>`<option value="${i}">Rarity ${i}</option>`).join("")}</select></div>
         <div class="genesys-equipment-library-body"><div class="genesys-equipment-library-list">${cards}</div><aside class="genesys-equipment-library-detail" data-equipment-detail><div class="genesys-equipment-detail-placeholder"><i class="fa-solid fa-shield-halved"></i><strong>Select an Item</strong><p>Inspect the source, statistics, qualities, and provenance before adding it to the character.</p></div></aside></div>
       </div>
     </dialog>`;
@@ -143,7 +161,7 @@ function renderDetail(dialog, actor, entry) {
     dialog.dataset.selectedEquipment = entry.id;
     const s = entry.system ?? {};
     const sourceReference = String(entry.metadata?.printedSource ?? entry.sourceLabel ?? "");
-    detail.innerHTML = `<div class="genesys-equipment-detail-title"><img src="${esc(entry.img)}" alt=""/><div><strong>${esc(entry.label)}</strong><span>${esc(typeLabel(entry.itemType))} · ${esc(entry.sourceKind === "custom" ? "World Items" : "Setting Content")}</span></div></div>
+    detail.innerHTML = `<div class="genesys-equipment-detail-title"><img src="${esc(entry.img)}" alt=""/><div><strong>${esc(entry.label)}</strong><span>${esc(typeLabel(entry.itemType))} · ${esc(entry.sourceLabel)}</span></div></div>
       <dl><div><dt>Price</dt><dd>${esc(priceText(s, entry.metadata))}</dd></div><div><dt>Rarity</dt><dd>${esc(rarityText(s))}</dd></div><div><dt>Encumbrance</dt><dd>${esc(s.encumbrance ?? "—")}</dd></div><div><dt>Source</dt><dd>${esc(sourceReference || entry.sourceType)}</dd></div></dl>
       <section><h3>Profile</h3><p>${esc(summaryText(entry))}</p></section>
       ${entry.itemType === "weapon" || entry.itemType === "armor" ? `<section><h3>Qualities</h3><p>${esc(qualityText(s))}</p></section>` : ""}
@@ -384,6 +402,13 @@ document.addEventListener("click", async (event) => {
         return;
     }
 
+    const load=event.target?.closest?.('[data-equipment-load-packs]');
+    if(load){
+        event.preventDefault();load.disabled=true;const dialog=load.closest('dialog');
+        try{await loadEquipmentCompendiums();if(dialog.isConnected&&dialog.open)openEquipmentLibrary(dialog.genesysLibraryActor,dialog.parentElement);}
+        catch(error){packEquipment=[];ui.notifications.warn(error.message);}finally{load.disabled=false;}
+        return;
+    }
     const install=event.target?.closest?.('[data-equipment-install]');
     if(install){
         event.preventDefault();const dialog=install.closest('dialog'),actor=dialog.genesysLibraryActor,host=dialog.parentElement;dialog.close();
@@ -521,3 +546,6 @@ for (const hook of ["createItem", "updateItem", "deleteItem"]) Hooks.on(hook, it
         applyFilters(dialog);
     }
 });
+
+for(const event of ['updateCompendium','deleteCompendium'])Hooks.on(event,()=>{packEquipment=[];});
+for(const event of ['createItem','updateItem','deleteItem'])Hooks.on(event,item=>{if(item.pack)packEquipment=[];});

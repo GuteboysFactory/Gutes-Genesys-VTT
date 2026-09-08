@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';import fs from 'node:fs';
+globalThis.document={addEventListener(){}};globalThis.Hooks={on(){},once(){}};globalThis.foundry={utils:{deepClone:structuredClone}};
+globalThis.game={user:{isGM:false},items:[],settings:{get:()=> 'rot'},genesysEquipment:{listDefinitions:()=>[]},packs:new Map()};
+const source=fs.readFileSync('dist/module/equipment-library.js','utf8').replace(/^import .*;$/gm,'');
+const {loadEquipmentCompendiums,listEquipmentLibraryEntries}=await import('data:text/javascript;base64,'+Buffer.from('const visibleWorldEquipment=()=>[];\n'+source).toString('base64'));
+const doc={id:'a',uuid:'Compendium.world.test.a',name:'Sword',type:'weapon',system:{provenance:{settingId:'rot'}}};
+const pack={documentName:'Item',collection:'world.test',visible:true,metadata:{label:'Test'},getDocuments:async()=>[doc,{...doc,id:'b',type:'talent'},{...doc,id:'c',system:{provenance:{settingId:'other'}}}]};
+game.packs.set(pack.collection,pack);game.packs.set('private',{...pack,visible:false,getDocuments:async()=>{throw Error('Private read');}});
+await loadEquipmentCompendiums();let rows=listEquipmentLibraryEntries({});assert.equal(rows.length,1);assert.equal(rows[0].document,doc);assert.equal(rows[0].sourceUuid,doc.uuid);pack.visible=false;assert.equal(listEquipmentLibraryEntries({}).length,0);
+console.log('PASS: equipment Compendium type/setting/visibility filters and native source identity');
