@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {getTurnRecovery} from '../dist/module/initiative-recovery-v1860.js';
+const state={status:'active',activeActorRef:'pc',activeActorLabel:'PC',round:1,turnNumber:2,activeActivationId:'base:pc'};
+const scene={id:'s',getFlag:()=> 'e'};let flags={};const actor={getFlag:(_,key)=>flags[key]};
+assert.equal(getTurnRecovery(state,actor,scene),null);
+flags.heroicTiming={lastTurn:'s:e:1:2:base:pc'};let r=getTurnRecovery(state,actor,scene);assert.equal(r.heroicDone,true);assert.equal(r.conditionsDone,false);
+flags.conditionTurnJournal={encounter:'s:e',completed:['1:2:base:pc:pc']};r=getTurnRecovery(state,actor,scene);assert.equal(r.conditionsDone,true);
+assert.equal(getTurnRecovery({...state,status:'ended'},actor,scene),null);
+assert.equal(getTurnRecovery({...state,round:2},actor,scene),null);
+assert.equal(getTurnRecovery(state,actor,{id:'s',getFlag:()=> 'new'}),null);
+assert.equal(getTurnRecovery({...state,activeActorRef:''},actor,scene),null);
+assert.equal(getTurnRecovery(state,null,scene),null);
+console.log('PASS: recovery detects partial/completed actor work and rejects other turns/encounters');

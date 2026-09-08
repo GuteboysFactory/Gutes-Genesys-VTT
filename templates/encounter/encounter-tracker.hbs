@@ -14,6 +14,17 @@
     {{/if}}
   </header>
 
+  {{#if recovery}}
+    <section class="genesys-encounter-complete-card genesys-encounter-complete-v1824" role="status">
+      <div><h2>End Turn awaiting completion</h2>
+        <p>{{recovery.actorLabel}} — saved effect updates found for the current turn.</p>
+        <p>Conditions: {{#if recovery.conditionsDone}}saved{{else}}pending{{/if}} · Heroic: {{#if recovery.heroicDone}}saved{{else}}pending or not applicable{{/if}}</p>
+        <p>Retry to finish this turn. Already saved updates are skipped.</p>
+      </div>
+      <button type="button" data-action="recoverTurn" data-recovery-key="{{recovery.key}}">Complete Interrupted Turn</button>
+    </section>
+  {{/if}}
+
   {{#if encounterComplete}}
     <section class="genesys-encounter-complete-card genesys-encounter-complete-v1824">
       <div>

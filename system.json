@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1859 \u2014 Retry-safe End Turn condition durations.",
-  "version": "0.0.1859",
+  "description": "Genesys VTT 0.0.1860 \u2014 GM interrupted-turn recovery panel.",
+  "version": "0.0.1860",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"

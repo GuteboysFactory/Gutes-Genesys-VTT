@@ -3,6 +3,7 @@ import fs from 'node:fs/promises';
 import * as initiative from '../dist/domain/initiative/index.js';
 import * as adversaries from '../dist/domain/adversaries/index.js';
 import * as queue from '../dist/module/initiative-write-queue-v1857.js';
+import {getTurnRecovery} from '../dist/module/initiative-recovery-v1860.js';
 import * as transport from '../dist/module/initiative-transport-v1858.js';
 const hooks={};globalThis.Hooks={on:(name,fn)=>hooks[name]=fn};
 const gm={id:'gm',active:true,isGM:true},player={id:'p',active:true,isGM:false};
@@ -12,7 +13,7 @@ const scene={id:'s',tokens:[],getFlag:()=>raw,setFlag:async(_s,_f,next)=>{await 
 const scenes=new Map([['s',scene]]);scenes[Symbol.iterator]=function*(){yield scene;};
 globalThis.game={user:gm,users:{activeGM:gm,get:id=>id==='p'?player:gm},scenes,actors:{contents:[actor]},genesysHeroicLive:{beginTurn:async()=>{},finishTurn:async()=>{}}};
 globalThis.canvas={scene,tokens:{placeables:[]}};globalThis.ui={notifications:{warn:()=>{}}};globalThis.foundry={utils:{randomID:()=> 'r'},documents:{ChatMessage:{}}};
-globalThis.__initiativeDeps={...initiative,...adversaries,...queue,...transport,SYSTEM_ID:'genesys-vtt',rerenderAllRenderedCharacterSheets:async()=>{},getActorConditionRules:()=>({canPerformActions:true,canPerformManeuvers:true}),advanceActorTurnConditions:async()=>{}};
+globalThis.__initiativeDeps={getTurnRecovery,...initiative,...adversaries,...queue,...transport,SYSTEM_ID:'genesys-vtt',rerenderAllRenderedCharacterSheets:async()=>{},getActorConditionRules:()=>({canPerformActions:true,canPerformManeuvers:true}),advanceActorTurnConditions:async()=>{}};
 let source=await fs.readFile(new URL('../dist/module/initiative-service.js',import.meta.url),'utf8');
 source=source.replace(/import \{([^}]+)\} from [^;]+;/g,(_m,names)=>`const {${names}}=globalThis.__initiativeDeps;`);
 const service=await import('data:text/javascript;base64,'+Buffer.from(source).toString('base64'));

@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1859** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1860** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -246,6 +246,15 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Existing Heroic last-turn marker remains in use
 - 38 automated tests pass; live interrupted-save QA pending
 - Next: GM-visible recovery status and failover guidance. No automatic reconnect replay, same-account multi-GM-session support or full actor/scene transaction is claimed.
+
+### v0.0.1860 — GM interrupted-turn recovery panel
+
+- Encounter Tracker derives recovery status from saved Heroic/condition markers while the same turn is active
+- GM-only Complete Interrupted Turn command validates the displayed turn identity and uses the authoritative queue
+- Status survives reload; completed or different turns do not show the panel
+- 39 automated files pass; live Foundry layout/disconnect QA pending
+- Panel can briefly appear during a normal in-flight End Turn; it indicates saved actor work, not proof of an error
+- Next: live recovery feedback and remaining Heroic integration before Adversary Forge. Automatic failover replay and multiple active-GM browser sessions remain unsupported.
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 

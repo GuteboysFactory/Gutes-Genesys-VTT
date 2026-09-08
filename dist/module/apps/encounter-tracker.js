@@ -1,3 +1,5 @@
+import {getTurnRecovery} from '../initiative-recovery-v1860.js';
+import {recoverSceneTurn} from '../initiative-service.js';
 import { canClaimCurrentSlot } from "../../domain/initiative/index.js";
 import { narrativeHealthState } from "../../domain/encounter/index.js";
 import { actorRoleLabel, normalizeActorRole, normalizeMinionGroup } from "../../domain/adversaries/index.js";
@@ -252,6 +254,7 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
             useManeuver: this.#useManeuver,
             endTurn: this.#endTurn,
             forceEndTurn: this.#forceEndTurn,
+            recoverTurn: this.#recoverTurn,
             unclaim: this.#unclaim,
             rewindTurn: this.#rewindTurn,
             roundDown: this.#roundDown,
@@ -290,6 +293,7 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
         return {
             ...context,
             isGM,
+            recovery: isGM ? getTurnRecovery(state,activeActor,canvas.scene) : null,
             state,
             collecting: state.status === "collecting",
             active: state.status === "active",
@@ -449,6 +453,12 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
             ui?.notifications?.warn?.(String(error?.message ?? error));
         }
     }
+    static async #recoverTurn(_event,target) {
+        target.disabled=true;
+        try { await recoverSceneTurn(target.dataset.recoveryKey); }
+        catch(error){ui.notifications.warn(error.message);}
+        finally {target.disabled=false;void this.render({force:true});}
+    }
     static async #forceEndTurn() {
         try {
             await forceEndCurrentSceneTurn();
@@ -572,3 +582,7 @@ export function getEncounterTracker() {
     return trackerApp;
 }
 //# sourceMappingURL=encounter-tracker.js.map
+
+Hooks.on('updateActor',actor=>{
+    if(trackerApp?.rendered && readSceneInitiativeState().activeActorRef===actor.uuid)void trackerApp.render({force:true});
+});

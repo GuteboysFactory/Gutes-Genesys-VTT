@@ -1,3 +1,4 @@
+import {getTurnRecovery} from './initiative-recovery-v1860.js';
 import {createInitiativeTransport,authorizeInitiativeCommand} from './initiative-transport-v1858.js';
 import {createSceneCommandQueue,nextInitiativeRevision} from './initiative-write-queue-v1857.js';
 const enqueueSceneCommand=createSceneCommandQueue();
@@ -563,7 +564,17 @@ export function removeSceneInitiativeParticipant(actorRef, scene = activeScene()
     return dispatchInitiativeCommand("removeSceneInitiativeParticipant", [actorRef], scene);
 }
 
+export function recoverSceneTurn(expectedKey, scene = activeScene()) {
+    return dispatchInitiativeCommand('recoverSceneTurn', [expectedKey], scene);
+}
+async function queued_recoverSceneTurn(expectedKey, scene) {
+    const state=readSceneInitiativeState(scene);
+    const actor=resolveInitiativeActorReference(state.activeActorRef);
+    if(getTurnRecovery(state,actor,scene)?.key!==expectedKey)throw Error('Recovery turn changed. Reopen Encounter Tracker and review the current turn.');
+    return queued_endSceneInitiativeTurn(actor,scene);
+}
 const commandRegistry = {
+    recoverSceneTurn: {run: queued_recoverSceneTurn, argc: 1, actor: false},
     removeSceneInitiativeParticipant: {run: queued_removeSceneInitiativeParticipant, argc: 1, actor: false},
     addSceneInitiativeParticipant: {run: queued_addSceneInitiativeParticipant, argc: 3, actor: true},
     forceEndCurrentSceneTurn: {run: queued_forceEndCurrentSceneTurn, argc: 0, actor: false},
