@@ -84,7 +84,8 @@ function visibleCompendiumTalents(){
 
 export function worldTalents() {
     return Array.from(game.items?.contents ?? []).filter(item => item.type === 'talent' && (game.user?.isGM || item.testUserPermission?.(game.user, 'OBSERVER'))).map(item => ({
-        ...normalizeTalentDefinition({name:item.name,system:{...item.system,sourceId:`world-talent:${item.id}`}}),
+        ...normalizeTalentDefinition({name:item.name,system:{...item.system,sourceId:item.flags?.[SYSTEM_ID]?.catalogTalentId || `world-talent:${item.id}`}}),
+        requirements:clone(item.flags?.[SYSTEM_ID]?.catalogRequirements ?? []),
         documentId:item.id, librarySource:'World Items', packId:'world'
     }));
 }
@@ -110,7 +111,29 @@ function dedupeTalents(rows) {
 }
 
 export function listTalentLibraryEntries() {
-    return dedupeTalents([...referenceTalents(), ...registryTalents(), ...worldTalents(), ...visibleCompendiumTalents()]);
+    const nativeIds=new Set(Array.from(game.items?.contents??[]).map(item=>item.flags?.[SYSTEM_ID]?.catalogTalentId).filter(Boolean));
+    return dedupeTalents([...referenceTalents(), ...registryTalents()].filter(row=>!nativeIds.has(row.id)).concat(worldTalents(),visibleCompendiumTalents()));
+}
+let installingCatalog=false;
+export async function installTalentCatalog(){
+    const authority=()=>{if(!game.user?.isGM || game.users?.activeGM?.id!==game.user.id)throw Error('Only the active GM can install the catalog.');};
+    authority();if(installingCatalog)throw Error('Catalog installation is already running.');
+    installingCatalog=true;let created=0;
+    try{
+        const rows=dedupeTalents([...referenceTalents(),...registryTalents()]);
+        for(const talent of rows){
+            authority();
+            if(Array.from(game.items?.contents??[]).some(item=>item.type==='talent'&&item.flags?.[SYSTEM_ID]?.catalogTalentId===talent.id))continue;
+            const data=talentItemData(talent);
+            data.ownership={default:2};
+            data.flags={[SYSTEM_ID]:{catalogTalentId:talent.id,catalogRequirements:clone(talent.requirements??[])}};
+            const item=await foundry.documents.Item.create(data);
+            if(!item)throw Error('Item creation failed.');
+            created++;
+        }
+        return created;
+    }catch(error){throw Error(`${created} Talents created before stopping: ${error.message}`);}
+    finally{installingCatalog=false;}
 }
 
 function actorTalentItems(actor) {
@@ -297,7 +320,7 @@ function libraryHtml(actor) {
     return `<dialog class="genesys-talent-library" data-talent-library-dialog>
       <div class="genesys-talent-library-shell">
         <header class="genesys-talent-library-header"><div><strong>Talent Library</strong><small>${esc(actor?.name ?? "Character")} · ${talents.length} registered Talents</small></div><div class="genesys-talent-library-xp"><span>XP Available</span><strong data-library-xp>${actorAvailableXp(actor)}</strong></div><button type="button" data-library-close aria-label="Close">×</button></header>
-        <div class="genesys-talent-library-controls">${game.user?.isGM ? `<button type="button" data-library-create-world>Create world Talent</button>` : ""}<button type="button" data-library-load-packs>Load / refresh Compendiums</button><input type="search" data-library-search placeholder="Search Talents…"/><select data-library-tier><option value="all">All Tiers</option><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option><option value="5">Tier 5</option></select><select data-library-source><option value="all">All Sources</option>${sources.map((source) => `<option value="${esc(source)}">${esc(source)}</option>`).join("")}</select></div>
+        <div class="genesys-talent-library-controls">${game.user?.isGM ? `<button type="button" data-library-create-world>Create world Talent</button><button type="button" data-library-install-catalog>Install catalog as Items</button>` : ""}<button type="button" data-library-load-packs>Load / refresh Compendiums</button><input type="search" data-library-search placeholder="Search Talents…"/><select data-library-tier><option value="all">All Tiers</option><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option><option value="5">Tier 5</option></select><select data-library-source><option value="all">All Sources</option>${sources.map((source) => `<option value="${esc(source)}">${esc(source)}</option>`).join("")}</select></div>
         <div class="genesys-talent-library-body"><div class="genesys-talent-library-list">${cards}</div><aside class="genesys-talent-library-detail" data-library-detail><div class="genesys-library-detail-placeholder"><i class="fa-solid fa-book-open"></i><strong>Select a Talent</strong><p>View requirements, Rule Elements, source, XP cost, and purchase eligibility.</p></div></aside></div>
       </div>
     </dialog>`;
@@ -387,6 +410,17 @@ function initializeTalentLibraryButtons() {
 }
 
 document.addEventListener("click", async (event) => {
+    const install=event.target?.closest?.('[data-library-install-catalog]');
+    if(install){
+        event.preventDefault();const dialog=install.closest('dialog'),actor=dialog?._genesysActor,host=dialog?.parentElement;
+        dialog.close();
+        try{
+            const yes=await foundry.applications.api.DialogV2.confirm({window:{title:'Install Talent catalog'},content:'<p>Create missing catalog Talents in Foundry Items, visible to players? Existing catalog Items and your edits are preserved. Explicitly running this again restores deleted catalog entries.</p>',rejectClose:false});
+            if(yes){const count=await installTalentCatalog();ui.notifications.info(`${count} catalog Talents created.`);}
+        }catch(error){ui.notifications.warn(error.message);}
+        finally{if(dialog.isConnected)openTalentLibrary(actor,host);}
+        return;
+    }
     const loadPacks=event.target?.closest?.('[data-library-load-packs]');
     if(loadPacks){
         event.preventDefault();loadPacks.disabled=true;
