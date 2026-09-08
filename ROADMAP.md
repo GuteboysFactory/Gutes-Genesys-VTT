@@ -174,6 +174,20 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Content audit completion and provenance checks
 - Setting-specific sheets, actions and optional rules
 
+#### Required gate — Library ↔ Foundry Items ↔ external modules
+
+User-confirmed requirement; not implemented or verified yet. Must pass before content-layer completion and v1.0.
+
+Locked architecture: Foundry Item documents are the authoritative backend; Library is a user-facing view/editor of those same documents. Creating an Item in Foundry automatically exposes it in the matching Library, and creating in Library creates the native Foundry Item. Edits from either UI update the same document/UUID and refresh both views, respecting ownership and category filters. No manual publish-to-library flag or separate mirrored database for supported Item types.
+
+- Audit every Library category (equipment, talents, actions, Heroic and custom content) and explicitly define its Foundry document representation; do not claim actor data is already an Item.
+- Make reusable Library definitions available as native Foundry Items/Compendium documents with stable UUID/source identity.
+- Include supported world Items created in Foundry in the appropriate Library, respecting permissions and setting/type filters.
+- Define source versus actor-copy behavior for edits, deletion and re-import. Preserve user edits; avoid duplicate entries or silent propagation into owned equipment.
+- Verify Adventurer's Tome discovery, links and opening documents against its actual implementation. Compatibility must be demonstrated, not assumed from UUID availability.
+
+Acceptance checks: Library → native Item → Tome; Foundry-created Item → Library; edit/reload/re-import without duplicates; actor copies remain distinct; player/GM visibility; custom content persistence. Record supported categories and any explicit exclusions.
+
 ### v0.0.189x — Release hardening
 
 - Foundry v14 compatibility work
