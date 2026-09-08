@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {pulseUpdate,applyActivationPulse} from '../dist/module/heroic-pulse-v1852.js';
+const npc={system:{role:'rival',wounds:{value:4},strain:{value:3}}};assert.equal(pulseUpdate(npc,'drain')['system.wounds.value'],6);assert.equal(pulseUpdate(npc,'heal')['system.strain.value'],1);
+const pc={system:{role:'pc',strain:{value:1}}};assert.equal(pulseUpdate(pc,'drain')['system.strain.value'],3);assert.equal(pulseUpdate(pc,'heal')['system.strain.value'],0);
+const source={uuid:'Actor.s',system:{heroicAbility:{active:true,secondaryEffectIds:['rot-heroic-secondary:drain']}},getFlag:()=>({activationId:'a'})};
+let fail=true;
+const target=id=>({uuid:id,system:{role:'pc',strain:{value:4}},done:[],getFlag(){return this.done;},async update(d){if(id==='b'&&fail)throw Error('save failed');this.system.strain.value=d['system.strain.value'];this.done=d['flags.genesys-vtt.heroicPulses'];}});
+const a=target('a'),b=target('b');const tokens=[source,a,b].map((actor,i)=>({id:String(i),actor,x:i,y:0,parent:{id:'scene'}}));tokens.get=id=>tokens.find(t=>t.id===id);
+globalThis.canvas={scene:{id:'scene',tokens}};globalThis.game={user:{id:'gm',isGM:true,targets:new Set(tokens.slice(1).map(document=>({document})))},users:{activeGM:{id:'gm'}}};globalThis.foundry={applications:{api:{DialogV2:{wait:async()=>true}}}};globalThis.ui={notifications:{info(){}}};
+await assert.rejects(applyActivationPulse(source,'drain'),/save failed/);assert.equal(a.system.strain.value,6);assert.equal(b.system.strain.value,4);
+fail=false;await applyActivationPulse(source,'drain');assert.equal(a.system.strain.value,6);assert.equal(b.system.strain.value,6);await applyActivationPulse(source,'drain');assert.equal(b.system.strain.value,6);
+game.user.isGM=false;await assert.rejects(applyActivationPulse(source,'drain'),/GM/);
+console.log('PASS: pulse NPC routing, heal floor, partial failure retry, duplicate prevention and authority');

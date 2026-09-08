@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1851** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1852** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -180,6 +180,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Empower Allies/Diminish modifier from GM-selected Short-range targets on current scene
 - Confirmation invalidated by position/size/elevation or source timing changes; ends with active state
 - No automatic distance/side inference; live multiplayer QA pending
+
+### v0.0.1852 — Drain / Rejuvenate Allies activation pulses
+
+- GM confirms selected allies/enemies within Short range and applies activation pulse
+- Target updates include per-activation marker; retries skip completed targets; partial failure is not a group rollback
+- Drain reuses NPC damage routing; healing floors at zero
+- Turn-start pulses remain manual; live QA pending
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 

@@ -120,7 +120,7 @@ export function assertActorCanVoluntarilySufferStrain(actor, amount = 0) {
     return evaluation;
 }
 /** Apply direct strain/wound effects outside combat with the same role-routing rules. */
-export async function applyActorRoleDamage(actor, input) {
+export function prepareActorRoleDamage(actor, input) {
     const role = normalizeActorRole(actor?.system?.role);
     const routed = routeDamageForActorRole(role, input.wounds ?? 0, input.strain ?? 0);
     const update = {};
@@ -144,6 +144,10 @@ export async function applyActorRoleDamage(actor, input) {
     }
     if (routed.strain > 0)
         update["system.strain.value"] = n(actor?.system?.strain?.value) + routed.strain;
+    return { role, routed, update };
+}
+export async function applyActorRoleDamage(actor, input) {
+    const { role, routed, update } = prepareActorRoleDamage(actor, input);
     if (Object.keys(update).length)
         await actor.update(update);
     await rerenderRenderedCharacterSheet(actor);

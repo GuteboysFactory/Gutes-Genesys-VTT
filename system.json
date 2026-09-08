@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1851 \u2014 GM-confirmed Heroic aura targets.",
-  "version": "0.0.1851",
+  "description": "Genesys VTT 0.0.1852 \u2014 Heroic activation pulses.",
+  "version": "0.0.1852",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
