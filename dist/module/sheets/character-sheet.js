@@ -131,7 +131,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     };
     static async #heroicPulse(_event,target) {
         target.disabled=true;
-        try { await applyActivationPulse(this.actor,target.dataset.kind); }
+        try { await applyActivationPulse(this.actor,target.dataset.kind,target.dataset.phase); }
         catch(error){ui.notifications.warn(error.message);}
         finally{target.disabled=false;}
     }

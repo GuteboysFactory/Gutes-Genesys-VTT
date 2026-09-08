@@ -9,5 +9,12 @@ const a=target('a'),b=target('b');const tokens=[source,a,b].map((actor,i)=>({id:
 globalThis.canvas={scene:{id:'scene',tokens}};globalThis.game={user:{id:'gm',isGM:true,targets:new Set(tokens.slice(1).map(document=>({document})))},users:{activeGM:{id:'gm'}}};globalThis.foundry={applications:{api:{DialogV2:{wait:async()=>true}}}};globalThis.ui={notifications:{info(){}}};
 await assert.rejects(applyActivationPulse(source,'drain'),/save failed/);assert.equal(a.system.strain.value,6);assert.equal(b.system.strain.value,4);
 fail=false;await applyActivationPulse(source,'drain');assert.equal(a.system.strain.value,6);assert.equal(b.system.strain.value,6);await applyActivationPulse(source,'drain');assert.equal(b.system.strain.value,6);
+let state={status:'active',activeActorRef:source.uuid,round:1,turnNumber:1,activeActivationId:'base',turn:{actionUsed:false,maneuversUsed:0}};
+game.genesysVtt={initiative:{sceneState:()=>state}};canvas.scene.getFlag=()=> 'enc';
+await applyActivationPulse(source,'drain','turn');assert.equal(a.system.strain.value,8);await applyActivationPulse(source,'drain','turn');assert.equal(a.system.strain.value,8);
+state.turn.actionUsed=true;await assert.rejects(applyActivationPulse(source,'drain','turn'),/before using/);state.turn.actionUsed=false;
+state.activeActorRef='other';await assert.rejects(applyActivationPulse(source,'drain','turn'),/own the active turn/);state.activeActorRef=source.uuid;
+state.round=2;state.turnNumber=2;await applyActivationPulse(source,'drain','turn');assert.equal(a.system.strain.value,10);
+state.round=1;state.turnNumber=1;await applyActivationPulse(source,'drain','turn');assert.equal(a.system.strain.value,10);
 game.user.isGM=false;await assert.rejects(applyActivationPulse(source,'drain'),/GM/);
 console.log('PASS: pulse NPC routing, heal floor, partial failure retry, duplicate prevention and authority');
