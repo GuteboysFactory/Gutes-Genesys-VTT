@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1857 \u2014 Encounter command queue and stale-write protection.",
-  "version": "0.0.1857",
+  "description": "Genesys VTT 0.0.1858 \u2014 Active GM encounter command routing.",
+  "version": "0.0.1858",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"

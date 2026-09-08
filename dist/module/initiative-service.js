@@ -1,3 +1,4 @@
+import {createInitiativeTransport,authorizeInitiativeCommand} from './initiative-transport-v1858.js';
 import {createSceneCommandQueue,nextInitiativeRevision} from './initiative-write-queue-v1857.js';
 const enqueueSceneCommand=createSceneCommandQueue();
 import { rollNarrativePool } from "../domain/dice/index.js";
@@ -37,6 +38,8 @@ export function resolveInitiativeActorReference(reference) {
     const tokenActor = currentSceneTokens().map((token) => token?.actor).find((actor) => actorInitiativeRef(actor) === ref);
     if (tokenActor)
         return tokenActor;
+    const sceneActor = Array.from(game.scenes ?? []).flatMap(scene => Array.from(scene.tokens ?? [])).map(token => token.actor).find(actor => actorInitiativeRef(actor) === ref);
+    if(sceneActor)return sceneActor;
     const actors = Array.isArray(game?.actors?.contents) ? game.actors.contents : [];
     return actors.find((actor) => actorInitiativeRef(actor) === ref || String(actor?.id ?? "") === ref) ?? game?.actors?.get?.(ref) ?? null;
 }
@@ -156,6 +159,7 @@ export function readSceneInitiativeState(scene = activeScene()) {
     return normalizeInitiativeState(raw);
 }
 async function queued_writeSceneInitiativeState(state, scene = activeScene()) {
+    if(!initiativeAuthority())throw Error("Active GM changed before saving. Review the encounter.");
     const normalized = nextInitiativeRevision(normalizeInitiativeState(state), readSceneInitiativeState(scene));
     if (scene?.setFlag)
         await scene.setFlag(SYSTEM_ID, FLAG_KEY, normalized);
@@ -444,113 +448,183 @@ async function queued_removeSceneInitiativeParticipant(actorRef, scene = activeS
 }
 //# sourceMappingURL=initiative-service.js.map
 export function consumeSceneEncounterAction(actor, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_consumeSceneEncounterAction(actor, scene));
+    return dispatchInitiativeCommand("consumeSceneEncounterAction", [actorInitiativeRef(actor)], scene);
 }
 
 export function writeSceneInitiativeState(state, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_writeSceneInitiativeState(state, scene));
+    return dispatchInitiativeCommand("writeSceneInitiativeState", [state], scene);
 }
 
 export function resetSceneInitiative(scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_resetSceneInitiative(scene));
+    return dispatchInitiativeCommand("resetSceneInitiative", [], scene);
 }
 
 export function setSceneInitiativeMode(mode, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_setSceneInitiativeMode(mode, scene));
+    return dispatchInitiativeCommand("setSceneInitiativeMode", [mode], scene);
 }
 
 export function rollActorInitiative(actor, side, skill, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_rollActorInitiative(actor, side, skill, scene));
+    return dispatchInitiativeCommand("rollActorInitiative", [actorInitiativeRef(actor), side, skill], scene);
 }
 
 export function startSceneInitiative(scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_startSceneInitiative(scene));
+    return dispatchInitiativeCommand("startSceneInitiative", [], scene);
 }
 
 export function startNextSceneInitiativeRound(options = {}, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_startNextSceneInitiativeRound(options, scene));
+    return dispatchInitiativeCommand("startNextSceneInitiativeRound", [options], scene);
 }
 
 export function waiveSceneInitiativeActivation(activationId, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_waiveSceneInitiativeActivation(activationId, scene));
+    return dispatchInitiativeCommand("waiveSceneInitiativeActivation", [activationId], scene);
 }
 
 export function restoreSceneInitiativeActivation(activationId, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_restoreSceneInitiativeActivation(activationId, scene));
+    return dispatchInitiativeCommand("restoreSceneInitiativeActivation", [activationId], scene);
 }
 
 export function endSceneInitiativeEncounter(scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_endSceneInitiativeEncounter(scene));
+    return dispatchInitiativeCommand("endSceneInitiativeEncounter", [], scene);
 }
 
 export function claimSceneInitiativeSlot(actor, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_claimSceneInitiativeSlot(actor, scene));
+    return dispatchInitiativeCommand("claimSceneInitiativeSlot", [actorInitiativeRef(actor)], scene);
 }
 
 export function forceClaimSceneInitiativeActor(actorRef, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_forceClaimSceneInitiativeActor(actorRef, scene));
+    return dispatchInitiativeCommand("forceClaimSceneInitiativeActor", [actorRef], scene);
 }
 
 export function claimSceneInitiativeActivation(activationId, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_claimSceneInitiativeActivation(activationId, scene));
+    return dispatchInitiativeCommand("claimSceneInitiativeActivation", [activationId], scene);
 }
 
 export function forceClaimSceneInitiativeActivation(activationId, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_forceClaimSceneInitiativeActivation(activationId, scene));
+    return dispatchInitiativeCommand("forceClaimSceneInitiativeActivation", [activationId], scene);
 }
 
 export function unclaimSceneInitiative(scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_unclaimSceneInitiative(scene));
+    return dispatchInitiativeCommand("unclaimSceneInitiative", [], scene);
 }
 
 export function markSceneActorActed(actorRef, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_markSceneActorActed(actorRef, scene));
+    return dispatchInitiativeCommand("markSceneActorActed", [actorRef], scene);
 }
 
 export function markSceneActorUnacted(actorRef, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_markSceneActorUnacted(actorRef, scene));
+    return dispatchInitiativeCommand("markSceneActorUnacted", [actorRef], scene);
 }
 
 export function setSceneParticipantStatus(actorRef, status, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_setSceneParticipantStatus(actorRef, status, scene));
+    return dispatchInitiativeCommand("setSceneParticipantStatus", [actorRef, status], scene);
 }
 
 export function setSceneSlotSide(index, side, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_setSceneSlotSide(index, side, scene));
+    return dispatchInitiativeCommand("setSceneSlotSide", [index, side], scene);
 }
 
 export function moveSceneSlot(index, delta, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_moveSceneSlot(index, delta, scene));
+    return dispatchInitiativeCommand("moveSceneSlot", [index, delta], scene);
 }
 
 export function rewindSceneInitiativeTurn(scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_rewindSceneInitiativeTurn(scene));
+    return dispatchInitiativeCommand("rewindSceneInitiativeTurn", [], scene);
 }
 
 export function adjustSceneInitiativeRound(delta, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_adjustSceneInitiativeRound(delta, scene));
+    return dispatchInitiativeCommand("adjustSceneInitiativeRound", [delta], scene);
 }
 
 export function useSceneTurnAction(actor, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_useSceneTurnAction(actor, scene));
+    return dispatchInitiativeCommand("useSceneTurnAction", [actorInitiativeRef(actor)], scene);
 }
 
 export function useSceneTurnManeuver(actor, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_useSceneTurnManeuver(actor, scene));
+    return dispatchInitiativeCommand("useSceneTurnManeuver", [actorInitiativeRef(actor)], scene);
 }
 
 export function endSceneInitiativeTurn(actor, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_endSceneInitiativeTurn(actor, scene));
+    return dispatchInitiativeCommand("endSceneInitiativeTurn", [actorInitiativeRef(actor)], scene);
 }
 
 export function forceEndCurrentSceneTurn(scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_forceEndCurrentSceneTurn(scene));
+    return dispatchInitiativeCommand("forceEndCurrentSceneTurn", [], scene);
 }
 
 export function addSceneInitiativeParticipant(actor, side, skill = "vigilance", scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_addSceneInitiativeParticipant(actor, side, skill, scene));
+    return dispatchInitiativeCommand("addSceneInitiativeParticipant", [actorInitiativeRef(actor), side, skill], scene);
 }
 
 export function removeSceneInitiativeParticipant(actorRef, scene = activeScene()) {
-    return enqueueSceneCommand(scene ?? "fallback", () => queued_removeSceneInitiativeParticipant(actorRef, scene));
+    return dispatchInitiativeCommand("removeSceneInitiativeParticipant", [actorRef], scene);
+}
+
+const commandRegistry = {
+    removeSceneInitiativeParticipant: {run: queued_removeSceneInitiativeParticipant, argc: 1, actor: false},
+    addSceneInitiativeParticipant: {run: queued_addSceneInitiativeParticipant, argc: 3, actor: true},
+    forceEndCurrentSceneTurn: {run: queued_forceEndCurrentSceneTurn, argc: 0, actor: false},
+    endSceneInitiativeTurn: {run: queued_endSceneInitiativeTurn, argc: 1, actor: true},
+    useSceneTurnManeuver: {run: queued_useSceneTurnManeuver, argc: 1, actor: true},
+    useSceneTurnAction: {run: queued_useSceneTurnAction, argc: 1, actor: true},
+    adjustSceneInitiativeRound: {run: queued_adjustSceneInitiativeRound, argc: 1, actor: false},
+    rewindSceneInitiativeTurn: {run: queued_rewindSceneInitiativeTurn, argc: 0, actor: false},
+    moveSceneSlot: {run: queued_moveSceneSlot, argc: 2, actor: false},
+    setSceneSlotSide: {run: queued_setSceneSlotSide, argc: 2, actor: false},
+    setSceneParticipantStatus: {run: queued_setSceneParticipantStatus, argc: 2, actor: false},
+    markSceneActorUnacted: {run: queued_markSceneActorUnacted, argc: 1, actor: false},
+    markSceneActorActed: {run: queued_markSceneActorActed, argc: 1, actor: false},
+    unclaimSceneInitiative: {run: queued_unclaimSceneInitiative, argc: 0, actor: false},
+    forceClaimSceneInitiativeActivation: {run: queued_forceClaimSceneInitiativeActivation, argc: 1, actor: false},
+    claimSceneInitiativeActivation: {run: queued_claimSceneInitiativeActivation, argc: 1, actor: false},
+    forceClaimSceneInitiativeActor: {run: queued_forceClaimSceneInitiativeActor, argc: 1, actor: false},
+    claimSceneInitiativeSlot: {run: queued_claimSceneInitiativeSlot, argc: 1, actor: true},
+    endSceneInitiativeEncounter: {run: queued_endSceneInitiativeEncounter, argc: 0, actor: false},
+    restoreSceneInitiativeActivation: {run: queued_restoreSceneInitiativeActivation, argc: 1, actor: false},
+    waiveSceneInitiativeActivation: {run: queued_waiveSceneInitiativeActivation, argc: 1, actor: false},
+    startNextSceneInitiativeRound: {run: queued_startNextSceneInitiativeRound, argc: 1, actor: false},
+    startSceneInitiative: {run: queued_startSceneInitiative, argc: 0, actor: false},
+    rollActorInitiative: {run: queued_rollActorInitiative, argc: 3, actor: true},
+    setSceneInitiativeMode: {run: queued_setSceneInitiativeMode, argc: 1, actor: false},
+    resetSceneInitiative: {run: queued_resetSceneInitiative, argc: 0, actor: false},
+    writeSceneInitiativeState: {run: queued_writeSceneInitiativeState, argc: 1, actor: false},
+    consumeSceneEncounterAction: {run: queued_consumeSceneEncounterAction, argc: 1, actor: true}
+};
+function initiativeAuthority() {return game.user?.isGM && game.users.activeGM?.id===game.user.id;}
+function executeInitiativeCommand(request,userId) {
+    const scene=game.scenes.get(request.sceneId);
+    if(!scene)throw Error('Encounter scene no longer exists.');
+    return enqueueSceneCommand(scene, async()=>{
+        if(!initiativeAuthority())throw Error('Active GM changed. Review the encounter and retry.');
+        const command=Object.hasOwn(commandRegistry,request.name)?commandRegistry[request.name]:null;
+        if(!command || !Array.isArray(request.args) || request.args.length!==command.argc)throw Error('Unknown encounter command.');
+        const current=readSceneInitiativeState(scene);
+        if(request.revision!==current.revision)throw Error('Encounter changed. Review the current turn and try again.');
+        const args=[...request.args];
+        let actor=command.actor?resolveInitiativeActorReference(args[0]):null;
+        if(request.name==='claimSceneInitiativeActivation')actor=resolveInitiativeActorReference(current.activationEntitlements.find(row=>row.id===args[0])?.actorRef);
+        authorizeInitiativeCommand(request.name,game.users.get(userId),actor,args);
+        if(command.actor){if(!actor)throw Error('Encounter Actor no longer exists.');args[0]=actor;}
+        return command.run(...args,scene);
+    });
+}
+const initiativeTransport=createInitiativeTransport({
+    gm:()=>game.users.activeGM?.id, userId:()=>game.user.id, authority:initiativeAuthority,
+    id:()=>foundry.utils.randomID(),
+    create:request=>foundry.documents.ChatMessage.create({content:'<p>Encounter command requested.</p>',whisper:[request.gm,game.user.id],flags:{[SYSTEM_ID]:{initiativeRequest:request}}}),
+    execute:executeInitiativeCommand,
+    reply:(message,reply)=>message.document.update({content:reply.ok?'<p>Encounter command completed.</p>':'<p>Encounter command rejected. Review the current encounter.</p>',[`flags.${SYSTEM_ID}.initiativeReply`]:reply}),
+    warn:message=>ui.notifications.warn(message)
+});
+Hooks.on('createChatMessage',(document,_options,userId)=>{
+    void initiativeTransport.created({id:document.id,document,request:document.getFlag(SYSTEM_ID,'initiativeRequest')},userId);
+});
+Hooks.on('updateChatMessage',(document,change,_options,userId)=>{
+    const reply=document.getFlag(SYSTEM_ID,'initiativeReply');
+    if(reply)initiativeTransport.updated(reply,userId);
+});
+function dispatchInitiativeCommand(name,args,scene) {
+    if(!scene)return Promise.reject(Error('An active scene is required for encounter commands.'));
+    const request={name,args,sceneId:scene.id,revision:readSceneInitiativeState(scene).revision};
+    if(initiativeAuthority())return executeInitiativeCommand(request,game.user.id);
+    return initiativeTransport.request(request);
 }

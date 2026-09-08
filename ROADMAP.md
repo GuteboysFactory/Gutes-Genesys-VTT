@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1857** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1858** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -228,6 +228,15 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Failed saves do not advance fallback state; failed commands do not poison the queue
 - 35 automated test files pass; live service integration QA pending
 - This is client-local serialization, NOT cross-client atomicity. Next: authenticated authoritative command routing for player and GM clients, including reconnection and duplicate request handling.
+
+### v0.0.1858 — Active GM encounter routing
+
+- All initiative-service commands route to the active GM queue; other clients send private native ChatMessage requests
+- Native create-event user identity, owner checks and GM-only command allowlist; exact argument counts and revision guards
+- Duplicate document events ignored, response sender checked, 15-second timeout; no automatic reconnect replay
+- Private request/completion receipts; a failed reply asks the user to inspect state before retrying
+- 37 automated test files pass, including real service code with mocked Foundry dependencies
+- Live two-client QA is mandatory. Same GM account in multiple browser sessions is NOT supported by this election; use one active GM session. Cross-document End Turn recovery and GM failover journaling remain next.
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 
