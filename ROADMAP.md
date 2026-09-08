@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1853** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1854** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -195,7 +195,15 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - GM still selects targets and confirms range/side; no automatic target discovery
 - Live QA pending
 
-### Renewal — required initiative foundation before gameplay
+### v0.0.1854 — Renewal slot foundation
+
+- Domain addRenewalSlot with encounter persistence, idempotency and unchanged activation entitlements
+- Preserve active turn; rank additional slots among remaining slots now and all slots next round
+- Skip slots without eligible base participants after completion; clear on encounter end
+- No player-facing button yet; Cool/Vigilance resolution and participant-management edge cases remain next
+- Popcorn addition explicitly blocked; existing Popcorn regression passes
+
+### Renewal — implementation tracking
 
 - Code/source audit completed: see docs/RENEWAL_IMPLEMENTATION_GATE.md
 - Direct slot insertion would be discarded by current normalizer; index-based advancement can leave unclaimable slots

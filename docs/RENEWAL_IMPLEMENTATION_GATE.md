@@ -1,6 +1,6 @@
 # Renewal implementation gate
 
-Status: source/code audit completed; implementation pending. Current QA remains v0.0.1853.
+Status: v0.0.1854 adds domain slot persistence/insertion and completion skipping. Gameplay UI, roll transaction, participant-management edge cases and Popcorn semantics remain pending. The blockers below describe the pre-v0.0.1854 baseline.
 
 ## Rule
 

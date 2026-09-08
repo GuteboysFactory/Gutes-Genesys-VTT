@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import * as i from '../dist/domain/initiative/index.js';
+let s=i.emptyInitiativeState();
+for(const [actorRef,side,success] of [['p','pc',3],['n','npc',1]])s=i.recordInitiativeEntry(s,i.initiativeEntryFromRoll({actorRef,label:actorRef,side,skill:'cool',result:{net:{success,advantage:0}},actorRole:side==='pc'?'pc':'rival'}));
+s=i.startInitiativeEncounter(s);s=i.claimCurrentInitiativeSlot(s,'p','p','pc');
+const allowances=structuredClone(s.activationEntitlements),turn=structuredClone(s.turn),id=s.slots[s.activeSlotIndex].id;
+s=i.addRenewalSlot(s,{activationId:'h1',actorRef:'p',skill:'cool',success:5});
+assert.deepEqual(s.activationEntitlements,allowances);assert.deepEqual(s.turn,turn);assert.equal(s.slots[s.activeSlotIndex].id,id);
+s=i.normalizeInitiativeState(JSON.parse(JSON.stringify(s)));assert.equal(s.slots.length,3);assert.equal(s.renewalSlots.length,1);assert.equal(s.activeActorRef,'p');
+assert.equal(i.addRenewalSlot(s,{activationId:'h1',skill:'cool'}),s);
+s=i.completeCurrentInitiativeSlot(s,'p');assert.equal(s.slots[s.activeSlotIndex].side,'npc','skip unusable extra PC slot');assert.equal(i.canClaimCurrentSlot(s,'p','pc').allowed,false);
+s=i.claimCurrentInitiativeSlot(s,'n','n','npc');s=i.completeCurrentInitiativeSlot(s,'n');assert.equal(s.roundPhase,'end-round');
+s=i.startNextInitiativeRound(s);s=i.normalizeInitiativeState(s);assert.equal(s.slots.length,3);assert.equal(s.slots[0].sourceLabel,'Renewal');assert.equal(s.activationEntitlements.length,2);
+s=i.endInitiativeEncounter(s);assert.equal(i.normalizeInitiativeState(s).slots.length,2);
+assert.throws(()=>i.addRenewalSlot({...s,status:'active',mode:'popcorn'},{activationId:'x',skill:'cool'}),/Side Slots/);
+console.log('PASS: Renewal persistence, claim preservation, no extra activations, skip, round sorting and encounter cleanup');

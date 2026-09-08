@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1853 \u2014 GM-confirmed Heroic turn-start pulses.",
-  "version": "0.0.1853",
+  "description": "Genesys VTT 0.0.1854 \u2014 Renewal slot foundation.",
+  "version": "0.0.1854",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"

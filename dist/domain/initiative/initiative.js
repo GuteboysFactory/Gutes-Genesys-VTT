@@ -133,6 +133,7 @@ function actedRefsFromEntitlements(state) {
 export function emptyInitiativeState(mode = "side-slots") {
     return {
         version: 4,
+        renewalSlots: [],
         mode,
         status: "collecting",
         roundPhase: "turns",
@@ -188,7 +189,14 @@ export function normalizeInitiativeState(raw) {
         return emptyInitiativeState();
     const source = raw;
     const entries = normalizeEntries(source);
-    const builtSlots = buildInitiativeSlots(entries);
+    const renewalSlots = source.status === "active" && Array.isArray(source.renewalSlots)
+        ? [...new Map(source.renewalSlots.filter(row => row?.id && row?.activationId).map(row => [String(row.activationId), {
+            id: String(row.id), activationId: String(row.activationId), side:"pc",
+            success:nonNegativeInteger(row.success), advantage:nonNegativeInteger(row.advantage),
+            sourceActorRef:String(row.sourceActorRef ?? ""), sourceLabel:String(row.sourceLabel ?? "Renewal"), sourceSkill:row.sourceSkill === "cool" ? "cool" : "vigilance",
+            claimedBy:"",claimedLabel:"",completed:false
+        }])).values()] : [];
+    const builtSlots = [...buildInitiativeSlots(entries), ...renewalSlots];
     const status = source.status === "active" || source.status === "ended" ? source.status : "collecting";
     const mode = source.mode === "popcorn" ? "popcorn" : "side-slots";
     const slots = normalizeStoredSlots(source.slots, builtSlots, status !== "collecting");
@@ -204,6 +212,7 @@ export function normalizeInitiativeState(raw) {
     const round = status === "active" ? Math.max(1, nonNegativeInteger(source.round)) : nonNegativeInteger(source.round);
     const baseState = {
         version: 4,
+        renewalSlots,
         mode,
         status,
         roundPhase: source.roundPhase === "end-round" ? "end-round" : "turns",
@@ -323,6 +332,7 @@ export function startInitiativeEncounter(state) {
     let base = {
         ...state,
         version: 4,
+        renewalSlots: [],
         status: "active",
         roundPhase: "turns",
         activationEntitlements,
@@ -333,7 +343,7 @@ export function startInitiativeEncounter(state) {
         activeActorRef: "",
         activeActorLabel: "",
         activeActivationId: "",
-        slots: state.slots.map((slot) => ({ ...slot, claimedBy: "", claimedLabel: "", completed: false })),
+        slots: (state.renewalSlots?.length ? [...state.slots].sort((a,b) => b.success-a.success || b.advantage-a.advantage || (a.side === b.side ? 0 : a.side === "pc" ? -1 : 1)) : state.slots).map((slot) => ({ ...slot, claimedBy: "", claimedLabel: "", completed: false })),
         turn: blankTurn()
     };
     if (state.mode !== "popcorn")
@@ -512,7 +522,10 @@ export function completeCurrentInitiativeSlot(state, actorRef) {
         return { ...next, turnNumber: usedActivationCount(next) + 1 };
     }
     const slots = next.slots.map((slot, index) => index === next.activeSlotIndex ? { ...slot, completed: true } : slot);
-    const nextIndex = next.activeSlotIndex + 1;
+    let nextIndex = next.activeSlotIndex + 1;
+    if (state.renewalSlots?.length) {
+        while (nextIndex < slots.length && !next.entries.some(entry => entry.side === slots[nextIndex].side && entry.encounterStatus === "active" && next.activationEntitlements.some(a => a.actorRef === entry.actorRef && a.kind === "base" && !a.used && !a.waived))) nextIndex++;
+    }
     if (nextIndex < slots.length) {
         return { ...next, slots, activeSlotIndex: nextIndex, turnNumber: nextIndex + 1 };
     }
@@ -541,7 +554,7 @@ export function startNextInitiativeRound(state, allowUnresolvedSpecials = false)
         activeActorRef: "",
         activeActorLabel: "",
         activeActivationId: "",
-        slots: state.slots.map((slot) => ({ ...slot, claimedBy: "", claimedLabel: "", completed: false })),
+        slots: (state.renewalSlots?.length ? [...state.slots].sort((a,b) => b.success-a.success || b.advantage-a.advantage || (a.side === b.side ? 0 : a.side === "pc" ? -1 : 1)) : state.slots).map((slot) => ({ ...slot, claimedBy: "", claimedLabel: "", completed: false })),
         turn: blankTurn()
     };
     if (next.mode === "popcorn") {
@@ -644,7 +657,7 @@ export function adjustInitiativeRound(state, delta) {
     return { ...state, round: Math.max(1, state.round + Math.trunc(delta || 0)) };
 }
 export function endInitiativeEncounter(state) {
-    return { ...state, status: "ended", activeActorRef: "", activeActorLabel: "", activeActivationId: "", turn: blankTurn() };
+    return { ...state, renewalSlots: [], slots: state.slots.filter(slot => !state.renewalSlots?.some(row => row.id === slot.id)), status: "ended", activeActorRef: "", activeActorLabel: "", activeActivationId: "", turn: blankTurn() };
 }
 /** GM/runtime participant management. Adds or replaces an entry without requiring collecting state. */
 export function upsertInitiativeParticipant(state, entry) {
@@ -721,3 +734,14 @@ export function removeInitiativeParticipant(state, actorRef) {
     return next;
 }
 //# sourceMappingURL=initiative.js.map
+/** Renewal changes available side slots only; never participant activation allowances. */
+export function addRenewalSlot(state, input) {
+    if (state.status !== "active" || state.mode !== "side-slots") throw new Error("Renewal slots currently require active Side Slots mode.");
+    if (!input.activationId || !["cool","vigilance"].includes(input.skill)) throw new Error("Renewal needs an activation id and Cool/Vigilance roll.");
+    if (state.renewalSlots?.some(row => row.activationId === input.activationId)) return state;
+    const slot = {id:`renewal:${input.activationId}`,activationId:input.activationId,side:"pc",success:nonNegativeInteger(input.success),advantage:nonNegativeInteger(input.advantage),sourceActorRef:String(input.actorRef??""),sourceLabel:"Renewal",sourceSkill:input.skill,claimedBy:"",claimedLabel:"",completed:false};
+    const start = state.activeSlotIndex + (state.activeActorRef ? 1 : 0);
+    const prefix = state.slots.slice(0,start);
+    const remaining = [...state.slots.slice(start),slot].sort((a,b)=>b.success-a.success||b.advantage-a.advantage||(a.side===b.side?0:a.side==="pc"?-1:1));
+    return {...state,renewalSlots:[...(state.renewalSlots??[]),slot],slots:[...prefix,...remaining]};
+}
