@@ -1,3 +1,4 @@
+import { suppressedCriticals } from '../domain/heroic/primary-effects.js';
 import { activeCriticalCount, applyPermanentCharacteristicReduction, lookupCriticalInjury, rollCriticalInjury, rollCriticalSecondary, toCriticalInjuryState } from "../domain/criticals/index.js";
 import { addActorCondition, removeConditionsBySource } from "./condition-service.js";
 const CHARACTERISTICS = ["brawn", "agility", "intellect", "cunning", "presence", "willpower"];
@@ -74,11 +75,12 @@ export function getActorCriticalInjuries(actor) {
     return actorCriticals(actor).filter((entry) => entry.active !== false);
 }
 export function getActorCriticalModifier(actor) {
-    return activeCriticalCount(getActorCriticalInjuries(actor)) * 10;
+    const ignored=new Set(suppressedCriticals(actor).map(row=>row.id));
+    return activeCriticalCount(getActorCriticalInjuries(actor).filter(row=>!ignored.has(row.id))) * 10;
 }
 export async function inflictCriticalInjury(actor, modifiers = {}, sourceId = "core:critical-injury", rng = Math.random) {
     const current = actorCriticals(actor);
-    const resolution = rollCriticalInjury({ ...modifiers, unresolvedCount: activeCriticalCount(current) }, rng);
+    const resolution = rollCriticalInjury({ ...modifiers, unresolvedCount: getActorCriticalModifier(actor) / 10 }, rng);
     const state = toCriticalInjuryState(resolution, id(), sourceId);
     await actor.update({ "system.criticalInjuries": [...current, state] });
     const conditionTag = resolution.injury.tags?.find((tag) => tag.startsWith("condition:"));

@@ -1,3 +1,4 @@
+import { damageImmune } from '../domain/heroic/primary-effects.js';
 import { minionSkillRank, normalizeActorRole, normalizeMinionGroup, routeDamageForActorRole, tracksStrainNormally } from "../domain/adversaries/index.js";
 import { rerenderRenderedCharacterSheet } from "./live-sheet-state.js";
 function n(value, fallback = 0) {
@@ -122,7 +123,8 @@ export function assertActorCanVoluntarilySufferStrain(actor, amount = 0) {
 /** Apply direct strain/wound effects outside combat with the same role-routing rules. */
 export function prepareActorRoleDamage(actor, input) {
     const role = normalizeActorRole(actor?.system?.role);
-    const routed = routeDamageForActorRole(role, input.wounds ?? 0, input.strain ?? 0);
+    const immune = input.damage === true && damageImmune(actor?.system?.heroicAbility);
+    const routed = routeDamageForActorRole(role, immune ? 0 : input.wounds ?? 0, immune ? 0 : input.strain ?? 0);
     const update = {};
     if (role === "minion" && routed.wounds > 0) {
         const before = normalizeMinionGroup({

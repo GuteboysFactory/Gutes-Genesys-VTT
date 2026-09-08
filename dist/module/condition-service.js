@@ -1,3 +1,4 @@
+import { suppressedCriticals } from '../domain/heroic/primary-effects.js';
 import { auraModifiers } from "./heroic-aura-v1851.js";
 import { heroicCheckModifiers } from "../domain/heroic/combat-effects.js";
 import { advanceTurnConditionDurations, conditionRules, makeConditionState, summarizeConditions } from "../domain/conditions/index.js";
@@ -17,7 +18,8 @@ export function getActorConditionSummary(actor) {
     return summarizeConditions(getActorConditions(actor));
 }
 export function getActorConditionRules(actor) {
-    return conditionRules(getActorConditions(actor));
+    const suppressed=new Set(suppressedCriticals(actor).map(row=>`critical:${row.id}`));
+    return conditionRules(getActorConditions(actor).filter(row=>!suppressed.has(row.sourceId)));
 }
 export function getActorConditionCheckModifiers(actor) {
     const base = getActorConditionRules(actor).checkModifiers;

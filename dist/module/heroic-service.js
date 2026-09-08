@@ -79,7 +79,7 @@ export async function resetActorHeroicSession(actor, confirmed = false) {
     try {
         const rules = rulesForSetting(actorSettingId(actor));
         const next = resetHeroicAbilitySession(actorHeroicSnapshot(actor), rules);
-        await commitActorHeroicState(actor, next);
+        await actor.update({'system.heroicAbility':next,'flags.genesys-vtt.heroicTemporaryPoints':[]});
         return next;
     } finally { resettingActors.delete(key); }
 }

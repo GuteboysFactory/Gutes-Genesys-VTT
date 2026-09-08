@@ -76,7 +76,7 @@ export function prepareCombatWeaponAttack(input) {
         throw new RangeError(difficulty.reason ?? "Attack is not allowed.");
     const defense = capDefense(difficulty.defenseType === "melee" ? input.target.meleeDefense : input.target.rangedDefense);
     const silhouette = silhouetteDifficultyModifier(input.actor.silhouette ?? 1, input.target.silhouette ?? 1);
-    const baseDifficulty = Math.max(0, difficulty.difficulty + silhouette.difficultyDelta);
+    const baseDifficulty = Math.max(0, difficulty.difficulty + silhouette.difficultyDelta + nn(input.target.heroicDifficulty));
     const adversaryRank = nn(input.target.adversaryRank);
     const modifiers = [
         ...(adversaryRank ? [{ id: `core-adversary:${adversaryRank}`, priority: -100, pool: { upgradeNegative: adversaryRank } }] : []),

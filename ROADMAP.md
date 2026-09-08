@@ -1,8 +1,17 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1862** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1863** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
+
+## Samlad Heroic-leverans — v0.0.1863
+
+Alla elva primary-förmågor ingår nu i samma arbetsflöde på Actions och i GM Dock. Täckning och återstående mekanik anges i `docs/HEROIC_PRIMARY_COVERAGE.md`; gemensamt live-test finns i `TEST_PROTOCOL_v0.0.1863.md`.
+
+- Implementerat: återhämtning med sparåterställning, val av slagna Paragon-tärningar, Connected före betalning, faktajournal/tillfälliga SP, Foretelling-omslag och NPC-kopia, social strain, Unleash och utökad Hard to Kill.
+- Secondary: filtrerade kontroller och Devastating även för magiska attacker.
+- Återstår före komplett Heroic: permanenta Signature Weapon-uppgraderingar/fullständiga attachment-regler; samtliga Unbowed/critical-konsumenter; gemensamma råslag/externa slag och spenderingsflöden; live-QA.
+- Dessa luckor ska färdigställas tillsammans. Ingen förmåga markeras helautomatiserad bara för att dess regeltext eller en GM-knapp finns.
 
 ## Accepted baseline
 
@@ -341,4 +350,4 @@ Acceptance checks: Library → native Item → Tome; Foundry-created Item → Li
 
 ## Delivery rule
 
-Every slice must include a version bump, focused automated tests, a manual QA protocol, regression against accepted encounter modes, and publication to `qa` under the established user-authorized build/test/publish workflow.
+Future Heroic work is delivered as a consolidated package, as requested by the user. Every delivery must include a version bump, focused automated tests, a manual QA protocol, regression against accepted encounter modes, and publication to `qa` under the established user-authorized build/test/publish workflow.

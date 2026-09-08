@@ -1,3 +1,4 @@
+import { heroicDockControls, runHeroicDockControl } from '../heroic-dock-controls-v1861.js';
 import { applyActivationPulse } from "../heroic-pulse-v1852.js";
 import { configureAura } from "../heroic-aura-v1851.js";
 import { parsePoolFromElement, rollPoolToChat } from "../dice-ui.js";
@@ -106,6 +107,8 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             heroicAura: this.#heroicAura,
             heroicPulse: this.#heroicPulse,
             heroicRenewal: this.#heroicRenewal,
+            heroicEffect: this.#heroicEffect,
+            configureHeroicPrimary: this.#configureHeroicPrimary,
             rollNarrativeDice: this.#rollNarrativeDice,
             constructAndRoll: this.#constructAndRoll,
             rollSkill: this.#rollSkill,
@@ -130,6 +133,16 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         },
         window: { resizable: true }
     };
+    static async #heroicEffect(_event,target) {
+        target.disabled=true;
+        try {await runHeroicDockControl(this.actor,target.dataset.effect);this.render(false);}
+        catch(error){ui.notifications.warn(error.message);}
+        finally{target.disabled=false;}
+    }
+    static async #configureHeroicPrimary() {
+        try {await (await import('../heroic-primary-ui.js')).configurePrimary(this.actor);}
+        catch(error){ui.notifications.warn(error.message);}
+    }
     static async #heroicRenewal(_event,target) {
         target.disabled=true;
         try { await (await import('../heroic-renewal-ui-v1856.js')).promptRenewal(this.actor); }
@@ -167,6 +180,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         return {
             ...context,
             heroicLive: game.genesysHeroic?.liveSummary?.(this.actor),
+            heroicControls: heroicDockControls(this.actor).effectControls,
             heroicGm: Boolean(game.user?.isGM && game.users?.activeGM?.id === game.user.id),
             actor: this.actor,
             system: this.actor.system,
@@ -246,13 +260,13 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         const root = target.closest(".genesys-dice-lab");
         if (!root)
             return;
-        await rollPoolToChat(parsePoolFromElement(root), this.actor?.name ?? "Genesys Roll", this.actor?.id ?? "");
+        await rollPoolToChat(parsePoolFromElement(root), this.actor?.name ?? "Genesys Roll", this.actor?.id ?? "", this.actor);
     }
     static async #constructAndRoll(_event, target) {
         const root = target.closest(".genesys-pool-builder");
         if (!root)
             return;
-        await constructAndRollToChat(parseStandardPoolInput(root), this.actor?.name ?? "Genesys Check", this.actor?.id ?? "");
+        await constructAndRollToChat(parseStandardPoolInput(root), this.actor?.name ?? "Genesys Check", this.actor?.id ?? "", this.actor);
     }
     static async #rollSkill(_event, target) {
         const row = target.closest("[data-skill-id]");
@@ -275,7 +289,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             assistantSkillRank: readInteger(panel, "[data-assistant-skill-rank]", 2),
             extraHelpers: readInteger(panel, "[data-extra-helpers]", 0)
         });
-        await rollPreparedActorCheckToChat(prepared, this.actor?.name ?? "Genesys Skill Check", this.actor?.id ?? "");
+        await rollPreparedActorCheckToChat(prepared, this.actor?.name ?? "Genesys Skill Check", this.actor?.id ?? "", this.actor);
     }
     static async #createItem(_event, target) {
         const type = String(target.dataset.itemType ?? "gear");

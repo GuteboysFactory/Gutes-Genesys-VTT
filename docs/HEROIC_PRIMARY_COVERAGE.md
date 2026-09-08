@@ -1,27 +1,34 @@
-# Heroic primary-effect implementation coverage
+# Heroic primary coverage — consolidated QA v0.0.1863
 
-Audit at v0.0.1862. Source: supplied Realms of Terrinoth, printed pp.74–78. Catalog: dist/module/content-packs/realms-of-terrinoth-heroic-motivations.js. Runtime searched for all eleven primary IDs. Activation payment, uses and duration are shared infrastructure, not implementation of the primary effect.
+Source: supplied Realms of Terrinoth, printed pp.74–79. All eleven primary effects now have a shared GM resolution panel and tier-specific guidance, available from Actions and GM Dock. This is a consolidated workflow build, **not a claim that all effects are fully automated**. Live Foundry QA remains pending.
 
-| Primary | Current mechanical coverage | Remaining |
+| Primary | Implemented in this build | GM handling / remaining automation |
 |---|---|---|
-| All the Facts | Catalog and shared activation | GM narrative resolution and improved checks |
-| Connected | Catalog and shared activation | Contacts/narrative resolution |
-| Foretelling | Catalog and shared activation | Prediction and result substitution workflow |
-| Hard to Kill | Base/Improved +4 soak in actorCombatSnapshot | Improved attack difficulty; Supreme all-damage immunity; sheet effective-soak display |
-| Influential | Catalog and shared activation | Social-result handling |
-| Miraculous Recovery | Catalog and shared activation | Activation/turn healing and upgraded recovery |
-| Paragon | Catalog and shared activation | Chosen skill and post-roll die selection |
-| Sixth Sense | Catalog and shared activation | Defensive check handling |
-| Signature Weapon | Catalog and shared activation | Bound weapon and upgrade mechanics |
-| Unbowed | Catalog and shared activation | Threshold/effect handling |
-| Unleash | Catalog and shared activation | Its attack-resolution workflow |
+| All the Facts | One recorded fact per owner turn; related-check upgrade prompt in constructed skill, weapon and magic rolls; Supreme temporary-point ledger with spend and session reset | GM supplies information and resolves the chosen temporary SP benefit. Ledger spending does not itself upgrade a roll or pay another ability |
+| Connected | Favor approval before payment; cancel costs no SP/use; Improved social difficulty downgrade in constructed skill checks; recorded relationship | Supreme redirect is agreed before attack resolution and the GM changes the target; no interception of an already resolving attack |
+| Foretelling | Round-keyed question journal; one related reroll per activation in constructed skill/weapon/magic rolls; Supreme identical-pool copy, saved before result choice, retry without reroll | GM answers truthfully and enters the exact NPC pool. GM applies the chosen NPC result before resolving its consequences |
+| Hard to Kill | +4 soak all tiers; Improved/Supreme incoming difficulty in standard weapon and targeted magic attacks; Supreme damage zero in those paths and explicitly damage-tagged direct application | Arbitrary macros, external modules and direct sheet edits bypass these services. Stored sheet soak is unchanged; do not add +4 manually to supported attacks |
+| Influential | Single-check social Success bonus; guided social strain calculation and application, critical remark budget; Supreme target reduction in this social workflow | GM verifies the check, unspent Advantage and social context. Other sources of social strain and external spend UIs are not automatically synchronized |
+| Miraculous Recovery | Transactional activation wound healing, rollback/recovery journal; start-of-owner-turn healing once per round; Supreme selected activation-time Critical Injury and its linked conditions removed together | GM selects the injury via Primary Resolve. Healing does not reverse permanent characteristic losses. Turn automation requires tracked initiative |
+| Paragon | Validated chosen skill; post-roll Difficulty selection, Improved additional Setback, Supreme Challenge alternative; recalculated cancellation; constructed skill, standard weapon and resolved magic paths | Raw rolls/macros outside these entry points do not prompt. Existing dice presentation can show the original dice before the final adjusted result |
+| Sixth Sense | Configured entity type and tier-specific communication/information workflow with activation journal | GM supplies encounter/session/campaign information; no invented automatic narrative answers |
+| Signature Weapon | Bound owned weapon and owned temporary attachment; active temporary attachment qualities in standard weapon attack preparation; original Item stays unchanged | **Permanent profile, craftsmanship, Improved choice, Supreme +2 HP/free attachment, and non-quality attachment mechanics still need Item editing by GM.** Not fully automated |
+| Unbowed | Base injury selection limited to activation-time injuries; selected/all-tier critical-count suppression; linked condition-rule suppression; Supreme Dead ignored by initiative eligibility only while active | **Other pre-existing Critical Injury effects, permanent characteristic changes and already applied consequences are not automatically reversed/suppressed.** Wound/strain thresholds still apply |
+| Unleash | Base one maneuver per round on owner turn; Improved incidental; Supreme activation multi-target defeat; GM-confirmed Short range; per-target save journal; retry without another maneuver after a target-save failure | GM targets the eligible minions and confirms range. Interrupted maneuver-save reconciliation remains manual; error blocks automatic retry in ambiguous state |
 
-## First mechanical slice: Hard to Kill
+## Secondary effects
 
-Base and Improved grant +4 soak while active (p.76). The standard combat snapshot adds this dynamically and does not edit the actor's stored soak. Existing damage resolution consumes that effective value. Sheet soak still displays the stored value. Do not add a manual +4 for these standard attacks or it will be counted twice.
+- Actions and Dock expose only selected effects; custom descriptions remain available.
+- Existing Empowered, aura selection, Drain, Rejuvenation, Rejuvenate Allies and Renewal workflows retained.
+- Devastating also adds +2 to the resolved magic attack hit.
+- Range/side confirmation for auras and pulses remains GM-driven. Renewal outside Side Slots remains manual.
+- This build does not implement arbitrary custom-effect code execution.
 
-Improved difficulty increase is still manual. Supreme remains manual: its immunity must cover damage routes beyond standard attacks before it can be described as automated. No extra soak is applied automatically at Supreme in this slice.
+## Remaining work before marking Heroic complete
 
-Next: finish Hard to Kill's incoming-check and all-damage paths with tests for soak bypass, strain damage, critical injuries and effect expiry. Then Miraculous Recovery. Narrative abilities should receive supported GM workflows, not invented automatic outcomes.
+1. Signature Weapon permanent upgrades and complete attachment rule execution.
+2. Unbowed suppression across every Critical Injury consumer, including characteristic effects.
+3. Shared result/spend integration for all raw/custom/external roll paths; social spending and temporary SP benefits currently require GM handling.
+4. Live Foundry regression for the combined build. No live success is inferred from older user confirmations.
 
-Automated tests are not live Foundry QA. This audit does not mark any previously untested feature as user-approved.
+Session reset clears temporary points from the corresponding source character. Reset every source character at session end. All the Facts points may be spent after the ability expires, until that reset.

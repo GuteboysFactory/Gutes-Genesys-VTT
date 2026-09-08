@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import {primaryRank,damageImmune,incomingDifficulty,recoveryWounds,paragonResult,suppressedCriticals,primaryCheckModifiers,influentialValues,signatureWeaponData} from '../dist/domain/heroic/primary-effects.js';
+import {resolveRolledDice} from '../dist/domain/dice/index.js';
+import {prepareCombatWeaponAttack,createPendingCombatResolution,finalizePendingCombatResolution} from '../dist/domain/combat/index.js';
+const a=(id,powerLevel='base',active=true)=>({primaryEffectId:`rot-heroic:${id}`,powerLevel,active});
+for(const tier of ['base','improved','supreme']){
+ assert.equal(incomingDifficulty(a('hard-to-kill',tier)),tier==='base'?0:1);
+ assert.equal(damageImmune(a('hard-to-kill',tier)),tier==='supreme');
+ assert.equal(damageImmune(a('hard-to-kill',tier,false)),false);
+ assert.equal(recoveryWounds(a('miraculous-recovery',tier),8,true),tier==='base'?5:0);
+ assert.equal(recoveryWounds(a('miraculous-recovery',tier),2),0);
+}
+assert.equal(recoveryWounds(a('miraculous-recovery','base',false),8,true),8);
+assert.throws(()=>recoveryWounds(a('miraculous-recovery'),NaN),/Invalid/);
+const dice=[{type:'ability',symbols:{success:1}},{type:'difficulty',symbols:{failure:1}},{type:'challenge',symbols:{despair:1}},{type:'setback',symbols:{threat:1}}];
+const roll={dice,pool:{ability:1,difficulty:1,challenge:1,setback:1},...resolveRolledDice(dice)};
+const r=paragonResult(roll,a('paragon','supreme'),{negativeIndex:2,setbackIndex:3});
+assert.equal(r.net.despair,0);assert.equal(r.net.failure,0);assert.equal(r.net.threat,0);assert.equal(roll.dice.length,4);
+assert.throws(()=>paragonResult(roll,a('paragon'),{negativeIndex:2}),/eligible/);
+assert.throws(()=>paragonResult(roll,a('paragon'),{setbackIndex:3}),/eligible/);
+assert.deepEqual(paragonResult(roll,a('paragon')).net,roll.net);
+const actor={system:{heroicAbility:a('unbowed'),criticalInjuries:[{id:'one',total:61},{id:'dead',total:151},{id:'healed',total:50,healed:true}]},getFlag:()=>({criticalId:'one'})};
+assert.deepEqual(suppressedCriticals(actor).map(r=>r.id),['one']);
+actor.system.heroicAbility=a('unbowed','supreme');assert.deepEqual(suppressedCriticals(actor).map(r=>r.id),['one','dead']);
+actor.system.heroicAbility.active=false;assert.deepEqual(suppressedCriticals(actor),[]);
+assert.equal(primaryCheckModifiers(a('connected','improved'),'charm')[0].pool.downgradeNegative,1);
+assert.equal(primaryCheckModifiers(a('connected','supreme'),'melee-heavy').length,0);
+assert.equal(influentialValues(a('influential','supreme'),{social:true,strain:5,presence:3,cool:4}).strain,1);
+assert.equal(influentialValues(a('influential','supreme'),{social:true,strain:5,presence:3,cool:4,voluntary:true}).strain,5);
+const item={id:'sword',system:{damage:3,qualities:[{id:'superior',rank:1}]}}, attachment={id:'flame',type:'attachment',system:{qualities:[{id:'burn',rank:1}]}};
+const config={weaponId:'sword',attachmentId:'flame'};
+assert.equal(signatureWeaponData(a('signature-weapon'),config,item,attachment).qualities.length,2);
+assert.equal(item.system.qualities.length,1);
+assert.equal(signatureWeaponData(a('signature-weapon','base',false),config,item,attachment),item.system);
+console.log('PASS: Heroic tiers, expiry, recovery, selected rolled dice, critical suppression, social reductions and temporary weapon qualities');

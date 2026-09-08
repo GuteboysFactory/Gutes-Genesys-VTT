@@ -1,3 +1,4 @@
+import { damageImmune, incomingDifficulty, signatureWeaponData } from '../domain/heroic/primary-effects.js';
 import { heroicWeaponDamageBonus, heroicSoakBonus } from "../domain/heroic/combat-effects.js";
 import { rollNarrativePool } from "../domain/dice/index.js";
 import { applyReactionToPendingCombat, buildCombatCommitPlan, createPendingCombatResolution, finalizePendingCombatResolution, prepareCombatWeaponAttack, resolveDamageCharacteristic } from "../domain/combat/index.js";
@@ -84,6 +85,7 @@ export function actorCombatSnapshot(actor) {
     return {
         role,
         ...(minionGroup ? { minionGroup } : {}),
+        heroicDifficulty: incomingDifficulty(actor?.system?.heroicAbility),
         soak: liveNumber(actor, "system.soak", actor?.system?.soak) + heroicSoakBonus(actor?.system?.heroicAbility),
         woundsValue,
         woundsThreshold: minionState?.groupWoundThreshold ?? liveNumber(actor, "system.wounds.threshold", actor?.system?.wounds?.threshold),
@@ -167,7 +169,8 @@ export function prepareActorCombatAttack(attacker, item, target, targetRange, ch
         throw new Error("A weapon Item is required.");
     if (!target || target.type !== "character")
         throw new Error("A character target Actor is required.");
-    const weapon = normalizeWeaponRuleData(item.system ?? {});
+    const heroicConfig=attacker.getFlag?.('genesys-vtt','heroicPrimaryConfig');
+    const weapon = normalizeWeaponRuleData(signatureWeaponData(attacker.system?.heroicAbility,heroicConfig,item,attacker.items?.get(heroicConfig?.attachmentId)));
     const characteristicIds = ["brawn", "agility", "intellect", "cunning", "willpower", "presence"];
     const liveCharacteristics = { ...(attacker?.system?.characteristics ?? {}) };
     for (const id of characteristicIds) {
@@ -267,6 +270,11 @@ export async function commitPendingCombatResolutionToActor(target, prepared, pen
             strainThreshold: live.strainThreshold
         }
     };
+    if (damageImmune(target?.system?.heroicAbility)) {
+        pending.originalDamage = 0;
+        pending.damageAfterSoak = 0;
+        pending.damageBeforeSoak = 0;
+    }
     const plan = buildCombatCommitPlan(commitPrepared, pending);
     if (!(target?.isOwner !== false || game?.user?.isGM))
         return { plan, applied: false };
@@ -288,7 +296,7 @@ export async function commitPendingCombatResolutionToActor(target, prepared, pen
     return { plan, applied: true, automaticCritical };
 }
 export async function applyCombatResolutionToActor(target, resolution) {
-    if (!resolution.hit || resolution.damageAfterSoak <= 0)
+    if (damageImmune(target?.system?.heroicAbility) || !resolution.hit || resolution.damageAfterSoak <= 0)
         return null;
     const track = resolution.damageTrack === "strain" ? "strain" : "wounds";
     const before = n(target?.system?.[track]?.value);
@@ -314,10 +322,12 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
     item = reacquireEmbeddedItem(attacker, item);
     const prepared = prepareActorCombatAttack(attacker, item, target, targetRange, checkOptions);
     await consumeSceneEncounterAction(attacker);
-    const transfer = await consumeNarrativeDiceForActor(attacker, prepared.preparedWeaponAttack.check.construction.pool);
+    const primaryUi=await import('./heroic-primary-ui.js');
+    const primaryPool=await primaryUi.preparePrimaryPool(attacker,prepared.preparedWeaponAttack.check.construction.pool);
+    const transfer = await consumeNarrativeDiceForActor(attacker, primaryPool);
     prepared.preparedWeaponAttack.check.construction.pool = transfer.pool;
     prepared.preparedWeaponAttack.check.construction.trace.afterRemovals = transfer.pool;
-    const result = rollNarrativePool(transfer.pool);
+    const result = await primaryUi.applyPrimaryResult(attacker,prepared.checkContext.skillId,rollNarrativePool(transfer.pool));
     result.transferredDice = transfer.consumed;
     let pending = createPendingCombatResolution(prepared, result);
     if (pending.hit)

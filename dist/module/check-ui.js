@@ -1,3 +1,4 @@
+import { primaryCheckModifiers } from '../domain/heroic/primary-effects.js';
 import { prepareAssistedCheck, prepareOpposedCheck, prepareStandardCheck } from "../domain/checks/index.js";
 import { ruleElementToCheckModifier } from "../domain/rules/index.js";
 import { formatPool, resultToChatHtml } from "./dice-ui.js";
@@ -100,7 +101,7 @@ export function prepareActorSkillEngineCheck(actor, skillId, options = {}) {
         label: skill.skillLabel
     };
     const mode = options.mode ?? "standard";
-    const conditionModifiers = getActorConditionCheckModifiers(actor);
+    const conditionModifiers = [...getActorConditionCheckModifiers(actor), ...primaryCheckModifiers(actor?.system?.heroicAbility,skill.skillId)];
     let check;
     if (mode === "opposed") {
         check = prepareOpposedCheck({
@@ -142,8 +143,11 @@ export function prepareActorSkillEngineCheck(actor, skillId, options = {}) {
         check
     };
 }
-export async function rollPreparedActorCheckToChat(prepared, speakerAlias, actorId = "") {
-    const { result } = await rollNarrativeWithPresentation(prepared.check.construction.pool, {
+export async function rollPreparedActorCheckToChat(prepared, speakerAlias, actorId = "", actorDocument = null) {
+    const heroicActor = actorDocument ?? game.actors?.get(actorId);
+    const heroicPool = heroicActor ? await (await import('./heroic-primary-ui.js')).preparePrimaryPool(heroicActor,prepared.check.construction.pool) : prepared.check.construction.pool;
+    prepared.check.construction.pool=heroicPool;
+    let { result } = await rollNarrativeWithPresentation(prepared.check.construction.pool, {
         sourceType: `${prepared.check.kind ?? "standard"}-check`,
         sourceId: prepared.skillId,
         sourceLabel: prepared.skillLabel,
@@ -156,6 +160,7 @@ export async function rollPreparedActorCheckToChat(prepared, speakerAlias, actor
             appliedRuleLabel: prepared.appliedRuleLabel
         }
     });
+    if(heroicActor) result=await (await import('./heroic-primary-ui.js')).applyPrimaryResult(heroicActor,prepared.skillId,result,{characteristic:prepared.check.actor.characteristic});
     const assistance = prepared.check.kind === "assisted"
         ? ` · ${prepared.check.assistanceMode === "skilled" ? "Skilled assistance" : "Unskilled assistance"}`
         : "";

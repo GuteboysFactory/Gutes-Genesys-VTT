@@ -1,3 +1,5 @@
+import { damageImmune } from '../domain/heroic/primary-effects.js';
+import { heroicWeaponDamageBonus } from '../domain/heroic/combat-effects.js';
 import { normalizeMinionGroup } from "../domain/adversaries/index.js";
 import { actorCombatSnapshot, listCombatTargets, resolveCombatTargetReference } from "./combat-service.js";
 import { actorAdversaryContext, applyActorRoleDamage } from "./adversary-service.js";
@@ -119,10 +121,10 @@ async function addPersistentEffect(caster, target, prepared, result, options = {
 
 async function resolveAttack(caster, target, prepared, result) {
   if (!result?.succeeded) return { kind: "attack", applied: false, summary: "Attack missed; no damage applied." };
-  const grossDamage = n(prepared.attackBaseDamage) + n(result?.net?.success);
+  const grossDamage = n(prepared.attackBaseDamage) + n(result?.net?.success) + heroicWeaponDamageBonus(caster?.system?.heroicAbility);
   const snapshot = actorCombatSnapshot(target);
   const soak = n(snapshot.soak);
-  const damageAfterSoak = Math.max(0, grossDamage - soak);
+  const damageAfterSoak = damageImmune(target?.system?.heroicAbility) ? 0 : Math.max(0, grossDamage - soak);
   const nonLethal = prepared.selected.some((entry) => entry.effect.id === "non-lethal");
   if (!mayUpdate(target)) {
     return {
@@ -137,7 +139,7 @@ async function resolveAttack(caster, target, prepared, result) {
     };
   }
   if (damageAfterSoak > 0) {
-    await applyActorRoleDamage(target, nonLethal ? { strain: damageAfterSoak } : { wounds: damageAfterSoak });
+    await applyActorRoleDamage(target, nonLethal ? { strain: damageAfterSoak, damage:true } : { wounds: damageAfterSoak, damage:true });
   }
   return {
     kind: "attack",
@@ -291,7 +293,13 @@ export async function castMagicAction(caster, input = {}) {
   if (actionNeedsMagicTarget(prepared.action.id) && !target) throw new Error(`${prepared.action.label} requires a target before rolling.`);
   if (prepared.action.id === "dispel" && target && !getActiveMagicEffects(target).length) throw new Error(`${target.name} has no tracked active magic effect to dispel.`);
 
-  const { result } = await rollNarrativeWithPresentation(prepared.pool, {
+  const heroicUi=await import('./heroic-primary-ui.js');
+  const heroicPool=await heroicUi.preparePrimaryPool(caster,prepared.pool);
+  if(prepared.action.id==='attack'&&target){
+    const {incomingDifficulty}=await import('../domain/heroic/primary-effects.js');
+    heroicPool.difficulty=(heroicPool.difficulty??0)+incomingDifficulty(target.system?.heroicAbility);
+  }
+  let { result } = await rollNarrativeWithPresentation(heroicPool, {
     sourceType: "magic-action",
     sourceId: prepared.action.id,
     sourceLabel: `${prepared.action.label} (${prepared.skill.label})`,
@@ -310,6 +318,7 @@ export async function castMagicAction(caster, input = {}) {
     }
   });
 
+  result=await heroicUi.applyPrimaryResult(caster,prepared.skill.id,result);
   await applyActorRoleDamage(caster, { strain: prepared.magicCostStrain });
   const resolution = await resolveMagicAction(caster, prepared, result, input);
   await postCastChat(caster, target, prepared, result, resolution);

@@ -5,6 +5,6 @@ assert.equal(heroicSoakBonus(state),4);
 assert.equal(heroicSoakBonus({...state,powerLevel:'improved'}),4);
 assert.equal(heroicSoakBonus({...state,active:false}),0);
 assert.equal(heroicSoakBonus({...state,primaryEffectId:'rot-heroic:unbowed'}),0);
-assert.equal(heroicSoakBonus({...state,powerLevel:'supreme'}),0);
+assert.equal(heroicSoakBonus({...state,powerLevel:'supreme'}),4);
 assert.equal(heroicSoakBonus(null),0);
 console.log('PASS: Hard to Kill Base/Improved soak, inactive/unrelated exclusion, explicit Supreme boundary');

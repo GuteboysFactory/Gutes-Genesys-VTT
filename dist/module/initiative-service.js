@@ -46,7 +46,8 @@ export function resolveInitiativeActorReference(reference) {
 }
 export function getActorActivationEligibility(actor) {
     const criticals = Array.isArray(actor?.system?.criticalInjuries) ? actor.system.criticalInjuries : [];
-    const dead = criticals.some((row) => row?.active !== false && row?.healed !== true && (Number(row?.total ?? 0) >= 151 || String(row?.name ?? "").toLowerCase() === "dead"));
+    const unbowedSupreme=actor?.system?.heroicAbility?.active===true&&actor.system.heroicAbility.primaryEffectId==='rot-heroic:unbowed'&&actor.system.heroicAbility.powerLevel==='supreme';
+    const dead = !unbowedSupreme && criticals.some((row) => row?.active !== false && row?.healed !== true && (Number(row?.total ?? 0) >= 151 || String(row?.name ?? "").toLowerCase() === "dead"));
     const role = normalizeActorRole(actor?.system?.role ?? (actor?.hasPlayerOwner ? "pc" : "rival"));
     const minion = role === "minion" ? normalizeMinionGroup({
         members: actor?.system?.minionGroup?.members ?? 1,

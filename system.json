@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1862 \u2014 Hard to Kill soak and primary effect coverage audit.",
-  "version": "0.0.1862",
+  "description": "Genesys VTT 0.0.1863 \u2014 Consolidated Heroic workflows and primary mechanics.",
+  "version": "0.0.1863",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"

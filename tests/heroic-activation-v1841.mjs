@@ -8,6 +8,7 @@ const rules = { storyPointCost:2, baseDurationTurns:1, baseUsesPerSession:1 };
 let actor = { id:'a', uuid:'Actor.a', name:'Hero', isOwner:true, system: { role:'pc', heroicAbility: domain.createHeroicAbilityState({ id:'heroic',label:'Heroic' },{},rules) }, timing:{}, getFlag() { return this.timing; }, async update(data) {
  if (failActor) { failActor=false; throw Error('actor failed'); }
  if (failRollback) throw Error('rollback failed');
+ if(data['system.wounds.value'] !== undefined) this.system.wounds.value=data['system.wounds.value'];
  if(data['system.strain.value'] !== undefined) this.system.strain.value=data['system.strain.value'];
  this.system.heroicAbility=structuredClone(data['system.heroicAbility']); this.timing=structuredClone(data['flags.genesys-vtt.heroicTiming']);
 } };
@@ -44,5 +45,8 @@ reset();actor.system.strain={value:5};actor.system.heroicAbility.secondaryEffect
 failFinal=true;await assert.rejects(live.activate(actor),/pool failed/);assert.equal(actor.system.strain.value,5,'failed activation restores strain');
 await live.activate(actor);assert.equal(actor.system.strain.value,3);
 reset();actor.system.strain.value=1;actor.system.heroicAbility.secondaryEffectIds=['rot-heroic-secondary:rejuvenation'];await live.activate(actor);assert.equal(actor.system.strain.value,0);
+reset();actor.system.wounds={value:9};actor.system.heroicAbility.primaryEffectId='rot-heroic:miraculous-recovery';actor.system.heroicAbility.powerLevel='improved';
+failFinal=true;await assert.rejects(live.activate(actor),/pool failed/);assert.equal(actor.system.wounds.value,9,'failed activation restores wounds');
+await live.activate(actor);assert.equal(actor.system.wounds.value,0,'Improved heals all wounds on successful activation');
 game.user.isGM=false;await assert.rejects(live.activate(actor),/active GM/);
 console.log('PASS: Heroic coordinated saves, rollback, interrupted journal recovery, insufficient points, uses and next-owner-turn duration');

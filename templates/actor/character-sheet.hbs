@@ -35,13 +35,11 @@
       </details>
       {{#if heroicLive.originsLabel}}<p class="genesys-heroic-details-v1842">Origin: {{heroicLive.originsLabel}}</p>{{/if}}
       {{#if heroicLive.secondaryLabel}}<p class="genesys-heroic-details-v1842">Secondary: {{heroicLive.secondaryLabel}}</p>{{/if}}
-      {{#if heroicGm}}{{#if heroicLive.active}}
-      <div class="genesys-heroic-upgrades-v1843"><button type="button" data-action="heroicRenewal">Renewal · Resolve Activation / Retry</button></div>
-      <div class="genesys-heroic-upgrades-v1843"><button type="button" data-action="heroicAura" data-kind="allies">Empower Allies · Set Targets</button><button type="button" data-action="heroicAura" data-kind="enemies">Diminish · Set Targets</button></div>
-      <div class="genesys-heroic-upgrades-v1843"><button type="button" data-action="heroicPulse" data-kind="drain">Drain · Apply Activation</button><button type="button" data-action="heroicPulse" data-kind="heal">Rejuvenate Allies · Apply Activation</button></div>
-      <div class="genesys-heroic-upgrades-v1843"><button type="button" data-action="heroicPulse" data-kind="drain" data-phase="turn">Drain · Apply Turn Start</button><button type="button" data-action="heroicPulse" data-kind="heal" data-phase="turn">Rejuvenate Allies · Apply Turn Start</button></div>
-      <p class="genesys-heroic-details-v1842">Resolve turn-start pulses before Action/Maneuver. GM: target tokens within Short range, then confirm range and side. Reconfirm after movement or source turn changes.</p>
-      {{/if}}{{/if}}
+      {{#if heroicGm}}
+      <div class="genesys-heroic-upgrades-v1843">
+      {{#each heroicControls}}<button type="button" data-action="heroicEffect" data-effect="{{id}}">{{label}}</button>{{/each}}
+      </div>
+      {{/if}}
       {{#each heroicLive.customEffects}}<p class="genesys-heroic-details-v1842"><strong>{{label}} · Custom:</strong> {{description}}</p>{{/each}}
       {{#if heroicLive.active}}<p class="genesys-heroic-details-v1842">Active · {{heroicLive.remainingTurns}} owner turns remaining</p>{{/if}}
     {{else}}<p class="genesys-empty-row">No Heroic Ability selected.</p>{{/if}}

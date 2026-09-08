@@ -7,8 +7,8 @@ export function heroicCheckModifiers(state) {
         ? [{id:"heroic:empowered",priority:10,pool:{add:{boost:1}}}] : [];
 }
 
-/** Hard to Kill soak for Base/Improved; Supreme immunity requires damage-pipeline support. */
+/** Higher tiers retain the Base soak bonus. */
 export function heroicSoakBonus(state) {
     return state?.active === true && state.primaryEffectId === 'rot-heroic:hard-to-kill'
-        && ['base','improved'].includes(state.powerLevel ?? 'base') ? 4 : 0;
+        && ['base','improved','supreme'].includes(state.powerLevel ?? 'base') ? 4 : 0;
 }

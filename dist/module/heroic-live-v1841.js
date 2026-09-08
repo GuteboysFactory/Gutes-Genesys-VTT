@@ -1,3 +1,4 @@
+import { primaryRank, recoveryWounds } from '../domain/heroic/primary-effects.js';
 import { transactHeroic, recoverHeroicTransaction } from './story-point-service-v1832.js';
 const SID = 'genesys-vtt';
 const locks = new Set();
@@ -12,7 +13,17 @@ export async function activate(actor) {
   if (locks.has(actor.uuid)) throw new Error('Heroic action already in progress.');
   locks.add(actor.uuid);
   try {
+    const activationBefore=JSON.stringify(actor.system.heroicAbility);
+    const config=actor.getFlag(SID,'heroicPrimaryConfig')??{};
+    const primary=actor.system.heroicAbility?.primaryEffectId;
+    if(primary==='rot-heroic:paragon'&&!config.skillId)throw Error('Configure the Paragon skill first.');
+    if(primary==='rot-heroic:sixth-sense'&&!config.entity)throw Error('Configure the Sixth Sense entity type first.');
+    if(primary==='rot-heroic:signature-weapon'&&(!actor.items?.get(config.weaponId)||!actor.items?.get(config.attachmentId)))throw Error('Configure the signature weapon and temporary attachment first.');
+    const connection = actor.system.heroicAbility?.primaryEffectId === 'rot-heroic:connected' ? await (await import('./heroic-primary-ui.js')).approveConnection(actor) : null;
+    if (actor.system.heroicAbility?.primaryEffectId === 'rot-heroic:connected' && (!connection || !connection.relationship.trim() || !connection.favor.trim())) return false;
     const proposal = await transactHeroic(actor, pools => {
+      if (!authority()) throw Error('The active GM must approve activation.');
+      if(JSON.stringify(actor.system.heroicAbility)!==activationBefore)throw Error('Heroic selection changed; activate again.');
       const before = game.genesysHeroic.actorSnapshot(actor);
       if (before.active) throw new Error('Heroic Ability is already active.');
       const rules = game.genesysHeroic.actorRules(actor);
@@ -22,8 +33,8 @@ export async function activate(actor) {
       const rejuvenation = before.secondaryEffectIds.includes('rot-heroic-secondary:rejuvenation');
       const strainBefore = Number(actor.system?.strain?.value);
       if (rejuvenation && (!Number.isFinite(strainBefore) || strainBefore < 0)) throw new Error('Invalid Strain value.');
-      return { ...(rejuvenation ? { strainAfter: Math.max(0,strainBefore-2), strainRecovered:Math.min(2,strainBefore) } : {}), ability: prepared.nextAbility, pools: prepared.storyPointTransaction.after,
-        timing: { activationId: foundry.utils.randomID(), skipTurn: state.status === 'active' && state.activeActorRef === actor.uuid ? turnKey(state,scene) : '', lastTurn: '', rejuvenationStarts: state.status === 'active' && state.activeActorRef === actor.uuid ? [turnKey(state,scene)] : [], sceneId: scene?.id ?? '', encounterId: scene?.getFlag(SID,'ruleEncounterId') ?? '' }, cost: before.storyPointCost };
+      return { ...(primaryRank(prepared.nextAbility,'miraculous-recovery') ? {woundsAfter:recoveryWounds(prepared.nextAbility,Number(actor.system?.wounds?.value),true)} : {}), ...(rejuvenation ? { strainAfter: Math.max(0,strainBefore-2), strainRecovered:Math.min(2,strainBefore) } : {}), ability: prepared.nextAbility, pools: prepared.storyPointTransaction.after,
+        timing: { activationCriticalIds:(actor.system.criticalInjuries??[]).filter(r=>r.active!==false&&!r.healed).map(r=>r.id), ...(connection ? {connection} : {}), activationId: foundry.utils.randomID(), skipTurn: state.status === 'active' && state.activeActorRef === actor.uuid ? turnKey(state,scene) : '', lastTurn: '', rejuvenationStarts: state.status === 'active' && state.activeActorRef === actor.uuid ? [turnKey(state,scene)] : [], sceneId: scene?.id ?? '', encounterId: scene?.getFlag(SID,'ruleEncounterId') ?? '' }, cost: before.storyPointCost };
     });
     const secondaryLabels = game.genesysHeroic.secondaryOptions?.(actor)?.filter(row => proposal.ability.secondaryEffectIds.includes(row.id)).map(row => row.description ? `${row.label}: ${row.description}` : row.label).join('; ') || proposal.ability.secondaryEffectIds.join(', ');
     try { await foundry.documents.ChatMessage.create({ speaker: { alias: actor.name }, content: `<p><strong>Heroic Ability Activated</strong> · ${esc(proposal.ability.name || proposal.ability.primaryEffectLabel)}</p><p>${proposal.cost} Story Points · Usage ${proposal.ability.usesThisSession} · Until the end of the next owner turn (${proposal.ability.activeTurnBudget} turn budget).</p>${secondaryLabels ? `<p>Secondary Effects: ${esc(secondaryLabels)}</p>` : ''}${proposal.strainAfter !== undefined ? `<p>Rejuvenation: recovered ${proposal.strainRecovered} Strain on activation. Owner-turn recovery is automatic while active.</p>` : ''}<p>Apply remaining narrative/mechanical effects with the GM.</p>` }); }
@@ -95,7 +106,9 @@ export async function purchaseUpgrade(actor, type, effectId = "") {
 }
 export async function beginTurn(actor, state, scene) {
   if (!authority() || !actor?.uuid || state.status !== 'active' || state.activeActorRef !== actor.uuid) return false;
-  if (!actor.system?.heroicAbility?.active || !actor.system.heroicAbility.secondaryEffectIds?.includes('rot-heroic-secondary:rejuvenation')) return false;
+  const rejuvenation = actor.system?.heroicAbility?.active && actor.system.heroicAbility.secondaryEffectIds?.includes('rot-heroic-secondary:rejuvenation');
+  const recovery = primaryRank(actor.system?.heroicAbility,'miraculous-recovery');
+  if (!rejuvenation && !recovery) return false;
   if (locks.has(actor.uuid)) return false;
   if (game.genesysStoryPoints?.snapshot()?.heroicPending) return false;
   locks.add(actor.uuid);
@@ -103,10 +116,13 @@ export async function beginTurn(actor, state, scene) {
     const timing = actor.getFlag(SID,'heroicTiming') ?? {};
     const key = turnKey(state,scene);
     const starts = timing.rejuvenationStarts ?? [];
+    const recoveryRound=`${scene?.id}:${scene?.getFlag?.(SID,'ruleEncounterId')}:${state.round}`;
+    const recoveryRounds=timing.recoveryRounds??[];
+    const healWounds=recovery&&!recoveryRounds.includes(recoveryRound);
     if (starts.includes(key) || timing.skipTurn === key) return false;
-    const before = Number(actor.system.strain?.value);
+    const before = Number(actor.system.strain?.value ?? 0);
     if (!Number.isFinite(before) || before < 0) throw new Error('Invalid Strain value.');
-    await actor.update({ 'system.strain.value':Math.max(0,before-2), [`flags.${SID}.heroicTiming`]:{...timing,rejuvenationStarts:[...starts,key]} });
+    await actor.update({ ...(rejuvenation ? {'system.strain.value':Math.max(0,before-2)} : {}), ...(healWounds ? {'system.wounds.value':recoveryWounds(actor.system.heroicAbility,Number(actor.system.wounds?.value))} : {}), [`flags.${SID}.heroicTiming`]:{...timing,rejuvenationStarts:[...starts,key],recoveryRounds:healWounds?[...recoveryRounds,recoveryRound]:recoveryRounds} });
     return true;
   } finally { locks.delete(actor.uuid); }
 }
