@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import * as i from '../dist/domain/initiative/index.js';
+import {resolveRenewal} from '../dist/module/heroic-renewal-v1855.js';
+function initial(){let s=i.emptyInitiativeState();for(const [actorRef,side,success] of [['p','pc',3],['n','npc',1]])s=i.recordInitiativeEntry(s,i.initiativeEntryFromRoll({actorRef,label:actorRef,side,skill:'cool',result:{net:{success,advantage:0}}}));return i.startInitiativeEncounter(s);}
+let state=initial(),flags={heroicTiming:{activationId:'a',sceneId:'s',encounterId:'e'}};
+const actor={uuid:'p',system:{heroicAbility:{active:true,secondaryEffectIds:['rot-heroic-secondary:renewal']}},getFlag:(_,key)=>flags[key],setFlag:async(_,key,val)=>{flags[key]=val;}};
+let rolls=0,fail=true,choices=0;
+const deps={scene:{id:'s',getFlag:()=> 'e'},isGM:()=>true,read:()=>state,write:async next=>{if(fail)throw Error('save failed');state=i.normalizeInitiativeState(next);},choose:async()=>{choices++;return 'cool';},roll:()=>{rolls++;return {net:{success:5,advantage:1}};}};
+await assert.rejects(()=>resolveRenewal(actor,deps),/save failed/);assert.equal(rolls,1);fail=false;
+await resolveRenewal(actor,deps);assert.equal(rolls,1);assert.equal(choices,1);assert.equal(state.slots.length,3);
+await resolveRenewal(actor,deps);assert.equal(rolls,1);assert.equal(state.activationEntitlements.length,2);
+const renewal=structuredClone(state.slots.find(s=>s.id==='renewal:a'));
+state=i.upsertInitiativeParticipant(state,{...state.entries[0],success:0});assert.deepEqual(state.slots.find(s=>s.id===renewal.id),renewal);
+state=i.removeInitiativeParticipant(state,'p');state=i.normalizeInitiativeState(state);assert.equal(state.renewalSlots.length,1);assert.equal(state.slots.length,2);assert.equal(state.slots[state.activeSlotIndex].side,'npc');
+state=i.startNextInitiativeRound(state);assert.equal(state.slots[state.activeSlotIndex].side,'npc');
+state=i.endInitiativeEncounter(state);assert.equal(i.normalizeInitiativeState(state).slots.length,1);
+state=initial();flags.heroicTiming.activationId='b';
+await resolveRenewal(actor,{...deps,choose:async()=>null});assert.equal(rolls,1);
+await assert.rejects(()=>resolveRenewal(actor,{...deps,isGM:()=>false}),/GM/);
+await assert.rejects(()=>resolveRenewal(actor,{...deps,scene:{id:'s',getFlag:()=> 'new'}}),/encounter/);
+state=i.claimCurrentInitiativeSlot(state,'p','p','pc');state=i.addRenewalSlot(state,{activationId:'x',actorRef:'p',skill:'vigilance',success:5});state=i.completeCurrentInitiativeSlot(state,'p');state=i.claimCurrentInitiativeSlot(state,'n','n','npc');const active=state.slots[state.activeSlotIndex].id;state=i.removeInitiativeParticipant(state,'p');state=i.normalizeInitiativeState(state);assert.equal(state.activeActorRef,'n');assert.equal(state.slots[state.activeSlotIndex].id,active);
+console.log('PASS: Renewal saved retry, idempotency, cancellation, authority, encounter scope, participant edits/removal and round eligibility');

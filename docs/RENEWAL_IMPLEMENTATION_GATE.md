@@ -1,6 +1,6 @@
 # Renewal implementation gate
 
-Status: v0.0.1854 adds domain slot persistence/insertion and completion skipping. Gameplay UI, roll transaction, participant-management edge cases and Popcorn semantics remain pending. The blockers below describe the pre-v0.0.1854 baseline.
+Status: v0.0.1855 adds GM Side Slots resolution, saved-roll retry and participant/round edge handling. Earlier blockers below are historical. Live Foundry QA and concurrent-client write hardening remain open.
 
 ## Rule
 
@@ -34,4 +34,10 @@ Supplied Realms of Terrinoth, printed p.79: on activation, an optional Cool or V
 - Encounter end/reset clears added slots; participant removal does not leave invalid references.
 - Side Slots, Popcorn, Nemesis extras and explicit End of Round regression.
 
-No new Renewal UI or gameplay is published by this audit. No live QA claim.
+## v0.0.1855 scope and limitations
+
+GM uses the Actions button immediately after a new Heroic activation. Timing is GM-confirmed, not automatically prompted. Popcorn is rejected. Existing activations without encounter identity are handled manually.
+
+The roll is saved on the actor before inserting the scene slot. Retrying a failed scene write reuses that saved result, including after reload. If the initial actor save itself fails, the roll has not been durably recorded; do not claim an atomic cross-document transaction. A local lock blocks duplicate clicks; simultaneous writes from separate GM browser sessions still need hardening. No chat announcement yet; result notification and Encounter Tracker slot provide feedback.
+
+Automated tests cover saved retry, cancellation, GM/encounter guards, unchanged allowances, source removal, preserved active slot and round eligibility. Live Foundry QA remains pending.

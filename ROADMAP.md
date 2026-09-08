@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1854** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1855** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -203,12 +203,15 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - No player-facing button yet; Cool/Vigilance resolution and participant-management edge cases remain next
 - Popcorn addition explicitly blocked; existing Popcorn regression passes
 
-### Renewal — implementation tracking
+### v0.0.1855 — Renewal GM resolution
 
-- Code/source audit completed: see docs/RENEWAL_IMPLEMENTATION_GATE.md
-- Direct slot insertion would be discarded by current normalizer; index-based advancement can leave unclaimable slots
-- Next: persist encounter-scoped additional slots, preserve current claim and enforce existing activation allowances, then add Cool/Vigilance resolution
-- Renewal remains unimplemented; QA version stays v0.0.1853 for this documentation-only update
+- Actions → Heroic: Renewal activation/retry button with Cool/Vigilance choice
+- GM resolves immediately after activation; Side Slots only, no extra participant turns
+- Saved actor roll reused after a failed scene write; inserted slot keyed to activation
+- New activations record encounter identity; pre-1855 active Heroics need manual resolution
+- Renewal survives source removal and participant updates; next-round eligibility skips unusable slots
+- 34 automated test files pass; live Foundry and multi-client QA pending
+- Next: remaining Heroic integration, activation-time prompt/chat feedback and concurrent encounter-write hardening. Popcorn Renewal needs explicit semantics before implementation.
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 

@@ -563,7 +563,7 @@ export function startNextInitiativeRound(state, allowUnresolvedSpecials = false)
         if (starter && activation)
             next = claimActivation(next, starter.actorRef, starter.label, activation);
     }
-    return next;
+    return advanceRenewalEligibility(next);
 }
 export function waiveInitiativeActivation(state, activationId) {
     if (state.status !== "active")
@@ -671,13 +671,13 @@ export function upsertInitiativeParticipant(state, entry) {
     let slots = state.slots;
     if (state.mode === "side-slots") {
         if (existingIndex >= 0) {
-            slots = state.slots.map((slot) => slot.sourceActorRef === entry.actorRef
+            slots = state.slots.map((slot) => slot.sourceActorRef === entry.actorRef && !state.renewalSlots?.some(row => row.id === slot.id)
                 ? { ...slot, side: normalized.side, success: normalized.success, advantage: normalized.advantage, sourceLabel: normalized.label, sourceSkill: normalized.skill }
                 : slot);
         }
         else {
             const slot = buildInitiativeSlots([normalized])[0];
-            slots = [...state.slots, { ...slot, id: `slot:${state.slots.length + 1}` }];
+            slots = [...state.slots, { ...slot, id: `participant:${entry.actorRef}` }];
         }
     }
     return refreshActivationDefinitions({ ...state, slots }, entries);
@@ -713,16 +713,20 @@ export function encounterOutcome(state) {
     return { complete: false, winner: "none", activePc, activeNpc, reason: "" };
 }
 export function removeInitiativeParticipant(state, actorRef) {
+    const activeSlot = state.slots[state.activeSlotIndex];
+    if (state.activeActorRef && state.activeActorRef !== actorRef && activeSlot?.sourceActorRef === actorRef && !state.renewalSlots?.some(row => row.id === activeSlot.id)) throw new Error("End the active turn before removing this slot source.");
     const entries = state.entries.filter((row) => row.actorRef !== actorRef);
-    const slots = state.slots.filter((slot) => slot.sourceActorRef !== actorRef && slot.claimedBy !== actorRef);
+    const slots = state.slots.filter((slot) => state.renewalSlots?.some(row => row.id === slot.id) || slot.sourceActorRef !== actorRef).map(slot => slot.claimedBy === actorRef ? { ...slot, claimedBy: "", claimedLabel: "" } : slot);
+    const currentId = state.slots[state.activeSlotIndex]?.id;
+    const retainedIndex = slots.findIndex(slot => slot.id === currentId);
     const activeRemoved = state.activeActorRef === actorRef;
     const activationEntitlements = state.activationEntitlements.filter((row) => row.actorRef !== actorRef);
     const next = {
         ...state,
         entries,
         activationEntitlements,
-        slots: slots.map((slot, index) => ({ ...slot, id: `slot:${index + 1}` })),
-        activeSlotIndex: Math.min(state.activeSlotIndex, Math.max(0, slots.length - 1)),
+        slots,
+        activeSlotIndex: retainedIndex >= 0 ? retainedIndex : Math.min(state.activeSlotIndex, Math.max(0, slots.length - 1)),
         turnNumber: state.status === "active" ? Math.min(Math.max(1, state.turnNumber), Math.max(1, activationEntitlements.length)) : 0,
         actedActorRefs: [],
         activeActorRef: activeRemoved ? "" : state.activeActorRef,
@@ -731,7 +735,7 @@ export function removeInitiativeParticipant(state, actorRef) {
         turn: activeRemoved ? blankTurn() : state.turn
     };
     next.actedActorRefs = actedRefsFromEntitlements(next);
-    return next;
+    return advanceRenewalEligibility(next);
 }
 //# sourceMappingURL=initiative.js.map
 /** Renewal changes available side slots only; never participant activation allowances. */
@@ -743,5 +747,12 @@ export function addRenewalSlot(state, input) {
     const start = state.activeSlotIndex + (state.activeActorRef ? 1 : 0);
     const prefix = state.slots.slice(0,start);
     const remaining = [...state.slots.slice(start),slot].sort((a,b)=>b.success-a.success||b.advantage-a.advantage||(a.side===b.side?0:a.side==="pc"?-1:1));
-    return {...state,renewalSlots:[...(state.renewalSlots??[]),slot],slots:[...prefix,...remaining]};
+    return advanceRenewalEligibility({...state,renewalSlots:[...(state.renewalSlots??[]),slot],slots:[...prefix,...remaining]});
+}
+
+function advanceRenewalEligibility(state) {
+    if (!state.renewalSlots?.length || state.mode !== "side-slots" || state.status !== "active" || state.activeActorRef || state.roundPhase !== "turns") return state;
+    let index=state.activeSlotIndex;
+    while(index<state.slots.length && !state.entries.some(entry=>entry.side===state.slots[index].side && entry.encounterStatus==="active" && state.activationEntitlements.some(a=>a.actorRef===entry.actorRef && a.kind==="base" && !a.used && !a.waived)))index++;
+    return index>=state.slots.length ? toEndRound(state) : {...state,activeSlotIndex:index,turnNumber:index+1};
 }
