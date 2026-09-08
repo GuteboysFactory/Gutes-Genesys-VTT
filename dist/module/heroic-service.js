@@ -50,7 +50,9 @@ async function commitActorHeroicState(actor, state, settingId = actorSettingId(a
 export function heroicLiveSummary(actor) {
     const rules = rulesForSetting(actorSettingId(actor));
     const state = actorHeroicSnapshot(actor);
-    return { id: actor.id, actorName: actor.name, selected: state.selected && Boolean(state.primaryEffectId),
+    const definitions = game.genesysContent?.getContent?.("heroicAbilities", { settingId: actorSettingId(actor) }) ?? [];
+    const label = id => definitions.find(row => row.id === id)?.label ?? id;
+    return { originsLabel: state.origins.map(label).join(" / "), secondaryLabel: state.secondaryEffectIds.map(label).join(" / "), id: actor.id, actorName: actor.name, selected: state.selected && Boolean(state.primaryEffectId),
         name: state.name || state.primaryEffectLabel, cost: state.storyPointCost,
         used: state.usesThisSession, total: heroicAbilityUsesPerSession(state, rules),
         active: state.active, remainingTurns: state.activeTurnBudget,

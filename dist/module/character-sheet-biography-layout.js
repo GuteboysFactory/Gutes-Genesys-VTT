@@ -108,7 +108,7 @@ function buildHeroicMotivation(actor) {
     );
     motivationPanel.append(list);
 
-    stack.append(heroicPanel, motivationPanel);
+    stack.append(motivationPanel);
     wrapper.append(stack);
     return wrapper;
 }

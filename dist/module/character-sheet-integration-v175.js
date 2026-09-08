@@ -87,6 +87,7 @@ function buildBiographyIntegration(root, actor) {
     </section>
   </div>`;
 
+  section.querySelector(".genesys-integration-heroic")?.remove();
   const storyPanel = host.querySelector(".genesys-biography-story");
   if (storyPanel) host.insertBefore(section, storyPanel);
   else host.prepend(section);

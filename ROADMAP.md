@@ -113,7 +113,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Primary/secondary mechanical effects remain GM-resolved; no automatic effect claims
 - Pending: live multiplayer/crash QA; identical GM-account tabs not a supported concurrency guarantee
 
-### v0.0.1842 onward — Remaining Heroic Abilities Live
+### v0.0.1842 — User-requested Heroic placement
+
+- Full Heroic panel at top of Actions, above Actions/Custom Action and Dice Tools
+- Activation button beside ability name; remove portrait-top bar and Biography duplicate
+- No activation, cost or duration rule changes
+
+### v0.0.1843 onward — Remaining Heroic Abilities Live
 
 - Activation, costs, upgrades and encounter lifecycle
 - Sheet, chat and GM Dock integration

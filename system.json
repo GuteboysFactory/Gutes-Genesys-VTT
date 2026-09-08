@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1841 \u2014 Heroic activation, recoverable payment and owner-turn duration.",
-  "version": "0.0.1841",
+  "description": "Genesys VTT 0.0.1842 \u2014 Heroic Ability panel above Actions and Dice Tools.",
+  "version": "0.0.1842",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"

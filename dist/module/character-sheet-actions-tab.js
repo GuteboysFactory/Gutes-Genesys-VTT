@@ -353,6 +353,8 @@ function buildActionsPanel(root) {
     mainColumn.append(buildCombatActions(root), buildCustomActions(root), buildTalentActions(root));
     content.append(generalColumn, mainColumn);
 
+    const heroicPanel = root.querySelector("[data-heroic-actions-panel]");
+    if (heroicPanel) { heroicPanel.hidden = false; panel.append(heroicPanel); }
     panel.append(topRow, content);
     equipmentPanel.before(panel);
     root.dataset.genesysActionsTab = "true";

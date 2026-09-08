@@ -1,5 +1,22 @@
 <section class="genesys-sheet-body genesys-sheet-v15 genesys-theme-fantasy genesys-target-v153" data-genesys-sheet-tabs data-actor-name="{{actor.name}}">
-  {{#if heroicLive.selected}}<div class="genesys-heroic-live-v1841"><strong>{{heroicLive.name}}</strong><span>{{heroicLive.cost}} SP · Uses {{heroicLive.used}}/{{heroicLive.total}}{{#if heroicLive.active}} · Active: {{heroicLive.remainingTurns}} turns{{/if}}</span><button type="button" data-action="activateHeroic" {{#if heroicLive.active}}disabled{{/if}}>{{#if heroicGm}}Activate Heroic{{else}}Request Activation{{/if}}</button></div>{{/if}}
+  <section hidden data-heroic-actions-panel class="genesys-fantasy-panel genesys-ornate-panel genesys-v1752-heroic-panel genesys-heroic-actions-v1842">
+    <div class="genesys-panel-banner"><div><h2>Heroic Ability</h2><p>Character heroic progression.</p></div></div>
+    {{#if heroicLive.selected}}
+      <div class="genesys-heroic-title-row-v1842">
+        <div class="genesys-v1752-heroic-name"><strong>{{heroicLive.name}}</strong><span>{{system.heroicAbility.primaryEffectLabel}}</span></div>
+        <button type="button" data-action="activateHeroic" {{#if heroicLive.active}}disabled{{/if}}>{{#if heroicGm}}Activate Heroic{{else}}Request Activation{{/if}}</button>
+      </div>
+      <div class="genesys-v1752-heroic-stats">
+        <div><span>Power</span><strong>{{system.heroicAbility.powerLevel}}</strong></div>
+        <div><span>Activation</span><strong>{{system.heroicAbility.activation}}</strong></div>
+        <div><span>Story Cost</span><strong>{{heroicLive.cost}} SP</strong></div>
+        <div><span>Uses</span><strong>{{heroicLive.used}}/{{heroicLive.total}}</strong></div>
+      </div>
+      {{#if heroicLive.originsLabel}}<p class="genesys-heroic-details-v1842">Origin: {{heroicLive.originsLabel}}</p>{{/if}}
+      {{#if heroicLive.secondaryLabel}}<p class="genesys-heroic-details-v1842">Secondary: {{heroicLive.secondaryLabel}}</p>{{/if}}
+      {{#if heroicLive.active}}<p class="genesys-heroic-details-v1842">Active · {{heroicLive.remainingTurns}} owner turns remaining</p>{{/if}}
+    {{else}}<p class="genesys-empty-row">No Heroic Ability selected.</p>{{/if}}
+  </section>
   <header class="genesys-hero-header genesys-header-wizard-baseline">
     <div class="genesys-portrait-column">
       <div class="genesys-portrait-frame">

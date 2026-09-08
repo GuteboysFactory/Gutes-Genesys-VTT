@@ -402,3 +402,12 @@
 
 .genesys-heroic-live-v1841 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px; background: #172d37; color: #eed38b; border: 1px solid #ad883d; }
 .genesys-heroic-live-v1841 button { width: auto; background: #203e48; color: #eed38b; border: 1px solid #ad883d; }
+
+.genesys-heroic-actions-v1842 { width: 100%; grid-column: 1 / -1; margin-bottom: 12px; }
+.genesys-heroic-actions-v1842[hidden] { display: none !important; }
+.genesys-heroic-title-row-v1842 { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 8px 12px; }
+.genesys-heroic-title-row-v1842 .genesys-v1752-heroic-name { flex: 1; min-width: 0; border-bottom: 0; }
+.genesys-heroic-title-row-v1842 button { width: auto; flex-shrink: 0; padding: 7px 12px; background: #183a48; border: 1px solid #ac8134; color: #f1d17c; }
+.genesys-heroic-actions-v1842 .genesys-v1752-heroic-stats { margin: 0 12px 12px; }
+.genesys-heroic-details-v1842 { padding: 0 12px 8px; font-size: .75rem; }
+@media(max-width:650px) { .genesys-heroic-title-row-v1842 { flex-wrap: wrap; } }
