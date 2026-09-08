@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1832 Story Points Live. Adds synchronized Story Point pools, transfers, history, GM Dock controls, and smoother launcher dragging.",
-  "version": "0.0.1832",
+  "description": "Genesys VTT 0.0.1833 Party XP & Story Point Counter. Adds GM party awards with ledger notes and a movable shared Story Point display.",
+  "version": "0.0.1833",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -61,6 +61,7 @@
     "dist/module/magic-concentration-runtime-v1810.js",
     "dist/module/magic-effect-ui-v1810.js",
     "dist/module/story-point-service-v1832.js",
+    "dist/module/story-point-counter-v1833.js",
     "dist/module/apps/gm-dock-v1830.js"
   ],
   "styles": [

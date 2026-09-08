@@ -35,9 +35,14 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - GM corrections, activity history and chat announcements
 - Smooth requestAnimationFrame launcher dragging
 
-### v0.0.1833–v0.0.1835 — Remaining GM Dock Live Tools
+### v0.0.1833 — Party XP & Story Point Counter
 
-- Party XP awards, notes and audit trail
+- Party XP awards to selected characters, award notes and authoritative XP ledgers
+- Visible Player/GM Story Point counter beside chat for every user
+- Smooth draggable counter with per-client position persistence
+
+### v0.0.1834–v0.0.1835 — Remaining GM Dock Live Tools
+
 - Session controls, reminders and recovery helpers
 - Encounter shortcuts and GM-facing status indicators
 - Permission, multi-client and reconnect testing

@@ -321,6 +321,32 @@
 .genesys-gm-dock-launcher-v1831.is-dragging { cursor: grabbing; }
 .genesys-gm-dock-launcher-v1831 .fa-grip-lines { margin-left: auto; color: #8c7a53; font-size: .62rem; }
 
+.genesys-party-xp-award-v1833 { display: grid; grid-template-columns: 110px minmax(0, 1fr); gap: 8px; padding: 10px; border: 1px solid rgba(104, 72, 32, .35); background: rgba(255,255,255,.16); }
+.genesys-party-xp-award-v1833 > label { display: grid; gap: 4px; }
+.genesys-party-xp-award-v1833 label > small { color: #72552f; font-size: .57rem; font-weight: 800; letter-spacing: .08em; }
+.genesys-party-xp-award-v1833 input[type="number"], .genesys-party-xp-award-v1833 input[type="text"] { width: 100%; height: 32px; border: 1px solid #8b6a38; background: #f2dfb8; color: #2f251b; }
+.genesys-party-xp-award-v1833 .is-wide, .genesys-party-xp-roster-v1833 { grid-column: 1 / -1; }
+.genesys-party-xp-roster-v1833 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 5px; }
+.genesys-party-xp-roster-v1833 label { display: flex; align-items: center; gap: 7px; padding: 6px; border: 1px solid rgba(104,72,32,.25); background: rgba(255,255,255,.2); cursor: pointer; }
+.genesys-party-xp-roster-v1833 img { width: 30px; height: 30px; border: 1px solid #87632d; object-fit: cover; }
+.genesys-party-xp-roster-v1833 span { display: grid; min-width: 0; }
+.genesys-party-xp-roster-v1833 strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.genesys-party-xp-chat-v1833 small { display: block; color: #796448; }
+
+.genesys-story-point-counter-v1833 { position: fixed; z-index: 79; display: grid; grid-template-columns: 47px 72px 25px 72px; align-items: stretch; width: 216px; min-height: 58px; border: 1px solid #9c7127; border-radius: 4px; background: linear-gradient(180deg,#152d39,#09161d); box-shadow: 0 5px 16px rgba(0,0,0,.58), inset 0 0 0 1px rgba(239,189,67,.12); color: #f0d275; overflow: hidden; user-select: none; }
+.genesys-sp-counter-grip-v1833 { display: flex; align-items: center; gap: 5px; padding: 6px; border-right: 1px solid rgba(239,189,67,.25); color: #ab8740; cursor: grab; touch-action: none; }
+.genesys-sp-counter-grip-v1833 span { font: 700 .46rem Georgia,serif; letter-spacing: .08em; line-height: 1.2; }
+.genesys-story-point-counter-v1833.is-dragging { will-change: transform; }
+.genesys-story-point-counter-v1833.is-dragging .genesys-sp-counter-grip-v1833 { cursor: grabbing; }
+.genesys-story-point-counter-v1833 button { display: grid; place-content: center; gap: 1px; width: 100%; height: 100%; margin: 0; border: 0; border-radius: 0; background: transparent; color: inherit; }
+.genesys-story-point-counter-v1833 button:not(:disabled):hover { background: rgba(44,114,148,.28); }
+.genesys-story-point-counter-v1833 button:disabled { opacity: 1; cursor: default; }
+.genesys-story-point-counter-v1833 button small { font: 700 .5rem Georgia,serif; letter-spacing: .1em; }
+.genesys-story-point-counter-v1833 button strong { font: 700 1.65rem Georgia,serif; line-height: 1; text-shadow: 0 1px 4px #000; }
+.genesys-story-point-counter-v1833 .is-player { color: #9ed7b8; box-shadow: inset 0 -3px #397255; }
+.genesys-story-point-counter-v1833 .is-gm { color: #f0c85f; box-shadow: inset 0 -3px #a47228; }
+.genesys-sp-counter-swap-v1833 { display: grid; place-items: center; color: #866c3a; font-size: .62rem; }
+
 @container (max-width: 720px) {
   .genesys-gm-dock-hero-v1830 { align-items: flex-start; flex-direction: column; }
   .genesys-gm-dock-runtime-v1830 { justify-content: flex-start; }

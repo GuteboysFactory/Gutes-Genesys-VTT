@@ -70,7 +70,7 @@
     </section>
 
     <section id="genesys-gm-xp" class="genesys-gm-dock-panel-v1830 genesys-gm-dock-panel-wide-v1830">
-      <header><div><small>ADVANCEMENT</small><h2><i class="fa-solid fa-arrow-trend-up"></i> XP Control</h2></div><span class="is-planned">v0.0.1833</span></header>
+      <header><div><small>ADVANCEMENT</small><h2><i class="fa-solid fa-arrow-trend-up"></i> XP Control</h2></div><span class="is-ready">LIVE</span></header>
       <div class="genesys-gm-dock-panel-body-v1830">
         <div class="genesys-gm-dock-readiness-v1830 {{#if advancementReady}}is-ready{{/if}}"><i class="fa-solid fa-list-check"></i><span><strong>Advancement service</strong><small>{{#if advancementReady}}Ready · existing ledgers remain authoritative{{else}}Not available{{/if}}</small></span></div>
         <div class="genesys-gm-dock-actor-strip-v1830">
@@ -82,7 +82,14 @@
             <p class="genesys-gm-dock-empty-v1830">No player characters exist yet.</p>
           {{/each}}
         </div>
-        <button type="button" data-action="unavailable" data-feature="Party XP awards">Award Party XP · Upcoming</button>
+        <div class="genesys-party-xp-award-v1833">
+          <label><small>XP EACH</small><input type="number" min="1" max="999" value="5" data-party-xp-amount /></label>
+          <label class="is-wide"><small>AWARD NOTE</small><input type="text" maxlength="100" placeholder="Session award, milestone…" data-party-xp-note /></label>
+          <div class="genesys-party-xp-roster-v1833">
+            {{#each pcs}}<label><input type="checkbox" value="{{id}}" data-party-xp-actor checked /><img src="{{img}}" alt="" /><span><strong>{{name}}</strong><small>{{xp.available}} available</small></span></label>{{/each}}
+          </div>
+          <button type="button" class="genesys-gm-dock-primary-v1830 is-wide" data-action="awardPartyXp" {{#unless advancementReady}}disabled{{/unless}}><i class="fa-solid fa-sparkles"></i> Award Selected Characters</button>
+        </div>
       </div>
     </section>
 

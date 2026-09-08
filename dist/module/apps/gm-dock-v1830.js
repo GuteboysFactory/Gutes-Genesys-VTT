@@ -6,10 +6,17 @@ const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 let gmDockApp = null;
 let gmDockLauncher = null;
 let storyPointActionPending = false;
+let partyXpActionPending = false;
 
 function integer(value, fallback = 0) {
   const number = Number(value ?? fallback);
   return Number.isFinite(number) ? Math.max(0, Math.trunc(number)) : fallback;
+}
+
+function escapeHtml(value) {
+  const node = document.createElement("div");
+  node.textContent = String(value ?? "");
+  return node.innerHTML;
 }
 
 function requireGm({ notify = true } = {}) {
@@ -92,6 +99,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       openActor: this.#openActor,
       spendStoryPoint: this.#spendStoryPoint,
       adjustStoryPoint: this.#adjustStoryPoint,
+      awardPartyXp: this.#awardPartyXp,
       refresh: this.#refresh,
       unavailable: this.#unavailable
     }
@@ -203,6 +211,42 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       ui?.notifications?.warn?.(error?.message ?? "Story Point adjustment failed.");
     } finally {
       storyPointActionPending = false;
+      if (gmDockApp?.rendered) await gmDockApp.render({ force: true });
+    }
+  }
+
+  static async #awardPartyXp(_event, target) {
+    if (!requireGm() || partyXpActionPending) return;
+    const panel = target?.closest?.("#genesys-gm-xp");
+    const amount = integer(panel?.querySelector?.("[data-party-xp-amount]")?.value, 0);
+    const note = String(panel?.querySelector?.("[data-party-xp-note]")?.value ?? "").trim();
+    const actorIds = Array.from(panel?.querySelectorAll?.("[data-party-xp-actor]:checked") ?? []).map((input) => String(input.value));
+    if (!amount) return ui?.notifications?.warn?.("Enter an XP amount greater than zero.");
+    if (!actorIds.length) return ui?.notifications?.warn?.("Select at least one player character.");
+    const actors = [...new Set(actorIds)].map((id) => game?.actors?.get?.(id));
+    if (actors.some((actor) => !actor || !actorSummary(actor).isPc)) return ui.notifications.warn("Selection changed. Refresh and select player characters again.");
+    if (typeof game?.genesysAdvancement?.awardXp !== "function") return ui.notifications.error("XP service unavailable.");
+    partyXpActionPending = true;
+    target.disabled = true;
+    try {
+      for (const actor of actors) {
+        await game.genesysAdvancement.awardXp(actor, amount, {
+          kind: "party-award",
+          label: note || `Party award · ${amount} XP`,
+          sourceId: "gm-dock:party-xp"
+        });
+      }
+      const names = actors.map((actor) => String(actor.name ?? "Unnamed Actor")).join(", ");
+      await foundry.documents.ChatMessage.create({
+        content: `<section class="genesys-party-xp-chat-v1833"><strong><i class="fa-solid fa-arrow-trend-up"></i> Party XP</strong><p>${amount} XP awarded to ${escapeHtml(names)}</p>${note ? `<small>${escapeHtml(note)}</small>` : ""}</section>`,
+        speaker: { alias: String(game?.user?.name ?? "GM") }
+      });
+      ui?.notifications?.info?.(`${amount} XP awarded to ${actors.length} character${actors.length === 1 ? "" : "s"}.`);
+    } catch (error) {
+      ui?.notifications?.error?.(error?.message ?? "Party XP award failed.");
+    } finally {
+      partyXpActionPending = false;
+      target.disabled = false;
       if (gmDockApp?.rendered) await gmDockApp.render({ force: true });
     }
   }

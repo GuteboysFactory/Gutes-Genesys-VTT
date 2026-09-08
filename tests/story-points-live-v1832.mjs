@@ -8,7 +8,7 @@ const dock = fs.readFileSync("dist/module/apps/gm-dock-v1830.js", "utf8");
 const template = fs.readFileSync("templates/gm/gm-dock-v1830.hbs", "utf8");
 const css = fs.readFileSync("styles/gm-dock-v1830.css", "utf8");
 
-assert.equal(manifest.version, "0.0.1832");
+assert.ok(Number(manifest.version.split(".").at(-1)) >= 1832);
 assert.ok(manifest.esmodules.includes("dist/module/story-point-service-v1832.js"));
 assert.deepEqual(normalizeStoryPointState({ player: 2, gm: 3 }), { player: 2, gm: 3 });
 assert.deepEqual(prepareStoryPointTransaction({ player: 2, gm: 3 }, { player: 1 }).after, { player: 1, gm: 4 });
