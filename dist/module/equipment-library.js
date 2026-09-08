@@ -1,3 +1,4 @@
+import {installEquipmentCatalog} from './equipment-catalog-install.js';
 import { visibleWorldEquipment } from "./equipment-world-items-v1846.js";
 const SYSTEM_ID = "genesys-vtt";
 const LIBRARY_PROTOCOL = "genesys-equipment-library-v1";
@@ -57,7 +58,8 @@ function rarityText(system = {}) {
 function settingEntries(actor) {
     const settingId = actorSettingId(actor);
     const rows = game?.genesysEquipment?.listDefinitions?.(settingId) ?? [];
-    return rows.map((row) => ({
+    const native=new Set(Array.from(game.items?.contents??[]).map(i=>i.flags?.[SYSTEM_ID]?.equipmentCatalogKey));
+    return rows.filter(row=>!native.has(`${settingId}:${row.id}`)).map((row) => ({
         id: `setting:${row.id}`,
         sourceKind: "setting",
         definitionId: row.id,
@@ -128,7 +130,7 @@ function libraryHtml(actor) {
 
     return `<dialog class="genesys-equipment-library" data-equipment-library-dialog>
       <div class="genesys-equipment-library-shell">
-        <header class="genesys-equipment-library-header"><div><strong>Equipment Library</strong><small>${esc(actor?.name ?? "Character")} · ${entries.length} registered entries</small></div><div class="genesys-equipment-library-header-actions">${game?.user?.isGM ? `<button type="button" data-equipment-new-custom><i class="fa-solid fa-plus"></i> Custom Item</button>` : ""}<button type="button" data-equipment-library-close aria-label="Close">×</button></div></header>
+        <header class="genesys-equipment-library-header"><div><strong>Equipment Library</strong><small>${esc(actor?.name ?? "Character")} · ${entries.length} registered entries</small></div><div class="genesys-equipment-library-header-actions">${game?.user?.isGM ? `<button type="button" data-equipment-new-custom><i class="fa-solid fa-plus"></i> Custom Item</button><button type="button" data-equipment-install>Install catalog as Items</button>` : ""}<button type="button" data-equipment-library-close aria-label="Close">×</button></div></header>
         <div class="genesys-equipment-library-controls"><input type="search" data-equipment-search placeholder="Search equipment…"/><select data-equipment-type><option value="all">All Types</option>${types}</select><select data-equipment-source><option value="all">All Sources</option><option value="setting">Setting Content</option><option value="custom">World Items</option></select><select data-equipment-rarity><option value="all">All Rarities</option>${Array.from({length:11},(_,i)=>`<option value="${i}">Rarity ${i}</option>`).join("")}</select></div>
         <div class="genesys-equipment-library-body"><div class="genesys-equipment-library-list">${cards}</div><aside class="genesys-equipment-library-detail" data-equipment-detail><div class="genesys-equipment-detail-placeholder"><i class="fa-solid fa-shield-halved"></i><strong>Select an Item</strong><p>Inspect the source, statistics, qualities, and provenance before adding it to the character.</p></div></aside></div>
       </div>
@@ -382,6 +384,15 @@ document.addEventListener("click", async (event) => {
         return;
     }
 
+    const install=event.target?.closest?.('[data-equipment-install]');
+    if(install){
+        event.preventDefault();const dialog=install.closest('dialog'),actor=dialog.genesysLibraryActor,host=dialog.parentElement;dialog.close();
+        try{
+            const yes=await foundry.applications.api.DialogV2.confirm({window:{title:'Install equipment catalog'},content:'<p>Install the current setting’s equipment into Items → Equipment, visible to players? Existing installed Items and edits are preserved. Explicit reinstall restores deleted entries.</p>',rejectClose:false});
+            if(yes)ui.notifications.info(`${await installEquipmentCatalog(actorSettingId(actor))} equipment Items created.`);
+        }catch(error){ui.notifications.warn(error.message);}finally{if(dialog.isConnected)openEquipmentLibrary(actor,host);}
+        return;
+    }
     const newCustom = event.target?.closest?.("[data-equipment-new-custom]");
     if (newCustom) {
         event.preventDefault();

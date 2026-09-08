@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1871** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1872** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -403,3 +403,7 @@ The Adversary Library upload now includes the current Foundry user ID in the upl
 ## Talents folder — v0.0.1871
 
 Catalog install creates/reuses the root Item folder Talents. New catalog Items go there; existing catalog Items in root move there on explicit reinstall. Items already organized in other folders remain there. Focused tests pass; live QA pending.
+
+## Equipment catalog — v0.0.1872
+
+Explicit active-GM installation of current setting equipment into Items / Equipment. Existing installed sources preserved; Library uses native sources in place of catalog fallback. Player Observer default disclosed at confirmation. Other categories, equipment Compendiums and Tome verification remain pending. Live QA pending.
