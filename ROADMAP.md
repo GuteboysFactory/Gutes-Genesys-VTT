@@ -133,7 +133,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Purchased effects displayed on sheet and activation chat; mechanical resolution remains manual
 - Live Foundry QA for v0.0.1843 and v0.0.1844 remains pending
 
-### v0.0.1845 onward — Remaining Heroic Abilities Live
+### v0.0.1845 — Custom Secondary Effects
+
+- GM creates character-specific name/description and purchases atomically with normal AP/capacity rules
+- Sheet and activation chat show custom text; manual resolution
+- Live QA pending
+
+### v0.0.1846 onward — Remaining Heroic Abilities Live
 
 - Activation, costs, upgrades and encounter lifecycle
 - Sheet, chat and GM Dock integration

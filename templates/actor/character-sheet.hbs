@@ -23,6 +23,7 @@
         </div>
         <p>Select an upgrade to review its cost and effect before purchasing.</p>
         <details><summary>Secondary Effects · {{heroicLive.secondaryCost}} AP each · maximum {{heroicLive.secondaryLimit}}</summary>
+          <button type="button" data-action="upgradeHeroic" data-upgrade="custom-secondary">+ Custom Effect</button>
           <div class="genesys-heroic-upgrades-v1843">
           {{#each heroicLive.secondaryOptions}}
             <button type="button" data-action="upgradeHeroic" data-upgrade="secondary-effect" data-effect-id="{{id}}" title="{{source}}" {{#if owned}}disabled{{/if}}>{{label}}{{#if owned}} · Purchased{{/if}}</button>
@@ -34,6 +35,7 @@
       </details>
       {{#if heroicLive.originsLabel}}<p class="genesys-heroic-details-v1842">Origin: {{heroicLive.originsLabel}}</p>{{/if}}
       {{#if heroicLive.secondaryLabel}}<p class="genesys-heroic-details-v1842">Secondary: {{heroicLive.secondaryLabel}}</p>{{/if}}
+      {{#each heroicLive.customEffects}}<p class="genesys-heroic-details-v1842"><strong>{{label}} · Custom:</strong> {{description}}</p>{{/each}}
       {{#if heroicLive.active}}<p class="genesys-heroic-details-v1842">Active · {{heroicLive.remainingTurns}} owner turns remaining</p>{{/if}}
     {{else}}<p class="genesys-empty-row">No Heroic Ability selected.</p>{{/if}}
   </section>

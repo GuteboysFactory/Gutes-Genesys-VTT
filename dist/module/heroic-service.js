@@ -48,15 +48,17 @@ async function commitActorHeroicState(actor, state, settingId = actorSettingId(a
 }
 
 export function heroicSecondaryOptions(actor) {
-    return (game.genesysContent?.getContent?.("heroicAbilities", { settingId: actorSettingId(actor) }) ?? [])
-        .filter(row => row.kind === "secondary-effect");
+    const custom = actor.getFlag?.("genesys-vtt", "heroicCustomEffects");
+    return [...(game.genesysContent?.getContent?.("heroicAbilities", { settingId: actorSettingId(actor) }) ?? [])
+        .filter(row => row.kind === "secondary-effect"), ...(Array.isArray(custom) ? custom : [])];
 }
 export function heroicLiveSummary(actor) {
     const rules = rulesForSetting(actorSettingId(actor));
     const state = actorHeroicSnapshot(actor);
     const definitions = game.genesysContent?.getContent?.("heroicAbilities", { settingId: actorSettingId(actor) }) ?? [];
-    const label = id => definitions.find(row => row.id === id)?.label ?? id;
-    return { secondaryOptions: heroicSecondaryOptions(actor).map(row => ({ id:row.id, label:row.label,
+    const allDefinitions = [...definitions, ...heroicSecondaryOptions(actor)];
+    const label = id => allDefinitions.find(row => row.id === id)?.label ?? id;
+    return { customEffects: heroicSecondaryOptions(actor).filter(row => row.description && state.secondaryEffectIds.includes(row.id)), secondaryOptions: heroicSecondaryOptions(actor).map(row => ({ id:row.id, label:row.label,
         source:row.metadata?.printedSource ?? '', owned:state.secondaryEffectIds.includes(row.id) })),
         secondaryLimit:rules.maxSecondaryEffects, secondaryCost:rules.upgradeCosts.secondaryEffect,
         originsLabel: state.origins.map(label).join(" / "), secondaryLabel: state.secondaryEffectIds.map(label).join(" / "), id: actor.id, actorName: actor.name, selected: state.selected && Boolean(state.primaryEffectId),

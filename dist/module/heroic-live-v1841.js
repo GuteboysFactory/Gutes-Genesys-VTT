@@ -22,7 +22,7 @@ export async function activate(actor) {
       return { ability: prepared.nextAbility, pools: prepared.storyPointTransaction.after,
         timing: { skipTurn: state.status === 'active' && state.activeActorRef === actor.uuid ? turnKey(state,scene) : '', lastTurn: '', sceneId: scene?.id ?? '' }, cost: before.storyPointCost };
     });
-    const secondaryLabels = game.genesysHeroic.secondaryOptions?.(actor)?.filter(row => proposal.ability.secondaryEffectIds.includes(row.id)).map(row => row.label).join(', ') || proposal.ability.secondaryEffectIds.join(', ');
+    const secondaryLabels = game.genesysHeroic.secondaryOptions?.(actor)?.filter(row => proposal.ability.secondaryEffectIds.includes(row.id)).map(row => row.description ? `${row.label}: ${row.description}` : row.label).join('; ') || proposal.ability.secondaryEffectIds.join(', ');
     try { await foundry.documents.ChatMessage.create({ speaker: { alias: actor.name }, content: `<p><strong>Heroic Ability Activated</strong> · ${esc(proposal.ability.name || proposal.ability.primaryEffectLabel)}</p><p>${proposal.cost} Story Points · Usage ${proposal.ability.usesThisSession} · Until the end of the next owner turn (${proposal.ability.activeTurnBudget} turn budget).</p>${secondaryLabels ? `<p>Secondary Effects: ${esc(secondaryLabels)}</p>` : ''}<p>Apply the ability's narrative/mechanical effect with the GM.</p>` }); }
     catch { ui.notifications.warn('Heroic activation saved; chat announcement failed.'); }
     return proposal;
@@ -31,7 +31,7 @@ export async function activate(actor) {
 export async function purchaseUpgrade(actor, type, effectId = "") {
   if (!authority()) throw new Error('The active GM must purchase Heroic upgrades.');
   if (!actor?.uuid || actor.system?.role !== 'pc') throw new Error('Choose a player character.');
-  if (!['duration', 'frequency', 'power', 'story', 'secondary-effect'].includes(type)) throw new Error('Unsupported upgrade.');
+  if (!['duration', 'frequency', 'power', 'story', 'secondary-effect', 'custom-secondary'].includes(type)) throw new Error('Unsupported upgrade.');
   if (locks.has(actor.uuid)) throw new Error('Heroic action already in progress.');
   locks.add(actor.uuid);
   try {
@@ -42,7 +42,23 @@ export async function purchaseUpgrade(actor, type, effectId = "") {
     if (!before.selected || !before.primaryEffectId) throw new Error('No Heroic Ability selected.');
     if (before.active) throw new Error('End the active Heroic effect before upgrading.');
     if (game.genesysStoryPoints?.snapshot()?.heroicPending) throw new Error('Recover interrupted Heroic activation first.');
-    const secondary = type === 'secondary-effect' ? api.secondaryOptions(actor).find(row => row.id === effectId) : null;
+    let custom = null;
+    const customBefore = actor.getFlag(SID,'heroicCustomEffects') ?? [];
+    if (type === 'custom-secondary') {
+      const input = await foundry.applications.api.DialogV2.wait({
+        window:{title:'Custom Secondary Effect'},
+        content:'<label>Name<input name="effectName" maxlength="80" required></label><label>Description<textarea name="effectDescription" maxlength="2000" required></textarea></label><p>Custom effect for this character. Resolved manually by the GM.</p>',
+        buttons:[{action:'next',label:'Review Purchase',callback:(_e,_b,dialog)=>({name:dialog.element.querySelector('[name="effectName"]').value,description:dialog.element.querySelector('[name="effectDescription"]').value})},{action:'cancel',label:'Cancel',default:true,callback:()=>null}],rejectClose:false
+      });
+      if (!input) return false;
+      const label = String(input.name ?? '').trim(), description = String(input.description ?? '').trim();
+      if (!label || label.length > 80 || !description || description.length > 2000) throw new Error('Enter a name (1–80 characters) and description (1–2000 characters).');
+      if (api.secondaryOptions(actor).some(row => row.label.toLowerCase() === label.toLowerCase())) throw new Error('An effect with this name already exists.');
+      effectId = `custom-heroic:${foundry.utils.randomID()}`;
+      custom = {id:effectId,label,description,kind:'secondary-effect',metadata:{printedSource:'Custom · GM resolved'}};
+      type = 'secondary-effect';
+    }
+    const secondary = custom ?? (type === 'secondary-effect' ? api.secondaryOptions(actor).find(row => row.id === effectId) : null);
     if (type === 'secondary-effect' && !secondary) throw new Error('Choose a Secondary Effect from this character setting.');
     const next = api.purchaseUpgrade(before, { type, effectId }, earned, rules);
     const cost = next.abilityPointsSpent - before.abilityPointsSpent;
@@ -52,16 +68,16 @@ export async function purchaseUpgrade(actor, type, effectId = "") {
       : `Story Point cost: ${before.storyPointCost} → ${next.storyPointCost}`;
     const accepted = await foundry.applications.api.DialogV2.wait({
       window: { title: 'Purchase Heroic Upgrade' },
-      content: `<p><strong>${esc(actor.name)}</strong> · ${esc(type)}</p><p>${esc(detail)}</p><p>Cost: ${cost} Ability Points. Remaining: ${api.availablePoints(next,earned,rules)}. XP is unchanged.</p>`,
+      content: `<p><strong>${esc(actor.name)}</strong> · ${esc(type)}</p><p>${esc(detail)}</p>${custom ? `<p>${esc(custom.description)}</p>` : ''}<p>Cost: ${cost} Ability Points. Remaining: ${api.availablePoints(next,earned,rules)}. XP is unchanged.</p>`,
       buttons: [{ action:'buy', label:'Purchase', callback:()=>true }, { action:'cancel', label:'Cancel', default:true, callback:()=>false }],
       rejectClose:false
     });
     if (accepted !== true) return false;
-    if ((secondary && !api.secondaryOptions(actor).some(row => row.id === effectId)) || !authority() || JSON.stringify(api.actorSnapshot(actor)) !== JSON.stringify(before)
+    if (JSON.stringify(actor.getFlag(SID,'heroicCustomEffects') ?? []) !== JSON.stringify(customBefore) || (!custom && secondary && !api.secondaryOptions(actor).some(row => row.id === effectId)) || !authority() || JSON.stringify(api.actorSnapshot(actor)) !== JSON.stringify(before)
       || Number(actor.system?.xp?.earned ?? 0) !== earned || JSON.stringify(api.actorRules(actor)) !== JSON.stringify(rules)
       || game.genesysStoryPoints?.snapshot()?.heroicPending) throw new Error('Heroic state changed. Review the upgrade again.');
     const history = actor.getFlag(SID,'heroicUpgradeHistory') ?? [];
-    await actor.update({ 'system.heroicAbility': next, [`flags.${SID}.heroicUpgradeHistory`]:
+    await actor.update({ 'system.heroicAbility': next, ...(custom ? {[`flags.${SID}.heroicCustomEffects`]:[...customBefore,custom]} : {}), [`flags.${SID}.heroicUpgradeHistory`]:
       [...history, { type, effectId:secondary?.id ?? "", cost, earnedXp:earned, spentAfter:next.abilityPointsSpent, userId:game.user.id, at:Date.now() }].slice(-100) });
     return true;
   } finally { locks.delete(actor.uuid); }
