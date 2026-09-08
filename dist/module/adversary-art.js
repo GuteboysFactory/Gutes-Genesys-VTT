@@ -6,13 +6,15 @@ export function validateAdversaryImage(file){
 }
 export async function uploadAdversaryImage(file){
  validateAdversaryImage(file);
+ const user=globalThis.game?.user?.id;
+ if(!user)throw Error('No active Foundry user. Reload the world and try again.');
  const decoded=await createImageBitmap(file);decoded.close();
  const picker=foundry.applications.apps.FilePicker.implementation;
  const dir='genesys-adversaries';
  try{await picker.browse('data',dir);}catch{await picker.createDirectory('data',dir,{notify:false});}
  const extension={'image/png':'png','image/jpeg':'jpg','image/webp':'webp'}[file.type];
  const named=new File([file],`${foundry.utils.randomID()}-${Date.now()}.${extension}`,{type:file.type});
- const result=await picker.upload('data',dir,named,{}, {notify:false});
+ const result=await picker.upload('data',dir,named,{user}, {notify:false});
  const path=typeof result==='string'?result:result?.path;
  if(!path)throw Error('Image upload failed. No NPC was created.');
  return path;
