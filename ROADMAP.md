@@ -97,7 +97,14 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 
 ## Next — character and encounter depth
 
-### v0.0.184x — Heroic Abilities Live
+### v0.0.1840 — Heroic Live foundation
+
+- Atomic multi-point Story Point transfers in existing service; one-point Spend UI preserved
+- Setting-aware Heroic overview, costs, usage and available Ability Points in GM Dock
+- Explicit per-actor reset of session uses and active duration; no automatic session reset
+- This slice does not yet activate abilities or connect actor state to payment
+
+### v0.0.1841 onward — Heroic Abilities Live
 
 - Activation, costs, upgrades and encounter lifecycle
 - Sheet, chat and GM Dock integration

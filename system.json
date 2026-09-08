@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1839 \u2014 GM Dock writer authority and reconnect refresh hardening.",
-  "version": "0.0.1839",
+  "description": "Genesys VTT 0.0.1840 \u2014 Heroic Live foundation: multi-point costs, overview and explicit session reset.",
+  "version": "0.0.1840",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"

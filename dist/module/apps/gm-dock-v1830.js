@@ -133,6 +133,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       adjustStoryPoint: this.#adjustStoryPoint,
       awardPartyXp: this.#awardPartyXp,
       sessionControl: this.#sessionControl,
+      resetHeroicSession: this.#resetHeroicSession,
       applyNightRest: this.#applyNightRest,
       recoverEncounterStrain: this.#recoverEncounterStrain,
       refresh: this.#refresh,
@@ -176,6 +177,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       })),
       actors,
       pcs,
+      heroicRows: characterActors().map(actor => game.genesysHeroic?.liveSummary?.(actor)).filter(row => row?.selected),
       encounterRecovery: game.genesysEncounterRecovery?.recoveryRoster() ?? { ready: false },
       recoveryRows: characterActors().filter(actor => actor.system?.role === "pc").map(actor => {
         try { return game.genesysRecovery.nightRestPreview(actor); }
@@ -193,7 +195,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   async _onRender(context, options) {
     await super._onRender(context, options);
     if (!context.dockWriter) {
-      const mutations = ["spendStoryPoint", "adjustStoryPoint", "awardPartyXp", "sessionControl", "applyNightRest", "recoverEncounterStrain", "addEncounterTokens"];
+      const mutations = ["spendStoryPoint", "adjustStoryPoint", "awardPartyXp", "sessionControl", "applyNightRest", "recoverEncounterStrain", "addEncounterTokens", "resetHeroicSession"];
       for (const action of mutations) for (const button of this.element.querySelectorAll(`[data-action="${action}"]`)) button.disabled = true;
     }
     if (context.unauthorized) {
@@ -372,6 +374,18 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       for (const failure of result.failed) ui.notifications.warn(`${failure.name}: ${failure.reason}`);
     } catch (error) { ui.notifications.warn(error.message); }
     finally { recoveryPending = false; target.disabled = false; refreshOpenDock(); }
+  }
+
+  static async #resetHeroicSession(_event, target) {
+    if (!requireDockWriter() || target.disabled) return;
+    target.disabled = true;
+    try {
+      const actor = game.actors.get(target.dataset.actorId);
+      const confirmed = target.closest("[data-heroic-row]")?.querySelector("input")?.checked === true;
+      await game.genesysHeroic.resetActorSession(actor, confirmed);
+      ui.notifications.info("Heroic uses reset and active duration cleared.");
+    } catch (error) { ui.notifications.warn(error.message); }
+    finally { target.disabled = false; refreshOpenDock(); }
   }
 
   static async #sessionControl(_event, target) {

@@ -49,6 +49,19 @@
           <li>Session controls record session status. Recovery and ability resets are handled separately.</li>
         </ul>
         <div class="genesys-night-rest-v1837">
+          <strong>Heroic Abilities · Session Control</strong>
+          {{#each heroicRows}}
+            <div class="genesys-encounter-recovery-row-v1838" data-heroic-row>
+              <strong>{{actorName}} · {{name}}</strong>
+              <small>{{cost}} Story Points · Uses {{used}}/{{total}} · {{availablePoints}} Ability Points available</small>
+              <small>{{#if active}}Active · {{remainingTurns}} owner turns remaining{{else}}Inactive{{/if}}</small>
+              <label><input type="checkbox" /> Reset uses and end active effect</label>
+              <button type="button" data-action="resetHeroicSession" data-actor-id="{{id}}">Reset Heroic Session</button>
+            </div>
+          {{else}}<p>No Heroic Abilities selected on world characters.</p>{{/each}}
+          <small>Activation and automatic duration handling arrive in the next Heroic Live step.</small>
+        </div>
+        <div class="genesys-night-rest-v1837">
           <strong>End-of-Encounter Strain Recovery</strong>
           <p>One Simple Cool or Discipline check per participant. Each Success recovers 1 strain. GM enters any approved talent bonus separately.</p>
           {{#if encounterRecovery.ready}}

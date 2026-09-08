@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+globalThis.Hooks = { once() {}, on() {}, callAll() {} };
+let pool = { player: 1, gm: 0, revision: 0, history: [] }, writes = 0;
+globalThis.ui = { notifications: { warn() {} } };
+globalThis.foundry = { utils: { deepClone: structuredClone }, documents: { ChatMessage: { create: async () => {} } } };
+const rules = { storyPointCost: 2, baseUsesPerSession: 1, baseDurationTurns: 1, xpPerAbilityPoint: 50 };
+globalThis.game = { user: { id: 'gm', isGM: true }, users: { activeGM: { id: 'gm' } }, genesysContent: { getHeroicRules: () => rules }, settings: {
+ get: (_s,k) => k === 'rulesProfile' ? 'terrinoth' : structuredClone(pool), set: async (_s,_k,next) => { pool=structuredClone(next); writes++; }
+} };
+const points = await import('../dist/module/story-point-service-v1832.js');
+await assert.rejects(points.spendStoryPoint('player',2), /Not enough/);
+assert.equal(writes,0); assert.equal(pool.player,1);
+pool.player=3;
+await points.spendStoryPoint('player',2);
+assert.equal(writes,1); assert.equal(pool.player,1); assert.equal(pool.gm,2);
+await points.spendStoryPoint('player');
+assert.equal(pool.player,0); assert.equal(pool.gm,3);
+await assert.rejects(points.spendStoryPoint('gm',1.5), /whole number/);
+const { heroicLiveSummary, resetActorHeroicSession } = await import('../dist/module/heroic-service.js');
+const actor = { id: 'a', name:'Hero', system: { xp: { earned: 150 }, heroicAbility: { selected:true, primaryEffectId:'test', name:'Heroic', usesThisSession:2, frequencyUpgrades:1, active:true, activeTurnBudget:2, abilityPointsSpent:1, powerLevel:'improved' } }, getFlag: () => ({ settingId:'terrinoth' }), async update(data) { this.system.heroicAbility=data['system.heroicAbility']; } };
+let summary=heroicLiveSummary(actor);
+assert.equal(summary.cost,2); assert.equal(summary.total,2); assert.equal(summary.availablePoints,2);
+await assert.rejects(resetActorHeroicSession(actor), /Confirm/);
+game.user.id='other';
+await assert.rejects(resetActorHeroicSession(actor,true), /active GM/);
+game.user.id='gm';
+const beforePool=structuredClone(pool);
+await resetActorHeroicSession(actor,true);
+summary=heroicLiveSummary(actor);
+assert.equal(summary.used,0); assert.equal(summary.active,false); assert.equal(summary.remainingTurns,0);
+assert.equal(actor.system.heroicAbility.powerLevel,'improved');
+assert.equal(actor.system.heroicAbility.frequencyUpgrades,1);
+assert.equal(actor.system.heroicAbility.abilityPointsSpent,1);
+assert.deepEqual(pool,beforePool);
+console.log('PASS: atomic 2-point cost, insufficient funds no-write, single-point compatibility, setting-aware Heroic overview and explicit GM reset');

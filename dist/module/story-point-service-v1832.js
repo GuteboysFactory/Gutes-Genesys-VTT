@@ -92,14 +92,15 @@ async function commit(type, side, afterPools, label, { postToChat = true } = {})
   return clone(next);
 }
 
-export function spendStoryPoint(side) {
+export function spendStoryPoint(side, amount = 1) {
   return enqueue(async () => {
     requireGm();
     const current = getStoryPointState();
     const normalizedSide = side === "gm" ? "gm" : "player";
-    const spend = normalizedSide === "gm" ? { gm: 1 } : { player: 1 };
-    const transaction = prepareStoryPointTransaction(current, spend, { maxPlayerSpend: 1, maxGmSpend: 1 });
-    const label = normalizedSide === "gm" ? "GM spent 1 Story Point · transferred to Players" : "Players spent 1 Story Point · transferred to GM";
+    if (!Number.isSafeInteger(amount) || amount < 1) throw new Error("Story Point cost must be a positive whole number.");
+    const spend = normalizedSide === "gm" ? { gm: amount } : { player: amount };
+    const transaction = prepareStoryPointTransaction(current, spend);
+    const label = normalizedSide === "gm" ? `GM spent ${amount} Story Point(s) · transferred to Players` : `Players spent ${amount} Story Point(s) · transferred to GM`;
     return commit("spend", normalizedSide, transaction.after, label);
   });
 }

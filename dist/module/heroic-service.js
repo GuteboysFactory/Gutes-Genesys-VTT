@@ -47,8 +47,35 @@ async function commitActorHeroicState(actor, state, settingId = actorSettingId(a
     return next;
 }
 
+export function heroicLiveSummary(actor) {
+    const rules = rulesForSetting(actorSettingId(actor));
+    const state = actorHeroicSnapshot(actor);
+    return { id: actor.id, actorName: actor.name, selected: state.selected && Boolean(state.primaryEffectId),
+        name: state.name || state.primaryEffectLabel, cost: state.storyPointCost,
+        used: state.usesThisSession, total: heroicAbilityUsesPerSession(state, rules),
+        active: state.active, remainingTurns: state.activeTurnBudget,
+        availablePoints: heroicAbilityAvailablePoints(state, actor.system?.xp?.earned ?? 0, rules) };
+}
+const resettingActors = new Set();
+export async function resetActorHeroicSession(actor, confirmed = false) {
+    if (!game.user?.isGM || game.users?.activeGM?.id !== game.user.id) throw new Error("The active GM must reset Heroic usage.");
+    if (!confirmed) throw new Error("Confirm resetting uses and ending the active Heroic effect.");
+    if (!actor?.id || !heroicLiveSummary(actor).selected) throw new Error("No Heroic Ability selected.");
+    if (resettingActors.has(actor.uuid ?? actor.id)) throw new Error("Heroic reset is already in progress.");
+    const key = actor.uuid ?? actor.id;
+    resettingActors.add(key);
+    try {
+        const rules = rulesForSetting(actorSettingId(actor));
+        const next = resetHeroicAbilitySession(actorHeroicSnapshot(actor), rules);
+        await commitActorHeroicState(actor, next);
+        return next;
+    } finally { resettingActors.delete(key); }
+}
+
 Hooks.once("ready", () => {
     const api = Object.freeze({
+        liveSummary: heroicLiveSummary,
+        resetActorSession: resetActorHeroicSession,
         rulesForSetting,
         normalizeRules: normalizeHeroicAbilityRules,
         normalizeState: normalizeHeroicAbilityState,
