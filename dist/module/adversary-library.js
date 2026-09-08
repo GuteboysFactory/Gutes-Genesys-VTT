@@ -1,3 +1,4 @@
+import {parseAdversaryPackage,exportAdversaries,offerAdversaryPlacement} from './adversary-transfer.js';
 import {copyAdversaryTemplate} from '../domain/adversaries/templates.js';
 import {getActorProfileId} from './skills-service.js';
 import {openAdversaryForge} from './adversary-forge.js';
@@ -50,9 +51,9 @@ export async function openAdversaryLibrary({file=null}={}){
  try{await ensureAdversaryLibrary();}catch(e){opening=false;throw e;}
  opening=false;
  const el=document.createElement('dialog');dialog=el;el.className='genesys-adversary-library';
- el.innerHTML=`<header><h2>Adversary Library</h2><button type="button" data-close aria-label="Close">×</button></header><p>Choose a template or drop a PNG, JPEG or WebP image on its card.</p><div class="adversary-toolbar"><input data-search aria-label="Search templates" placeholder="Search names, creatures, professions…"><select data-role aria-label="Role"><option value="">All roles</option><option>minion</option><option>rival</option><option>nemesis</option></select><select data-source aria-label="Source"><option value="">All sources</option><option>Realms of Terrinoth</option><option>Custom Genesys</option><option>World Actors</option></select><select data-category aria-label="Category"><option value="">All categories</option></select></div><div class="adversary-toolbar"><button type="button" data-image>Choose image</button><input type="file" data-file accept="image/png,image/jpeg,image/webp" hidden><span data-image-name></span><button type="button" data-clear-image>Clear image</button><button type="button" data-blank>Create from scratch</button><button type="button" data-refresh>Refresh</button></div><div class="adversary-toolbar"><select data-actor aria-label="World Actor to save as template"></select><button type="button" data-save>Save Actor as template</button></div><p data-status role="status"></p><main data-cards></main>`;
+ el.innerHTML=`<header><h2>Adversary Library</h2><button type="button" data-close aria-label="Close">×</button></header><p>Choose a template or drop a PNG, JPEG or WebP image on its card.</p><div class="adversary-toolbar"><input data-search aria-label="Search templates" placeholder="Search names, creatures, professions…"><select data-role aria-label="Role"><option value="">All roles</option><option>minion</option><option>rival</option><option>nemesis</option></select><select data-source aria-label="Source"><option value="">All sources</option><option>Realms of Terrinoth</option><option>Custom Genesys</option><option>World Actors</option></select><select data-category aria-label="Category"><option value="">All categories</option></select></div><div class="adversary-toolbar"><button type="button" data-image>Choose image</button><input type="file" data-file accept="image/png,image/jpeg,image/webp" hidden><span data-image-name></span><button type="button" data-clear-image>Clear image</button><button type="button" data-blank>Create from scratch</button><button type="button" data-refresh>Refresh</button></div><div class="adversary-toolbar"><select data-actor aria-label="World Actor to save as template"></select><button type="button" data-save>Save Actor as template</button></div><div class="adversary-toolbar"><button type="button" data-export>Export filtered templates</button><button type="button" data-import>Import template package</button><input type="file" data-package accept=".json,application/json" hidden><button type="button" data-place>Place selected world NPC</button></div><p data-status role="status"></p><main data-cards></main>`;
  document.body.append(el);
- let rows=[],busy=false,pending=file,closed=false,refreshing=false;
+ let visibleRows=[],rows=[],busy=false,pending=file,closed=false,refreshing=false;
  const query=selector=>el.querySelector(selector);
  const status=text=>{query('[data-status]').textContent=text;};
  const showFile=()=>{query('[data-image-name]').textContent=pending?pending.name:'No image selected';};showFile();
@@ -62,6 +63,7 @@ export async function openAdversaryLibrary({file=null}={}){
  function render(){
   const term=query('[data-search]').value.toLowerCase(),role=query('[data-role]').value,source=query('[data-source]').value,category=query('[data-category]').value;
   const visible=rows.filter(r=>(!role||r.actor.system.role===role)&&(!source||r.origin===source)&&(!category||r.category===category)&&`${r.actor.name} ${r.aliases} ${r.category}`.toLowerCase().includes(term));
+  visibleRows=visible;
   query('[data-cards]').innerHTML=visible.map(r=>`<button type="button" class="adversary-card" data-key="${esc(r.key)}"><img src="${esc(r.actor.img||'icons/svg/mystery-man.svg')}" alt="" loading="lazy"><strong>${esc(r.actor.name)}</strong><span>${esc(r.actor.system.role)} · ${esc(r.category)}</span><small>${esc(r.origin)}${r.page?` · p. ${r.page}`:''}</small></button>`).join('');
   status(`${visible.length} of ${rows.length} templates and NPCs. Special abilities and spells are documented on reference Items; resolve manual effects as GM.`);
  }
@@ -80,12 +82,30 @@ export async function openAdversaryLibrary({file=null}={}){
  }
  async function launch(template,image){
   if(busy)return;busy=true;
-  try{requireAdversaryGM();if(image)validateAdversaryImage(image);const raw=template?template.toObject():null;if(raw)raw.flags={...raw.flags,[SID]:{...raw.flags?.[SID],rulesProfile:getActorProfileId(template)}};close();await openAdversaryForge({template:raw,file:image});}
+  try{requireAdversaryGM();if(image)validateAdversaryImage(image);const raw=template?template.toObject():null;if(raw)raw.flags={...raw.flags,[SID]:{...raw.flags?.[SID],rulesProfile:getActorProfileId(template)}};close();const actor=await openAdversaryForge({template:raw,file:image});if(actor)await offerAdversaryPlacement(actor);}
   catch(e){ui.notifications.warn(e.message);}finally{busy=false;}
  }
  query('[data-cards]').onclick=event=>{const card=event.target.closest('[data-key]');if(card)void launch(rows.find(r=>r.key===card.dataset.key)?.actor,pending);};
  for(const selector of ['[data-search]','[data-role]','[data-source]','[data-category]'])query(selector).addEventListener('input',render);
  query('[data-refresh]').onclick=refresh;
+ query('[data-export]').onclick=()=>{try{exportAdversaries(visibleRows.map(r=>r.actor));}catch(e){status(e.message);}};
+ query('[data-import]').onclick=()=>query('[data-package]').click();
+ query('[data-package]').onchange=async()=>{
+  if(busy)return;busy=true;
+  let count=0;
+  try{
+   const file=query('[data-package]').files[0];if(!file)return;
+   if(file.size>10*1024*1024)throw Error('Package exceeds 10 MB.');
+   const actors=parseAdversaryPackage(await file.text());
+   el.close();
+   const yes=await foundry.applications.api.DialogV2.confirm({window:{title:'Import templates'},content:`<p>Import ${actors.length} independent templates into My Adversary Templates? Existing entries are preserved. Re-importing creates additional copies. Image files must already exist at their referenced paths.</p>`,rejectClose:false});
+   if(!yes)return;
+   for(const actor of actors){await saveAdversaryTemplate(actor);count++;}
+   await refresh();status(`${count} templates imported.`);
+  }catch(e){status(`${count} templates imported before stopping: ${e.message}`);}finally{busy=false;query('[data-package]').value='';if(!closed&&!el.open)el.showModal();}
+ };
+ query('[data-place]').onclick=async()=>{if(busy)return;const actor=game.actors.get(query('[data-actor]').value);if(!actor){status('Choose a world NPC first.');return;}busy=true;try{close();await offerAdversaryPlacement(actor);}catch(e){ui.notifications.warn(e.message);}finally{busy=false;}};
+
  query('[data-image]').onclick=()=>query('[data-file]').click();
  query('[data-file]').onchange=()=>{try{pending=validateAdversaryImage(query('[data-file]').files[0]);showFile();}catch(e){status(e.message);}};
  query('[data-clear-image]').onclick=()=>{pending=null;showFile();};

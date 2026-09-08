@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1866** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1867** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -373,3 +373,10 @@ Future Heroic work is delivered as a consolidated package, as requested by the u
 ## Portrait upload hotfix – v0.0.1866
 
 The Adversary Library upload now includes the current Foundry user ID in the upload body. Missing user identity stops before upload. Server permissions remain authoritative. Addresses the reported `User []` upload rejection; live confirmation pending. Focused image and Forge workflow tests pass.
+
+## Forge transfer and placement — v0.0.1867
+
+- User confirmed v1866 image upload and NPC creation in live Foundry.
+- Export filtered Library entries as versioned JSON; import 1–500 templates into the custom compendium after confirmation. Re-import creates copies, never overwrites. Images are referenced, not embedded.
+- After Forge creation or from selected world NPC: optional hidden token at scene centre, then optional NPC encounter handoff using the synthetic token Actor and existing authority service. Initiative starts at zero; roll through normal controls.
+- Cancel preserves saved Actors/tokens. Live QA pending; see TEST_PROTOCOL_v0.0.1867.md.

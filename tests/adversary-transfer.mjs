@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import {copyAdversaryTemplate} from '../dist/domain/adversaries/templates.js';
+globalThis.__copy=copyAdversaryTemplate;let adds=0;globalThis.__add=async(actor,side,skill,scene)=>{assert.equal(actor.id,'synthetic');assert.equal(scene.id,'scene');adds++;};
+const source=fs.readFileSync('dist/module/adversary-transfer.js','utf8').replace(/^import .*;\n/gm,'');
+const {parseAdversaryPackage,offerAdversaryPlacement}=await import('data:text/javascript;base64,'+Buffer.from('const copyAdversaryTemplate=globalThis.__copy,addSceneInitiativeParticipant=globalThis.__add;\n'+source).toString('base64'));
+const sample=JSON.parse(fs.readFileSync('data/everyday-adversaries.json'))[0];
+const rows=parseAdversaryPackage(JSON.stringify({format:'genesys-adversaries',version:1,actors:[sample]}));assert.equal(rows.length,1);assert.equal(rows[0]._id,undefined);assert.equal(rows[0].ownership.default,0);assert.throws(()=>parseAdversaryPackage('{"actors":[]}'));assert.throws(()=>parseAdversaryPackage(JSON.stringify({format:'genesys-adversaries',version:2,actors:[sample]})));
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}}};let answers=[],created=0;
+globalThis.foundry={applications:{api:{DialogV2:{confirm:async()=>answers.shift()}}}};
+const scene={id:'scene',createEmbeddedDocuments:async(type,rows)=>{assert.equal(type,'Token');assert.equal(rows[0].hidden,true);assert.equal(rows[0].actorLink,false);assert.equal(rows[0]._id,undefined);created++;return [{actor:{id:'synthetic'}}];}};
+globalThis.canvas={scene,dimensions:{sceneRect:{x:0,y:0,width:1000,height:1000},size:100}};
+const actor={getTokenDocument:async opts=>({toObject:()=>({...opts,_id:'old',width:1,height:1})})};
+answers=[false];await offerAdversaryPlacement(actor);assert.equal(created,0);
+answers=[true,false];await offerAdversaryPlacement(actor);assert.equal(created,1);assert.equal(adds,0);
+answers=[true,true];await offerAdversaryPlacement(actor);assert.equal(created,2);assert.equal(adds,1);
+game.user.isGM=false;await assert.rejects(offerAdversaryPlacement(actor),/active GM/);assert.equal(created,2);
+console.log('PASS: package validation, isolated copies, placement cancellation, hidden tokens and synthetic encounter handoff');
