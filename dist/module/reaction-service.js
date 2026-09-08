@@ -127,6 +127,6 @@ export async function promptReactionChoice(actor, context, reactions, summary = 
     const result = decisionUser?.id && decisionUser.id !== currentUserId && typeof DialogV2.query === "function"
         ? await DialogV2.query(decisionUser, "wait", config)
         : await DialogV2.wait(config);
-    return result && result !== "skip" ? String(result) : null;
+    return result && eligible.some(reaction => String(reaction.id) === String(result)) ? String(result) : null;
 }
 //# sourceMappingURL=reaction-service.js.map

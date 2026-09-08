@@ -1,0 +1,11 @@
+import fs from 'node:fs';
+import vm from 'node:vm';
+import assert from 'node:assert/strict';
+const s=fs.readFileSync('dist/module/reaction-service.js','utf8').replace(/^import .*;$/gm,'').replaceAll('export ','');
+let result='not-eligible';
+const c=vm.createContext({SYSTEM_ID:'genesys-vtt',getEligibleReactions:r=>r,formatReactionCost:()=>'',game:{user:{id:'gm'},users:{contents:[]}},foundry:{applications:{api:{DialogV2:{wait:async()=>result}}}}});vm.runInContext(s,c);
+c.actor={name:'A'};c.reactions=[{id:'parry',label:'Parry',effect:{type:'reduce-damage',amount:3}}];
+assert.equal(await vm.runInContext('promptReactionChoice(actor,{},reactions)',c),null);
+result='parry';assert.equal(await vm.runInContext('promptReactionChoice(actor,{},reactions)',c),'parry');
+result='skip';assert.equal(await vm.runInContext('promptReactionChoice(actor,{},reactions)',c),null);
+console.log('PASS reaction choice eligibility validation');

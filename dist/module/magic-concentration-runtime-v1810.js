@@ -23,7 +23,7 @@ function turnKey(state, scene = currentScene()) {
   const sceneId = String(scene?.id ?? "scene");
   return `${sceneId}:${Number(state.round ?? 0)}:${Number(state.turnNumber ?? 0)}:${String(state.activeActorRef)}:${String(state.activeActivationId ?? "")}`;
 }
-function allEffectActors() {
+function allEffectActors(scene = currentScene()) {
   const rows = [];
   const seen = new Set();
   const add = (actor) => {
@@ -34,7 +34,7 @@ function allEffectActors() {
     rows.push(actor);
   };
   for (const actor of Array.from(game?.actors?.contents ?? game?.actors ?? [])) add(actor);
-  for (const token of Array.from(globalThis.canvas?.tokens?.placeables ?? [])) add(token?.actor);
+  for (const token of Array.from(scene?.tokens?.contents ?? [])) add(token?.actor);
   return rows;
 }
 async function replaceEffects(actor, effects) {
@@ -59,7 +59,7 @@ function effectsCastBy(caster, { concentrationOnly = false } = {}) {
   const rows = [];
   for (const target of allEffectActors()) {
     for (const effect of getActorMagicEffects(target)) {
-      if (String(effect.casterRef ?? "") !== ref && String(effect.casterId ?? "") !== String(caster?.id ?? "")) continue;
+      if (effect.casterRef ? String(effect.casterRef) !== ref : (caster?.isToken || String(effect.casterId ?? "") !== String(caster?.id ?? ""))) continue;
       if (concentrationOnly && !effect.concentration) continue;
       rows.push({ target, effect });
     }
@@ -94,7 +94,14 @@ async function normalizeFreshPersistentEffect(caster, outcome) {
   await replaceEffects(target, next);
   return outcome;
 }
+let concentrating = false;
 async function concentrate(caster) {
+  if (concentrating) throw new Error("Concentration is already in progress.");
+  if (!mayUpdate(caster)) throw new Error("Caster ownership required.");
+  concentrating = true;
+  try { return await performConcentrate(caster); } finally { concentrating = false; }
+}
+async function performConcentrate(caster) {
   const initiative = game?.genesysVtt?.initiative;
   if (!initiative?.sceneState || !initiative?.useSceneManeuver) throw new Error("Encounter maneuver service is not ready.");
   const scene = currentScene();
@@ -106,6 +113,7 @@ async function concentrate(caster) {
   if (!key) throw new Error("Could not resolve the current encounter turn.");
   const rows = effectsCastBy(caster, { concentrationOnly: true }).filter(({ effect }) => effect?.duration?.autoManaged !== false);
   if (!rows.length) throw new Error("This caster has no active Concentration spell to sustain.");
+  if (rows.some(({target}) => !mayUpdate(target))) throw new Error("Ask the GM to sustain this spell: a target is not writable by you.");
   await initiative.useSceneManeuver(caster, scene);
   let sustained = 0;
   for (const { target, effect } of rows) {
@@ -129,7 +137,7 @@ async function expireForEndedTurn(previousState, scene) {
   const endedKey = turnKey(previousState, scene);
   if (!endedRef || !endedKey) return 0;
   let expired = 0;
-  for (const target of allEffectActors()) {
+  for (const target of allEffectActors(scene)) {
     const current = getActorMagicEffects(target);
     const next = [];
     let changed = false;
@@ -154,7 +162,7 @@ async function expireForEndedTurn(previousState, scene) {
 }
 async function clearManagedEncounterEffects(scene) {
   let removed = 0;
-  for (const target of allEffectActors()) {
+  for (const target of allEffectActors(scene)) {
     const current = getActorMagicEffects(target);
     const next = current.filter((effect) => {
       const managedHere = Boolean(effect?.concentration && effect?.duration?.autoManaged === true && String(effect?.duration?.encounterSceneId ?? "") === String(scene?.id ?? ""));
@@ -174,6 +182,7 @@ function stateAdvancedPastTurn(previous, next) {
   return nextRound > previousRound || nextTurn > previousTurn;
 }
 async function processSceneTransition(scene, previous, next) {
+  if (!game.user?.isGM || game.users?.activeGM?.id !== game.user.id) return;
   if (previous?.status === "active" && next?.status === "ended") {
     await clearManagedEncounterEffects(scene);
     return;

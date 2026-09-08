@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const source=fs.readFileSync('dist/module/magic-concentration-runtime-v1810.js','utf8').replace(/^import .*;$/gm,'');
+const caster={id:'shared',uuid:'Scene.s.Token.one.Actor.shared',isToken:true,type:'character',isOwner:true};
+const other={...caster,uuid:'Scene.s.Token.two.Actor.shared'};
+const target={id:'target',uuid:'Actor.target',type:'character',isOwner:false,effects:[{casterId:'shared',casterRef:other.uuid,concentration:true},{casterId:'shared',concentration:true},{casterId:'shared',casterRef:caster.uuid,concentration:true}]};
+const scene={id:'s',tokens:{contents:[{actor:caster},{actor:other},{actor:target}]}};
+const context=vm.createContext({game:{actors:{contents:[]},user:{id:'player',isGM:false},users:{activeGM:{id:'gm'}},genesysVtt:{initiative:{sceneState:()=>({status:'active',activeActorRef:caster.uuid,round:1,turnNumber:1}),useSceneManeuver:async()=>{throw Error('must not spend');}}}},canvas:{scene},Hooks:{on(){},once(){}},getActorMagicEffects:a=>a.effects??[],console});
+vm.runInContext(source,context);
+context.caster=caster;context.scene=scene;
+assert.equal(vm.runInContext('effectsCastBy(caster).length',context),1);
+await assert.rejects(vm.runInContext('concentrate(caster)',context),/not writable/);
+await vm.runInContext("processSceneTransition(scene,{status:'active'},{status:'ended'})",context);
+assert.equal(target.effects.length,3);
+console.log('PASS concentration identity, target permissions, lifecycle authority');

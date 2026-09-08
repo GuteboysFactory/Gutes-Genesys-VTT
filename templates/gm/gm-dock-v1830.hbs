@@ -78,7 +78,7 @@
               <div class="genesys-encounter-recovery-row-v1838" data-encounter-recovery-row>
                 <strong>{{name}}</strong>
                 {{#if done}}<small>Recovery completed · {{recovered}} strain recovered</small>{{else}}
-                  <label>Skill <select><option value="cool">Cool</option><option value="discipline">Discipline</option></select></label>
+                  <label>Skill <select><option value="cool">Cool</option><option value="discipline">Discipline</option>{{#if natureRecovery}}<option value="survival">Survival · One with Nature</option>{{/if}}</select></label>
                   <label>Talent bonus <input type="number" min="0" max="20" step="1" value="0" /></label>
                   <button type="button" data-action="recoverEncounterStrain" data-actor-ref="{{actorRef}}" {{#if blocked}}disabled{{/if}}>Roll &amp; Recover</button>
                 {{/if}}
