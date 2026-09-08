@@ -195,6 +195,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - GM still selects targets and confirms range/side; no automatic target discovery
 - Live QA pending
 
+### Renewal — required initiative foundation before gameplay
+
+- Code/source audit completed: see docs/RENEWAL_IMPLEMENTATION_GATE.md
+- Direct slot insertion would be discarded by current normalizer; index-based advancement can leave unclaimable slots
+- Next: persist encounter-scoped additional slots, preserve current claim and enforce existing activation allowances, then add Cool/Vigilance resolution
+- Renewal remains unimplemented; QA version stays v0.0.1853 for this documentation-only update
+
 ### Remaining Heroic Abilities Live (before combat hardening)
 
 - Activation, costs, upgrades and encounter lifecycle
