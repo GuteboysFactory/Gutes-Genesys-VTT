@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1848** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1849** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -162,7 +162,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Actor-persisted turn keys prevent duplicate recovery; activation during own turn records that already-started turn
 - Side Slots/Popcorn live multiplayer QA pending
 
-### v0.0.1849 onward — Remaining Heroic Abilities Live
+### v0.0.1849 — Devastating weapon hit
+
+- Rule checked: Terrinoth p.79, +2 damage to one hit per attack while active
+- Automated on the standard Combat weapon attack resolved hit before soak; chat identifies bonus
+- Magic attacks and additional-hit selection remain manual; live QA pending
+
+### Remaining Heroic Abilities Live (before combat hardening)
 
 - Activation, costs, upgrades and encounter lifecycle
 - Sheet, chat and GM Dock integration

@@ -155,7 +155,7 @@ export function createPendingCombatResolution(prepared, result) {
     const triumph = nn(result.net.triumph);
     const despair = nn(result.net.despair);
     const hit = success > 0;
-    const baseDamage = nn(weapon.damage) + prepared.damageCharacteristicValue;
+    const baseDamage = nn(weapon.damage) + prepared.damageCharacteristicValue + nn(prepared.heroicDamageBonus);
     const grossDamage = hit ? baseDamage + success : 0;
     const pierce = qualityRank(weapon, "pierce");
     const breach = qualityRank(weapon, "breach");

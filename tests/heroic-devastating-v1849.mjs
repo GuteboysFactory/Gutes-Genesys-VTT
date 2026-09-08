@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {heroicWeaponDamageBonus} from '../dist/domain/heroic/combat-effects.js';
+import {createPendingCombatResolution} from '../dist/domain/combat/index.js';
+const ability={active:true,secondaryEffectIds:['rot-heroic-secondary:devastating']};
+assert.equal(heroicWeaponDamageBonus(ability),2);assert.equal(heroicWeaponDamageBonus({...ability,active:false}),0);assert.equal(heroicWeaponDamageBonus({active:true,secondaryEffectIds:[]}),0);
+const prepared={preparedWeaponAttack:{weapon:{damage:5,critical:3,qualities:[]}},damageCharacteristicValue:0,target:{soak:3},heroicDamageBonus:heroicWeaponDamageBonus(ability)};
+const hit=createPendingCombatResolution(prepared,{net:{success:1}});assert.equal(hit.grossDamage,8);assert.equal(hit.damageAfterSoak,5);
+const miss=createPendingCombatResolution(prepared,{net:{success:0}});assert.equal(miss.damageAfterSoak,0);
+const normal=createPendingCombatResolution({...prepared,heroicDamageBonus:0},{net:{success:1}});assert.equal(normal.damageAfterSoak,3);assert.equal(prepared.preparedWeaponAttack.weapon.damage,5);
+console.log('PASS: Devastating active gating, damage before soak, misses and unchanged weapon source');

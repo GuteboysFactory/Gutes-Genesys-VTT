@@ -1,3 +1,4 @@
+import { heroicWeaponDamageBonus } from "../domain/heroic/combat-effects.js";
 import { rollNarrativePool } from "../domain/dice/index.js";
 import { applyReactionToPendingCombat, buildCombatCommitPlan, createPendingCombatResolution, finalizePendingCombatResolution, prepareCombatWeaponAttack, resolveDamageCharacteristic } from "../domain/combat/index.js";
 import { getEligibleReactions } from "../domain/reactions/index.js";
@@ -195,6 +196,7 @@ export function prepareActorCombatAttack(attacker, item, target, targetRange, ch
     });
     return {
         ...prepared,
+        heroicDamageBonus: heroicWeaponDamageBonus(attacker?.system?.heroicAbility),
         checkContext: {
             skillId: skill.skillId,
             skillLabel: skill.skillLabel,
@@ -377,6 +379,7 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
       <p><strong>Attack Mode:</strong> ${prepared.attackMode.toUpperCase()} · <strong>Skill:</strong> ${escapeHtml(checkContext.skillLabel || p.weapon.skillId)} · <strong>Check:</strong> ${checkSummary}</p>
       <p>Target range ${prepared.targetRange} · Range difficulty ${prepared.rangeDifficulty}${prepared.silhouetteDifficultyDelta ? ` · Silhouette ${prepared.silhouetteDifficultyDelta > 0 ? "+1" : "−1"} Difficulty` : ""} · Adversary ${prepared.adversaryRank} · Defense ${prepared.defense}</p>
       <p><strong>Damage Characteristic:</strong> ${damageSummary}</p>
+      ${prepared.heroicDamageBonus ? `<p>Devastating: +2 damage to this attack’s resolved hit (before soak).</p>` : ""}
       <p class="genesys-check-pool"><strong>Pool:</strong> ${formatPool(p.check.construction.pool)}</p>
       ${poolTraceToHtml(p.check.construction)}
       ${resultToChatHtml(result)}
