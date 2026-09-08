@@ -121,10 +121,15 @@ export async function installTalentCatalog(){
     installingCatalog=true;let created=0;
     try{
         const rows=dedupeTalents([...referenceTalents(),...registryTalents()]);
+        let folder=Array.from(game.folders?.contents??[]).find(f=>f.type==='Item'&&f.name==='Talents'&&!f.folder);
+        if(!folder)folder=await foundry.documents.Folder.create({name:'Talents',type:'Item',folder:null,sorting:'a'});
+        if(!folder?.id)throw Error('Talents folder creation failed.');
         for(const talent of rows){
             authority();
-            if(Array.from(game.items?.contents??[]).some(item=>item.type==='talent'&&item.flags?.[SYSTEM_ID]?.catalogTalentId===talent.id))continue;
+            const existing=Array.from(game.items?.contents??[]).find(item=>item.type==='talent'&&item.flags?.[SYSTEM_ID]?.catalogTalentId===talent.id);
+            if(existing){if(!existing.folder)await existing.update({folder:folder.id});continue;}
             const data=talentItemData(talent);
+            data.folder=folder.id;
             data.ownership={default:2};
             data.flags={[SYSTEM_ID]:{catalogTalentId:talent.id,catalogRequirements:clone(talent.requirements??[])}};
             const item=await foundry.documents.Item.create(data);
@@ -415,7 +420,7 @@ document.addEventListener("click", async (event) => {
         event.preventDefault();const dialog=install.closest('dialog'),actor=dialog?._genesysActor,host=dialog?.parentElement;
         dialog.close();
         try{
-            const yes=await foundry.applications.api.DialogV2.confirm({window:{title:'Install Talent catalog'},content:'<p>Create missing catalog Talents in Foundry Items, visible to players? Existing catalog Items and your edits are preserved. Explicitly running this again restores deleted catalog entries.</p>',rejectClose:false});
+            const yes=await foundry.applications.api.DialogV2.confirm({window:{title:'Install Talent catalog'},content:'<p>Create missing catalog Talents in the Talents folder in Foundry Items, visible to players? Existing catalog entries in the root will be moved into Talents. Existing catalog Items and your edits are preserved. Explicitly running this again restores deleted catalog entries.</p>',rejectClose:false});
             if(yes){const count=await installTalentCatalog();ui.notifications.info(`${count} catalog Talents created.`);}
         }catch(error){ui.notifications.warn(error.message);}
         finally{if(dialog.isConnected)openTalentLibrary(actor,host);}

@@ -21,8 +21,14 @@ console.log('PASS: compendium loading and permission revocation');
 
 game.user={id:'gm',isGM:true};game.users={activeGM:{id:'gm'}};game.items.contents=[];
 foundry.documents={Item:{create:async data=>{const item={...data,id:String(game.items.contents.length),testUserPermission:()=>true};game.items.contents.push(item);return item;}}};
+game.folders={contents:[]};foundry.documents.Folder={create:async data=>{const folder={...data,id:'talents-folder'};game.folders.contents.push(folder);return folder;}};
 const count=await installTalentCatalog();assert.ok(count>=3);assert.equal(await installTalentCatalog(),0);
 const first=game.items.contents[0],id=first.flags['genesys-vtt'].catalogTalentId;first.name='GM edited';
 assert.equal(await installTalentCatalog(),0);assert.equal(listTalentLibraryEntries().find(x=>x.id===id).label,'GM edited');
 first.testUserPermission=()=>false;game.user.isGM=false;assert.equal(listTalentLibraryEntries().some(x=>x.id===id),false);await assert.rejects(installTalentCatalog(),/active GM/);
 console.log('PASS: catalog identity, repeated install, edit preservation and private source filtering');
+
+game.user.isGM=true;assert.equal(game.folders.contents.length,1);assert.ok(game.items.contents.every(i=>i.folder==='talents-folder'));
+first.folder=null;first.update=async data=>Object.assign(first,data);await installTalentCatalog();assert.equal(first.folder,'talents-folder');
+first.folder='custom-folder';await installTalentCatalog();assert.equal(first.folder,'custom-folder');
+console.log('PASS: Talents folder creation/reuse and root-only organization');
