@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1875** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1876** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -419,3 +419,7 @@ User confirms equipment Compendiums working. New native actionTemplate Item with
 ## Compendium Actions — v0.0.1875
 
 User confirms v1874. Action Library reads visible Item Compendiums on opening and re-resolves source before use. Existing actor-copy workflow preserved. Built-in Assist/Maneuver/Custom Check are informational cards, not executable templates: rule-backed materialization remains pending. Live QA pending.
+
+## General Action controls — v0.0.1876
+
+Assist and Maneuver cards confirm and use the existing authoritative maneuver service. Assist eligibility/bonus remains GM-resolved, per Core audit §5.6. Custom Check opens existing Dice Tools. These are live controls, not installed native default templates; native default catalog and automatic assistance remain pending. Live QA pending.

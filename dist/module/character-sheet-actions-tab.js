@@ -1,3 +1,4 @@
+import {useSceneTurnManeuver} from './initiative-service.js';
 import {listActionTemplateSources,resolveActionTemplateSource} from './action-template-sources.js';
 const SYSTEM_ID = "genesys-vtt";
 const CUSTOM_ACTIONS_FLAG = "customActions";
@@ -263,7 +264,7 @@ function buildCustomActions(root) {
 }
 
 function buildGeneralActions() {
-    const section = makeSection("General Actions", "Reusable Action Templates and setting-specific actions will populate this area through the Character Content Registry.");
+    const section = makeSection("General Actions", "Encounter maneuvers and check tools. Assist bonuses are resolved by the GM.");
     const grid = document.createElement("div");
     grid.className = "genesys-actions-general-grid";
     const entries = [
@@ -274,7 +275,7 @@ function buildGeneralActions() {
     for (const [iconClass, label, description] of entries) {
         const card = document.createElement("div");
         card.className = "genesys-general-action-card";
-        card.innerHTML = `<i class="${iconClass}" aria-hidden="true"></i><div><strong>${label}</strong><p>${description}</p></div>`;
+        card.innerHTML = `<i class="${iconClass}" aria-hidden="true"></i><div><strong>${label}</strong><p>${description}</p><button type="button" data-general-action="${label}">${label === "Custom Check" ? "Open Dice Tools" : "Use maneuver"}</button></div>`;
         grid.append(card);
     }
     section.append(grid);
@@ -414,6 +415,25 @@ document.addEventListener("click", async (event) => {
             console.error("genesys-vtt | Narrative Dice Transfer failed", error);
             ui?.notifications?.error?.(String(error?.message ?? error));
         }
+        return;
+    }
+    const general=event.target?.closest?.('[data-general-action]');
+    if(general){
+        event.preventDefault();const root=general.closest('[data-genesys-sheet-tabs]');
+        if(general.dataset.generalAction==='Custom Check'){
+            const tools=root?.querySelector('.genesys-actions-dice-tools');if(tools){tools.open=true;tools.scrollIntoView({block:'nearest'});}return;
+        }
+        if(general.disabled)return;general.disabled=true;
+        try{
+            const actor=actorForRoot(root);if(!actor||!(actor.isOwner||game.user.isGM))throw Error('Character ownership required.');
+            const scene=globalThis.canvas?.scene;if(!scene)throw Error('Open an encounter scene first.');
+            const assist=general.dataset.generalAction==='Assist';
+            const yes=await foundry.applications.api.DialogV2.confirm({window:{title:assist?'Assist maneuver':'Use maneuver'},content:assist?'<p>Spend this character’s maneuver to assist an engaged ally? GM confirms the ally and eligibility. Apply skilled assistance or one Boost manually to the appropriate check; assistance lasts until the ally’s next activation.</p>':'<p>Spend this character’s maneuver? Resolve movement or other effects with the normal scene tools.</p>',rejectClose:false});
+            if(!yes)return;
+            if(canvas.scene?.id!==scene.id)throw Error('Scene changed. Try again.');
+            await useSceneTurnManeuver(actor,scene);
+            ui.notifications.info(assist?'Assist maneuver spent. GM resolves the assistance bonus.':'Maneuver spent.');
+        }catch(error){ui.notifications.warn(error.message);}finally{general.disabled=false;}
         return;
     }
     const library=event.target?.closest?.('[data-action-library]');

@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1875 \u2014 Adversary Library, 101 templates and local portraits.",
-  "version": "0.0.1875",
+  "description": "Genesys VTT 0.0.1876 \u2014 Adversary Library, 101 templates and local portraits.",
+  "version": "0.0.1876",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
