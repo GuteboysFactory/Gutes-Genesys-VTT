@@ -6,11 +6,11 @@ const caster={id:'shared',uuid:'Scene.s.Token.one.Actor.shared',isToken:true,typ
 const other={...caster,uuid:'Scene.s.Token.two.Actor.shared'};
 const target={id:'target',uuid:'Actor.target',type:'character',isOwner:false,effects:[{casterId:'shared',casterRef:other.uuid,concentration:true},{casterId:'shared',concentration:true},{casterId:'shared',casterRef:caster.uuid,concentration:true}]};
 const scene={id:'s',tokens:{contents:[{actor:caster},{actor:other},{actor:target}]}};
-const context=vm.createContext({game:{actors:{contents:[]},user:{id:'player',isGM:false},users:{activeGM:{id:'gm'}},genesysVtt:{initiative:{sceneState:()=>({status:'active',activeActorRef:caster.uuid,round:1,turnNumber:1}),useSceneManeuver:async()=>{throw Error('must not spend');}}}},canvas:{scene},Hooks:{on(){},once(){}},getActorMagicEffects:a=>a.effects??[],console});
+const context=vm.createContext({game:{actors:{contents:[]},user:{id:'player',isGM:false},users:{activeGM:{id:'gm'}},genesysVtt:{initiative:{sceneState:()=>({status:'active',activeActorRef:caster.uuid,round:1,turnNumber:1}),useSceneManeuver:async()=>{throw Error('must not spend');}}}},canvas:{scene},Hooks:{on(){},once(){}},getActorMagicEffects:a=>a.effects??[],concentrateSceneSpells:async()=>({requested:true}),console});
 vm.runInContext(source,context);
 context.caster=caster;context.scene=scene;
 assert.equal(vm.runInContext('effectsCastBy(caster).length',context),1);
-await assert.rejects(vm.runInContext('concentrate(caster)',context),/not writable/);
-await vm.runInContext("processSceneTransition(scene,{status:'active'},{status:'ended'})",context);
+assert.equal((await vm.runInContext('concentrate(caster)',context)).requested,true, 'player requests GM-authoritative target updates');
+await assert.rejects(vm.runInContext("prepareTransition(scene,{status:'active'},{status:'ended'})",context),/Active GM/);
 assert.equal(target.effects.length,3);
 console.log('PASS concentration identity, target permissions, lifecycle authority');

@@ -72,14 +72,14 @@
         </div>
         <div class="genesys-night-rest-v1837">
           <strong>End-of-Encounter Strain Recovery</strong>
-          <p>One Simple Cool or Discipline check per participant. Each Success recovers 1 strain. GM enters any approved talent bonus separately.</p>
+          <p>One Simple Cool or Discipline check per participant. Each Success recovers 1 strain. Desperate Recovery applies automatically when eligible. Enter only other approved bonuses.</p>
           {{#if encounterRecovery.ready}}
             {{#each encounterRecovery.rows}}
               <div class="genesys-encounter-recovery-row-v1838" data-encounter-recovery-row>
                 <strong>{{name}}</strong>
                 {{#if done}}<small>Recovery completed · {{recovered}} strain recovered</small>{{else}}
                   <label>Skill <select><option value="cool">Cool</option><option value="discipline">Discipline</option>{{#if natureRecovery}}<option value="survival">Survival · One with Nature</option>{{/if}}</select></label>
-                  <label>Talent bonus <input type="number" min="0" max="20" step="1" value="0" /></label>
+                  <label>Other GM bonus <input type="number" min="0" max="20" step="1" value="0" /></label>
                   <button type="button" data-action="recoverEncounterStrain" data-actor-ref="{{actorRef}}" {{#if blocked}}disabled{{/if}}>Roll &amp; Recover</button>
                 {{/if}}
               </div>
@@ -88,12 +88,13 @@
         </div>
         <div class="genesys-night-rest-v1837" data-night-rest>
           <strong>Full Night’s Rest</strong>
-          <p>Core recovery: heal 1 wound and recover all strain. Review talents or other special recovery rules separately.</p>
+          <p>Core recovery: heal 1 wound and recover all strain. Optionally select the Apothecary who cared for these patients; the GM confirms care before applying the extra wounds.</p>
           <div class="genesys-rest-roster-v1837">
             {{#each recoveryRows}}
               <label><input type="checkbox" data-rest-actor value="{{id}}" data-wounds="{{before.wounds}}" data-strain="{{before.strain}}" {{#if blocked}}disabled{{/if}} /><span><strong>{{name}}</strong><small>{{#if blocked}}{{reason}}{{else}}Wounds {{before.wounds}} → {{after.wounds}} · Strain {{before.strain}} → {{after.strain}}{{/if}}</small></span></label>
             {{else}}<p>No player characters available.</p>{{/each}}
           </div>
+          <label>Apothecary care <select data-rest-caregiver><option value="">No caregiver bonus</option>{{#each apothecaries}}<option value="{{id}}">{{name}} · +{{bonus}} wounds</option>{{/each}}</select></label>
           <label><input type="checkbox" data-rest-confirmed /> These characters completed a full night of rest.</label>
           <button type="button" data-action="applyNightRest">Apply Rest to Selected Characters</button>
           <small>Critical injuries, conditions and encounter participation remain GM-managed.</small>

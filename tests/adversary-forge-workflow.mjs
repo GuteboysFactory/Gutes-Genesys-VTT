@@ -1,10 +1,11 @@
+import {addSupportedAdversaryAbilities} from '../dist/domain/adversaries/supported-abilities.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import {copyAdversaryTemplate,copyAdversaryItem,adversaryDraft} from '../dist/domain/adversaries/templates.js';
 import {prepareAdversary,FORGE_CHARACTERISTICS} from '../dist/domain/adversaries/forge.js';
-globalThis.__forge={copyAdversaryTemplate,copyAdversaryItem,adversaryDraft,validateAdversaryImage:()=>{},uploadAdversaryImage:async()=>{if(globalThis.imageFail)throw Error("image upload");return "uploaded.webp";},getActorSkillDefinitions:()=>[],prepareAdversary,FORGE_CHARACTERISTICS,getActiveProfileId:()=> 'core-only',getActiveSkillDefinitions:()=>[]};
+globalThis.__forge={addSupportedAdversaryAbilities,copyAdversaryTemplate,copyAdversaryItem,adversaryDraft,validateAdversaryImage:()=>{},uploadAdversaryImage:async()=>{if(globalThis.imageFail)throw Error("image upload");return "uploaded.webp";},getActorSkillDefinitions:()=>[],prepareAdversary,FORGE_CHARACTERISTICS,getActiveProfileId:()=> 'core-only',getActiveSkillDefinitions:()=>[]};
 const code=(await fs.readFile(new URL('../dist/module/adversary-forge.js',import.meta.url),'utf8')).replace(/^import .*;\n/gm,'');
-const {openAdversaryForge}=await import('data:text/javascript;base64,'+Buffer.from('const {copyAdversaryTemplate,copyAdversaryItem,adversaryDraft,validateAdversaryImage,uploadAdversaryImage,getActorSkillDefinitions,prepareAdversary,FORGE_CHARACTERISTICS,getActiveProfileId,getActiveSkillDefinitions}=globalThis.__forge;\n'+code).toString('base64'));
+const {openAdversaryForge}=await import('data:text/javascript;base64,'+Buffer.from('const {addSupportedAdversaryAbilities,copyAdversaryTemplate,copyAdversaryItem,adversaryDraft,validateAdversaryImage,uploadAdversaryImage,getActorSkillDefinitions,prepareAdversary,FORGE_CHARACTERISTICS,getActiveProfileId,getActiveSkillDefinitions}=globalThis.__forge;\n'+code).toString('base64'));
 let answers=[],created=[],fail=false;
 const item={id:'weapon',type:'weapon',name:'Sword',toObject:()=>({_id:'weapon',name:'Sword',type:'weapon',system:{damage:3},effects:[]})};
 globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},items:{contents:[item],get:id=>id==='weapon'?item:null}};

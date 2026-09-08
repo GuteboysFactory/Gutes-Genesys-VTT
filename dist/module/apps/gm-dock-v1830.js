@@ -186,6 +186,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       pcs,
       heroicRows: characterActors().map(actor => ({...game.genesysHeroic?.liveSummary?.(actor),...heroicDockControls(actor,game.genesysHeroic?.secondaryOptions?.(actor)??[])})).filter(row => row?.selected),
       encounterRecovery: game.genesysEncounterRecovery?.recoveryRoster() ?? { ready: false },
+      apothecaries: game.genesysRecovery?.listApothecaries?.() ?? [],
       recoveryRows: characterActors().filter(actor => actor.system?.role === "pc").map(actor => {
         try { return game.genesysRecovery.nightRestPreview(actor); }
         catch (error) { return { id: actor.id, name: actor.name, blocked: true, reason: error.message }; }
@@ -385,7 +386,14 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     target.disabled = true;
     try {
       if (!game.genesysRecovery) throw new Error("Recovery service unavailable.");
-      const result = await game.genesysRecovery.applyNightRest(rows, confirmed);
+      const caregiverId=panel?.querySelector('[data-rest-caregiver]')?.value || '';
+      let care=null;
+      if(caregiverId){
+        if(!confirmed)throw Error('Confirm a full night of rest first.');
+        care=game.genesysRecovery.carePreview(caregiverId);
+        if(!await foundry.applications.api.DialogV2.confirm({window:{title:'Apothecary care'},content:`<p>Confirm that all selected patients rested under this caregiver. Each heals ${1+care.bonus} wounds total, up to their current wounds; all strain is recovered. Other recovery effects remain GM-managed.</p>`,rejectClose:false}))return;
+      }
+      const result = await game.genesysRecovery.applyNightRest(rows, confirmed, care);
       if (result.applied.length) ui.notifications.info(`Full night of rest applied to ${result.applied.length} character(s).`);
       for (const failure of result.failed) ui.notifications.warn(`${failure.name}: ${failure.reason}`);
     } catch (error) { ui.notifications.warn(error.message); }

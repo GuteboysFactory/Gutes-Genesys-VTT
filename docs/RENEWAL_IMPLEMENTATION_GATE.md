@@ -46,3 +46,7 @@ Automated tests cover saved retry, cancellation, GM/encounter guards, unchanged 
 ## v0.0.1856 follow-up
 
 A successful activation now prompts Renewal in active Side Slots. The manual button shares the same prompt and retry path. Slot success is posted to chat, with a warning if posting fails; chat failures do not undo gameplay. Concurrent browser writes remain open. Live prompt/chat QA pending.
+
+## v0.0.1881 follow-up
+
+Renewal execution now uses the authoritative scene command queue, including Actor roll persistence and slot insertion. Choice is collected before enqueue; the activation and active GM are revalidated. Simulations cover concurrent requests, saved-roll retry and a GM handover after the Actor save. Existing saved-result and no-extra-turn semantics remain. Same-account concurrent GM tabs and actual Foundry handover/reconnect remain unverified. See PACKAGE_4_QA.md.

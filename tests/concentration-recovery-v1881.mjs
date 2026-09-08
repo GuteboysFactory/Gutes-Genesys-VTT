@@ -1,0 +1,40 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import vm from 'node:vm';
+const source=fs.readFileSync('dist/module/magic-concentration-runtime-v1810.js','utf8').replace(/^import .*;$/gm,'');
+let user={id:'gm',isGM:true},failTarget='',failPayment=false,payments=0;
+const actor=(uuid)=>({uuid,id:uuid.split('.').at(-1),type:'character',isOwner:true,flags:{},getFlag(_s,k){return this.flags[k];},async setFlag(_s,k,v){if(failTarget===this.uuid)throw Error('target offline');this.flags[k]=structuredClone(v);}});
+const caster=actor('Scene.s.Token.c.Actor.shared'), other=actor('Scene.other.Token.c.Actor.shared'),a=actor('Actor.a'),b=actor('Scene.s.Token.b.Actor.b');
+caster.isToken=true;other.isToken=true;
+const scene={id:'s',tokens:{contents:[{actor:caster},{actor:b}]},flags:{ruleEncounterId:'enc'},getFlag(_s,k){return this.flags[k];},async setFlag(_s,k,v){this.flags[k]=structuredClone(v);}};
+let state={status:'active',round:1,turnNumber:1,activeActorRef:caster.uuid,activeActivationId:'base',turn:{maneuversUsed:0}};
+let context=vm.createContext({game:{get user(){return user;},users:{activeGM:{id:'gm'}},actors:{contents:[a]},genesysVtt:{initiative:{sceneState:()=>state}}},canvas:{scene},Hooks:{on(){},once(){}},getActorMagicEffects:a=>structuredClone(a.flags.effects??[]),MAGIC_EFFECT_FLAG:'effects',rerenderRenderedCharacterSheet:async()=>{},rerenderAllRenderedCharacterSheets:async()=>{},console,concentrateSceneSpells:async()=>({dispatched:true})});
+vm.runInContext(source,context);
+const run=(fn,...args)=>{context.args=args;return vm.runInContext(`${fn}(...args)`,context);};
+const effect=id=>({id,casterRef:caster.uuid,concentration:true,duration:{autoManaged:true,encounterSceneId:'s',createdTurnKey:'old',lastExtendedTurnKey:'old'}});
+a.flags.effects=[effect('a'),{...effect('other'),casterRef:other.uuid}];b.flags.effects=[effect('b')];
+const deps={read:()=>state,pay:async j=>{if(failPayment)throw Error('scene offline');payments++;state.turn.maneuversUsed++;scene.flags.magicConcentrationJournal=structuredClone(j);}};
+failPayment=true;await assert.rejects(run('concentrateAuthoritative',caster,scene,deps),/scene offline/);assert.equal(payments,0);assert.equal(a.flags.effects[0].duration.lastExtendedTurnKey,'old');
+failPayment=false;failTarget=b.uuid;await assert.rejects(run('concentrateAuthoritative',caster,scene,deps),/target offline/);assert.equal(payments,1);assert.equal(scene.flags.magicConcentrationJournal.done,false);assert.notEqual(a.flags.effects[0].duration.lastExtendedTurnKey,'old');assert.equal(b.flags.effects[0].duration.lastExtendedTurnKey,'old');
+// New VM simulates losing local locks/cache. Durable scene and target records suffice.
+context=vm.createContext({...context,Hooks:{on(){},once(){}}});
+vm.runInContext(source,context);
+failTarget='';await run('concentrateAuthoritative',caster,scene,deps);assert.equal(payments,1);assert.equal(scene.flags.magicConcentrationJournal.done,true);
+await run('concentrateAuthoritative',caster,scene,deps);assert.equal(payments,1);
+let next={...state,turnNumber:2,activeActorRef:'',activeActivationId:''};await run('prepareTransition',scene,state,next);assert.equal(a.flags.effects.length,2,'sustained on base survives base completion');
+state={...state,turnNumber:3,activeActivationId:'extra',turn:{maneuversUsed:0}};
+next={...state,turnNumber:4,activeActorRef:'',activeActivationId:''};
+failTarget=b.uuid;await assert.rejects(run('prepareTransition',scene,state,next),/target offline/);assert.equal(a.flags.effects.length,1);assert.equal(a.flags.effects[0].casterRef,other.uuid);assert.equal(b.flags.effects.length,1);
+failTarget='';await run('prepareTransition',scene,state,next);assert.equal(b.flags.effects.length,0);assert.equal(a.flags.effects.length,1);
+// A new cast on an extra activation survives that activation, then expires next owner turn.
+b.flags.effects=[{...effect('new'),duration:await run('durationSeedForCast',caster)}];
+await run('prepareTransition',scene,state,next);assert.equal(b.flags.effects.length,1);
+state={...state,round:2,turnNumber:5,activeActivationId:'base'};await run('prepareTransition',scene,state,{...state,turnNumber:6,activeActorRef:''});assert.equal(b.flags.effects.length,0);
+// Changed target requires review, never overwrites independent edits or pays twice.
+a.flags.effects=[effect('changed')];b.flags.effects=[effect('b2')];failTarget=b.uuid;
+await assert.rejects(run('concentrateAuthoritative',caster,scene,deps),/target offline/);const paid=payments;
+b.flags.effects[0].duration.lastExtendedBy='manual-edit';failTarget='';await assert.rejects(run('concentrateAuthoritative',caster,scene,deps),/changed during recovery/);assert.equal(payments,paid);
+b.flags.effects=[];await run('concentrateAuthoritative',caster,scene,deps);assert.equal(payments,paid);
+user={id:'other-gm',isGM:true};await assert.rejects(run('concentrateAuthoritative',caster,scene,deps),/Active GM/);
+user={id:'player',isGM:false};assert.equal((await run('concentrate',caster)).dispatched,true,'player routes to authoritative transport');
+console.log('PASS concentration atomic payment, partial target retry, extra activation expiry, cast duration, conflict review, removed targets, GM authority and player dispatch');

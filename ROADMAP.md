@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1880** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1881** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -454,3 +454,12 @@ Remaining package 1: inventory and rule verification of additional NPC abilities
 ## Combined packages 2 and 3 — v0.0.1880
 
 Eleven native Heroic shortcut Items, upgrade-safe installation, matching-ability validation and existing GM approval integration delivered together. Actual Tome v1.1.9 adapter contract passes. Core/Terrinoth implementation review and stability results are in docs/PACKAGES_2_3_QA.md. 62 test files pass; one browser test is blocked by missing Chromium. Live multiplayer/reconnect/performance and v14 verification remain open; accepted manual Heroic exceptions remain. Neither package is described as fully live-certified.
+
+## Combined package 4 — v0.0.1881
+
+- Concentration uses the authoritative scene queue. Maneuver and target-work receipt are saved together; partial target writes resume without another maneuver. Expiry completes before the turn/encounter advances. Reload uses durable state, not a local cache.
+- Renewal rolls and slot insertion execute inside the existing scene queue, retaining saved-roll retry and active-GM checks. No additional activation rights are granted.
+- Desperate Recovery applies to individual and batch encounter recovery. Apothecary natural-rest care is GM-confirmed with rank validation. One with Nature remains available individually.
+- Forge adds selectable native Ogre Regeneration and Orc Spiritspeaker Second Wind when intact reviewed source references qualify. Existing source compendiums/Actors are not rewritten. Second Wind now saves healing and usage together through the authority queue.
+- NPC inventory: 266 recorded talent/ability/spell clauses across 79 source templates, with explicit status in docs/npc-ability-coverage.json. This is not full-book certification.
+- See docs/PACKAGE_4_QA.md and TEST_PROTOCOL_v0.0.1881.md for scope, tests and remaining live gates. Same-account concurrent GM tabs, arbitrary external state writes and all-or-nothing multi-Actor rollback are not claimed.

@@ -1,0 +1,365 @@
+{
+  "version": "0.0.1881",
+  "environment": "Node v24.19.0; simulated Foundry documents unless noted",
+  "passed": 67,
+  "blocked": 1,
+  "tests": [
+    {
+      "file": "tests/action-defaults.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/action-runtime-binding.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/action-template-sources.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/action-template.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/adversary-art.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/adversary-forge-workflow.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/adversary-forge.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/adversary-library.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/adversary-templates.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/adversary-transfer.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/authoritative-effects-v1881.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/character-creation-custom-v1815.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/character-creator-talent-details-v1816.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/character-sheet-layout-v1819.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/character-sheet-layout-v1820.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/character-sheet-responsive-v1823.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/concentration-recovery-v1881.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/condition-turn-retry-v1859.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/encounter-extra-activation-completion-v1825.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/encounter-recovery-v1838.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/encounter-tracker-overhaul-v1824.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/equipment-catalog-install.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/equipment-compendiums.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/equipment-world-v1846.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/gm-dock-authority-v1839.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/gm-dock-encounter-v1836.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/gm-dock-floating-launcher-v1831.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/gm-dock-navigation-v1835.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/gm-dock-party-xp-story-counter-v1833.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/gm-dock-recovery-v1837.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/gm-dock-shell-v1830.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/gm-health.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-activation-v1841.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-aura-v1851.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-custom-v1845.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-devastating-v1849.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-dock-controls-v1861.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-empowered-v1850.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-hard-to-kill-v1862.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-library.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-live-foundation-v1840.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-primary-effects.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-primary-workflows.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-pulse-v1852.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-secondary-v1844.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-turn-v1848.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-unleash.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/heroic-upgrades-v1843.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/initiative-authority-integration-v1858.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/initiative-recovery-v1860.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/initiative-transport-v1858.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/initiative-write-queue-v1857.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/magic-actions-banner-v1822.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/magic-actions-placement-v1821.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/magic-concentration-identity.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/narrative-dice-transfer-v1818.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/npc-abilities-v1881.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/portrait-forge-square-v1817.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/reaction-choice-validation.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/recovery-talents-v1881.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/renewal-resolution-v1855.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/renewal-slots-v1854.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/second-wind-atomic-v1881.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/session-controls-v1834.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/story-points-live-v1832.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/talent-world-library.mjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/ui-coordinator-unit-v1812.cjs",
+      "status": "passed",
+      "reason": null
+    },
+    {
+      "file": "tests/ui-coordinator-v1812.cjs",
+      "status": "blocked",
+      "reason": "Chromium executable unavailable; attempted installation failed with timeouts and HTTP 502"
+    }
+  ],
+  "additional": [
+    {
+      "check": "Actual Tome v1.1.9 native Item adapter contract",
+      "status": "passed"
+    },
+    {
+      "check": "25 changed/new JavaScript files parse",
+      "status": "passed"
+    },
+    {
+      "check": "Changed Handlebars compile",
+      "status": "not-run",
+      "reason": "Handlebars dependency unavailable; layout remains live QA"
+    }
+  ],
+  "liveFoundry": "not-run",
+  "foundryV14": "unverified"
+}

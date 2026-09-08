@@ -34,7 +34,7 @@ export function createInitiativeTransport(deps) {
 export function authorizeInitiativeCommand(name,user,actor,args) {
  if(!user?.active)throw Error('Requesting user is no longer connected.');
  if(user.isGM)return;
- const allowed=['consumeSceneEncounterAction','rollActorInitiative','claimSceneInitiativeSlot','claimSceneInitiativeActivation','useSceneTurnAction','useSceneTurnManeuver','endSceneInitiativeTurn'];
+ const allowed=['executeSceneTalent','concentrateSceneSpells','consumeSceneEncounterAction','rollActorInitiative','claimSceneInitiativeSlot','claimSceneInitiativeActivation','useSceneTurnAction','useSceneTurnManeuver','endSceneInitiativeTurn'];
  if(!allowed.includes(name))throw Error('GM command required.');
  if(!actor?.testUserPermission?.(user,'OWNER'))throw Error('Actor ownership required.');
  if(name==='rollActorInitiative'&&args[1]!=='pc')throw Error('Players may roll PC initiative only.');

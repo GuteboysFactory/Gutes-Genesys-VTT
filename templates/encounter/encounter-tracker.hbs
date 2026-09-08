@@ -21,6 +21,7 @@
         <p>Conditions: {{#if recovery.conditionsDone}}saved{{else}}pending{{/if}} · Heroic: {{#if recovery.heroicDone}}saved{{else}}pending or not applicable{{/if}}</p>
         <p>Retry to finish this turn. Already saved updates are skipped.</p>
       </div>
+      {{#if recovery.concentrationPending}}<p>Concentration target updates are pending. Complete Interrupted Turn retries them before ending the turn. To keep playing this turn, retry Concentrate instead.</p>{{/if}}
       <button type="button" data-action="recoverTurn" data-recovery-key="{{recovery.key}}">Complete Interrupted Turn</button>
     </section>
   {{/if}}

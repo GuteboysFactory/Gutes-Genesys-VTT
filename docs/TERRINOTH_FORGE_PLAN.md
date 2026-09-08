@@ -127,3 +127,7 @@ Inga bokillustrationer ingår. Vid misslyckat Actor-sparande efter lyckad upplad
 | Smuggler | rival | Custom Genesys |
 | Bandit Leader | nemesis | Custom Genesys |
 | Court Mage | nemesis | Custom Genesys |
+
+## v0.0.1881 — reviewed ability support
+
+Forge draft enrichment adds selectable native Ogre Regeneration and Orc Spiritspeaker Second Wind 5 when the source identity and reviewed reference text match. Source compendiums and existing world Actors are preserved. Regeneration uses tracked activation-start healing with a saved receipt; Second Wind uses the existing active Talent workflow with atomic healing/usage. Other reference effects remain manual. Per-clause inventory and limits: `npc-ability-coverage.json`, `PACKAGE_4_QA.md`. Current automated results are recorded there; live QA remains open.

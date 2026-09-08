@@ -24,6 +24,7 @@ export async function resolveRenewal(actor, deps) {
   if(!['cool','vigilance'].includes(skill))return false;
   check();
   const result=roll(skill);
+  check();
   pending={activationId,sceneId:scene.id,encounterId,actorRef:actor.uuid,skill,success:result.net.success,advantage:result.net.advantage};
   await actor.setFlag(SID,'heroicRenewalRoll',pending);
  }

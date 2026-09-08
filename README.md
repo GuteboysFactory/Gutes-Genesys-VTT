@@ -1,3 +1,15 @@
+# Genesys VTT — QA v0.0.1881
+
+Foundry target: v13.351. v14 remains unverified.
+
+Current delivery: Concentration interruption recovery, authoritative Renewal, Desperate Recovery/Apothecary support and reviewed NPC ability integration.
+
+- [Current roadmap](ROADMAP.md)
+- [Package 4 scope and test report](docs/PACKAGE_4_QA.md)
+- [Combined live QA protocol](TEST_PROTOCOL_v0.0.1881.md)
+
+The notes below describe the earlier rule-engine foundation.
+
 # Genesys VTT 0.0.14 — Talents & Rule Elements
 
 Foundry VTT v13.351+ development build for the Genesys rules engine.

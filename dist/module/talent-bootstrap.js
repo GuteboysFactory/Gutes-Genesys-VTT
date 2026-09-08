@@ -3,7 +3,7 @@ import { GenesysItemSheet } from "./sheets/item-sheet.js";
 import { SYSTEM_ID } from "./constants.js";
 import { createCoreParryTalent, createCoreSecondWindTalent, createTerrinothFinesseTalent, evaluateRuleElement, getApplicableRuleElements, normalizeRuleCost, normalizeRuleElement, normalizeRuleUsage, normalizeTalentDefinition, ruleElementToActiveAction, ruleElementToCheckModifier, ruleElementToReaction, rulePredicateMatches, usageScopeKey, validateRuleCost } from "../domain/rules/index.js";
 import { actorHasTalent, actorRuleLifecycleContext, clearActorRuleUsage, collectActorRuleElements, collectActorTalents, endRuleEncounter, getActorRuleUsage, getRuleEncounterId, getRuleSessionId, grantCoreParry, grantCoreSecondWind, grantTerrinothFinesse, recordActorRuleUsage, registerRuleEngineSettings, startNewRuleEncounter, startNewRuleSession, talentDebug } from "./talent-service-foundation.js";
-import { executeActorActiveTalent, listActorActiveTalentActions } from "./talent-action-service.js";
+import { executeActorActiveTalent, executeActorActiveTalentAuthoritative, listActorActiveTalentActions } from "./talent-action-service.js";
 
 Hooks.once("init", () => {
     registerRuleEngineSettings();
@@ -43,6 +43,7 @@ Hooks.once("ready", () => {
                 ruleElements: collectActorRuleElements,
                 activeActions: listActorActiveTalentActions,
                 executeActive: executeActorActiveTalent,
+                executeAuthoritative: executeActorActiveTalentAuthoritative,
                 usage: getActorRuleUsage,
                 recordUsage: recordActorRuleUsage,
                 clearUsage: clearActorRuleUsage,

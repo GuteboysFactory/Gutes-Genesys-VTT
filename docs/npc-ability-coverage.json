@@ -1,0 +1,2673 @@
+{
+  "version": "0.0.1881",
+  "source": "Existing 79 Terrinoth template references; printed book page numbers",
+  "scope": "Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. Only new-runtime entries were rechecked against the supplied PDF in this package. Manual references are not executed.",
+  "templates": 79,
+  "counts": {
+    "manual-reference": 215,
+    "native-baseline": 49,
+    "new-runtime": 2
+  },
+  "entries": [
+    {
+      "templateId": "rot:beast-of-burden",
+      "actor": "Beast Of Burden",
+      "page": 104,
+      "category": "Abilities",
+      "name": "Encumbrance Capacity 18",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:beast-of-burden",
+      "actor": "Beast Of Burden",
+      "page": 104,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "actor": "Flying Mount",
+      "page": 104,
+      "category": "Talents",
+      "name": "Dodge 2",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "actor": "Flying Mount",
+      "page": 104,
+      "category": "Abilities",
+      "name": "Encumbrance Capacity 12",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "actor": "Flying Mount",
+      "page": 104,
+      "category": "Abilities",
+      "name": "Flyer",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "actor": "Flying Mount",
+      "page": 104,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:riding-beast",
+      "actor": "Riding Beast",
+      "page": 104,
+      "category": "Abilities",
+      "name": "Encumbrance Capacity 12",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:riding-beast",
+      "actor": "Riding Beast",
+      "page": 104,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:war-mount",
+      "actor": "War Mount",
+      "page": 105,
+      "category": "Abilities",
+      "name": "Encumbrance Capacity 13",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:war-mount",
+      "actor": "War Mount",
+      "page": 105,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "actor": "Dragon Hybrid",
+      "page": 151,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "actor": "Dragon Hybrid",
+      "page": 151,
+      "category": "Abilities",
+      "name": "Draconic Heritage",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "actor": "Dragon Hybrid",
+      "page": 151,
+      "category": "Abilities",
+      "name": "Flyer",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "actor": "Feral Dragon",
+      "page": 152,
+      "category": "Talents",
+      "name": "Adversary 2",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "actor": "Feral Dragon",
+      "page": 152,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "actor": "Feral Dragon",
+      "page": 152,
+      "category": "Abilities",
+      "name": "Flyer",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "actor": "Feral Dragon",
+      "page": 152,
+      "category": "Abilities",
+      "name": "Silhouette 4",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "actor": "Feral Dragon",
+      "page": 152,
+      "category": "Abilities",
+      "name": "Sweep Attack",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "actor": "Feral Dragon",
+      "page": 152,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:goblin",
+      "actor": "Goblin",
+      "page": 152,
+      "category": "Abilities",
+      "name": "Dark Vision",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:goblin",
+      "actor": "Goblin",
+      "page": 152,
+      "category": "Abilities",
+      "name": "Opportunistic",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "actor": "Goblin Witcher",
+      "page": 152,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "actor": "Goblin Witcher",
+      "page": 152,
+      "category": "Talents",
+      "name": "Dark Insight",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "actor": "Goblin Witcher",
+      "page": 152,
+      "category": "Abilities",
+      "name": "Dark Vision",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "actor": "Goblin Witcher",
+      "page": 152,
+      "category": "Abilities",
+      "name": "Spiteful Curse",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "actor": "Goblin Witcher",
+      "page": 152,
+      "category": "Spells",
+      "name": "Goblin witchers can choose any magic action allowed for the Arcana skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "actor": "Goblin Witcher",
+      "page": 152,
+      "category": "Spells",
+      "name": "and may select additional spell effects as normal. The spells they use most often are the following: Agonizing Hex",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "actor": "Greyhaven Wizard",
+      "page": 153,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "actor": "Greyhaven Wizard",
+      "page": 153,
+      "category": "Spells",
+      "name": "A wizard can choose any magic action allowed for the Arcana skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "actor": "Greyhaven Wizard",
+      "page": 153,
+      "category": "Spells",
+      "name": "and may select additional spell effects",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "actor": "Greyhaven Wizard",
+      "page": 153,
+      "category": "Spells",
+      "name": "as normal. The spells they use most often are the following: Fireball",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ironbound",
+      "actor": "Ironbound",
+      "page": 153,
+      "category": "Abilities",
+      "name": "Graven Wards",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ironbound",
+      "actor": "Ironbound",
+      "page": 153,
+      "category": "Abilities",
+      "name": "Strength of Iron",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ironbound",
+      "actor": "Ironbound",
+      "page": 153,
+      "category": "Abilities",
+      "name": "Watchful",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "actor": "Priest Of Kellos",
+      "page": 154,
+      "category": "Talents",
+      "name": "Flames of Kellos",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "actor": "Priest Of Kellos",
+      "page": 154,
+      "category": "Spells",
+      "name": "Priests of Kellos can choose any magic action allowed for the Divine skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "actor": "Priest Of Kellos",
+      "page": 154,
+      "category": "Spells",
+      "name": "and may select additional spell effects",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "actor": "Priest Of Kellos",
+      "page": 154,
+      "category": "Spells",
+      "name": "as normal. The spells they use most often are the following: Healing Spark",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "actor": "Rune Golem",
+      "page": 154,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "actor": "Rune Golem",
+      "page": 154,
+      "category": "Abilities",
+      "name": "Four-armed",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "actor": "Rune Golem",
+      "page": 154,
+      "category": "Abilities",
+      "name": "Elemental Runes",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "actor": "Splig, King Of All Goblins",
+      "page": 154,
+      "category": "Talents",
+      "name": "Whirlwind",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "actor": "Splig, King Of All Goblins",
+      "page": 154,
+      "category": "Abilities",
+      "name": "King of the Goblins!",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "actor": "Splig, King Of All Goblins",
+      "page": 154,
+      "category": "Abilities",
+      "name": "Lucky Escape",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:tamalir-guildmaster",
+      "actor": "Tamalir Guildmaster",
+      "page": 155,
+      "category": "Abilities",
+      "name": "Certain You Want To Do This?",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:barghest",
+      "actor": "Barghest",
+      "page": 163,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:barghest",
+      "actor": "Barghest",
+      "page": 163,
+      "category": "Abilities",
+      "name": "Maul",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:barghest",
+      "actor": "Barghest",
+      "page": 163,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:barghest",
+      "actor": "Barghest",
+      "page": 163,
+      "category": "Abilities",
+      "name": "Undead",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:death-knight",
+      "actor": "Death Knight",
+      "page": 164,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:death-knight",
+      "actor": "Death Knight",
+      "page": 164,
+      "category": "Talents",
+      "name": "Parry 3",
+      "status": "native-baseline",
+      "implementation": "Existing native Parry reaction",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:death-knight",
+      "actor": "Death Knight",
+      "page": 164,
+      "category": "Talents",
+      "name": "Improved Parry",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:death-knight",
+      "actor": "Death Knight",
+      "page": 164,
+      "category": "Abilities",
+      "name": "Mounted Charge",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:death-knight",
+      "actor": "Death Knight",
+      "page": 164,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:death-knight",
+      "actor": "Death Knight",
+      "page": 164,
+      "category": "Abilities",
+      "name": "Undead",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ferrox",
+      "actor": "Ferrox",
+      "page": 165,
+      "category": "Abilities",
+      "name": "Bloodthirst",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ferrox",
+      "actor": "Ferrox",
+      "page": 165,
+      "category": "Abilities",
+      "name": "Glider",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ferrox",
+      "actor": "Ferrox",
+      "page": 165,
+      "category": "Abilities",
+      "name": "Savage",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Talents",
+      "name": "Adversary 2",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Talents",
+      "name": "Dark Insight",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Abilities",
+      "name": "Blood Call",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Abilities",
+      "name": "Sunlight Sensitivity",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Abilities",
+      "name": "Undead",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Abilities",
+      "name": "Vampiric Magic",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Spells",
+      "name": "A Lord of Bilehall can choose any magic action allowed for the Arcana skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Spells",
+      "name": "and may select additional spell effects",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "actor": "Lord Of Bilehall",
+      "page": 165,
+      "category": "Spells",
+      "name": "as normal. The spells they use most often are the following: Blood Funnel",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:necromancer",
+      "actor": "Necromancer",
+      "page": 166,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:necromancer",
+      "actor": "Necromancer",
+      "page": 166,
+      "category": "Talents",
+      "name": "Chill of Nordros",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:necromancer",
+      "actor": "Necromancer",
+      "page": 166,
+      "category": "Talents",
+      "name": "Dark Insight",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:necromancer",
+      "actor": "Necromancer",
+      "page": 166,
+      "category": "Talents",
+      "name": "Necromancy",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:necromancer",
+      "actor": "Necromancer",
+      "page": 166,
+      "category": "Spells",
+      "name": "Necromancers can choose any magic action allowed for the Arcana skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:necromancer",
+      "actor": "Necromancer",
+      "page": 166,
+      "category": "Spells",
+      "name": "and may select additional spell effects",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:necromancer",
+      "actor": "Necromancer",
+      "page": 166,
+      "category": "Spells",
+      "name": "as normal. The spells they use most often are the following: Death Knell",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:reanimate",
+      "actor": "Reanimate",
+      "page": 166,
+      "category": "Abilities",
+      "name": "Undead",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:reanimate",
+      "actor": "Reanimate",
+      "page": 166,
+      "category": "Abilities",
+      "name": "Undying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wraith",
+      "actor": "Wraith",
+      "page": 167,
+      "category": "Abilities",
+      "name": "Ghostly",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wraith",
+      "actor": "Wraith",
+      "page": 167,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wraith",
+      "actor": "Wraith",
+      "page": 167,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wraith",
+      "actor": "Wraith",
+      "page": 167,
+      "category": "Abilities",
+      "name": "Undead",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "actor": "Aymhelin Scion",
+      "page": 178,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "actor": "Aymhelin Scion",
+      "page": 178,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "actor": "Aymhelin Scion",
+      "page": 178,
+      "category": "Abilities",
+      "name": "Cage of Roots",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "actor": "Aymhelin Scion",
+      "page": 178,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:deepwood-archer",
+      "actor": "Deepwood Archer",
+      "page": 179,
+      "category": "Abilities",
+      "name": "Point Blank Shot",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "actor": "Forest Guardian",
+      "page": 179,
+      "category": "Talents",
+      "name": "Adversary 2",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "actor": "Forest Guardian",
+      "page": 179,
+      "category": "Abilities",
+      "name": "Sweep Attack",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "actor": "Forest Guardian",
+      "page": 179,
+      "category": "Abilities",
+      "name": "Silhouette 3",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:leonx-rider",
+      "actor": "Leonx Rider",
+      "page": 179,
+      "category": "Abilities",
+      "name": "Leonx Bond",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:leonx",
+      "actor": "Leonx",
+      "page": 180,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:leonx",
+      "actor": "Leonx",
+      "page": 180,
+      "category": "Abilities",
+      "name": "Maul",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "actor": "Storm Sorceress",
+      "page": 180,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "actor": "Storm Sorceress",
+      "page": 180,
+      "category": "Abilities",
+      "name": "Elemental Mastery",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "actor": "Storm Sorceress",
+      "page": 180,
+      "category": "Spells",
+      "name": "Storm sorceresses can choose any magic action allowed for the Arcana skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "actor": "Storm Sorceress",
+      "page": 180,
+      "category": "Spells",
+      "name": "and may select additional spell effects",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "actor": "Storm Sorceress",
+      "page": 180,
+      "category": "Spells",
+      "name": "as normal. The spells they use most often are the following: Blizzard",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:true-fae",
+      "actor": "True Fae",
+      "page": 181,
+      "category": "Talents",
+      "name": "Quick Strike 2",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:true-fae",
+      "actor": "True Fae",
+      "page": 181,
+      "category": "Abilities",
+      "name": "Creature of the Aenlong",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:true-fae",
+      "actor": "True Fae",
+      "page": 181,
+      "category": "Abilities",
+      "name": "Flyer",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:true-fae",
+      "actor": "True Fae",
+      "page": 181,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:true-fae",
+      "actor": "True Fae",
+      "page": 181,
+      "category": "Spells",
+      "name": "The Fae can choose any magic action allowed for the Arcana skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:true-fae",
+      "actor": "True Fae",
+      "page": 181,
+      "category": "Spells",
+      "name": "and may select additional spell effects",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:true-fae",
+      "actor": "True Fae",
+      "page": 181,
+      "category": "Spells",
+      "name": "as normal. The spells they use most often are the following: Blinding Curse",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "actor": "Deep Elf",
+      "page": 190,
+      "category": "Talents",
+      "name": "Dual Wielder",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "actor": "Deep Elf",
+      "page": 190,
+      "category": "Abilities",
+      "name": "Shadow Training",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dimora",
+      "actor": "Dimora",
+      "page": 191,
+      "category": "Talents",
+      "name": "Durable 2",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dimora",
+      "actor": "Dimora",
+      "page": 191,
+      "category": "Abilities",
+      "name": "Creature of the Aenlong",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dimora",
+      "actor": "Dimora",
+      "page": 191,
+      "category": "Abilities",
+      "name": "Stonewalker",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dimora",
+      "actor": "Dimora",
+      "page": 191,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dimora",
+      "actor": "Dimora",
+      "page": 191,
+      "category": "Spells",
+      "name": "The Dimora can choose any magic action allowed for the Arcana skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dimora",
+      "actor": "Dimora",
+      "page": 191,
+      "category": "Spells",
+      "name": "and may select additional spell effects",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dimora",
+      "actor": "Dimora",
+      "page": 191,
+      "category": "Spells",
+      "name": "as normal. The spells they use most often are the following: Tremor",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dwarf-guilder",
+      "actor": "Dwarf Guilder",
+      "page": 191,
+      "category": "Abilities",
+      "name": "Dark Vision",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dwarf-guilder",
+      "actor": "Dwarf Guilder",
+      "page": 191,
+      "category": "Abilities",
+      "name": "Guild Member",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "actor": "Dwarven Dragon Hunter",
+      "page": 191,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "actor": "Dwarven Dragon Hunter",
+      "page": 191,
+      "category": "Abilities",
+      "name": "Dauntless",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "actor": "Dwarven Dragon Hunter",
+      "page": 191,
+      "category": "Abilities",
+      "name": "Dark Vision",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:kennsir-dwarf",
+      "actor": "Kennsir Dwarf",
+      "page": 192,
+      "category": "Abilities",
+      "name": "Dark Vision",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:kennsir-dwarf",
+      "actor": "Kennsir Dwarf",
+      "page": 192,
+      "category": "Abilities",
+      "name": "Tunnel Fighter",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:kobold",
+      "actor": "Kobold",
+      "page": 192,
+      "category": "Abilities",
+      "name": "Not Another!",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:kobold",
+      "actor": "Kobold",
+      "page": 192,
+      "category": "Abilities",
+      "name": "Silhouette 0",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "actor": "Ancient Dragon",
+      "page": 195,
+      "category": "Talents",
+      "name": "Adversary 2",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "actor": "Ancient Dragon",
+      "page": 195,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "actor": "Ancient Dragon",
+      "page": 195,
+      "category": "Abilities",
+      "name": "Claw Sweep",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "actor": "Ancient Dragon",
+      "page": 195,
+      "category": "Abilities",
+      "name": "Flyer",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "actor": "Ancient Dragon",
+      "page": 195,
+      "category": "Abilities",
+      "name": "Silhouette 4",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "actor": "Ancient Dragon",
+      "page": 195,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "actor": "Ancient Dragon",
+      "page": 195,
+      "category": "Spells",
+      "name": "Ancient dragons can use any magic actions allowed for the Arcana and Runes skills",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "actor": "Ancient Dragon",
+      "page": 195,
+      "category": "Spells",
+      "name": "and may select additional effects as normal. The spells they use most often are the following: Unbind Spell",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:specter",
+      "actor": "Specter",
+      "page": 195,
+      "category": "Abilities",
+      "name": "Ancestral Gaze",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:specter",
+      "actor": "Specter",
+      "page": 195,
+      "category": "Abilities",
+      "name": "Ghostly",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:specter",
+      "actor": "Specter",
+      "page": 195,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:specter",
+      "actor": "Specter",
+      "page": 195,
+      "category": "Abilities",
+      "name": "Undead",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lava-elemental",
+      "actor": "Lava Elemental",
+      "page": 196,
+      "category": "Abilities",
+      "name": "Amorphous",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lava-elemental",
+      "actor": "Lava Elemental",
+      "page": 196,
+      "category": "Abilities",
+      "name": "Inconspicuous",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:salamander",
+      "actor": "Salamander",
+      "page": 196,
+      "category": "Talents",
+      "name": "None. Sk",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:salamander",
+      "actor": "Salamander",
+      "page": 196,
+      "category": "Abilities",
+      "name": "Flameborn",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "actor": "Young Dragon",
+      "page": 196,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "actor": "Young Dragon",
+      "page": 196,
+      "category": "Abilities",
+      "name": "Flyer",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "actor": "Young Dragon",
+      "page": 196,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "actor": "Young Dragon",
+      "page": 196,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "actor": "Young Dragon",
+      "page": 196,
+      "category": "Spells",
+      "name": "A young dragon can use any magic actions allowed for the Arcana and Runes skills",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "actor": "Young Dragon",
+      "page": 196,
+      "category": "Spells",
+      "name": "and may select additional effects as normal. A young dragon is still learning the magical crafts of its race",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "actor": "Young Dragon",
+      "page": 196,
+      "category": "Spells",
+      "name": "and might experiment with any manner of spell",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:beastman",
+      "actor": "Beastman",
+      "page": 201,
+      "category": "Abilities",
+      "name": "Bestial Rage",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "actor": "Gurak Tol",
+      "page": 202,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "actor": "Gurak Tol",
+      "page": 202,
+      "category": "Abilities",
+      "name": "Tail catapult",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ogre",
+      "actor": "Ogre",
+      "page": 202,
+      "category": "Abilities",
+      "name": "Regeneration",
+      "status": "new-runtime",
+      "implementation": "Forge adds selectable Regeneration Talent; tracked activation-start heal with atomic receipt",
+      "sourceCheckedThisPackage": true
+    },
+    {
+      "templateId": "rot:ogre",
+      "actor": "Ogre",
+      "page": 202,
+      "category": "Abilities",
+      "name": "Sweep Attack",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "actor": "Orc Spiritspeaker",
+      "page": 202,
+      "category": "Talents",
+      "name": "Second Wind 5",
+      "status": "new-runtime",
+      "implementation": "Forge adds native Second Wind 5; existing active Talent UI, authoritative execution and atomic usage receipt",
+      "sourceCheckedThisPackage": true
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "actor": "Orc Spiritspeaker",
+      "page": 202,
+      "category": "Abilities",
+      "name": "Spiritual Focus",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "actor": "Orc Spiritspeaker",
+      "page": 202,
+      "category": "Spells",
+      "name": "Spiritspeakers can choose any magic action allowed for the Primal skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "actor": "Orc Spiritspeaker",
+      "page": 202,
+      "category": "Spells",
+      "name": "and may select additional spell effects as normal. The spells they use most often are the following: Fury of the Spirits",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "actor": "Orc Outrider",
+      "page": 203,
+      "category": "Talents",
+      "name": "Quick Draw",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "actor": "Orc Outrider",
+      "page": 203,
+      "category": "Abilities",
+      "name": "Brutal Training",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:berserker",
+      "actor": "Berserker",
+      "page": 213,
+      "category": "Abilities",
+      "name": "Bone Spurs",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:berserker",
+      "actor": "Berserker",
+      "page": 213,
+      "category": "Abilities",
+      "name": "A Good Death",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "actor": "Bloodsister And Nightseer",
+      "page": 213,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "actor": "Bloodsister And Nightseer",
+      "page": 213,
+      "category": "Talents",
+      "name": "Dark Insight",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "actor": "Bloodsister And Nightseer",
+      "page": 213,
+      "category": "Abilities",
+      "name": "Telepathic Bond",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "actor": "Bloodsister And Nightseer",
+      "page": 213,
+      "category": "Abilities",
+      "name": "Telepathic Domination",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "actor": "Bloodsister And Nightseer",
+      "page": 213,
+      "category": "Abilities",
+      "name": "Dreamwalker",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "actor": "Bloodsister And Nightseer",
+      "page": 213,
+      "category": "Spells",
+      "name": "Bloodsisters and nightseers can choose any magic action allowed for the Divine skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "actor": "Bloodsister And Nightseer",
+      "page": 213,
+      "category": "Spells",
+      "name": "and may select additional spell effects as normal. The spells they use most often are the following: Bone Eruption",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "actor": "Flesh Ripper",
+      "page": 214,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "actor": "Flesh Ripper",
+      "page": 214,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:grotesque",
+      "actor": "Grotesque",
+      "page": 215,
+      "category": "Abilities",
+      "name": "Bone Spurs",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:grotesque",
+      "actor": "Grotesque",
+      "page": 215,
+      "category": "Abilities",
+      "name": "Killing Frenzy",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "actor": "Spined Thresher",
+      "page": 216,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "actor": "Spined Thresher",
+      "page": 216,
+      "category": "Abilities",
+      "name": "Silhouette 3",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "actor": "Spined Thresher",
+      "page": 216,
+      "category": "Abilities",
+      "name": "Spine-tow",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "actor": "Spined Thresher",
+      "page": 216,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "actor": "Spined Thresher",
+      "page": 216,
+      "category": "Abilities",
+      "name": "Too Many Mouths",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:viper-legion-archer",
+      "actor": "Viper Legion Archer",
+      "page": 217,
+      "category": "Abilities",
+      "name": "Tailored Poison",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "actor": "Witch And Warlock",
+      "page": 217,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "actor": "Witch And Warlock",
+      "page": 217,
+      "category": "Talents",
+      "name": "Dark Insight",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "actor": "Witch And Warlock",
+      "page": 217,
+      "category": "Abilities",
+      "name": "Telepathic Coordination",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "actor": "Witch And Warlock",
+      "page": 217,
+      "category": "Abilities",
+      "name": "Sacrifice",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "actor": "Witch And Warlock",
+      "page": 217,
+      "category": "Spells",
+      "name": "Witches and warlocks can choose any magic action allowed for the Divine skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "actor": "Witch And Warlock",
+      "page": 217,
+      "category": "Spells",
+      "name": "and may select additional spell effects as normal. The spells they use most often are: Boneshatter",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:giant",
+      "actor": "Giant",
+      "page": 226,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:giant",
+      "actor": "Giant",
+      "page": 226,
+      "category": "Abilities",
+      "name": "Giant Stomp!",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:giant",
+      "actor": "Giant",
+      "page": 226,
+      "category": "Abilities",
+      "name": "Silhouette 3",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:giant",
+      "actor": "Giant",
+      "page": 226,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "actor": "Gnome Minstrel",
+      "page": 226,
+      "category": "Talents",
+      "name": "Encouraging Song",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "actor": "Gnome Minstrel",
+      "page": 226,
+      "category": "Abilities",
+      "name": "Haunting melodies",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "actor": "Gnome Minstrel",
+      "page": 226,
+      "category": "Abilities",
+      "name": "Silhouette 0",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "actor": "Gnome Minstrel",
+      "page": 226,
+      "category": "Spells",
+      "name": "Gnome minstrels can choose any magic action allowed for the Verse skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "actor": "Gnome Minstrel",
+      "page": 226,
+      "category": "Spells",
+      "name": "and may select additional spell effects as normal. The spells they use most often are the following: Addling Tune",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lorimor-marine",
+      "actor": "Lorimor Marine",
+      "page": 227,
+      "category": "Abilities",
+      "name": "Sea Legs",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:lost-knight",
+      "actor": "Lost Knight",
+      "page": 227,
+      "category": "Abilities",
+      "name": "Fatalistic Ferocity",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:manticore",
+      "actor": "Manticore",
+      "page": 227,
+      "category": "Abilities",
+      "name": "Flyer",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:manticore",
+      "actor": "Manticore",
+      "page": 227,
+      "category": "Abilities",
+      "name": "poisonous stinger",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:manticore",
+      "actor": "Manticore",
+      "page": 227,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:merriod",
+      "actor": "Merriod",
+      "page": 228,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:merriod",
+      "actor": "Merriod",
+      "page": 228,
+      "category": "Abilities",
+      "name": "Aquatic",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:merriod",
+      "actor": "Merriod",
+      "page": 228,
+      "category": "Abilities",
+      "name": "Monstrous Limbs",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:merriod",
+      "actor": "Merriod",
+      "page": 228,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:merriod",
+      "actor": "Merriod",
+      "page": 228,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:pirate",
+      "actor": "Pirate",
+      "page": 229,
+      "category": "Talents",
+      "name": "Quick Draw",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:shade",
+      "actor": "Shade",
+      "page": 229,
+      "category": "Abilities",
+      "name": "Ghostly",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:shade",
+      "actor": "Shade",
+      "page": 229,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:shade",
+      "actor": "Shade",
+      "page": 229,
+      "category": "Abilities",
+      "name": "Undead",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:siren",
+      "actor": "Siren",
+      "page": 230,
+      "category": "Abilities",
+      "name": "Deadly Distraction",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:siren",
+      "actor": "Siren",
+      "page": 230,
+      "category": "Abilities",
+      "name": "Flyer",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:siren",
+      "actor": "Siren",
+      "page": 230,
+      "category": "Abilities",
+      "name": "Irresistible Song",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "actor": "Sword Poet",
+      "page": 230,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "actor": "Sword Poet",
+      "page": 230,
+      "category": "Talents",
+      "name": "Duelist",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "actor": "Sword Poet",
+      "page": 230,
+      "category": "Talents",
+      "name": "Parry 3",
+      "status": "native-baseline",
+      "implementation": "Existing native Parry reaction",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "actor": "Sword Poet",
+      "page": 230,
+      "category": "Talents",
+      "name": "Improved Parry",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "actor": "Sword Poet",
+      "page": 230,
+      "category": "Abilities",
+      "name": "Show Off",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "actor": "Wyrm Of The Deep",
+      "page": 231,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "actor": "Wyrm Of The Deep",
+      "page": 231,
+      "category": "Abilities",
+      "name": "Aquatic",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "actor": "Wyrm Of The Deep",
+      "page": 231,
+      "category": "Abilities",
+      "name": "Silhouette 4",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "actor": "Wyrm Of The Deep",
+      "page": 231,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "actor": "Ice Wyrm",
+      "page": 237,
+      "category": "Talents",
+      "name": "Adversary 2",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "actor": "Ice Wyrm",
+      "page": 237,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "actor": "Ice Wyrm",
+      "page": 237,
+      "category": "Abilities",
+      "name": "Flyer",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "actor": "Ice Wyrm",
+      "page": 237,
+      "category": "Abilities",
+      "name": "Camouflaged Scales",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "actor": "Ice Wyrm",
+      "page": 237,
+      "category": "Abilities",
+      "name": "Silhouette 4. S",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:ice-blood-warrior",
+      "actor": "Ice-Blood Warrior",
+      "page": 237,
+      "category": "Abilities",
+      "name": "Ice Madness",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wendigo",
+      "actor": "Wendigo",
+      "page": 238,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wendigo",
+      "actor": "Wendigo",
+      "page": 238,
+      "category": "Abilities",
+      "name": "Blood Frenzy",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wendigo",
+      "actor": "Wendigo",
+      "page": 238,
+      "category": "Abilities",
+      "name": "Eyeless Sight",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:wendigo",
+      "actor": "Wendigo",
+      "page": 238,
+      "category": "Abilities",
+      "name": "Terrifying",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "actor": "Onoit Shaman",
+      "page": 239,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "actor": "Onoit Shaman",
+      "page": 239,
+      "category": "Abilities",
+      "name": "Silhouette 0",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "actor": "Onoit Shaman",
+      "page": 239,
+      "category": "Spells",
+      "name": "Onoit shamans can choose any magic action allowed for the Primal skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "actor": "Onoit Shaman",
+      "page": 239,
+      "category": "Spells",
+      "name": "and may select additional spell effects",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "actor": "Onoit Shaman",
+      "page": 239,
+      "category": "Spells",
+      "name": "as normal. The spells they use most often are the following: Winter Gale",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "actor": "Weik Warrior",
+      "page": 239,
+      "category": "Abilities",
+      "name": "Aggressive Fighter",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:assassin",
+      "actor": "Assassin",
+      "page": 247,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:assassin",
+      "actor": "Assassin",
+      "page": 247,
+      "category": "Talents",
+      "name": "Backstab",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:assassin",
+      "actor": "Assassin",
+      "page": 247,
+      "category": "Talents",
+      "name": "Precision Strikes",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:assassin",
+      "actor": "Assassin",
+      "page": 247,
+      "category": "Abilities",
+      "name": "Lightning Draw",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:assassin",
+      "actor": "Assassin",
+      "page": 247,
+      "category": "Abilities",
+      "name": "Poisoner",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:assassin",
+      "actor": "Assassin",
+      "page": 247,
+      "category": "Abilities",
+      "name": "Vanish",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:djinn",
+      "actor": "Djinn",
+      "page": 248,
+      "category": "Talents",
+      "name": "Adversary 3",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:djinn",
+      "actor": "Djinn",
+      "page": 248,
+      "category": "Talents",
+      "name": "Ruinous Repartee",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:djinn",
+      "actor": "Djinn",
+      "page": 248,
+      "category": "Abilities",
+      "name": "Airborne",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:djinn",
+      "actor": "Djinn",
+      "page": 248,
+      "category": "Abilities",
+      "name": "Shapeshifter",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:djinn",
+      "actor": "Djinn",
+      "page": 248,
+      "category": "Spells",
+      "name": "Djinni may use any magic action permitted for the Arcana skill",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:djinn",
+      "actor": "Djinn",
+      "page": 248,
+      "category": "Spells",
+      "name": "and may add spell effects as normal. The spells they use most often are the following: Cyclone",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:minor-elemental",
+      "actor": "Minor Elemental",
+      "page": 248,
+      "category": "Abilities",
+      "name": "Amorphous",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:minor-elemental",
+      "actor": "Minor Elemental",
+      "page": 248,
+      "category": "Abilities",
+      "name": "Inconspicuous",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "actor": "Scorpion Swarm",
+      "page": 249,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "actor": "Scorpion Swarm",
+      "page": 249,
+      "category": "Abilities",
+      "name": "Swarm",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "actor": "Scorpion Swarm",
+      "page": 249,
+      "category": "Abilities",
+      "name": "venomous",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:thieves-guild-cutpurse",
+      "actor": "Thieves’ Guild Cutpurse",
+      "page": 249,
+      "category": "Talents",
+      "name": "Finesse",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "actor": "Carnivorous Flora",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Drag",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "actor": "Carnivorous Flora",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Inconspicuous",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "actor": "Carnivorous Flora",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Rooted",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "actor": "Carnivorous Flora",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Silhouette 2",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "actor": "Carnivorous Flora",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Unexpected Attack",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "actor": "Giant Snake",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Silhouette 3",
+      "status": "native-baseline",
+      "implementation": "Actor silhouette",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "actor": "Giant Snake",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Swallow",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:makhim",
+      "actor": "Makhim",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Four-armed",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "actor": "Naga Priestess",
+      "page": 258,
+      "category": "Talents",
+      "name": "Adversary 1",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "actor": "Naga Priestess",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Hypnotic Gaze",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "actor": "Naga Priestess",
+      "page": 258,
+      "category": "Abilities",
+      "name": "Opportunistic Predator",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "actor": "Singhara Hunter",
+      "page": 259,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "actor": "Singhara Hunter",
+      "page": 259,
+      "category": "Abilities",
+      "name": "Pounce",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "actor": "Singhara Pridelord",
+      "page": 259,
+      "category": "Talents",
+      "name": "Adversary 2",
+      "status": "native-baseline",
+      "implementation": "Actor adversaryRank",
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "actor": "Singhara Pridelord",
+      "page": 259,
+      "category": "Talents",
+      "name": "Swift",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "actor": "Singhara Pridelord",
+      "page": 259,
+      "category": "Abilities",
+      "name": "Prideful Roar",
+      "status": "manual-reference",
+      "implementation": null,
+      "sourceCheckedThisPackage": false
+    }
+  ]
+}

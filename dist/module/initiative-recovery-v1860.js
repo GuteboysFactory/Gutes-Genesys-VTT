@@ -6,5 +6,7 @@ export function getTurnRecovery(state,actor,scene) {
  const journal=actor.getFlag('genesys-vtt','conditionTurnJournal');
  const conditionsDone=journal?.encounter===encounter&&journal.completed?.includes(`${turn}:${state.activeActorRef}`);
  const heroicDone=actor.getFlag('genesys-vtt','heroicTiming')?.lastTurn===`${encounter}:${turn}`;
- return conditionsDone||heroicDone?{key,conditionsDone:Boolean(conditionsDone),heroicDone,actorLabel:state.activeActorLabel}:null;
+ const concentration=scene.getFlag('genesys-vtt','magicConcentrationJournal');
+ const concentrationPending=concentration?.done===false && concentration.encounterId===String(scene.getFlag("genesys-vtt","ruleEncounterId")??"") && concentration.turnKey===`${scene.id}:${state.round}:${state.turnNumber}:${state.activeActorRef}:${state.activeActivationId}`;
+ return conditionsDone||heroicDone||concentrationPending?{key,conditionsDone:Boolean(conditionsDone),heroicDone,concentrationPending:Boolean(concentrationPending),actorLabel:state.activeActorLabel}:null;
 }

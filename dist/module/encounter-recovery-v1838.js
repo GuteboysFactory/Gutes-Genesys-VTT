@@ -1,3 +1,4 @@
+import {encounterRecoveryBonus} from './recovery-talents-v1881.js';
 import {collectActorTalents} from './talent-service-foundation.js';
 const SYSTEM_ID = 'genesys-vtt';
 const pending = new Set();
@@ -18,7 +19,7 @@ export function recoveryRoster(scene = canvas.scene) {
     return { ready: true, rows: state.entries.filter(e => e.side === 'pc').map(entry => {
       const actor = game.genesysVtt.initiative.resolveActorRef(entry.actorRef);
       const record = actor ? history(actor).find(row => row.key === key) : null;
-      return { actorRef: entry.actorRef, name: actor?.name ?? entry.label, natureRecovery: actor ? natureRecovery(actor) : false, done: Boolean(record), blocked: !actor || entry.encounterStatus === 'dead', recovered: record?.recovered ?? 0 };
+      return { actorRef: entry.actorRef, name: actor?.name ?? entry.label, natureRecovery: actor ? natureRecovery(actor) : false, autoBonus: actor ? encounterRecoveryBonus(actor).amount : 0, done: Boolean(record), blocked: !actor || entry.encounterStatus === 'dead', recovered: record?.recovered ?? 0 };
     }) };
   } catch (error) { return { ready: false, reason: error.message, rows: [] }; }
 }
@@ -46,14 +47,15 @@ export async function recover(actorRef, skill, bonus = 0, scene = canvas.scene) 
     const pool = prepared.check.construction.pool;
     const result = game.genesysVtt.dice.roll(pool);
     const successes = Math.max(0, Math.trunc(Number(result.net.success) || 0));
-    const after = Math.max(0, before - successes - bonus);
-    const record = { key, skill, bonus, successes, before, after, recovered: before - after, pool, result, timestamp: Date.now(), userId: game.user.id };
+    const automatic = encounterRecoveryBonus(actor);
+    const after = Math.max(0, before - successes - bonus - automatic.amount);
+    const record = { key, skill, bonus, automaticBonus:automatic.amount, automaticSources:automatic.labels, successes, before, after, recovered: before - after, pool, result, timestamp: Date.now(), userId: game.user.id };
     requireGm();
     if (context(scene).key !== key) throw new Error('Encounter changed; recovery cancelled.');
     await actor.update({ 'system.strain.value': after, [`flags.${SYSTEM_ID}.encounterRecoveries`]: [...history(actor), record] });
     // Health and receipt are persisted together. A chat error must never permit another roll.
     try {
-      await foundry.documents.ChatMessage.create({ speaker: { alias: actor.name }, content: `<section><strong>Encounter Recovery · ${skill === 'survival' ? 'Survival · One with Nature' : skill === 'cool' ? 'Cool' : 'Discipline'}</strong><p>Simple check · Success ${successes} · GM talent bonus ${bonus}</p><p>Strain ${before} → ${after} · Recovered ${before - after}</p></section>` });
+      await foundry.documents.ChatMessage.create({ speaker: { alias: actor.name }, content: `<section><strong>Encounter Recovery · ${skill === 'survival' ? 'Survival · One with Nature' : skill === 'cool' ? 'Cool' : 'Discipline'}</strong><p>Simple check · Success ${successes} · Automatic talent bonus ${automatic.amount} · Other GM bonus ${bonus}</p><p>Strain ${before} → ${after} · Recovered ${before - after}</p></section>` });
     } catch { ui.notifications.warn('Recovery saved, but the chat message could not be posted.'); }
     return record;
   } finally { pending.delete(actorRef); }

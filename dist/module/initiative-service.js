@@ -1,3 +1,4 @@
+import {resolveRenewal} from "./heroic-renewal-v1855.js";
 import {getTurnRecovery} from './initiative-recovery-v1860.js';
 import {createInitiativeTransport,authorizeInitiativeCommand} from './initiative-transport-v1858.js';
 import {createSceneCommandQueue,nextInitiativeRevision} from './initiative-write-queue-v1857.js';
@@ -160,10 +161,15 @@ export function readSceneInitiativeState(scene = activeScene()) {
         ?? null;
     return normalizeInitiativeState(raw);
 }
-async function queued_writeSceneInitiativeState(state, scene = activeScene()) {
+async function queued_writeSceneInitiativeState(state, scene = activeScene(), extraFlags = null) {
     if(!initiativeAuthority())throw Error("Active GM changed before saving. Review the encounter.");
     const normalized = nextInitiativeRevision(normalizeInitiativeState(state), readSceneInitiativeState(scene));
-    if (scene?.setFlag)
+    if (!extraFlags) await game.genesysMagicEffects?.prepareTransition?.(scene, readSceneInitiativeState(scene), normalized);
+    if(!initiativeAuthority())throw Error("Active GM changed before saving.");
+    if (extraFlags) {
+        if (!scene?.update) throw Error("Atomic scene updates are required for Concentration.");
+        await scene.update({[`flags.${SYSTEM_ID}.${FLAG_KEY}`]:normalized, ...Object.fromEntries(Object.entries(extraFlags).map(([key,value])=>[`flags.${SYSTEM_ID}.${key}`,value]))});
+    } else if (scene?.setFlag)
         await scene.setFlag(SYSTEM_ID, FLAG_KEY, normalized);
     else if (scene) {
         scene.flags ??= {};
@@ -171,6 +177,7 @@ async function queued_writeSceneInitiativeState(state, scene = activeScene()) {
         scene.flags[SYSTEM_ID][FLAG_KEY] = normalized;
     }
     fallbackState = normalized;
+    if (normalized.activeActorRef) await game.genesysNpcAbilities?.beginTurn?.(resolveInitiativeActorReference(normalized.activeActorRef), normalized, scene);
     if (normalized.activeActorRef) await game.genesysHeroicLive?.beginTurn?.(resolveInitiativeActorReference(normalized.activeActorRef), normalized, scene);
     await rerenderAllRenderedCharacterSheets();
     notifyStateListeners();
@@ -178,8 +185,9 @@ async function queued_writeSceneInitiativeState(state, scene = activeScene()) {
 }
 async function queued_resetSceneInitiative(scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
+    const result = await queued_writeSceneInitiativeState({...emptyInitiativeState(current.mode),revision:current.revision}, scene);
     await endRuleEncounter(scene);
-    return queued_writeSceneInitiativeState({...emptyInitiativeState(current.mode),revision:current.revision}, scene);
+    return result;
 }
 async function queued_setSceneInitiativeMode(mode, scene = activeScene()) {
     return queued_writeSceneInitiativeState(setInitiativeMode(readSceneInitiativeState(scene), mode), scene);
@@ -574,7 +582,40 @@ async function queued_recoverSceneTurn(expectedKey, scene) {
     if(getTurnRecovery(state,actor,scene)?.key!==expectedKey)throw Error('Recovery turn changed. Reopen Encounter Tracker and review the current turn.');
     return queued_endSceneInitiativeTurn(actor,scene);
 }
+export function concentrateSceneSpells(actor, scene = activeScene()) {
+    return dispatchInitiativeCommand('concentrateSceneSpells', [actorInitiativeRef(actor)], scene);
+}
+async function queued_concentrateSceneSpells(actor, scene) {
+    if (!game.genesysMagicEffects?.concentrateAuthoritative) throw Error('Concentration service unavailable.');
+    return game.genesysMagicEffects.concentrateAuthoritative(actor, scene, {
+        read:()=>readSceneInitiativeState(scene),
+        pay:journal=>{
+            const eligibility=getSceneTurnActionEligibility(actor, 'maneuver', scene);
+            if(!eligibility.allowed)throw Error(eligibility.reason || 'Maneuver is blocked.');
+            return queued_writeSceneInitiativeState(spendTurnManeuver(readSceneInitiativeState(scene), actorInitiativeRef(actor), getActorConditionRules(actor)), scene, {magicConcentrationJournal:journal});
+        }
+    });
+}
+export function resolveSceneRenewal(actor, skill, activationId, scene = activeScene()) {
+    return dispatchInitiativeCommand('resolveSceneRenewal', [actorInitiativeRef(actor), skill, activationId], scene);
+}
+async function queued_resolveSceneRenewal(actor, skill, activationId, scene) {
+    if (!['cool','vigilance'].includes(skill)) throw Error('Choose Cool or Vigilance.');
+    if(actor.getFlag(SYSTEM_ID,'heroicTiming')?.activationId!==activationId)throw Error('Heroic activation changed. Reopen Renewal.');
+    return resolveRenewal(actor, {scene, isGM:initiativeAuthority, read:()=>readSceneInitiativeState(scene), write:next=>queued_writeSceneInitiativeState(next,scene), choose:async()=>skill,
+        roll:chosen=>rollNarrativePool(prepareActorSkillEngineCheck(actor,chosen,{mode:'standard',difficulty:0}).check.construction.pool)});
+}
+export function executeSceneTalent(actor, sourceId, ruleId, scene = activeScene()) {
+    return dispatchInitiativeCommand('executeSceneTalent', [actorInitiativeRef(actor),sourceId,ruleId], scene);
+}
+async function queued_executeSceneTalent(actor, sourceId, ruleId, scene) {
+    if(!game.genesysRules?.talents?.executeAuthoritative)throw Error('Talent service unavailable.');
+    return game.genesysRules.talents.executeAuthoritative(actor,sourceId,ruleId,scene);
+}
 const commandRegistry = {
+    executeSceneTalent:{run:queued_executeSceneTalent,argc:3,actor:true},
+    concentrateSceneSpells: {run:queued_concentrateSceneSpells, argc:1, actor:true},
+    resolveSceneRenewal: {run:queued_resolveSceneRenewal, argc:3, actor:true},
     recoverSceneTurn: {run: queued_recoverSceneTurn, argc: 1, actor: false},
     removeSceneInitiativeParticipant: {run: queued_removeSceneInitiativeParticipant, argc: 1, actor: false},
     addSceneInitiativeParticipant: {run: queued_addSceneInitiativeParticipant, argc: 3, actor: true},
@@ -620,6 +661,7 @@ function executeInitiativeCommand(request,userId) {
         if(request.name==='claimSceneInitiativeActivation')actor=resolveInitiativeActorReference(current.activationEntitlements.find(row=>row.id===args[0])?.actorRef);
         authorizeInitiativeCommand(request.name,game.users.get(userId),actor,args);
         if(command.actor){if(!actor)throw Error('Encounter Actor no longer exists.');args[0]=actor;}
+        if(current.activeActorRef)await game.genesysNpcAbilities?.beginTurn?.(resolveInitiativeActorReference(current.activeActorRef),current,scene);
         return command.run(...args,scene);
     });
 }

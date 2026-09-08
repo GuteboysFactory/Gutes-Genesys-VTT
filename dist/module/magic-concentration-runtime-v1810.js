@@ -1,10 +1,13 @@
+import { concentrateSceneSpells } from "./initiative-service.js";
 import { getActorMagicEffects, MAGIC_EFFECT_FLAG } from "./magic-effect-rules-v1810.js";
-import { rerenderAllRenderedCharacterSheets, rerenderRenderedCharacterSheet } from "./live-sheet-state.js";
+import { rerenderRenderedCharacterSheet } from "./live-sheet-state.js";
 
 const SYSTEM_ID = "genesys-vtt";
-const VERSION = "0.0.1810";
-const sceneStates = new Map();
-let lifecycleQueue = Promise.resolve();
+const VERSION = "0.0.1881";
+const JOURNAL = "magicConcentrationJournal";
+function authority() {
+  if (!game.user?.isGM || game.users?.activeGM?.id !== game.user.id) throw Error("Active GM changed. Retry Concentrate or End Turn with the active GM.");
+}
 
 function actorRef(actor) {
   return String(actor?.uuid ?? (actor?.id ? `Actor.${actor.id}` : ""));
@@ -43,21 +46,10 @@ async function replaceEffects(actor, effects) {
   await rerenderRenderedCharacterSheet(actor);
   return true;
 }
-async function updateEffect(actor, effectId, mutate) {
-  const current = getActorMagicEffects(actor);
-  let changed = false;
-  const next = current.map((effect) => {
-    if (effect.id !== effectId) return effect;
-    changed = true;
-    return mutate({ ...effect });
-  });
-  if (!changed) return false;
-  return replaceEffects(actor, next);
-}
-function effectsCastBy(caster, { concentrationOnly = false } = {}) {
+function effectsCastBy(caster, { concentrationOnly = false, scene = currentScene() } = {}) {
   const ref = actorRef(caster);
   const rows = [];
-  for (const target of allEffectActors()) {
+  for (const target of allEffectActors(scene)) {
     for (const effect of getActorMagicEffects(target)) {
       if (effect.casterRef ? String(effect.casterRef) !== ref : (caster?.isToken || String(effect.casterId ?? "") !== String(caster?.id ?? ""))) continue;
       if (concentrationOnly && !effect.concentration) continue;
@@ -94,105 +86,81 @@ async function normalizeFreshPersistentEffect(caster, outcome) {
   await replaceEffects(target, next);
   return outcome;
 }
-let concentrating = false;
+// A single authoritative scene queue owns maneuver payment, target writes and expiry.
+// Payment and its receipt are one Scene update; each target is then idempotent.
+function journalFor(scene) { return scene.getFlag(SYSTEM_ID, JOURNAL); }
+function encounterId(scene) { return String(scene.getFlag(SYSTEM_ID, "ruleEncounterId") ?? ""); }
+async function saveJournal(scene, journal) {
+  authority();
+  await scene.setFlag(SYSTEM_ID, JOURNAL, journal);
+}
+async function resumeJournal(scene) {
+  const journal = journalFor(scene);
+  if (!journal || journal.done) return journal;
+  authority();
+  if (journal.encounterId !== encounterId(scene)) throw Error("Concentration recovery belongs to another encounter. GM review required.");
+  for (const row of journal.rows) {
+    authority();
+    const target = allEffectActors(scene).find(a => actorRef(a) === row.targetRef);
+    // Removed Actors/effects stay removed; retries never recreate them.
+    if (!target) continue;
+    const current = getActorMagicEffects(target);
+    const effect = current.find(e => e.id === row.effectId);
+    if (!effect) continue;
+    if (JSON.stringify(effect) === JSON.stringify(row.after)) continue;
+    if (JSON.stringify(effect) !== JSON.stringify(row.before)) throw Error(`Concentration target ${target.name ?? row.targetRef}, effect ${row.effectId}, changed during recovery. Restore or remove that effect before retrying.`);
+    const next = row.after ? current.map(e => e.id === row.effectId ? row.after : e) : current.filter(e => e.id !== row.effectId);
+    await replaceEffects(target, next);
+  }
+  await saveJournal(scene, { ...journal, done: true });
+  return { ...journal, done: true };
+}
 async function concentrate(caster) {
-  if (concentrating) throw new Error("Concentration is already in progress.");
-  if (!mayUpdate(caster)) throw new Error("Caster ownership required.");
-  concentrating = true;
-  try { return await performConcentrate(caster); } finally { concentrating = false; }
+  if (!mayUpdate(caster)) throw Error("Caster ownership required.");
+  return concentrateSceneSpells(caster, currentScene());
 }
-async function performConcentrate(caster) {
-  const initiative = game?.genesysVtt?.initiative;
-  if (!initiative?.sceneState || !initiative?.useSceneManeuver) throw new Error("Encounter maneuver service is not ready.");
-  const scene = currentScene();
-  const state = initiative.sceneState(scene);
-  const ref = actorRef(caster);
-  if (state?.status !== "active") throw new Error("Concentrate requires an active structured encounter.");
-  if (String(state.activeActorRef ?? "") !== ref) throw new Error("Concentrate can only be used during this caster's active turn.");
+async function concentrateAuthoritative(caster, scene, deps) {
+  authority();
+  const state = deps.read();
   const key = turnKey(state, scene);
-  if (!key) throw new Error("Could not resolve the current encounter turn.");
-  const rows = effectsCastBy(caster, { concentrationOnly: true }).filter(({ effect }) => effect?.duration?.autoManaged !== false);
-  if (!rows.length) throw new Error("This caster has no active Concentration spell to sustain.");
-  if (rows.some(({target}) => !mayUpdate(target))) throw new Error("Ask the GM to sustain this spell: a target is not writable by you.");
-  await initiative.useSceneManeuver(caster, scene);
-  let sustained = 0;
-  for (const { target, effect } of rows) {
-    const applied = await updateEffect(target, effect.id, (entry) => ({
-      ...entry,
-      duration: {
-        ...(entry.duration ?? {}),
-        autoManaged: true,
-        lastExtendedTurnKey: key,
-        lastExtendedBy: "concentrate",
-        encounterSceneId: String(scene?.id ?? "")
-      }
-    }));
-    if (applied) sustained += 1;
+  if (!key || state.activeActorRef !== actorRef(caster)) throw Error("Concentrate requires this caster's active encounter turn.");
+  const old = journalFor(scene);
+  if (old && !old.done) await resumeJournal(scene);
+  // Repeated clicks/reconnect retries in the same turn cannot pay again.
+  const saved = journalFor(scene);
+  if (saved?.kind === "sustain" && saved.turnKey === key && saved.encounterId === encounterId(scene)) return { sustained: saved.rows.length, turnKey: key, reused: true };
+  const rows = effectsCastBy(caster, { concentrationOnly: true, scene })
+    .filter(({effect}) => effect.duration?.autoManaged !== false && (!effect.duration?.encounterSceneId || effect.duration.encounterSceneId === scene.id))
+    .map(({target, effect}) => ({ targetRef: actorRef(target), effectId: effect.id, before: effect, after: {
+      ...effect, casterRef: actorRef(caster), duration: { ...effect.duration, autoManaged: true, lastExtendedTurnKey: key, lastExtendedBy: "concentrate", encounterSceneId: scene.id }
+    }}));
+  if (!rows.length) throw Error("This caster has no active Concentration spell to sustain.");
+  const journal = { kind: "sustain", encounterId: encounterId(scene), turnKey: key, rows, done: false };
+  // deps.pay persists the changed initiative state AND this journal atomically.
+  await deps.pay(journal);
+  await resumeJournal(scene);
+  return { sustained: rows.length, turnKey: key };
+}
+async function prepareTransition(scene, previous, next) {
+  authority();
+  const changedTurn = turnKey(previous, scene) !== turnKey(next, scene);
+  const ending = previous.status === "active" && next.status !== "active";
+  if (!ending && !changedTurn) return;
+  await resumeJournal(scene);
+  const endedKey = turnKey(previous, scene);
+  if (!ending && !endedKey) return;
+  // Unclaim/rewind preserves durations. Forward turn completion or encounter end expires them.
+  if (!ending && !(next.round > previous.round || next.turnNumber > previous.turnNumber)) return;
+  const rows = [];
+  for (const target of allEffectActors(scene)) for (const effect of getActorMagicEffects(target)) {
+    const d = effect.duration ?? {};
+    if (!effect.concentration || d.autoManaged !== true || d.encounterSceneId !== scene.id) continue;
+    if (!ending && (effect.casterRef !== previous.activeActorRef || d.lastExtendedTurnKey === endedKey)) continue;
+    rows.push({targetRef: actorRef(target), effectId: effect.id, before: effect, after: null});
   }
-  await rerenderAllRenderedCharacterSheets();
-  return { sustained, turnKey: key };
-}
-async function expireForEndedTurn(previousState, scene) {
-  const endedRef = String(previousState?.activeActorRef ?? "");
-  const endedKey = turnKey(previousState, scene);
-  if (!endedRef || !endedKey) return 0;
-  let expired = 0;
-  for (const target of allEffectActors(scene)) {
-    const current = getActorMagicEffects(target);
-    const next = [];
-    let changed = false;
-    for (const effect of current) {
-      const duration = effect?.duration ?? {};
-      const sameCaster = String(effect.casterRef ?? "") === endedRef;
-      const managed = Boolean(effect.concentration && duration.autoManaged === true);
-      if (!sameCaster || !managed || String(duration.encounterSceneId ?? "") !== String(scene?.id ?? "")) {
-        next.push(effect);
-        continue;
-      }
-      if (String(duration.lastExtendedTurnKey ?? "") === endedKey) {
-        next.push(effect);
-        continue;
-      }
-      changed = true;
-      expired += 1;
-    }
-    if (changed) await replaceEffects(target, next);
-  }
-  return expired;
-}
-async function clearManagedEncounterEffects(scene) {
-  let removed = 0;
-  for (const target of allEffectActors(scene)) {
-    const current = getActorMagicEffects(target);
-    const next = current.filter((effect) => {
-      const managedHere = Boolean(effect?.concentration && effect?.duration?.autoManaged === true && String(effect?.duration?.encounterSceneId ?? "") === String(scene?.id ?? ""));
-      if (managedHere) removed += 1;
-      return !managedHere;
-    });
-    if (next.length !== current.length) await replaceEffects(target, next);
-  }
-  return removed;
-}
-function stateAdvancedPastTurn(previous, next) {
-  if (!previous?.activeActorRef) return false;
-  const previousRound = Number(previous.round ?? 0);
-  const nextRound = Number(next?.round ?? 0);
-  const previousTurn = Number(previous.turnNumber ?? 0);
-  const nextTurn = Number(next?.turnNumber ?? 0);
-  return nextRound > previousRound || nextTurn > previousTurn;
-}
-async function processSceneTransition(scene, previous, next) {
-  if (!game.user?.isGM || game.users?.activeGM?.id !== game.user.id) return;
-  if (previous?.status === "active" && next?.status === "ended") {
-    await clearManagedEncounterEffects(scene);
-    return;
-  }
-  if (previous?.status === "active" && stateAdvancedPastTurn(previous, next)) await expireForEndedTurn(previous, scene);
-}
-function queueSceneTransition(scene, previous, next) {
-  lifecycleQueue = lifecycleQueue
-    .then(() => processSceneTransition(scene, previous, next))
-    .catch((error) => console.error(`${SYSTEM_ID} | ${VERSION} Magic concentration lifecycle failed`, error));
+  if (!rows.length) return;
+  await saveJournal(scene, {kind: "expire", encounterId: encounterId(scene), turnKey: endedKey, rows, done: false});
+  await resumeJournal(scene);
 }
 function wrapMagicResolutionApi() {
   const base = game?.genesysMagicResolution;
@@ -209,23 +177,17 @@ function wrapMagicResolutionApi() {
   });
   Object.defineProperty(game, "genesysMagicResolution", { configurable: true, value: wrapped });
 }
-Hooks.on("updateScene", (scene) => {
-  const id = String(scene?.id ?? "");
-  if (!id || !game?.genesysVtt?.initiative?.sceneState) return;
-  const previous = sceneStates.get(id) ?? null;
-  const next = game.genesysVtt.initiative.sceneState(scene);
-  sceneStates.set(id, next);
-  if (previous) queueSceneTransition(scene, previous, next);
-});
 Hooks.once("ready", () => {
   wrapMagicResolutionApi();
-  for (const scene of Array.from(game?.scenes?.contents ?? game?.scenes ?? [])) sceneStates.set(String(scene.id), game?.genesysVtt?.initiative?.sceneState?.(scene) ?? null);
   const api = Object.freeze({
     version: VERSION,
     durationSeedForCast,
     listForCaster: (caster) => effectsCastBy(caster, { concentrationOnly: false }),
     listConcentrationForCaster: (caster) => effectsCastBy(caster, { concentrationOnly: true }),
     concentrate,
+    concentrateAuthoritative,
+    prepareTransition,
+    recoveryStatus: (scene = currentScene()) => { const j = scene && journalFor(scene); return j && !j.done ? {kind:j.kind, targets:j.rows.map(r=>`${r.targetRef} · ${r.effectId}`)} : null; },
     turnKey: () => turnKey(currentState(), currentScene())
   });
   Object.defineProperty(game, "genesysMagicEffects", { configurable: true, value: api });
