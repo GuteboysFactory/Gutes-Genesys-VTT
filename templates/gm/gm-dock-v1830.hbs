@@ -47,6 +47,18 @@
           <li>End: review recovery and award Party XP below.</li>
           <li>Session controls record session status. Recovery and ability resets are handled separately.</li>
         </ul>
+        <div class="genesys-night-rest-v1837" data-night-rest>
+          <strong>Full Night’s Rest</strong>
+          <p>Core recovery: heal 1 wound and recover all strain. Review talents or other special recovery rules separately.</p>
+          <div class="genesys-rest-roster-v1837">
+            {{#each recoveryRows}}
+              <label><input type="checkbox" data-rest-actor value="{{id}}" data-wounds="{{before.wounds}}" data-strain="{{before.strain}}" {{#if blocked}}disabled{{/if}} /><span><strong>{{name}}</strong><small>{{#if blocked}}{{reason}}{{else}}Wounds {{before.wounds}} → {{after.wounds}} · Strain {{before.strain}} → {{after.strain}}{{/if}}</small></span></label>
+            {{else}}<p>No player characters available.</p>{{/each}}
+          </div>
+          <label><input type="checkbox" data-rest-confirmed /> These characters completed a full night of rest.</label>
+          <button type="button" data-action="applyNightRest">Apply Rest to Selected Characters</button>
+          <small>Critical injuries, conditions and encounter participation remain GM-managed.</small>
+        </div>
         <div class="genesys-session-history-v1834">{{#each sessionHistory}}<div><strong>#{{number}} · {{label}}</strong> · {{timeLabel}} · {{userName}}</div>{{else}}<p>No sessions recorded yet.</p>{{/each}}</div>
       </div>
     </section>

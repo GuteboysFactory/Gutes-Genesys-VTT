@@ -63,9 +63,18 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Live updates on scene, actor and token changes
 - Automated regression and manual QA protocol; Foundry QA pending
 
+### v0.0.1837 — Natural rest recovery
+
+- Selected world-PC full-night rest: one wound, all strain (Core audit §11.3)
+- Before/after preview, explicit rest confirmation, active-GM authority, stale-value and duplicate protection
+- Actor-level last-rest record; report partial failures per actor
+- Does not change criticals, conditions, Heroic state or encounter status
+- Automated QA plus manual Foundry protocol; runtime QA pending
+
 ### Remaining GM Dock backlog
 
-- Recovery helpers: explicit rule audit and selected-character workflow still required
+- End-of-encounter strain recovery: Simple Cool/Discipline check integration and recovery talent handling remain
+- Special natural-healing modifiers (e.g. Apothecary) remain GM-managed
 - Complete permission, multi-client and reconnect QA
 - Heroic reset/status integration in v0.0.184x
 - Conditions/Critical overview and broader actor management remain tracked

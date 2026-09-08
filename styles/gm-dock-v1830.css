@@ -386,3 +386,11 @@
 .genesys-gm-participants-v1836 button.is-out { color: #c2b49a; background: #23282a; }
 .genesys-gm-round-alert-v1836 { border-left: 3px solid #b48736; padding: 9px; background: #ead39e; color: #3e2e15; font-size: .75rem; }
 @container (max-width: 470px) { .genesys-gm-participants-v1836 { grid-template-columns: 1fr; } }
+
+.genesys-night-rest-v1837 { display: grid; gap: 8px; padding: 10px; border: 1px solid #9a7a43; background: #efdfbd; color: #372919; }
+.genesys-night-rest-v1837 p, .genesys-night-rest-v1837 > small { font-size: .72rem; }
+.genesys-night-rest-v1837 label { display: flex; align-items: center; gap: 7px; font-size: .75rem; }
+.genesys-rest-roster-v1837 { display: grid; gap: 5px; max-height: 210px; overflow: auto; }
+.genesys-rest-roster-v1837 label { padding: 6px; background: #e4cfa4; }
+.genesys-rest-roster-v1837 span { display: grid; gap: 3px; }
+.genesys-rest-roster-v1837 small { font-size: .67rem; }

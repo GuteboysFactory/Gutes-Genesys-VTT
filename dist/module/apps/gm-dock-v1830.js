@@ -8,6 +8,7 @@ let gmDockLauncher = null;
 let storyPointActionPending = false;
 let partyXpActionPending = false;
 let encounterAddPending = false;
+let recoveryPending = false;
 
 function integer(value, fallback = 0) {
   const number = Number(value ?? fallback);
@@ -125,6 +126,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       adjustStoryPoint: this.#adjustStoryPoint,
       awardPartyXp: this.#awardPartyXp,
       sessionControl: this.#sessionControl,
+      applyNightRest: this.#applyNightRest,
       refresh: this.#refresh,
       unavailable: this.#unavailable
     }
@@ -164,6 +166,10 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       })),
       actors,
       pcs,
+      recoveryRows: characterActors().filter(actor => actor.system?.role === "pc").map(actor => {
+        try { return game.genesysRecovery.nightRestPreview(actor); }
+        catch (error) { return { id: actor.id, name: actor.name, blocked: true, reason: error.message }; }
+      }),
       recentActors: actors.slice(0, 8),
       encounter: encounterSummary(),
       advancementReady: Boolean(game?.genesysAdvancement),
@@ -324,6 +330,22 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       target.disabled = false;
       if (gmDockApp?.rendered) await gmDockApp.render({ force: true });
     }
+  }
+
+  static async #applyNightRest(_event, target) {
+    if (!requireGm() || recoveryPending) return;
+    const panel = target.closest("[data-night-rest]");
+    const confirmed = panel?.querySelector("[data-rest-confirmed]")?.checked === true;
+    const rows = Array.from(panel?.querySelectorAll("[data-rest-actor]:checked") ?? []).map(input => ({ id: input.value, wounds: Number(input.dataset.wounds), strain: Number(input.dataset.strain) }));
+    recoveryPending = true;
+    target.disabled = true;
+    try {
+      if (!game.genesysRecovery) throw new Error("Recovery service unavailable.");
+      const result = await game.genesysRecovery.applyNightRest(rows, confirmed);
+      if (result.applied.length) ui.notifications.info(`Full night of rest applied to ${result.applied.length} character(s).`);
+      for (const failure of result.failed) ui.notifications.warn(`${failure.name}: ${failure.reason}`);
+    } catch (error) { ui.notifications.warn(error.message); }
+    finally { recoveryPending = false; target.disabled = false; refreshOpenDock(); }
   }
 
   static async #sessionControl(_event, target) {

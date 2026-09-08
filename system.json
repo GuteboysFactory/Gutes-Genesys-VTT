@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1836 \u2014 GM Dock live encounter overview and participant shortcuts.",
-  "version": "0.0.1836",
+  "description": "Genesys VTT 0.0.1837 \u2014 GM Dock natural rest recovery with selected-character previews.",
+  "version": "0.0.1837",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -70,7 +70,8 @@
     "dist/module/story-point-service-v1832.js",
     "dist/module/story-point-counter-v1833.js",
     "dist/module/apps/gm-dock-v1830.js",
-    "dist/module/session-service-v1834.js"
+    "dist/module/session-service-v1834.js",
+    "dist/module/recovery-service-v1837.js"
   ],
   "styles": [
     "styles/genesys.css",

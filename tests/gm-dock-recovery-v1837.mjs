@@ -1,0 +1,43 @@
+import assert from 'node:assert/strict';
+globalThis.Hooks = { once() {} };
+function actor(id, wounds, strain) {
+  return { id, name: id, type: 'character', system: { role: 'pc', wounds: { value: wounds }, strain: { value: strain }, criticalInjuries: [{ name: 'Minor', active: true }], heroicAbility: { uses: 1 } }, async update(data) {
+    this.system.wounds.value = data['system.wounds.value']; this.system.strain.value = data['system.strain.value']; this.lastUpdate = data;
+  } };
+}
+const a = actor('a', 3, 5), b = actor('b', 0, 0), c = actor('c', 4, 7);
+const actors = new Map([a,b,c].map(a => [a.id, a]));
+globalThis.game = { user: { id: 'gm', isGM: true }, users: { activeGM: { id: 'gm' } }, actors };
+const { nightRestPreview, applyNightRest } = await import('../dist/module/recovery-service-v1837.js');
+assert.deepEqual(nightRestPreview(a).after, { wounds: 2, strain: 0 });
+assert.deepEqual(nightRestPreview(b).after, { wounds: 0, strain: 0 });
+const row = a => ({ id: a.id, wounds: a.system.wounds.value, strain: a.system.strain.value });
+await assert.rejects(applyNightRest([row(a)], false), /Confirm/);
+await assert.rejects(applyNightRest([row(a),row(a)], true), /Duplicate/);
+await assert.rejects(applyNightRest([{...row(a), wounds: 9}], true), /values changed/);
+assert.equal(a.system.wounds.value, 3);
+let result = await applyNightRest([row(a),row(b)], true);
+assert.equal(result.applied.length, 2);
+assert.equal(a.system.wounds.value, 2);
+assert.equal(a.system.strain.value, 0);
+assert.equal(c.system.wounds.value, 4, 'unselected character unchanged');
+assert.equal(a.system.criticalInjuries.length, 1);
+assert.equal(a.system.heroicAbility.uses, 1);
+assert.ok(a.lastUpdate['flags.genesys-vtt.lastNaturalRest']);
+assert.deepEqual(Object.keys(a.lastUpdate).sort(), ['flags.genesys-vtt.lastNaturalRest','system.strain.value','system.wounds.value']);
+game.user.isGM = false;
+await assert.rejects(applyNightRest([row(a)], true), /Only the GM/);
+game.user.isGM = true; game.user.id = 'other';
+await assert.rejects(applyNightRest([row(a)], true), /active GM/);
+game.user.id = 'gm';
+c.update = async () => { throw Error('Storage failed'); };
+result = await applyNightRest([row(a),row(c)], true);
+assert.equal(result.applied.length, 1);
+assert.equal(result.failed[0].id, 'c');
+assert.equal(c.system.wounds.value, 4);
+c.system.criticalInjuries = [{ name: 'Dead', active: true }];
+assert.throws(() => nightRestPreview(c), /cannot revive/);
+const retry = row(a);
+const both = await Promise.allSettled([applyNightRest([retry], true), applyNightRest([retry], true)]);
+assert.equal(both.filter(r => r.status === 'fulfilled').length, 1);
+console.log('PASS: natural rest preview, selected actors, floors, preserved states, permissions, stale previews, duplicate clicks and partial failure reporting');
