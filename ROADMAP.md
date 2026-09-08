@@ -49,7 +49,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Manual reminders for Story Points, recovery and XP
 - Automated coverage complete; Foundry visual/multi-client QA pending
 
-### v0.0.1835 — Remaining GM Dock Live Tools
+### v0.0.1835 — GM Dock navigation hotfix
+
+- Replace fragment hyperlinks with internal ApplicationV2 navigation buttons
+- Scroll only Dock content, allowing for the sticky navigation bar
+- Prevent native Foundry client from opening an external browser on section navigation
+
+### v0.0.1836 — Remaining GM Dock Live Tools
 
 - Session controls, reminders and recovery helpers
 - Encounter shortcuts and GM-facing status indicators

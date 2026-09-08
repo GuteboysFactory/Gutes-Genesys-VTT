@@ -80,7 +80,7 @@
   background: #071219;
 }
 
-.genesys-gm-dock-nav-v1830 a {
+.genesys-gm-dock-nav-v1830 button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -95,7 +95,7 @@
   letter-spacing: .04em;
 }
 
-.genesys-gm-dock-nav-v1830 a:hover { border-color: #efbd43; background: #17415a; }
+.genesys-gm-dock-nav-v1830 button:hover { border-color: #efbd43; background: #17415a; }
 
 .genesys-gm-dock-summary-v1830 {
   display: grid;
@@ -360,7 +360,7 @@
 
 @container (max-width: 470px) {
   .genesys-gm-dock-shell-v1830 { padding: 7px; }
-  .genesys-gm-dock-nav-v1830 a span { display: none; }
+  .genesys-gm-dock-nav-v1830 button span { display: none; }
   .genesys-gm-dock-actor-list-v1830,
   .genesys-gm-dock-button-row-v1830 { grid-template-columns: 1fr; }
   .genesys-gm-dock-panel-v1830 > header { align-items: flex-start; flex-direction: column; }

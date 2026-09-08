@@ -93,6 +93,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     position: { width: 1040, height: 760 },
     window: { title: "Genesys GM Dock", resizable: true },
     actions: {
+      navigateSection: this.#navigateSection,
       openEncounter: this.#openEncounter,
       openActors: this.#openActors,
       openCharacterCreator: this.#openCharacterCreator,
@@ -160,6 +161,21 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   _onClose(options) {
     if (gmDockApp === this) gmDockApp = null;
     return super._onClose(options);
+  }
+
+  static #navigateSection(event, target) {
+    event?.preventDefault?.();
+    event?.stopPropagation?.();
+    if (!requireGm()) return;
+    const sectionId = target?.dataset?.section;
+    if (!["session", "story", "xp", "encounter", "actors", "forge"].some(name => sectionId === `genesys-gm-${name}`)) return;
+    const root = this.element;
+    const section = root?.querySelector?.(`#${sectionId}`);
+    const content = root?.querySelector?.(".window-content");
+    const nav = root?.querySelector?.(".genesys-gm-dock-nav-v1830");
+    if (!section || !content) return;
+    const top = content.scrollTop + section.getBoundingClientRect().top - content.getBoundingClientRect().top - (nav?.getBoundingClientRect().height ?? 0) - 8;
+    content.scrollTo({ top: Math.max(0, top), behavior: "auto" });
   }
 
   static async #openEncounter() {

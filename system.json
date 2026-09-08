@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1834 \u2014 explicit Story Point Spend buttons and GM Dock session lifecycle.",
-  "version": "0.0.1834",
+  "description": "Genesys VTT 0.0.1835 \u2014 GM Dock internal navigation hotfix.",
+  "version": "0.0.1835",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
