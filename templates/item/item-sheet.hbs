@@ -6,6 +6,7 @@
   <label>Activation<input name="system.activation" value="{{system.activation}}" {{#unless editable}}disabled{{/unless}} /></label>
   <p>action / maneuver / incidental / out-of-turn-incidental</p>
   <label>Behavior<select name="system.binding" {{#unless editable}}disabled{{/unless}}>{{selectOptions actionBindingOptions selected=system.binding}}</select></label><p>skill-check / assist / maneuver / custom-check. Skill checks read current character values; activation costs are manual. Maneuver bindings use the encounter controls.</p>
+  <label>Heroic source ID<input name="system.heroicId" value="{{system.heroicId}}" {{#unless editable}}disabled{{/unless}} /></label><p>Heroic shortcuts require the character to already have the matching primary ability. Purchases, costs and GM approval use the existing Heroic controls.</p>
   <label>Skill ID<input name="system.skillId" value="{{system.skillId}}" {{#unless editable}}disabled{{/unless}} /></label>
   <label>Difficulty<input type="number" name="system.difficulty" value="{{system.difficulty}}" min="0" max="5" {{#unless editable}}disabled{{/unless}} /></label>
   </section>{{/if}}

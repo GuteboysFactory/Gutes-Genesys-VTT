@@ -53,7 +53,7 @@ export class GenesysItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         return {
             ...context,
             isActionTemplate: this.item.type === "actionTemplate",
-            actionBindingOptions: {"skill-check":"Skill check (live values)",assist:"Assist maneuver",maneuver:"Maneuver","custom-check":"Open Dice Tools"},
+            actionBindingOptions: {"skill-check":"Skill check (live values)",assist:"Assist maneuver",maneuver:"Maneuver","custom-check":"Open Dice Tools",heroic:"Selected Heroic ability"},
             item: this.item,
             system,
             editable: this.isEditable,

@@ -42,6 +42,7 @@ function normalizeCustomAction(raw = {}) {
         id: String(raw.id ?? actionId()),
         name: String(raw.name ?? "Custom Action"),
         binding: ACTION_BINDINGS.includes(raw.binding) ? raw.binding : 'skill-check',
+        heroicId: String(raw.heroicId ?? ''),
         sourceUuid: String(raw.sourceUuid ?? ''),
         activation: String(raw.activation ?? "action"),
         skillId: String(raw.skillId ?? ""),
@@ -297,7 +298,7 @@ function buildActionEditor(root) {
     const dialog = document.createElement("dialog");
     dialog.className = "genesys-custom-action-editor";
     dialog.dataset.customActionEditor = "true";
-    dialog.innerHTML = `<form method="dialog" class="genesys-custom-action-form"><header><div><strong data-custom-action-editor-title>Custom Action</strong><small>Actor-bound Action</small></div><button type="button" data-custom-action-cancel aria-label="Close">×</button></header><input type="hidden" name="actionId" value="" /><div class="genesys-custom-action-form-grid"><label>Name<input type="text" name="actionName" value="" required /></label><label>Activation<select name="activation"><option value="action">Action</option><option value="maneuver">Maneuver</option><option value="incidental">Incidental</option><option value="out-of-turn-incidental">Out-of-Turn Incidental</option></select></label><label>Behavior<select name="binding"><option value="skill-check">Skill check (live character values)</option><option value="assist">Assist maneuver</option><option value="maneuver">Maneuver</option><option value="custom-check">Open Dice Tools</option></select></label><label>Skill<input type="text" name="skillId" value="" placeholder="e.g. athletics, melee-heavy" /></label><label>Difficulty<input type="number" name="difficulty" value="2" min="0" max="5" /></label></div><label class="genesys-custom-action-notes">Description<textarea name="notes" rows="5" placeholder="What does this Action do?"></textarea></label><footer><button type="button" data-custom-action-cancel>Cancel</button><button type="submit" class="genesys-primary-action">Save Action</button></footer></form>`;
+    dialog.innerHTML = `<form method="dialog" class="genesys-custom-action-form"><header><div><strong data-custom-action-editor-title>Custom Action</strong><small>Actor-bound Action</small></div><button type="button" data-custom-action-cancel aria-label="Close">×</button></header><input type="hidden" name="actionId" value="" /><div class="genesys-custom-action-form-grid"><label>Name<input type="text" name="actionName" value="" required /></label><label>Activation<select name="activation"><option value="action">Action</option><option value="maneuver">Maneuver</option><option value="incidental">Incidental</option><option value="out-of-turn-incidental">Out-of-Turn Incidental</option></select></label><label>Behavior<select name="binding"><option value="skill-check">Skill check (live character values)</option><option value="assist">Assist maneuver</option><option value="maneuver">Maneuver</option><option value="custom-check">Open Dice Tools</option><option value="heroic">Selected Heroic ability</option></select></label><label>Skill<input type="text" name="skillId" value="" placeholder="e.g. athletics, melee-heavy" /></label><label>Difficulty<input type="number" name="difficulty" value="2" min="0" max="5" /></label></div><label class="genesys-custom-action-notes">Description<textarea name="notes" rows="5" placeholder="What does this Action do?"></textarea></label><footer><button type="button" data-custom-action-cancel>Cancel</button><button type="submit" class="genesys-primary-action">Save Action</button></footer></form>`;
     root.append(dialog);
     return dialog;
 }
@@ -373,7 +374,7 @@ async function saveEditor(root, form) {
         throw new Error("Could not resolve this character Actor.");
     const id = String(form.elements.actionId?.value ?? "");
     const actions = customActions(actor);
-    const nextAction = normalizeCustomAction({ sourceUuid: actions.find(a=>a.id===id)?.sourceUuid, binding: form.elements.binding?.value, id: id || actionId(), name: form.elements.actionName?.value, activation: form.elements.activation?.value, skillId: form.elements.skillId?.value, difficulty: form.elements.difficulty?.value, notes: form.elements.notes?.value });
+    const nextAction = normalizeCustomAction({ heroicId: actions.find(a=>a.id===id)?.heroicId, sourceUuid: actions.find(a=>a.id===id)?.sourceUuid, binding: form.elements.binding?.value, id: id || actionId(), name: form.elements.actionName?.value, activation: form.elements.activation?.value, skillId: form.elements.skillId?.value, difficulty: form.elements.difficulty?.value, notes: form.elements.notes?.value });
     const index = actions.findIndex((entry) => entry.id === id);
     if (index >= 0)
         actions[index] = nextAction;
@@ -430,7 +431,10 @@ document.addEventListener("click", async (event) => {
             if(!actor||!(actor.isOwner||game.user.isGM))throw Error('Character ownership required.');
             const action=customActions(actor).find(a=>a.id===use.dataset.customActionUse);
             if(!action)throw Error('Action no longer exists.');
-            if(action.binding!=='skill-check'){
+            if(action.binding==='heroic'){
+                if(!action.heroicId||actor.system?.heroicAbility?.primaryEffectId!==action.heroicId)throw Error('This character must select this Heroic ability through character creation first. This shortcut does not grant it.');
+                await game.genesysHeroicLive.requestActivation(actor);
+            }else if(action.binding!=='skill-check'){
                 const label={assist:'Assist',maneuver:'Maneuver','custom-check':'Custom Check'}[action.binding];
                 root.querySelector(`[data-general-action="${label}"]`)?.click();
             }else{
@@ -553,6 +557,6 @@ import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1
 
 Hooks.once('ready',async()=>{
  if(!game.user?.isGM||game.users?.activeGM?.id!==game.user.id)return;
- try{if(!game.settings.get(SYSTEM_ID,'defaultActionsInstalled')){await installDefaultActions();await game.settings.set(SYSTEM_ID,'defaultActionsInstalled',true);}}catch(error){ui.notifications.warn(`Default Actions: ${error.message}. Retry from Action Library.`);}
+ try{if(!game.settings.get(SYSTEM_ID,'defaultActionsWithHeroicInstalled')){await installDefaultActions({heroicOnly:game.settings.get(SYSTEM_ID,'defaultActionsInstalled')});await game.settings.set(SYSTEM_ID,'defaultActionsInstalled',true);await game.settings.set(SYSTEM_ID,'defaultActionsWithHeroicInstalled',true);}}catch(error){ui.notifications.warn(`Default Actions: ${error.message}. Retry from Action Library.`);}
 });
-Hooks.once('init',()=>game.settings.register(SYSTEM_ID,'defaultActionsInstalled',{scope:'world',config:false,type:Boolean,default:false}));
+Hooks.once('init',()=>{for(const key of ['defaultActionsInstalled','defaultActionsWithHeroicInstalled'])game.settings.register(SYSTEM_ID,key,{scope:'world',config:false,type:Boolean,default:false});});

@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1879** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1880** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -450,3 +450,7 @@ User authorized order: (1) combat/magic/semiautomation, (2) libraries/rule audit
 Implemented: concentration caster UUID isolation (legacy ID only for world actors), scene-specific synthetic targets, active-GM lifecycle writes, re-entry guard and target-write preflight before maneuver cost. Reaction dialog ignores IDs outside eligible choices. One with Nature enables Survival recovery on eligible actors after GM wilderness confirmation, using existing per-encounter receipts (Core p74).
 
 Remaining package 1: inventory and rule verification of additional NPC abilities/recovery talents; live extra-activation/concentration interaction tests and interrupted multi-target write recovery. Package 2 and real multiplayer/Tome/v14 verification remain pending. Existing accepted manual exceptions remain.
+
+## Combined packages 2 and 3 — v0.0.1880
+
+Eleven native Heroic shortcut Items, upgrade-safe installation, matching-ability validation and existing GM approval integration delivered together. Actual Tome v1.1.9 adapter contract passes. Core/Terrinoth implementation review and stability results are in docs/PACKAGES_2_3_QA.md. 62 test files pass; one browser test is blocked by missing Chromium. Live multiplayer/reconnect/performance and v14 verification remain open; accepted manual Heroic exceptions remain. Neither package is described as fully live-certified.
