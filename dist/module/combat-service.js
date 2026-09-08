@@ -1,4 +1,4 @@
-import { heroicWeaponDamageBonus } from "../domain/heroic/combat-effects.js";
+import { heroicWeaponDamageBonus, heroicSoakBonus } from "../domain/heroic/combat-effects.js";
 import { rollNarrativePool } from "../domain/dice/index.js";
 import { applyReactionToPendingCombat, buildCombatCommitPlan, createPendingCombatResolution, finalizePendingCombatResolution, prepareCombatWeaponAttack, resolveDamageCharacteristic } from "../domain/combat/index.js";
 import { getEligibleReactions } from "../domain/reactions/index.js";
@@ -84,7 +84,7 @@ export function actorCombatSnapshot(actor) {
     return {
         role,
         ...(minionGroup ? { minionGroup } : {}),
-        soak: liveNumber(actor, "system.soak", actor?.system?.soak),
+        soak: liveNumber(actor, "system.soak", actor?.system?.soak) + heroicSoakBonus(actor?.system?.heroicAbility),
         woundsValue,
         woundsThreshold: minionState?.groupWoundThreshold ?? liveNumber(actor, "system.wounds.threshold", actor?.system?.wounds?.threshold),
         strainValue: liveNumber(actor, "system.strain.value", actor?.system?.strain?.value),

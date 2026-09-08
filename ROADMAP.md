@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1861** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1862** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -263,6 +263,14 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Selected custom effect descriptions remain visible as GM-resolved guidance
 - 40 automated files pass; live Dock layout/control QA pending
 - Next: Heroic implementation coverage audit to identify remaining primary-effect mechanics before combat hardening and Adversary Forge; this release adds access, not new effect rules.
+
+### v0.0.1862 — Primary coverage audit and Hard to Kill soak
+
+- All eleven primary effects audited: docs/HEROIC_PRIMARY_COVERAGE.md
+- Hard to Kill Base/Improved adds +4 effective soak to the standard combat snapshot while active
+- Stored actor soak unchanged; sheet effective display, Improved difficulty and Supreme immunity remain pending
+- Next: finish Hard to Kill incoming checks/all-damage paths, then Miraculous Recovery
+- Live combat QA pending; no blanket primary-effect automation claim
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 
