@@ -8,7 +8,7 @@ export function copyAdversaryTemplate(source) {
  system.criticalInjuries=[];system.conditions=[];
  if(system.minionGroup)system.minionGroup.casualties=0;
  // Actor flags intentionally only retain source/profile information, never encounter state.
- return {name:raw.name,type:'character',img:raw.img,system,items:(raw.items??[]).map(copyAdversaryItem),ownership:{default:0},prototypeToken:{actorLink:false,texture:{src:raw.img||'icons/svg/mystery-man.svg'}},flags:{'genesys-vtt':{rulesProfile:raw.flags?.['genesys-vtt']?.rulesProfile||'realms-of-terrinoth',adversaryTemplate:structuredClone(raw.flags?.['genesys-vtt']?.adversaryTemplate??{origin:'Custom Genesys',category:'My templates'})}}};
+ return {name:raw.name,type:'character',img:raw.img,system,items:(raw.items??[]).map(copyAdversaryItem),ownership:{default:0},prototypeToken:{actorLink:false,texture:{src:raw.img||'icons/svg/mystery-man.svg'}},flags:{'genesys-vtt':{rulesProfile:raw.flags?.['genesys-vtt']?.rulesProfile||'realms-of-terrinoth',adversaryTemplate:structuredClone(raw.flags?.['genesys-vtt']?.adversaryTemplate??raw.flags?.['genesys-vtt']?.adversarySource??{origin:'Custom Genesys',category:'My templates'})}}};
 }
 export function copyAdversaryItem(raw){
  return {name:raw.name,type:raw.type,img:raw.img,system:structuredClone(raw.system??{}),flags:structuredClone(raw.flags??{}),effects:(raw.effects??[]).map(effect=>{const copy=structuredClone(effect);delete copy._id;delete copy.origin;return copy;})};

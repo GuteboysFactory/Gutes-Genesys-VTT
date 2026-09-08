@@ -124,6 +124,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     position: { width: 1040, height: 760 },
     window: { title: "Genesys GM Dock", resizable: true },
     actions: {
+      resolveFear: async function(){try{if(!game.genesysFear)throw Error('Fear profiles are not ready.');await game.genesysFear.openFearPanel();}catch(e){ui.notifications.warn(e.message);}},
       openHealth: async function(){await openGmHealth();},
       navigateSection: this.#navigateSection,
       openEncounter: this.#openEncounter,

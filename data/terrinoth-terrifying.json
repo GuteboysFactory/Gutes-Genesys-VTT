@@ -1,0 +1,138 @@
+[
+  {
+    "id": "rot:feral-dragon",
+    "name": "Feral Dragon",
+    "page": 152,
+    "difficulty": 4,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all opponents must make a Daunting [[Difficulty] [Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:barghest",
+    "name": "Barghest",
+    "page": 163,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of its opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:death-knight",
+    "name": "Death Knight",
+    "page": 164,
+    "difficulty": 4,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of their opponents must make a Daunting [[Difficulty] [Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:lord-of-bilehall",
+    "name": "Lord Of Bilehall",
+    "page": 165,
+    "difficulty": 4,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of their opponents must make a Daunting [[Difficulty] [Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:wraith",
+    "name": "Wraith",
+    "page": 167,
+    "difficulty": 4,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of its opponents must make a Daunting [[Difficulty] [Difficulty] [Difficulty] [Difficulty]] fear check as an out-ofturn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:true-fae",
+    "name": "True Fae",
+    "page": 181,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of their opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:dimora",
+    "name": "Dimora",
+    "page": 191,
+    "difficulty": 2,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of their opponents must make a Average [[Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:ancient-dragon",
+    "name": "Ancient Dragon",
+    "page": 195,
+    "difficulty": 4,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of their opponents must make a Daunting [[Difficulty] [Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:specter",
+    "name": "Specter",
+    "page": 195,
+    "difficulty": 3,
+    "exception": "Dwarves are exempt",
+    "reference": "Terrifying (at the start of the encounter, all of their opponents who are not Dwarves must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:young-dragon",
+    "name": "Young Dragon",
+    "page": 196,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of their opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:flesh-ripper",
+    "name": "Flesh Ripper",
+    "page": 214,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of its opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:spined-thresher",
+    "name": "Spined Thresher",
+    "page": 216,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of its opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:giant",
+    "name": "Giant",
+    "page": 226,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of their opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:merriod",
+    "name": "Merriod",
+    "page": 228,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of its opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:shade",
+    "name": "Shade",
+    "page": 229,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of their opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:wyrm-of-the-deep",
+    "name": "Wyrm Of The Deep",
+    "page": 231,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of its opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  },
+  {
+    "id": "rot:wendigo",
+    "name": "Wendigo",
+    "page": 238,
+    "difficulty": 3,
+    "exception": "",
+    "reference": "Terrifying (at the start of the encounter, all of its opponents must make a Hard [[Difficulty] [Difficulty] [Difficulty]] fear check as an out-of-turn incidental, as per page 243 of the Genesys Core Rulebook. If there are multiple sources of fear in the encounter, the opponents only make one fear check against the most terrifying enemy)"
+  }
+]

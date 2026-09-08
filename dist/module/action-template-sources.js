@@ -11,7 +11,7 @@ export async function listActionTemplateSources(){
 export async function resolveActionTemplateSource(row){
  if(!row)throw Error('Choose an Action Template.');
  let item;
- if(row.packId){const pack=game.packs.get(row.packId);if(!pack||!(game.user.isGM||pack.visible))throw Error('Compendium unavailable.');item=await pack.getDocument(row.item.id);}
+ if(row.packId){const pack=game.packs.get(row.packId);if(!pack||!(game.user.isGM||pack.visible))throw Error('Compendium unavailable.');item=await pack.getDocument(row.item.id);if(game.packs.get(row.packId)!==pack||!(game.user.isGM||pack.visible))throw Error('Compendium unavailable.');}
  else {item=game.items.get(row.item.id);if(!item||!(game.user.isGM||item.testUserPermission(game.user,'OBSERVER')))throw Error('Template unavailable.');}
  if(item?.type!=='actionTemplate')throw Error('Template no longer exists.');
  return item;

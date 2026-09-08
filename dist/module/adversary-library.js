@@ -33,9 +33,10 @@ export async function ensureAdversaryLibrary(){
  })();
  try{return await initializing;}finally{initializing=null;}
 }
-export async function saveAdversaryTemplate(actor){
+export async function saveAdversaryTemplate(actor,{importKey=null}={}){
  requireAdversaryGM();
  const data=copyAdversaryTemplate(actor);data.flags[SID].rulesProfile=getActorProfileId(actor);
+ if(importKey)data.flags[SID].adversaryImportKey=importKey;
  data.flags[SID].adversaryTemplate={id:`custom:${foundry.utils.randomID()}`,origin:'Custom Genesys',category:'My templates',revision:1};
  let pack=game.packs.get(CUSTOM);if(!pack)pack=await createPack('genesys-my-adversaries','Genesys · My Adversary Templates');
  if(pack.locked)throw Error('Unlock My Adversary Templates before saving.');
@@ -44,9 +45,9 @@ export async function saveAdversaryTemplate(actor){
  if(!saved)throw Error('Template could not be saved.');
  return saved;
 }
-export async function openAdversaryLibrary({file=null}={}){
+export async function openAdversaryLibrary({file=null,onSelect=null,onClose=null}={}){
  requireAdversaryGM();if(file)validateAdversaryImage(file);
- if(dialog||opening){ui.notifications.info('Adversary Library is already open.');return;}
+ if(dialog||opening)throw Error('Adversary Library is already open. Close it before dropping another image.');
  opening=true;
  try{await ensureAdversaryLibrary();}catch(e){opening=false;throw e;}
  opening=false;
@@ -58,8 +59,8 @@ export async function openAdversaryLibrary({file=null}={}){
  const status=text=>{query('[data-status]').textContent=text;};
  const showFile=()=>{query('[data-image-name]').textContent=pending?pending.name:'No image selected';};showFile();
  const hooks=[];
- const close=()=>{if(closed)return;closed=true;for(const [name,id] of hooks)Hooks.off(name,id);el.close();el.remove();if(dialog===el)dialog=null;};
- el.addEventListener('cancel',event=>{event.preventDefault();close();});query('[data-close]').onclick=close;
+ const close=()=>{if(closed)return;closed=true;for(const [name,id] of hooks)Hooks.off(name,id);el.close();el.remove();if(dialog===el)dialog=null;onClose?.();};
+ el.addEventListener('cancel',event=>{event.preventDefault();if(!busy)close();});query('[data-close]').onclick=()=>{if(!busy)close();};
  function render(){
   const term=query('[data-search]').value.toLowerCase(),role=query('[data-role]').value,source=query('[data-source]').value,category=query('[data-category]').value;
   const visible=rows.filter(r=>(!role||r.actor.system.role===role)&&(!source||r.origin===source)&&(!category||r.category===category)&&`${r.actor.name} ${r.aliases} ${r.category}`.toLowerCase().includes(term));
@@ -82,7 +83,7 @@ export async function openAdversaryLibrary({file=null}={}){
  }
  async function launch(template,image){
   if(busy)return;busy=true;
-  try{requireAdversaryGM();if(image)validateAdversaryImage(image);const raw=template?template.toObject():null;if(raw)raw.flags={...raw.flags,[SID]:{...raw.flags?.[SID],rulesProfile:getActorProfileId(template)}};close();const actor=await openAdversaryForge({template:raw,file:image});if(actor)await offerAdversaryPlacement(actor);}
+  try{requireAdversaryGM();if(image)validateAdversaryImage(image);const raw=template?template.toObject():null;if(raw)raw.flags={...raw.flags,[SID]:{...raw.flags?.[SID],rulesProfile:getActorProfileId(template)}};if(onSelect){if(!raw)throw Error('Choose a template for quick placement.');status('Creating NPC…');await onSelect(raw,image);close();}else{close();await openAdversaryForge({template:raw,file:image});}}
   catch(e){ui.notifications.warn(e.message);}finally{busy=false;}
  }
  query('[data-cards]').onclick=event=>{const card=event.target.closest('[data-key]');if(card)void launch(rows.find(r=>r.key===card.dataset.key)?.actor,pending);};
@@ -98,10 +99,18 @@ export async function openAdversaryLibrary({file=null}={}){
    if(file.size>10*1024*1024)throw Error('Package exceeds 10 MB.');
    const actors=parseAdversaryPackage(await file.text());
    el.close();
-   const yes=await foundry.applications.api.DialogV2.confirm({window:{title:'Import templates'},content:`<p>Import ${actors.length} independent templates into My Adversary Templates? Existing entries are preserved. Re-importing creates additional copies. Image files must already exist at their referenced paths.</p>`,rejectClose:false});
+   const yes=await foundry.applications.api.DialogV2.confirm({window:{title:'Import templates'},content:`<p>Import ${actors.length} independent templates into My Adversary Templates? Existing entries are preserved. Re-importing skips previously imported source identities, preserving local edits. Image files must already exist at their referenced paths.</p>`,rejectClose:false});
    if(!yes)return;
-   for(const actor of actors){await saveAdversaryTemplate(actor);count++;}
-   await refresh();status(`${count} templates imported.`);
+   const pack=game.packs.get(CUSTOM);
+   const existing=new Set((pack?await pack.getDocuments():[]).map(a=>a.flags?.[SID]?.adversaryImportKey).filter(Boolean));
+   let skipped=0;
+   for(const actor of actors){
+    const key=await adversaryImportIdentity(actor);
+    if(existing.has(key)){skipped++;continue;}
+    await saveAdversaryTemplate(actor,{importKey:key});existing.add(key);count++;
+   }
+   status(`${count} imported; ${skipped} existing sources preserved.`);
+   await refresh();status(`${count} templates imported; existing source identities preserved.`);
   }catch(e){status(`${count} templates imported before stopping: ${e.message}`);}finally{busy=false;query('[data-package]').value='';if(!closed&&!el.open)el.showModal();}
  };
  query('[data-place]').onclick=async()=>{if(busy)return;const actor=game.actors.get(query('[data-actor]').value);if(!actor){status('Choose a world NPC first.');return;}busy=true;try{close();await offerAdversaryPlacement(actor);}catch(e){ui.notifications.warn(e.message);}finally{busy=false;}};
@@ -114,5 +123,15 @@ export async function openAdversaryLibrary({file=null}={}){
  el.addEventListener('drop',e=>{e.preventDefault();e.stopPropagation();const image=e.dataTransfer.files[0];try{validateAdversaryImage(image);const card=e.target.closest('[data-key]');if(card)void launch(rows.find(r=>r.key===card.dataset.key)?.actor,image);else{pending=image;showFile();status('Image selected. Choose a template.');}}catch(error){status(error.message);}});
  query('[data-save]').onclick=async()=>{if(busy)return;const actor=game.actors.get(query('[data-actor]').value);if(!actor){status('Choose an NPC first.');return;}busy=true;try{await saveAdversaryTemplate(actor);await refresh();status(`${actor.name} saved as an independent template.`);}catch(e){status(e.message);}finally{busy=false;}};
  for(const name of ['createActor','updateActor','deleteActor','updateCompendium'])hooks.push([name,Hooks.on(name,()=>void refresh())]);
- el.showModal();await refresh();
+ if(onSelect){for(const selector of ['[data-blank]','[data-save]','[data-export]','[data-import]','[data-place]'])query(selector).hidden=true;}
+ el.showModal();query('[data-search]').focus();await refresh();
+}
+
+export async function adversaryImportIdentity(actor){
+ const source=actor.flags?.[SID]?.adversaryTemplate?.id;
+ if(source)return `source:${source}`;
+ // Legacy unlabelled packages: exact copied content identity, never Actor name alone.
+ const bytes=new TextEncoder().encode(JSON.stringify(copyAdversaryTemplate(actor)));
+ const hash=await crypto.subtle.digest('SHA-256',bytes);
+ return 'sha256:'+Array.from(new Uint8Array(hash),b=>b.toString(16).padStart(2,'0')).join('');
 }

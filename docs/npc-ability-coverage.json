@@ -1,11 +1,12 @@
 {
-  "version": "0.0.1882",
+  "version": "0.0.1883",
   "source": "Existing 79 Terrinoth template references; printed book page numbers",
-  "scope": "Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. New-runtime entries were checked in v1881. Flying Mount Dodge 2 removed in v1882 per official FAQ/Errata v1.1. Manual references are not executed.",
+  "scope": "Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. New-runtime entries were checked in v1881. Flying Mount Dodge 2 removed in v1882 per official FAQ/Errata v1.1. v1883 adds GM-guided Terrifying profiles from intact source references; timing, exemptions and consequences are GM-confirmed. Manual references are not executed.",
   "templates": 79,
   "counts": {
-    "manual-reference": 214,
+    "manual-reference": 197,
     "native-baseline": 49,
+    "gm-guided": 17,
     "new-runtime": 2
   },
   "entries": [
@@ -185,8 +186,8 @@
       "page": 152,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -475,8 +476,8 @@
       "page": 163,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -535,8 +536,8 @@
       "page": 164,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -625,8 +626,8 @@
       "page": 165,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -795,8 +796,8 @@
       "page": 167,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -1005,8 +1006,8 @@
       "page": 181,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -1095,8 +1096,8 @@
       "page": 191,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -1275,8 +1276,8 @@
       "page": 195,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -1325,8 +1326,8 @@
       "page": 195,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -1415,8 +1416,8 @@
       "page": 196,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -1665,8 +1666,8 @@
       "page": 214,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -1725,8 +1726,8 @@
       "page": 216,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -1845,8 +1846,8 @@
       "page": 226,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -1995,8 +1996,8 @@
       "page": 228,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -2025,8 +2026,8 @@
       "page": 229,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -2155,8 +2156,8 @@
       "page": 231,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {
@@ -2255,8 +2256,8 @@
       "page": 238,
       "category": "Abilities",
       "name": "Terrifying",
-      "status": "manual-reference",
-      "implementation": null,
+      "status": "gm-guided",
+      "implementation": "Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences",
       "sourceCheckedThisPackage": false
     },
     {

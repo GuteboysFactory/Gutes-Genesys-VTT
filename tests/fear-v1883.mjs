@@ -1,0 +1,29 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+let ready;
+globalThis.Hooks={once:(_n,fn)=>{ready=fn;}};
+const defs=JSON.parse(fs.readFileSync('data/terrinoth-terrifying.json'));
+globalThis.fetch=async()=>({ok:true,json:async()=>defs});
+const {terrifyingProfile,resolveFearAuthoritative}=await import('../dist/module/fear-service-v1883.js');
+const templates=JSON.parse(fs.readFileSync('data/terrinoth-adversaries.json'));
+for(const p of defs){const a=templates.find(a=>a.flags['genesys-vtt'].adversaryTemplate.id===p.id);assert.equal(terrifyingProfile(a,defs).difficulty,p.difficulty);const edited=structuredClone(a);edited.items=[];assert.equal(terrifyingProfile(edited,defs),null);}
+assert.equal(defs.length,17);
+const sources=[defs.find(p=>p.difficulty===2),defs.find(p=>p.difficulty===4)].map((p,n)=>({id:`npc${n}`,name:p.name,...structuredClone(templates.find(a=>a.flags['genesys-vtt'].adversaryTemplate.id===p.id))}));
+const pc={name:'PC',system:{role:'pc'},flags:[],getFlag(){return this.flags;},async update(d){if(this.fail)throw Error('save failed');this.flags=d['flags.genesys-vtt.fearChecks'];}};
+const actors=new Map([['pc',pc],['n0',sources[0]],['n1',sources[1]]]);
+let rolls=0,difficulty;
+const state={status:'active',entries:[{actorRef:'pc',side:'pc'},...['n0','n1'].map(actorRef=>({actorRef,side:'npc'}))]};
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysVtt:{initiative:{sceneState:()=>state,resolveActorRef:r=>actors.get(r)},checks:{prepareActorSkill:(_a,skill,o)=>{assert.equal(skill,'discipline');difficulty=o.difficulty;return {check:{construction:{pool:{ability:2,difficulty:o.difficulty}}}};}},dice:{roll:()=>{rolls++;return {net:{success:1}};}}}};
+globalThis.ui={notifications:{warn(){}}};globalThis.foundry={documents:{ChatMessage:{create:async()=>{throw Error('chat failed');}}}};
+await ready();const scene={id:'scene',getFlag:()=> 'encounter'};
+const options={key:'scene:encounter',sources:['n0','n1'],boost:0,setback:0,confirmed:true};
+await assert.rejects(resolveFearAuthoritative(pc,{...options,confirmed:false},scene),/Confirm/);
+await assert.rejects(resolveFearAuthoritative(pc,{...options,key:'old'},scene),/Confirm/);
+await assert.rejects(resolveFearAuthoritative(pc,{...options,sources:['missing']},scene),/changed/);
+pc.fail=true;await assert.rejects(resolveFearAuthoritative(pc,options,scene),/save failed/);assert.equal(pc.flags.length,0);pc.fail=false;
+const r=await resolveFearAuthoritative(pc,options,scene);assert.equal(difficulty,4);assert.equal(r.difficulty,4);assert.equal(pc.flags.length,1);
+const count=rolls;await assert.rejects(resolveFearAuthoritative(pc,options,scene),/already/);assert.equal(rolls,count);
+game.user.isGM=false;await assert.rejects(resolveFearAuthoritative(pc,options,scene),/active GM/);
+console.log('PASS 17 source profiles, edited references, strongest-only fear, context, confirmation, save/chat failure and duplicate receipt');
+
+const {copyAdversaryTemplate}=await import('../dist/domain/adversaries/templates.js');const npc=structuredClone(templates.find(a=>a.flags['genesys-vtt'].adversaryTemplate.id===defs[0].id));npc.flags['genesys-vtt'].adversarySource=npc.flags['genesys-vtt'].adversaryTemplate;delete npc.flags['genesys-vtt'].adversaryTemplate;assert.equal(terrifyingProfile(copyAdversaryTemplate(npc),defs).id,defs[0].id);console.log('PASS world NPC clone preserves source identity for guided abilities');

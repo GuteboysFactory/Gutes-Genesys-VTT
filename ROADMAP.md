@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1882** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1883** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -472,3 +472,15 @@ Eleven native Heroic shortcut Items, upgrade-safe installation, matching-ability
 - 68 test files passed; one Chromium-dependent test blocked. Live Foundry QA remains pending. See TEST_PROTOCOL_v0.0.1882.md.
 - Next functional block: source-checked Terrifying/Fear semiautomation (17 recorded NPC references), continued NPC and recovery-talent audit. Full rule coverage is not claimed.
 - Live gates remain: Heroic request/GM approval, Tome import/source opening, multiplayer/reconnect/GM handover, large encounters and interrupted multi-target recovery. Foundry v14 unverified.
+
+## v0.0.1883 — Combined remaining Forge/content work
+
+Original roadmap phases remain unchanged. This delivery advances v187x/v188x and related GM Tools backlog; it does not close the content gate, v189x or v1.0.
+
+- Fire GM feedback: campaign overview collapsed; no Place NPC/Add to encounter confirmation chain.
+- Image drop on token layer: focused template search, template-to-private-Actor creation and visible token at drop coordinates. Shift bypasses interception. No automatic encounter entry.
+- 17 supported Terrifying source profiles: GM selects applicable sources/PCs, highest difficulty Discipline roll, persisted receipt; narrative consequences and exemptions remain GM decisions.
+- Group Survival recovery with One with Nature: one wilderness confirmation, individual talent validation.
+- Adversary re-import skips already imported source identities and preserves edits. Native Action source visibility is rechecked after asynchronous lookup.
+- Automated checks and actual Tome adapter contract pass; live drag/drop/rendering, multiplayer/reconnect/GM handover, performance and v14 remain unverified.
+- Full Core/Terrinoth book audit, remaining manual NPC clauses and unsupported optional rules are still open. See docs/V1883_CONTENT_GATE.md and TEST_PROTOCOL_v0.0.1883.md.

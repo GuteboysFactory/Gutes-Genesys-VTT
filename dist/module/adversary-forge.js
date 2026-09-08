@@ -16,7 +16,7 @@ export async function openAdversaryForge({template=null,file=null}={}){
  const base=template?addSupportedAdversaryAbilities(copyAdversaryTemplate(template)):null;
  if(file){validateAdversaryImage(file);previewUrl=URL.createObjectURL(file);}
  const profile=base?.flags['genesys-vtt'].rulesProfile??getActiveProfileId(),definitions=base?getActorSkillDefinitions(base):getActiveSkillDefinitions();
- const equipment=Array.from(game.items?.contents??[]).filter(i=>['weapon','armor','gear','implement','talent','ability','action'].includes(i.type));
+ const equipment=Array.from(game.items?.contents??[]).filter(i=>['weapon','armor','gear','implement','talent','actionTemplate'].includes(i.type));
  let draft={name:'',role:'rival',wounds:10,strain:10,soak:2,melee:0,ranged:0,silhouette:1,adversaryRank:0,members:1,extraActivations:0,...Object.fromEntries(FORGE_CHARACTERISTICS.map(k=>[k,2])),skills:[],itemIds:[]};
  if(base)draft={...adversaryDraft(base),templateItems:base.items.map((_i,n)=>String(n))};
  let error='';
@@ -66,4 +66,17 @@ export async function openAdversaryForge({template=null,file=null}={}){
  return actor;
  }
  }finally{if(previewUrl)URL.revokeObjectURL(previewUrl);open=false;}
+}
+
+/** Fast template path: same validator and copy rules, without editor/review dialogs. */
+export async function createAdversaryFromTemplate(template, {file=null,validateContext=()=>{}}={}) {
+ authority();validateContext();
+ const base=addSupportedAdversaryAbilities(copyAdversaryTemplate(template));
+ const profile=base.flags[SID].rulesProfile;
+ const data=prepareAdversary(adversaryDraft(base),getActorSkillDefinitions(base));
+ const img=file?await uploadAdversaryImage(file):base.img;
+ authority();validateContext();
+ const actor=await foundry.documents.Actor.create({...data,img,system:{...base.system,...data.system},items:base.items,ownership:{default:0},prototypeToken:{actorLink:false,texture:{src:img||'icons/svg/mystery-man.svg'}},flags:{[SID]:{rulesProfile:profile,adversarySource:base.flags[SID].adversaryTemplate,adversaryForge:{version:2,createdAt:Date.now()}}}});
+ if(!actor)throw Error('NPC creation failed.');
+ return actor;
 }

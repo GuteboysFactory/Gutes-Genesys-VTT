@@ -32,10 +32,17 @@ export async function applyHealthBatch(refs,{operation,conditionId,scene}={}){
 }
 export async function recoverHealthBatch(refs,skill,scene){
  authority();if(pending)throw Error('Health update already running.');
- if(!['cool','discipline'].includes(skill))throw Error('Choose Cool or Discipline.');
+ if(!['cool','discipline','survival'].includes(skill))throw Error('Choose Cool, Discipline or Survival.');
  if(!Array.isArray(refs)||!refs.length)throw Error('Select at least one participant.');
  pending=true;const applied=[],failed=[];
- try{for(const ref of new Set(refs)){try{authority();await game.genesysEncounterRecovery.recover(ref,skill,0,scene);applied.push(ref);}catch(e){failed.push({name:ref,reason:e.message});}}return {applied,failed};}finally{pending=false;}
+ try{
+ let wildernessConfirmed=false;
+ if(skill==='survival'){
+  wildernessConfirmed=await foundry.applications.api.DialogV2.confirm({window:{title:'One with Nature · Group recovery'},content:'<p>Confirm that all selected characters are in the wilderness. Only characters with enabled One with Nature may use Survival; others are skipped.</p>',rejectClose:false});
+  if(!wildernessConfirmed)return {applied,failed};
+  authority();
+ }
+ for(const ref of new Set(refs)){try{authority();await game.genesysEncounterRecovery.recover(ref,skill,0,scene,{wildernessConfirmed});applied.push(ref);}catch(e){failed.push({name:ref,reason:e.message});}}return {applied,failed};}finally{pending=false;}
 }
 function report(result){
  ui.notifications.info(`${result.applied.length} completed; ${result.failed.length} failed.`);
@@ -63,7 +70,7 @@ async function healthDialog(){
   }).join('')}</tbody></table></div>
   <label>Condition <select name="condition">${CORE_CONDITIONS.map(c=>`<option value="${c.id}">${c.label}</option>`).join('')}</select></label>
   <p>${CORE_CONDITIONS.map(c=>`${c.label}: ${c.description}`).join(' ')}</p><p>Add uses a manual duration. Remove clears only conditions added here; critical, talent and other sources are preserved. Open sheets to resolve those sources.</p>
-  <details><summary>After-encounter recovery</summary><p>One Simple Cool/Discipline check per selected eligible PC. Desperate Recovery is calculated for each PC automatically. Use the GM Dock for Survival with One with Nature or other GM bonuses.</p>${recovery.ready?recovery.rows.map(r=>`<label style="display:block"><input type="checkbox" name="recovery" value="${esc(r.actorRef)}" ${r.done||r.blocked?'disabled':''}>${esc(r.name)}${r.autoBonus?` · automatic talent bonus +${r.autoBonus}`:''} ${r.done?`· recovered ${r.recovered}`:r.blocked?'· unavailable':''}</label>`).join(''):`<p>${esc(recovery.reason||'End an encounter first.')}</p>`}<select name="skill"><option value="cool">Cool</option><option value="discipline">Discipline</option></select></details>`;
+  <details><summary>After-encounter recovery</summary><p>One Simple Cool/Discipline check per selected eligible PC. Desperate Recovery is calculated for each PC automatically. Survival requires One with Nature on each selected PC and a shared wilderness confirmation. Other GM bonuses remain available in the Dock.</p>${recovery.ready?recovery.rows.map(r=>`<label style="display:block"><input type="checkbox" name="recovery" value="${esc(r.actorRef)}" ${r.done||r.blocked?'disabled':''}>${esc(r.name)}${r.autoBonus?` · automatic talent bonus +${r.autoBonus}`:''} ${r.done?`· recovered ${r.recovered}`:r.blocked?'· unavailable':''}</label>`).join(''):`<p>${esc(recovery.reason||'End an encounter first.')}</p>`}<select name="skill"><option value="cool">Cool</option><option value="discipline">Discipline</option><option value="survival">Survival · One with Nature</option></select></details>`;
   const callback=kind=>(_e,_b,d)=>({kind,refs:[...d.element.querySelectorAll('input[name="actor"]:checked')].map(i=>i.value),recovery:[...d.element.querySelectorAll('input[name="recovery"]:checked')].map(i=>i.value),conditionId:d.element.querySelector('[name="condition"]').value,skill:d.element.querySelector('[name="skill"]').value});
   const buttons=[{action:'refresh',label:'Refresh',callback:callback('refresh')},{action:'scope',label:scope==='scene'?'Show world':'Show scene',callback:callback('scope')},{action:'open',label:'Open selected sheets',callback:callback('open')},...(writer?[{action:'add',label:'Add condition',callback:callback('add')},{action:'remove',label:'Remove GM condition',callback:callback('remove')},{action:'recover',label:'Recover selected PCs',callback:callback('recover')}]:[])];
   const choice=await foundry.applications.api.DialogV2.wait({window:{title:'GM Health & Recovery'},position:{width:1000},content,buttons,rejectClose:false});

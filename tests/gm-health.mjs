@@ -18,3 +18,10 @@ await assert.rejects(applyHealthBatch(['missing'],{operation:'add',conditionId:'
 const result=await recoverHealthBatch(['ok','bad','ok'],'cool',scene);assert.equal(result.applied.length,1);assert.equal(result.failed.length,1);
 game.user.isGM=false;assert.deepEqual(healthRoster(scene),[]);await assert.rejects(applyHealthBatch([a.uuid],{operation:'add',conditionId:'disoriented',scene}),/active GM/);
 console.log('PASS health roster, deduplication, source protection, recovery partial failure, permissions');
+game.user.isGM=true;let confirmations=0,calls=0;
+globalThis.foundry={applications:{api:{DialogV2:{confirm:async()=>{confirmations++;return true;}}}}};
+game.genesysEncounterRecovery.recover=async(ref,skill,bonus,s,options)=>{assert.equal(skill,'survival');assert.equal(options.wildernessConfirmed,true);calls++;};
+await recoverHealthBatch(['a','b','a'],'survival',scene);assert.equal(confirmations,1);assert.equal(calls,2);
+foundry.applications.api.DialogV2.confirm=async()=>false;
+await recoverHealthBatch(['a'],'survival',scene);assert.equal(calls,2);
+console.log('PASS batch Survival uses one wilderness confirmation and cancel rolls nothing');

@@ -17,6 +17,7 @@
   </header>
 
   <nav class="genesys-gm-dock-nav-v1830" aria-label="GM Dock sections">
+    <button type="button" data-action="resolveFear">Fear</button>
     <button type="button" data-action="openHealth"><i class="fa-solid fa-heart-pulse"></i><span>Health &amp; Recovery</span></button>
     <button type="button" data-action="navigateSection" data-section="genesys-gm-session"><i class="fa-solid fa-calendar-day"></i><span>Session</span></button>
     <button type="button" data-action="navigateSection" data-section="genesys-gm-story"><i class="fa-solid fa-star"></i><span>Story Points</span></button>
@@ -26,12 +27,15 @@
     <button type="button" data-action="navigateSection" data-section="genesys-gm-forge"><i class="fa-solid fa-hammer"></i><span>Forge</span></button>
   </nav>
 
+  <details><summary>Campaign overview</summary>
   <div class="genesys-gm-dock-summary-v1830">
     <article><small>Characters</small><strong>{{pcCount}}</strong><span>player characters</span></article>
     <article><small>NPCs</small><strong>{{npcCount}}</strong><span>adversaries & allies</span></article>
     <article><small>Encounter</small><strong>{{encounter.statusLabel}}</strong><span>{{encounter.participantCount}} participants</span></article>
     <article><small>Available XP</small><strong>{{totalAvailableXp}}</strong><span>across player characters</span></article>
   </div>
+
+  </details>
 
   <main class="genesys-gm-dock-grid-v1830">
     <section id="genesys-gm-session" class="genesys-gm-dock-panel-v1830">

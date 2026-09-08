@@ -612,7 +612,17 @@ async function queued_executeSceneTalent(actor, sourceId, ruleId, scene) {
     if(!game.genesysRules?.talents?.executeAuthoritative)throw Error('Talent service unavailable.');
     return game.genesysRules.talents.executeAuthoritative(actor,sourceId,ruleId,scene);
 }
+export function resolveSceneFear(actor, options, scene = activeScene()) {
+    const {key,sources,boost,setback,confirmed}=options;
+    return dispatchInitiativeCommand('resolveSceneFear',[actorInitiativeRef(actor),{key,sources,boost,setback,confirmed}],scene);
+}
+async function queued_resolveSceneFear(actor, options, scene) {
+    if(!initiativeAuthority())throw Error('The active GM resolves fear.');
+    if(!game.genesysFear)throw Error('Fear service unavailable.');
+    return game.genesysFear.resolveFearAuthoritative(actor,options,scene);
+}
 const commandRegistry = {
+    resolveSceneFear:{run:queued_resolveSceneFear,argc:2,actor:true},
     executeSceneTalent:{run:queued_executeSceneTalent,argc:3,actor:true},
     concentrateSceneSpells: {run:queued_concentrateSceneSpells, argc:1, actor:true},
     resolveSceneRenewal: {run:queued_resolveSceneRenewal, argc:3, actor:true},

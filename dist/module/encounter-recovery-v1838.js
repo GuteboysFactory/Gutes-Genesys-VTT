@@ -23,7 +23,7 @@ export function recoveryRoster(scene = canvas.scene) {
     }) };
   } catch (error) { return { ready: false, reason: error.message, rows: [] }; }
 }
-export async function recover(actorRef, skill, bonus = 0, scene = canvas.scene) {
+export async function recover(actorRef, skill, bonus = 0, scene = canvas.scene, {wildernessConfirmed=false}={}) {
   requireGm();
   if (!['cool', 'discipline', 'survival'].includes(skill)) throw new Error('Choose Cool or Discipline.');
   if (!Number.isSafeInteger(bonus) || bonus < 0 || bonus > 20) throw new Error('Talent bonus must be a whole number from 0 to 20.');
@@ -37,7 +37,7 @@ export async function recover(actorRef, skill, bonus = 0, scene = canvas.scene) 
   try {
     if (skill === 'survival') {
       if (!natureRecovery(actor)) throw new Error('One with Nature is required for Survival recovery.');
-      if (!await foundry.applications.api.DialogV2.confirm({window:{title:'One with Nature'},content:'<p>Confirm that this character is in the wilderness. Use Survival for encounter recovery?</p>',rejectClose:false})) throw new Error('Recovery cancelled; no roll made.');
+      if (wildernessConfirmed!==true && !await foundry.applications.api.DialogV2.confirm({window:{title:'One with Nature'},content:'<p>Confirm that this character is in the wilderness. Use Survival for encounter recovery?</p>',rejectClose:false})) throw new Error('Recovery cancelled; no roll made.');
       requireGm();
       if (context(scene).key !== key || !natureRecovery(actor)) throw new Error('Recovery context changed.');
     }
