@@ -133,6 +133,7 @@ function actedRefsFromEntitlements(state) {
 export function emptyInitiativeState(mode = "side-slots") {
     return {
         version: 4,
+        revision: 0,
         renewalSlots: [],
         mode,
         status: "collecting",
@@ -212,6 +213,7 @@ export function normalizeInitiativeState(raw) {
     const round = status === "active" ? Math.max(1, nonNegativeInteger(source.round)) : nonNegativeInteger(source.round);
     const baseState = {
         version: 4,
+        revision: nonNegativeInteger(source.revision),
         renewalSlots,
         mode,
         status,

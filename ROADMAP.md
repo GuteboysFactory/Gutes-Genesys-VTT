@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1856** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1857** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -220,6 +220,14 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Successfully inserted Renewal slot is announced in chat; failed chat does not roll back the slot or repeat the roll
 - Existing 34 automated regressions pass; prompt/chat integration requires live Foundry QA
 - Next: serialize encounter mutations through a shared authority, including player claims and GM actions. Separate GM browser sessions remain an unresolved concurrency limitation.
+
+### v0.0.1857 — Local encounter command queue
+
+- All initiative-service async commands use one queue per scene, including their read/side-effect/write sequence
+- Revisions survive normalization; stale direct writes (including Renewal proposals) are rejected
+- Failed saves do not advance fallback state; failed commands do not poison the queue
+- 35 automated test files pass; live service integration QA pending
+- This is client-local serialization, NOT cross-client atomicity. Next: authenticated authoritative command routing for player and GM clients, including reconnection and duplicate request handling.
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 

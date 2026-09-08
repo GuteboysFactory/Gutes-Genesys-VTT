@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {createSceneCommandQueue,nextInitiativeRevision} from '../dist/module/initiative-write-queue-v1857.js';
+import {emptyInitiativeState,normalizeInitiativeState} from '../dist/domain/initiative/index.js';
+const enqueue=createSceneCommandQueue();let release;const gate=new Promise(r=>release=r);const order=[];
+const a=enqueue('a',async()=>{order.push('start');await gate;order.push('saved');});
+const b=enqueue('a',async()=>order.push('next'));
+await enqueue('b',async()=>order.push('other scene'));
+assert.deepEqual(order,['start','other scene']);release();await Promise.all([a,b]);assert.deepEqual(order,['start','other scene','saved','next']);
+await assert.rejects(enqueue('a',async()=>{throw Error('save failed');}),/save failed/);
+await enqueue('a',async()=>order.push('recovered'));assert.equal(order.at(-1),'recovered');
+let state=emptyInitiativeState();const old=structuredClone(state);state=normalizeInitiativeState(nextInitiativeRevision(state,state));assert.equal(state.revision,1);
+assert.throws(()=>nextInitiativeRevision(old,state),/Encounter changed/);
+state=normalizeInitiativeState(nextInitiativeRevision({...emptyInitiativeState(),revision:state.revision},state));assert.equal(state.revision,2);
+console.log('PASS: per-scene sequencing, independent scenes, failure recovery, stale revision rejection and reset persistence');

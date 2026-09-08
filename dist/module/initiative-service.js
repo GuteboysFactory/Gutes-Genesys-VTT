@@ -1,3 +1,5 @@
+import {createSceneCommandQueue,nextInitiativeRevision} from './initiative-write-queue-v1857.js';
+const enqueueSceneCommand=createSceneCommandQueue();
 import { rollNarrativePool } from "../domain/dice/index.js";
 import { adjustInitiativeRound, canClaimCurrentSlot, claimCurrentInitiativeSlot, completeCurrentInitiativeSlot, currentInitiativeSlot, emptyInitiativeState, endInitiativeEncounter, forceClaimInitiativeActor, forceClaimInitiativeActivation, initiativeEntryForActor, initiativeEntryFromRoll, markInitiativeActorActed, markInitiativeActorUnacted, moveInitiativeSlot, normalizeInitiativeState, recordInitiativeEntry, removeInitiativeParticipant, rewindInitiativeTurn, setInitiativeMode, setInitiativeSlotSide, setInitiativeParticipantStatus, participantEncounterStatus, encounterOutcome, spendTurnAction, spendTurnManeuver, startInitiativeEncounter, startNextInitiativeRound, sortInitiativeEntries, unresolvedExtraActivations, waiveInitiativeActivation, restoreInitiativeActivation, upsertInitiativeParticipant, unclaimInitiativeTurn } from "../domain/initiative/index.js";
 import { activationEligibility, normalizeActorRole, normalizeMinionGroup } from "../domain/adversaries/index.js";
@@ -105,14 +107,14 @@ export function getSceneTurnActionEligibility(actor, kind = "action", scene = ac
     }
     return { allowed: true, outsideEncounter: false, gmOverride, reason: "" };
 }
-export async function consumeSceneEncounterAction(actor, scene = activeScene()) {
+async function queued_consumeSceneEncounterAction(actor, scene = activeScene()) {
     const eligibility = getSceneTurnActionEligibility(actor, "action", scene);
     if (!eligibility.allowed)
         throw new Error(eligibility.reason || "This action is not legal in the current encounter state.");
     if (eligibility.outsideEncounter)
         return null;
     const current = readSceneInitiativeState(scene);
-    return writeSceneInitiativeState(spendTurnAction(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
+    return queued_writeSceneInitiativeState(spendTurnAction(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
 }
 function claimFirstEligiblePopcornStarter(state) {
     if (state.mode !== "popcorn" || state.status !== "active" || state.activeActorRef || state.roundPhase === "end-round")
@@ -153,9 +155,8 @@ export function readSceneInitiativeState(scene = activeScene()) {
         ?? null;
     return normalizeInitiativeState(raw);
 }
-export async function writeSceneInitiativeState(state, scene = activeScene()) {
-    const normalized = normalizeInitiativeState(state);
-    fallbackState = normalized;
+async function queued_writeSceneInitiativeState(state, scene = activeScene()) {
+    const normalized = nextInitiativeRevision(normalizeInitiativeState(state), readSceneInitiativeState(scene));
     if (scene?.setFlag)
         await scene.setFlag(SYSTEM_ID, FLAG_KEY, normalized);
     else if (scene) {
@@ -163,20 +164,21 @@ export async function writeSceneInitiativeState(state, scene = activeScene()) {
         scene.flags[SYSTEM_ID] ??= {};
         scene.flags[SYSTEM_ID][FLAG_KEY] = normalized;
     }
+    fallbackState = normalized;
     if (normalized.activeActorRef) await game.genesysHeroicLive?.beginTurn?.(resolveInitiativeActorReference(normalized.activeActorRef), normalized, scene);
     await rerenderAllRenderedCharacterSheets();
     notifyStateListeners();
     return normalized;
 }
-export async function resetSceneInitiative(scene = activeScene()) {
+async function queued_resetSceneInitiative(scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
     await endRuleEncounter(scene);
-    return writeSceneInitiativeState(emptyInitiativeState(current.mode), scene);
+    return queued_writeSceneInitiativeState({...emptyInitiativeState(current.mode),revision:current.revision}, scene);
 }
-export async function setSceneInitiativeMode(mode, scene = activeScene()) {
-    return writeSceneInitiativeState(setInitiativeMode(readSceneInitiativeState(scene), mode), scene);
+async function queued_setSceneInitiativeMode(mode, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(setInitiativeMode(readSceneInitiativeState(scene), mode), scene);
 }
-export async function rollActorInitiative(actor, side, skill, scene = activeScene()) {
+async function queued_rollActorInitiative(actor, side, skill, scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
     if (current.status !== "collecting")
         throw new Error("Reset or end the current initiative encounter before rolling new initiative.");
@@ -191,7 +193,7 @@ export async function rollActorInitiative(actor, side, skill, scene = activeScen
         actorRole: actor?.system?.role,
         extraActivations: actor?.system?.extraActivations
     });
-    const state = await writeSceneInitiativeState(recordInitiativeEntry(current, entry), scene);
+    const state = await queued_writeSceneInitiativeState(recordInitiativeEntry(current, entry), scene);
     const totalActivations = state.activationEntitlements.filter((row) => row.actorRef === entry.actorRef && row.kind !== "gm-override").length || 1;
     const publicActivationLine = side === "pc"
         ? `<p><strong>Activations:</strong> 1/${totalActivations} starts with the Base Activation.</p>`
@@ -216,7 +218,7 @@ export async function rollActorInitiative(actor, side, skill, scene = activeScen
     }
     return { state, result, prepared };
 }
-export async function startSceneInitiative(scene = activeScene()) {
+async function queued_startSceneInitiative(scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
     let next = startInitiativeEncounter(current);
     if (current.status !== "active" && next.status === "active")
@@ -228,9 +230,9 @@ export async function startSceneInitiative(scene = activeScene()) {
             next = unclaimInitiativeTurn(next);
         next = claimFirstEligiblePopcornStarter(next);
     }
-    return writeSceneInitiativeState(next, scene);
+    return queued_writeSceneInitiativeState(next, scene);
 }
-export async function startNextSceneInitiativeRound(options = {}, scene = activeScene()) {
+async function queued_startNextSceneInitiativeRound(options = {}, scene = activeScene()) {
     let current = readSceneInitiativeState(scene);
     const pending = unresolvedExtraActivations(current);
     if (pending.length && options.waivePendingSpecials) {
@@ -243,21 +245,21 @@ export async function startNextSceneInitiativeRound(options = {}, scene = active
             next = unclaimInitiativeTurn(next);
         next = claimFirstEligiblePopcornStarter(next);
     }
-    return writeSceneInitiativeState(next, scene);
+    return queued_writeSceneInitiativeState(next, scene);
 }
-export async function waiveSceneInitiativeActivation(activationId, scene = activeScene()) {
-    return writeSceneInitiativeState(waiveInitiativeActivation(readSceneInitiativeState(scene), activationId), scene);
+async function queued_waiveSceneInitiativeActivation(activationId, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(waiveInitiativeActivation(readSceneInitiativeState(scene), activationId), scene);
 }
-export async function restoreSceneInitiativeActivation(activationId, scene = activeScene()) {
-    return writeSceneInitiativeState(restoreInitiativeActivation(readSceneInitiativeState(scene), activationId), scene);
+async function queued_restoreSceneInitiativeActivation(activationId, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(restoreInitiativeActivation(readSceneInitiativeState(scene), activationId), scene);
 }
-export async function endSceneInitiativeEncounter(scene = activeScene()) {
+async function queued_endSceneInitiativeEncounter(scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
     if (current.status === "active" && scene?.setFlag) {
         const id = scene.getFlag(SYSTEM_ID, "ruleEncounterId") || foundry.utils.randomID();
         await scene.setFlag(SYSTEM_ID, "recoveryEncounterId", id);
     }
-    const next = await writeSceneInitiativeState(endInitiativeEncounter(current), scene);
+    const next = await queued_writeSceneInitiativeState(endInitiativeEncounter(current), scene);
     await endRuleEncounter(scene);
     return next;
 }
@@ -268,22 +270,22 @@ function entryForActorOrThrow(state, actor) {
         throw new Error(`${actor?.name ?? "Actor"} has not rolled initiative in this encounter.`);
     return { ref, entry };
 }
-export async function claimSceneInitiativeSlot(actor, scene = activeScene()) {
+async function queued_claimSceneInitiativeSlot(actor, scene = activeScene()) {
     requireActorCanActivate(actor);
     const current = readSceneInitiativeState(scene);
     const { ref, entry } = entryForActorOrThrow(current, actor);
-    return writeSceneInitiativeState(claimCurrentInitiativeSlot(current, ref, actor?.name ?? entry.label, entry.side), scene);
+    return queued_writeSceneInitiativeState(claimCurrentInitiativeSlot(current, ref, actor?.name ?? entry.label, entry.side), scene);
 }
-export async function forceClaimSceneInitiativeActor(actorRef, scene = activeScene()) {
+async function queued_forceClaimSceneInitiativeActor(actorRef, scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
     const entry = initiativeEntryForActor(current, actorRef);
     if (!entry)
         throw new Error("Encounter participant not found.");
     const actor = resolveInitiativeActorReference(actorRef);
     const mustOverride = !actor || !getActorActivationEligibility(actor).allowed;
-    return writeSceneInitiativeState(forceClaimInitiativeActor(current, actorRef, entry.label, mustOverride), scene);
+    return queued_writeSceneInitiativeState(forceClaimInitiativeActor(current, actorRef, entry.label, mustOverride), scene);
 }
-export async function claimSceneInitiativeActivation(activationId, scene = activeScene()) {
+async function queued_claimSceneInitiativeActivation(activationId, scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
     const activation = current.activationEntitlements.find((row) => row.id === activationId);
     if (!activation)
@@ -292,62 +294,62 @@ export async function claimSceneInitiativeActivation(activationId, scene = activ
     if (!actor)
         throw new Error("Encounter Actor could not be resolved.");
     requireActorCanActivate(actor);
-    return writeSceneInitiativeState(forceClaimInitiativeActivation(current, activationId), scene);
+    return queued_writeSceneInitiativeState(forceClaimInitiativeActivation(current, activationId), scene);
 }
-export async function forceClaimSceneInitiativeActivation(activationId, scene = activeScene()) {
-    return writeSceneInitiativeState(forceClaimInitiativeActivation(readSceneInitiativeState(scene), activationId), scene);
+async function queued_forceClaimSceneInitiativeActivation(activationId, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(forceClaimInitiativeActivation(readSceneInitiativeState(scene), activationId), scene);
 }
-export async function unclaimSceneInitiative(scene = activeScene()) {
-    return writeSceneInitiativeState(unclaimInitiativeTurn(readSceneInitiativeState(scene)), scene);
+async function queued_unclaimSceneInitiative(scene = activeScene()) {
+    return queued_writeSceneInitiativeState(unclaimInitiativeTurn(readSceneInitiativeState(scene)), scene);
 }
-export async function markSceneActorActed(actorRef, scene = activeScene()) {
-    return writeSceneInitiativeState(markInitiativeActorActed(readSceneInitiativeState(scene), actorRef), scene);
+async function queued_markSceneActorActed(actorRef, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(markInitiativeActorActed(readSceneInitiativeState(scene), actorRef), scene);
 }
-export async function markSceneActorUnacted(actorRef, scene = activeScene()) {
-    return writeSceneInitiativeState(markInitiativeActorUnacted(readSceneInitiativeState(scene), actorRef), scene);
+async function queued_markSceneActorUnacted(actorRef, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(markInitiativeActorUnacted(readSceneInitiativeState(scene), actorRef), scene);
 }
-export async function setSceneParticipantStatus(actorRef, status, scene = activeScene()) {
-    return writeSceneInitiativeState(setInitiativeParticipantStatus(readSceneInitiativeState(scene), actorRef, status), scene);
+async function queued_setSceneParticipantStatus(actorRef, status, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(setInitiativeParticipantStatus(readSceneInitiativeState(scene), actorRef, status), scene);
 }
 export function getSceneEncounterOutcome(scene = activeScene()) {
     return encounterOutcome(readSceneInitiativeState(scene));
 }
-export async function setSceneSlotSide(index, side, scene = activeScene()) {
-    return writeSceneInitiativeState(setInitiativeSlotSide(readSceneInitiativeState(scene), index, side), scene);
+async function queued_setSceneSlotSide(index, side, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(setInitiativeSlotSide(readSceneInitiativeState(scene), index, side), scene);
 }
-export async function moveSceneSlot(index, delta, scene = activeScene()) {
-    return writeSceneInitiativeState(moveInitiativeSlot(readSceneInitiativeState(scene), index, delta), scene);
+async function queued_moveSceneSlot(index, delta, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(moveInitiativeSlot(readSceneInitiativeState(scene), index, delta), scene);
 }
-export async function rewindSceneInitiativeTurn(scene = activeScene()) {
-    return writeSceneInitiativeState(rewindInitiativeTurn(readSceneInitiativeState(scene)), scene);
+async function queued_rewindSceneInitiativeTurn(scene = activeScene()) {
+    return queued_writeSceneInitiativeState(rewindInitiativeTurn(readSceneInitiativeState(scene)), scene);
 }
-export async function adjustSceneInitiativeRound(delta, scene = activeScene()) {
-    return writeSceneInitiativeState(adjustInitiativeRound(readSceneInitiativeState(scene), delta), scene);
+async function queued_adjustSceneInitiativeRound(delta, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(adjustInitiativeRound(readSceneInitiativeState(scene), delta), scene);
 }
-export async function useSceneTurnAction(actor, scene = activeScene()) {
+async function queued_useSceneTurnAction(actor, scene = activeScene()) {
     const eligibility = getSceneTurnActionEligibility(actor, "action", scene);
     if (!eligibility.allowed)
         throw new Error(eligibility.reason || "Action is blocked.");
     const current = readSceneInitiativeState(scene);
-    return writeSceneInitiativeState(spendTurnAction(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
+    return queued_writeSceneInitiativeState(spendTurnAction(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
 }
-export async function useSceneTurnManeuver(actor, scene = activeScene()) {
+async function queued_useSceneTurnManeuver(actor, scene = activeScene()) {
     const eligibility = getSceneTurnActionEligibility(actor, "maneuver", scene);
     if (!eligibility.allowed)
         throw new Error(eligibility.reason || "Maneuver is blocked.");
     const current = readSceneInitiativeState(scene);
-    return writeSceneInitiativeState(spendTurnManeuver(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
+    return queued_writeSceneInitiativeState(spendTurnManeuver(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
 }
-export async function endSceneInitiativeTurn(actor, scene = activeScene()) {
+async function queued_endSceneInitiativeTurn(actor, scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
     const ref = actorInitiativeRef(actor);
     if (current.activeActorRef !== ref)
         throw new Error(`${actor?.name ?? "Actor"} does not own the active encounter turn.`);
     await game.genesysHeroicLive?.finishTurn(actor, current, scene);
     await advanceActorTurnConditions(actor);
-    return writeSceneInitiativeState(completeCurrentInitiativeSlot(current, ref), scene);
+    return queued_writeSceneInitiativeState(completeCurrentInitiativeSlot(current, ref), scene);
 }
-export async function forceEndCurrentSceneTurn(scene = activeScene()) {
+async function queued_forceEndCurrentSceneTurn(scene = activeScene()) {
     const state = readSceneInitiativeState(scene);
     if (!state.activeActorRef)
         throw new Error("No active actor to end.");
@@ -356,7 +358,7 @@ export async function forceEndCurrentSceneTurn(scene = activeScene()) {
         await game.genesysHeroicLive?.finishTurn(actor, state, scene);
         await advanceActorTurnConditions(actor);
     }
-    return writeSceneInitiativeState(completeCurrentInitiativeSlot(state, state.activeActorRef), scene);
+    return queued_writeSceneInitiativeState(completeCurrentInitiativeSlot(state, state.activeActorRef), scene);
 }
 export function getInitiativeSheetContext(actor, scene = activeScene()) {
     const state = readSceneInitiativeState(scene);
@@ -421,7 +423,7 @@ export function getInitiativeSheetContext(actor, scene = activeScene()) {
 export function initiativeDebug(scene = activeScene()) {
     return readSceneInitiativeState(scene);
 }
-export async function addSceneInitiativeParticipant(actor, side, skill = "vigilance", scene = activeScene()) {
+async function queued_addSceneInitiativeParticipant(actor, side, skill = "vigilance", scene = activeScene()) {
     if (!actor)
         throw new Error("Actor is required.");
     const current = readSceneInitiativeState(scene);
@@ -435,9 +437,120 @@ export async function addSceneInitiativeParticipant(actor, side, skill = "vigila
         actorRole: actor?.system?.role,
         extraActivations: actor?.system?.extraActivations
     });
-    return writeSceneInitiativeState(upsertInitiativeParticipant(current, entry), scene);
+    return queued_writeSceneInitiativeState(upsertInitiativeParticipant(current, entry), scene);
 }
-export async function removeSceneInitiativeParticipant(actorRef, scene = activeScene()) {
-    return writeSceneInitiativeState(removeInitiativeParticipant(readSceneInitiativeState(scene), actorRef), scene);
+async function queued_removeSceneInitiativeParticipant(actorRef, scene = activeScene()) {
+    return queued_writeSceneInitiativeState(removeInitiativeParticipant(readSceneInitiativeState(scene), actorRef), scene);
 }
 //# sourceMappingURL=initiative-service.js.map
+export function consumeSceneEncounterAction(actor, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_consumeSceneEncounterAction(actor, scene));
+}
+
+export function writeSceneInitiativeState(state, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_writeSceneInitiativeState(state, scene));
+}
+
+export function resetSceneInitiative(scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_resetSceneInitiative(scene));
+}
+
+export function setSceneInitiativeMode(mode, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_setSceneInitiativeMode(mode, scene));
+}
+
+export function rollActorInitiative(actor, side, skill, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_rollActorInitiative(actor, side, skill, scene));
+}
+
+export function startSceneInitiative(scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_startSceneInitiative(scene));
+}
+
+export function startNextSceneInitiativeRound(options = {}, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_startNextSceneInitiativeRound(options, scene));
+}
+
+export function waiveSceneInitiativeActivation(activationId, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_waiveSceneInitiativeActivation(activationId, scene));
+}
+
+export function restoreSceneInitiativeActivation(activationId, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_restoreSceneInitiativeActivation(activationId, scene));
+}
+
+export function endSceneInitiativeEncounter(scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_endSceneInitiativeEncounter(scene));
+}
+
+export function claimSceneInitiativeSlot(actor, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_claimSceneInitiativeSlot(actor, scene));
+}
+
+export function forceClaimSceneInitiativeActor(actorRef, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_forceClaimSceneInitiativeActor(actorRef, scene));
+}
+
+export function claimSceneInitiativeActivation(activationId, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_claimSceneInitiativeActivation(activationId, scene));
+}
+
+export function forceClaimSceneInitiativeActivation(activationId, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_forceClaimSceneInitiativeActivation(activationId, scene));
+}
+
+export function unclaimSceneInitiative(scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_unclaimSceneInitiative(scene));
+}
+
+export function markSceneActorActed(actorRef, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_markSceneActorActed(actorRef, scene));
+}
+
+export function markSceneActorUnacted(actorRef, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_markSceneActorUnacted(actorRef, scene));
+}
+
+export function setSceneParticipantStatus(actorRef, status, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_setSceneParticipantStatus(actorRef, status, scene));
+}
+
+export function setSceneSlotSide(index, side, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_setSceneSlotSide(index, side, scene));
+}
+
+export function moveSceneSlot(index, delta, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_moveSceneSlot(index, delta, scene));
+}
+
+export function rewindSceneInitiativeTurn(scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_rewindSceneInitiativeTurn(scene));
+}
+
+export function adjustSceneInitiativeRound(delta, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_adjustSceneInitiativeRound(delta, scene));
+}
+
+export function useSceneTurnAction(actor, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_useSceneTurnAction(actor, scene));
+}
+
+export function useSceneTurnManeuver(actor, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_useSceneTurnManeuver(actor, scene));
+}
+
+export function endSceneInitiativeTurn(actor, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_endSceneInitiativeTurn(actor, scene));
+}
+
+export function forceEndCurrentSceneTurn(scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_forceEndCurrentSceneTurn(scene));
+}
+
+export function addSceneInitiativeParticipant(actor, side, skill = "vigilance", scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_addSceneInitiativeParticipant(actor, side, skill, scene));
+}
+
+export function removeSceneInitiativeParticipant(actorRef, scene = activeScene()) {
+    return enqueueSceneCommand(scene ?? "fallback", () => queued_removeSceneInitiativeParticipant(actorRef, scene));
+}
