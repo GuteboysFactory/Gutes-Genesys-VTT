@@ -51,12 +51,17 @@ export async function removeConditionsBySource(actor, sourceId) {
         await actor.update({ "system.conditions": next });
     return next;
 }
-export async function advanceActorTurnConditions(actor) {
+export async function advanceActorTurnConditions(actor, turn = null) {
+    const journal = actor.getFlag?.('genesys-vtt', 'conditionTurnJournal');
+    const completed = turn && journal?.encounter === turn.encounter ? journal.completed ?? [] : [];
+    if (turn && completed.includes(turn.key)) return actorConditions(actor);
     const current = actorConditions(actor);
     const next = advanceTurnConditionDurations(current);
     const changed = JSON.stringify(next) !== JSON.stringify(current);
-    if (changed)
-        await actor.update({ "system.conditions": next });
+    if (changed || turn)
+        await actor.update({ "system.conditions": next, ...(turn ? {
+            "flags.genesys-vtt.conditionTurnJournal": {encounter: turn.encounter, completed: [...completed, turn.key]}
+        } : {}) });
     return next;
 }
 //# sourceMappingURL=condition-service.js.map

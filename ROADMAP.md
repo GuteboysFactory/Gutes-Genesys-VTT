@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1858** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1859** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -237,6 +237,15 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Private request/completion receipts; a failed reply asks the user to inspect state before retrying
 - 37 automated test files pass, including real service code with mocked Foundry dependencies
 - Live two-client QA is mandatory. Same GM account in multiple browser sessions is NOT supported by this election; use one active GM session. Cross-document End Turn recovery and GM failover journaling remain next.
+
+### v0.0.1859 — End Turn condition retry protection
+
+- Condition duration changes and a completed-turn marker save in the same actor update
+- Normal and Force End Turn pass encounter/turn identity; retry after scene-save failure skips completed condition work
+- Markers survive reload and are scoped to the encounter; a revisited completed turn does not tick twice
+- Existing Heroic last-turn marker remains in use
+- 38 automated tests pass; live interrupted-save QA pending
+- Next: GM-visible recovery status and failover guidance. No automatic reconnect replay, same-account multi-GM-session support or full actor/scene transaction is claimed.
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 

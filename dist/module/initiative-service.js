@@ -344,13 +344,17 @@ async function queued_useSceneTurnManeuver(actor, scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
     return queued_writeSceneInitiativeState(spendTurnManeuver(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
 }
+function conditionTurnIdentity(state, scene) {
+    const encounter = `${scene.id}:${scene.getFlag(SYSTEM_ID, 'ruleEncounterId') ?? ''}`;
+    return {encounter, key: `${state.round}:${state.turnNumber}:${state.activeActivationId}:${state.activeActorRef}`};
+}
 async function queued_endSceneInitiativeTurn(actor, scene = activeScene()) {
     const current = readSceneInitiativeState(scene);
     const ref = actorInitiativeRef(actor);
     if (current.activeActorRef !== ref)
         throw new Error(`${actor?.name ?? "Actor"} does not own the active encounter turn.`);
     await game.genesysHeroicLive?.finishTurn(actor, current, scene);
-    await advanceActorTurnConditions(actor);
+    await advanceActorTurnConditions(actor, conditionTurnIdentity(current, scene));
     return queued_writeSceneInitiativeState(completeCurrentInitiativeSlot(current, ref), scene);
 }
 async function queued_forceEndCurrentSceneTurn(scene = activeScene()) {
@@ -360,7 +364,7 @@ async function queued_forceEndCurrentSceneTurn(scene = activeScene()) {
     const actor = resolveInitiativeActorReference(state.activeActorRef);
     if (actor) {
         await game.genesysHeroicLive?.finishTurn(actor, state, scene);
-        await advanceActorTurnConditions(actor);
+        await advanceActorTurnConditions(actor, conditionTurnIdentity(state, scene));
     }
     return queued_writeSceneInitiativeState(completeCurrentInitiativeSlot(state, state.activeActorRef), scene);
 }
