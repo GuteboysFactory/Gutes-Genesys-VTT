@@ -1,3 +1,4 @@
+import {openGmHealth} from '../gm-health.js';
 import {heroicDockControls,runHeroicDockControl} from '../heroic-dock-controls-v1861.js';
 import { normalizeActorRole } from "../../domain/adversaries/index.js";
 
@@ -123,6 +124,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     position: { width: 1040, height: 760 },
     window: { title: "Genesys GM Dock", resizable: true },
     actions: {
+      openHealth: async function(){await openGmHealth();},
       navigateSection: this.#navigateSection,
       openEncounter: this.#openEncounter,
       openParticipant: this.#openParticipant,

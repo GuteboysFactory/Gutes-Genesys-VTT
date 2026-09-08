@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1877** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1878** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -433,3 +433,12 @@ Assist and Maneuver cards confirm and use the existing authoritative maneuver se
 - Character action editor preserves behavior/provenance. Legacy actions default to skill-check; no stored dice pools. Custom skill-check activation costs and narrative effects remain manual.
 - Template authoring, source viewing, character copying/editing/deleting/use and default installation now form one workflow. Heroic native document representation and Tome compatibility remain separate roadmap work.
 - Automated regression checks passed; v0.0.1877 live Foundry QA pending.
+
+## GM health and recovery workflow — v0.0.1878
+
+- User reviewed v1877 without visible issues; detailed playtest deferred.
+- GM Dock Health & Recovery: scene/world roster including unlinked token actors, wounds/strain, active conditions and critical injuries; selected sheets open directly for detailed injury handling.
+- Active GM can apply/remove manual GM-health conditions to multiple selected actors after confirmation. Stable source prevents repeat additions; removal preserves critical/talent/other conditions.
+- Encounter recovery offers batch Cool/Discipline using existing per-encounter receipts and living-PC checks. Individual talent bonuses remain in the existing Dock controls; batch applies zero bonus explicitly.
+- Linked actors deduplicated, synthetic actors remain independent. Permission rechecks, busy guard, per-actor partial failure report and scene-change cancellation.
+- This closes the GM overview/batch workflow. Reaction edge cases, concentration, recovery talent automation and detailed playtest remain open; no changes to defeat/activation rules.
