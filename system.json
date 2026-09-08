@@ -1,10 +1,17 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1833 Party XP & Story Point Counter. Adds GM party awards with ledger notes and a movable shared Story Point display.",
-  "version": "0.0.1833",
-  "compatibility": { "minimum": "13.351", "verified": "13.351" },
-  "authors": [{ "name": "Genesys VTT Project" }],
+  "description": "Genesys VTT 0.0.1834 \u2014 explicit Story Point Spend buttons and GM Dock session lifecycle.",
+  "version": "0.0.1834",
+  "compatibility": {
+    "minimum": "13.351",
+    "verified": "13.351"
+  },
+  "authors": [
+    {
+      "name": "Genesys VTT Project"
+    }
+  ],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
   "manifest": "https://raw.githubusercontent.com/GuteboysFactory/Gutes-Genesys-VTT/qa/system.json",
   "download": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT/archive/refs/heads/qa.zip",
@@ -62,7 +69,8 @@
     "dist/module/magic-effect-ui-v1810.js",
     "dist/module/story-point-service-v1832.js",
     "dist/module/story-point-counter-v1833.js",
-    "dist/module/apps/gm-dock-v1830.js"
+    "dist/module/apps/gm-dock-v1830.js",
+    "dist/module/session-service-v1834.js"
   ],
   "styles": [
     "styles/genesys.css",
@@ -107,11 +115,28 @@
     "styles/gm-dock-v1830.css"
   ],
   "languages": [
-    { "lang": "en", "name": "English", "path": "lang/en.json" },
-    { "lang": "sv", "name": "Svenska", "path": "lang/sv.json" }
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "sv",
+      "name": "Svenska",
+      "path": "lang/sv.json"
+    }
   ],
   "documentTypes": {
-    "Actor": { "character": {} },
-    "Item": { "weapon": {}, "armor": {}, "gear": {}, "attachment": {}, "implement": {}, "talent": {} }
+    "Actor": {
+      "character": {}
+    },
+    "Item": {
+      "weapon": {},
+      "armor": {},
+      "gear": {},
+      "attachment": {},
+      "implement": {},
+      "talent": {}
+    }
   }
 }

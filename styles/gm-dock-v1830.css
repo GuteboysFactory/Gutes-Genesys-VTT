@@ -369,3 +369,11 @@
   .genesys-story-point-history-v1832 > div { grid-template-columns: 36px 1fr; }
   .genesys-story-point-history-v1832 > div small { grid-column: 2; }
 }
+
+.genesys-sp-pool-v1834 { display: grid; justify-items: center; align-content: center; gap: 4px; padding: 7px 5px; }
+.genesys-sp-pool-v1834 > small { font: 700 .55rem Georgia, serif; letter-spacing: .1em; }
+.genesys-sp-pool-v1834 > strong { font: 700 1.65rem Georgia, serif; line-height: 1; }
+.genesys-story-point-counter-v1833 .genesys-sp-pool-v1834 button { min-height: 23px; padding: 2px 7px; border: 1px solid currentColor; border-radius: 3px; font: 700 .65rem Georgia, serif; }
+.genesys-story-point-counter-v1833 .genesys-sp-pool-v1834 button:disabled { opacity: .45; }
+.genesys-session-history-v1834 { display: grid; gap: 5px; font-size: .7rem; }
+.genesys-session-reminders-v1834 { margin: 0; padding-left: 20px; font-size: .75rem; }

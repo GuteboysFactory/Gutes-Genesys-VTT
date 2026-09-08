@@ -47,9 +47,7 @@ function renderCounter() {
   const gm = Boolean(game?.user?.isGM);
   counter.innerHTML = `
     <div class="genesys-sp-counter-grip-v1833" title="Drag Story Points"><i class="fa-solid fa-grip-vertical"></i><span>STORY<br>POINTS</span></div>
-    <button type="button" class="is-player" data-spend-side="player" ${!gm || !number(state.player) ? "disabled" : ""} title="${gm ? "Spend a Player Story Point" : "Player Story Point pool"}"><small>PLAYER</small><strong>${number(state.player)}</strong></button>
-    <div class="genesys-sp-counter-swap-v1833"><i class="fa-solid fa-right-left"></i></div>
-    <button type="button" class="is-gm" data-spend-side="gm" ${!gm || !number(state.gm) ? "disabled" : ""} title="${gm ? "Spend a GM Story Point" : "GM Story Point pool"}"><small>GM</small><strong>${number(state.gm)}</strong></button>`;
+    ${["player", "gm"].map((side, index) => `${index ? '<div class="genesys-sp-counter-swap-v1833"><i class="fa-solid fa-right-left"></i></div>' : ''}<div class="is-${side} genesys-sp-pool-v1834"><small>${side === "gm" ? "GM" : "PLAYER"}</small><strong>${number(state[side])}</strong><button type="button" data-spend-side="${side}" ${!gm || actionPending || !number(state[side]) ? "disabled" : ""} title="${gm ? `Spend one ${side} point` : "GM controls Story Point spending"}">Spend</button></div>`).join("")}`;
 }
 
 function installDrag() {
@@ -99,9 +97,11 @@ function installCounter() {
   installDrag();
   counter.addEventListener("click", async (event) => {
     const button = event.target.closest("[data-spend-side]");
-    if (!button || !game?.user?.isGM || actionPending) return;
+    if (!button || button.disabled || !game?.user?.isGM || actionPending) return;
     actionPending = true;
-    try { await game?.genesysStoryPoints?.spend?.(button.dataset.spendSide); }
+    const side = button.dataset.spendSide;
+    renderCounter();
+    try { await game?.genesysStoryPoints?.spend?.(side); }
     catch (error) { ui?.notifications?.warn?.(error?.message ?? "Story Point transfer failed."); }
     finally { actionPending = false; renderCounter(); }
   });

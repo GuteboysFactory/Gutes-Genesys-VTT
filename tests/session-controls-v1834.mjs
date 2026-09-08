@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+let state = {};
+let writes = 0;
+globalThis.Hooks = { once() {}, on() {}, callAll() {} };
+globalThis.game = { user: { id: 'gm', name: 'GM', isGM: true }, users: { activeGM: { id: 'gm' } }, settings: {
+  get: () => structuredClone(state), set: async (_system, _key, value) => { writes++; state = structuredClone(value); }
+} };
+const { snapshot, transition } = await import('../dist/module/session-service-v1834.js');
+await Promise.all([transition('start'), transition('start')]);
+assert.equal(writes, 1);
+assert.equal(snapshot().number, 1);
+assert.equal(snapshot().active, true);
+await Promise.all([transition('end'), transition('end')]);
+assert.equal(writes, 2);
+assert.equal(snapshot().active, false);
+await transition('start');
+assert.equal(snapshot().number, 2);
+assert.equal(snapshot().history.length, 3);
+game.user.isGM = false;
+await assert.rejects(transition('end'), /Only the GM/);
+game.user.isGM = true;
+game.user.id = 'second-gm';
+await assert.rejects(transition('end'), /active GM/);
+game.user.id = 'gm';
+await assert.rejects(transition('invalid'), /Unknown/);
+await transition('end');
+assert.equal(snapshot().active, false);
+const counter = fs.readFileSync('dist/module/story-point-counter-v1833.js', 'utf8');
+assert.match(counter, />Spend<\/button>/);
+assert.match(counter, /button.disabled/);
+const manifest = JSON.parse(fs.readFileSync('system.json', 'utf8'));
+assert.ok(manifest.esmodules.includes('dist/module/session-service-v1834.js'));
+console.log('PASS: session start/end persistence, duplicate protection, permissions, queue recovery and Spend controls');

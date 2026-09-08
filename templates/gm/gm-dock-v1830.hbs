@@ -33,12 +33,21 @@
 
   <main class="genesys-gm-dock-grid-v1830">
     <section id="genesys-gm-session" class="genesys-gm-dock-panel-v1830">
-      <header><div><small>CAMPAIGN CONTROL</small><h2><i class="fa-solid fa-calendar-day"></i> Session</h2></div><span class="is-planned">v0.0.1835</span></header>
+      <header><div><small>CAMPAIGN CONTROL</small><h2><i class="fa-solid fa-calendar-day"></i> Session</h2></div><span class="is-ready">SESSION {{session.number}}</span></header>
       <div class="genesys-gm-dock-panel-body-v1830">
         <div class="genesys-gm-dock-state-v1830"><span>Current world</span><strong>{{worldName}}</strong></div>
         <div class="genesys-gm-dock-state-v1830"><span>Connected users</span><strong>{{connectedUserCount}}</strong></div>
-        <p>Session start/reset and once-per-session recovery will arrive in the dedicated Session lifecycle step.</p>
-        <button type="button" data-action="unavailable" data-feature="Session controls">Session Controls · Upcoming</button>
+        <div class="genesys-gm-dock-state-v1830"><span>Status</span><strong>{{#if session.active}}In progress{{else}}Between sessions{{/if}}</strong></div>
+        <div class="genesys-gm-dock-button-row-v1830">
+          <button type="button" data-action="sessionControl" data-session-action="start" {{#if session.active}}disabled{{/if}}>Start Session</button>
+          <button type="button" data-action="sessionControl" data-session-action="end" {{#unless session.active}}disabled{{/unless}}>End Session</button>
+        </div>
+        <ul class="genesys-session-reminders-v1834">
+          <li>Start: review Story Point pools and once-per-session abilities.</li>
+          <li>End: review recovery and award Party XP below.</li>
+          <li>Session controls record session status. Recovery and ability resets are handled separately.</li>
+        </ul>
+        <div class="genesys-session-history-v1834">{{#each sessionHistory}}<div><strong>#{{number}} · {{label}}</strong> · {{timeLabel}} · {{userName}}</div>{{else}}<p>No sessions recorded yet.</p>{{/each}}</div>
       </div>
     </section>
 

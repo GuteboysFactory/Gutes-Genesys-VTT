@@ -7,7 +7,7 @@ const counter = fs.readFileSync("dist/module/story-point-counter-v1833.js", "utf
 const template = fs.readFileSync("templates/gm/gm-dock-v1830.hbs", "utf8");
 const css = fs.readFileSync("styles/gm-dock-v1830.css", "utf8");
 
-assert.equal(manifest.version, "0.0.1833");
+assert.ok(Number(manifest.version.split(".").at(-1)) >= 1833);
 assert.ok(manifest.esmodules.includes("dist/module/story-point-counter-v1833.js"));
 assert.match(dock, /genesysAdvancement\.awardXp/);
 assert.match(dock, /kind:\s*"party-award"/);

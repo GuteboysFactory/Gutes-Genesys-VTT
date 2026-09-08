@@ -41,7 +41,15 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Visible Player/GM Story Point counter beside chat for every user
 - Smooth draggable counter with per-client position persistence
 
-### v0.0.1834–v0.0.1835 — Remaining GM Dock Live Tools
+### v0.0.1834 — Session lifecycle foundation
+
+- Explicit Spend buttons on shared Story Point counter (GM controls)
+- Start/end session, persisted session number, status and history
+- Active-GM write authority and duplicate-transition protection
+- Manual reminders for Story Points, recovery and XP
+- Automated coverage complete; Foundry visual/multi-client QA pending
+
+### v0.0.1835 — Remaining GM Dock Live Tools
 
 - Session controls, reminders and recovery helpers
 - Encounter shortcuts and GM-facing status indicators
@@ -104,4 +112,4 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 
 ## Delivery rule
 
-Every slice must include a version bump, focused automated tests, a manual QA protocol, regression against accepted encounter modes, and explicit user approval before publication to `qa`.
+Every slice must include a version bump, focused automated tests, a manual QA protocol, regression against accepted encounter modes, and publication to `qa` under the established user-authorized build/test/publish workflow.

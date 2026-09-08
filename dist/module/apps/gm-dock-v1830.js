@@ -100,6 +100,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       spendStoryPoint: this.#spendStoryPoint,
       adjustStoryPoint: this.#adjustStoryPoint,
       awardPartyXp: this.#awardPartyXp,
+      sessionControl: this.#sessionControl,
       refresh: this.#refresh,
       unavailable: this.#unavailable
     }
@@ -130,6 +131,8 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       pcCount: pcs.length,
       npcCount: npcs.length,
       totalAvailableXp,
+      session: game.genesysSession?.snapshot() ?? {},
+      sessionHistory: (game.genesysSession?.snapshot().history ?? []).slice(0, 6).map(entry => ({ ...entry, label: entry.action === "start" ? "Started" : "Ended", timeLabel: new Date(entry.timestamp).toLocaleString() })),
       storyPoints,
       storyPointHistory: Array.from(storyPoints.history ?? []).slice(0, 8).map((entry) => ({
         ...entry,
@@ -249,6 +252,16 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       target.disabled = false;
       if (gmDockApp?.rendered) await gmDockApp.render({ force: true });
     }
+  }
+
+  static async #sessionControl(_event, target) {
+    if (!requireGm() || target.disabled) return;
+    target.disabled = true;
+    try {
+      if (!game.genesysSession) throw new Error("Session service unavailable.");
+      await game.genesysSession.transition(target.dataset.sessionAction);
+    } catch (error) { ui.notifications.warn(error.message); }
+    finally { target.disabled = false; }
   }
 
   static async #refresh() {
@@ -388,3 +401,5 @@ Hooks.once("ready", () => {
   window.addEventListener("resize", () => applyLauncherPosition(game.settings.get(SYSTEM_ID, LAUNCHER_POSITION_SETTING)));
   console.log(`${SYSTEM_ID} | GM Dock shell ready`);
 });
+
+Hooks.on("genesysSessionChanged", refreshOpenDock);
