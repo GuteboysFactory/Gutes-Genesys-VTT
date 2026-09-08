@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1847** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1848** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -156,7 +156,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Owner-turn-start recovery still manual and explicitly reminded in chat; automation remains next
 - Live Foundry QA pending
 
-### v0.0.1848 onward — Remaining Heroic Abilities Live
+### v0.0.1848 — Rejuvenation owner turns
+
+- Active GM applies 2 Strain recovery on owner turn via initiative writes/scene updates
+- Actor-persisted turn keys prevent duplicate recovery; activation during own turn records that already-started turn
+- Side Slots/Popcorn live multiplayer QA pending
+
+### v0.0.1849 onward — Remaining Heroic Abilities Live
 
 - Activation, costs, upgrades and encounter lifecycle
 - Sheet, chat and GM Dock integration

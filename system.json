@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1847 \u2014 Rejuvenation activation recovery.",
-  "version": "0.0.1847",
+  "description": "Genesys VTT 0.0.1848 \u2014 Rejuvenation owner-turn recovery.",
+  "version": "0.0.1848",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"

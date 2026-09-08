@@ -23,10 +23,10 @@ export async function activate(actor) {
       const strainBefore = Number(actor.system?.strain?.value);
       if (rejuvenation && (!Number.isFinite(strainBefore) || strainBefore < 0)) throw new Error('Invalid Strain value.');
       return { ...(rejuvenation ? { strainAfter: Math.max(0,strainBefore-2), strainRecovered:Math.min(2,strainBefore) } : {}), ability: prepared.nextAbility, pools: prepared.storyPointTransaction.after,
-        timing: { skipTurn: state.status === 'active' && state.activeActorRef === actor.uuid ? turnKey(state,scene) : '', lastTurn: '', sceneId: scene?.id ?? '' }, cost: before.storyPointCost };
+        timing: { skipTurn: state.status === 'active' && state.activeActorRef === actor.uuid ? turnKey(state,scene) : '', lastTurn: '', rejuvenationStarts: state.status === 'active' && state.activeActorRef === actor.uuid ? [turnKey(state,scene)] : [], sceneId: scene?.id ?? '' }, cost: before.storyPointCost };
     });
     const secondaryLabels = game.genesysHeroic.secondaryOptions?.(actor)?.filter(row => proposal.ability.secondaryEffectIds.includes(row.id)).map(row => row.description ? `${row.label}: ${row.description}` : row.label).join('; ') || proposal.ability.secondaryEffectIds.join(', ');
-    try { await foundry.documents.ChatMessage.create({ speaker: { alias: actor.name }, content: `<p><strong>Heroic Ability Activated</strong> · ${esc(proposal.ability.name || proposal.ability.primaryEffectLabel)}</p><p>${proposal.cost} Story Points · Usage ${proposal.ability.usesThisSession} · Until the end of the next owner turn (${proposal.ability.activeTurnBudget} turn budget).</p>${secondaryLabels ? `<p>Secondary Effects: ${esc(secondaryLabels)}</p>` : ''}${proposal.strainAfter !== undefined ? `<p>Rejuvenation: recovered ${proposal.strainRecovered} Strain on activation. Recover 2 Strain manually at each owner turn start while active.</p>` : ''}<p>Apply remaining narrative/mechanical effects with the GM.</p>` }); }
+    try { await foundry.documents.ChatMessage.create({ speaker: { alias: actor.name }, content: `<p><strong>Heroic Ability Activated</strong> · ${esc(proposal.ability.name || proposal.ability.primaryEffectLabel)}</p><p>${proposal.cost} Story Points · Usage ${proposal.ability.usesThisSession} · Until the end of the next owner turn (${proposal.ability.activeTurnBudget} turn budget).</p>${secondaryLabels ? `<p>Secondary Effects: ${esc(secondaryLabels)}</p>` : ''}${proposal.strainAfter !== undefined ? `<p>Rejuvenation: recovered ${proposal.strainRecovered} Strain on activation. Owner-turn recovery is automatic while active.</p>` : ''}<p>Apply remaining narrative/mechanical effects with the GM.</p>` }); }
     catch { ui.notifications.warn('Heroic activation saved; chat announcement failed.'); }
     return proposal;
   } finally { locks.delete(actor.uuid); }
@@ -85,6 +85,29 @@ export async function purchaseUpgrade(actor, type, effectId = "") {
     return true;
   } finally { locks.delete(actor.uuid); }
 }
+export async function beginTurn(actor, state, scene) {
+  if (!authority() || !actor?.uuid || state.status !== 'active' || state.activeActorRef !== actor.uuid) return false;
+  if (!actor.system?.heroicAbility?.active || !actor.system.heroicAbility.secondaryEffectIds?.includes('rot-heroic-secondary:rejuvenation')) return false;
+  if (locks.has(actor.uuid)) return false;
+  if (game.genesysStoryPoints?.snapshot()?.heroicPending) return false;
+  locks.add(actor.uuid);
+  try {
+    const timing = actor.getFlag(SID,'heroicTiming') ?? {};
+    const key = turnKey(state,scene);
+    const starts = timing.rejuvenationStarts ?? [];
+    if (starts.includes(key) || timing.skipTurn === key) return false;
+    const before = Number(actor.system.strain?.value);
+    if (!Number.isFinite(before) || before < 0) throw new Error('Invalid Strain value.');
+    await actor.update({ 'system.strain.value':Math.max(0,before-2), [`flags.${SID}.heroicTiming`]:{...timing,rejuvenationStarts:[...starts,key]} });
+    return true;
+  } finally { locks.delete(actor.uuid); }
+}
+Hooks.on('updateScene', (scene, change) => {
+  if (!authority() || !JSON.stringify(change).includes('initiative')) return;
+  const state = game.genesysVtt?.initiative?.sceneState(scene);
+  if (!state?.activeActorRef) return;
+  Promise.resolve(fromUuid(state.activeActorRef)).then(actor => beginTurn(actor,state,scene)).catch(error => ui.notifications.warn(error.message));
+});
 export async function finishTurn(actor, state, scene) {
   if (!actor?.system?.heroicAbility?.active || state.activeActorRef !== actor.uuid) return;
   if (game.genesysStoryPoints?.snapshot()?.heroicPending?.actorRef === actor.uuid) throw new Error("Recover interrupted Heroic activation before ending this turn.");
@@ -116,4 +139,4 @@ Hooks.on('renderChatMessageHTML', (_message, html) => {
     });
   }
 });
-Hooks.once('ready', () => Object.defineProperty(game,'genesysHeroicLive',{ configurable:true, value:Object.freeze({ activate, requestActivation, purchaseUpgrade, finishTurn, recover: recoverHeroicTransaction }) }));
+Hooks.once('ready', () => Object.defineProperty(game,'genesysHeroicLive',{ configurable:true, value:Object.freeze({ activate, requestActivation, purchaseUpgrade, beginTurn, finishTurn, recover: recoverHeroicTransaction }) }));

@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+globalThis.Hooks={on(){},once(){}};
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysStoryPoints:{snapshot:()=>({})}};
+let timing={},fail=false;
+const actor={uuid:'Actor.a',system:{strain:{value:7},heroicAbility:{active:true,secondaryEffectIds:['rot-heroic-secondary:rejuvenation']}},getFlag:()=>timing,async update(data){if(fail)throw Error('save failed');this.system.strain.value=data['system.strain.value'];timing=data['flags.genesys-vtt.heroicTiming'];}};
+const scene={id:'s',getFlag:()=> 'enc'};
+let state={status:'active',activeActorRef:'Actor.a',round:1,turnNumber:1,activeActivationId:'base'};
+const {beginTurn,turnKey}=await import('../dist/module/heroic-live-v1841.js');
+await Promise.all([beginTurn(actor,state,scene),beginTurn(actor,state,scene)]);assert.equal(actor.system.strain.value,5);
+await beginTurn(actor,state,scene);assert.equal(actor.system.strain.value,5);
+state={...state,round:2,turnNumber:2};fail=true;await assert.rejects(beginTurn(actor,state,scene),/save failed/);fail=false;await beginTurn(actor,state,scene);assert.equal(actor.system.strain.value,3);
+state={...state,round:1,turnNumber:1};await beginTurn(actor,state,scene);assert.equal(actor.system.strain.value,3,'rewind cannot heal twice');
+state={...state,round:3,turnNumber:3};timing.skipTurn=turnKey(state,scene);await beginTurn(actor,state,scene);assert.equal(actor.system.strain.value,3,'activation in own turn must not heal for past start');
+state={...state,round:4,turnNumber:4};actor.system.strain.value=1;await beginTurn(actor,state,scene);assert.equal(actor.system.strain.value,0);
+actor.system.strain.value=5;actor.system.heroicAbility.active=false;state.turnNumber++;await beginTurn(actor,state,scene);assert.equal(actor.system.strain.value,5);
+actor.system.heroicAbility.active=true;game.user.isGM=false;await beginTurn(actor,state,scene);assert.equal(actor.system.strain.value,5);
+console.log('PASS: owner turn recovery, duplicate/concurrent calls, rewind, mid-turn activation, failed saves, floor and authority');

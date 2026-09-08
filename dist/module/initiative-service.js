@@ -163,6 +163,7 @@ export async function writeSceneInitiativeState(state, scene = activeScene()) {
         scene.flags[SYSTEM_ID] ??= {};
         scene.flags[SYSTEM_ID][FLAG_KEY] = normalized;
     }
+    if (normalized.activeActorRef) await game.genesysHeroicLive?.beginTurn?.(resolveInitiativeActorReference(normalized.activeActorRef), normalized, scene);
     await rerenderAllRenderedCharacterSheets();
     notifyStateListeners();
     return normalized;
