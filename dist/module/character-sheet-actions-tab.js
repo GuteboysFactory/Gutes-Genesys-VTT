@@ -1,3 +1,4 @@
+import {listActionTemplateSources,resolveActionTemplateSource} from './action-template-sources.js';
 const SYSTEM_ID = "genesys-vtt";
 const CUSTOM_ACTIONS_FLAG = "customActions";
 
@@ -419,8 +420,8 @@ document.addEventListener("click", async (event) => {
     if(library){
         event.preventDefault();const root=library.closest('[data-genesys-sheet-tabs]'),actor=actorForRoot(root);
         try{
-            const entries=Array.from(game.items.contents).filter(i=>i.type==='actionTemplate'&&(game.user.isGM||i.testUserPermission(game.user,'OBSERVER')));
-            const choice=await foundry.applications.api.DialogV2.wait({window:{title:'Action Library'},content:`<p>Choose a world Action Template. Adding creates an independent character action.</p><select name="template">${entries.map(i=>`<option value="${esc(i.id)}">${esc(i.name)}</option>`).join('')}</select>`,buttons:[{action:'add',label:'Add to character',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'add'})},{action:'source',label:'Open source',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'source'})},...(game.user.isGM?[{action:'new',label:'Create template',callback:()=>({kind:'new'})}]:[])],rejectClose:false});
+            const entries=await listActionTemplateSources();
+            const choice=await foundry.applications.api.DialogV2.wait({window:{title:'Action Library'},content:`<p>Choose a world or Compendium Action Template. Adding creates an independent character action.</p><select name="template">${entries.map(i=>`<option value="${esc(i.key)}">${esc(i.label)}</option>`).join('')}</select>`,buttons:[{action:'add',label:'Add to character',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'add'})},{action:'source',label:'Open source',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'source'})},...(game.user.isGM?[{action:'new',label:'Create template',callback:()=>({kind:'new'})}]:[])],rejectClose:false});
             if(!choice)return;
             if(choice.kind==='new'){
                 if(!game.user.isGM)throw Error('GM required.');
@@ -428,8 +429,7 @@ document.addEventListener("click", async (event) => {
                 if(!folder)folder=await foundry.documents.Folder.create({name:'Actions',type:'Item',folder:null});
                 const item=await foundry.documents.Item.create({name:'New Action',type:'actionTemplate',folder:folder.id,ownership:{default:0}});await item.sheet.render(true);return;
             }
-            const item=game.items.get(choice.id);
-            if(!item||item.type!=='actionTemplate'||!(game.user.isGM||item.testUserPermission(game.user,'OBSERVER')))throw Error('Template unavailable.');
+            const item=await resolveActionTemplateSource(entries.find(row=>row.key===choice.id));
             if(choice.kind==='source'){await item.sheet.render(true);return;}
             if(!actor || !(game.user.isGM||actor.isOwner))throw Error('Character ownership required.');
             await writeCustomActions(actor,[...customActions(actor),normalizeCustomAction({...item.system,name:item.name,id:actionId()})]);rebuildActionsPanel(root);

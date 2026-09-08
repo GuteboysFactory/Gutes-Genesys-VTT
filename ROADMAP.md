@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1874** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1875** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -415,3 +415,7 @@ User confirms v1872 equipment installation working. Equipment Library explicitly
 ## Native Action Templates — v0.0.1874
 
 User confirms equipment Compendiums working. New native actionTemplate Item with activation, skill ID, difficulty and notes. Actions → Action Library lists observable world templates; GM creates in Actions folder. Add copies into existing actor customActions runtime. Sources and actor copies are independent. Compendium Actions, built-in action materialization, Heroic representation and Tome verification remain pending. Live QA pending.
+
+## Compendium Actions — v0.0.1875
+
+User confirms v1874. Action Library reads visible Item Compendiums on opening and re-resolves source before use. Existing actor-copy workflow preserved. Built-in Assist/Maneuver/Custom Check are informational cards, not executable templates: rule-backed materialization remains pending. Live QA pending.
