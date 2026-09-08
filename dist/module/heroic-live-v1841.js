@@ -19,11 +19,14 @@ export async function activate(actor) {
       const prepared = game.genesysHeroic.prepareActivation(before, pools, rules);
       const scene = canvas.scene;
       const state = game.genesysVtt.initiative.sceneState(scene);
-      return { ability: prepared.nextAbility, pools: prepared.storyPointTransaction.after,
+      const rejuvenation = before.secondaryEffectIds.includes('rot-heroic-secondary:rejuvenation');
+      const strainBefore = Number(actor.system?.strain?.value);
+      if (rejuvenation && (!Number.isFinite(strainBefore) || strainBefore < 0)) throw new Error('Invalid Strain value.');
+      return { ...(rejuvenation ? { strainAfter: Math.max(0,strainBefore-2), strainRecovered:Math.min(2,strainBefore) } : {}), ability: prepared.nextAbility, pools: prepared.storyPointTransaction.after,
         timing: { skipTurn: state.status === 'active' && state.activeActorRef === actor.uuid ? turnKey(state,scene) : '', lastTurn: '', sceneId: scene?.id ?? '' }, cost: before.storyPointCost };
     });
     const secondaryLabels = game.genesysHeroic.secondaryOptions?.(actor)?.filter(row => proposal.ability.secondaryEffectIds.includes(row.id)).map(row => row.description ? `${row.label}: ${row.description}` : row.label).join('; ') || proposal.ability.secondaryEffectIds.join(', ');
-    try { await foundry.documents.ChatMessage.create({ speaker: { alias: actor.name }, content: `<p><strong>Heroic Ability Activated</strong> · ${esc(proposal.ability.name || proposal.ability.primaryEffectLabel)}</p><p>${proposal.cost} Story Points · Usage ${proposal.ability.usesThisSession} · Until the end of the next owner turn (${proposal.ability.activeTurnBudget} turn budget).</p>${secondaryLabels ? `<p>Secondary Effects: ${esc(secondaryLabels)}</p>` : ''}<p>Apply the ability's narrative/mechanical effect with the GM.</p>` }); }
+    try { await foundry.documents.ChatMessage.create({ speaker: { alias: actor.name }, content: `<p><strong>Heroic Ability Activated</strong> · ${esc(proposal.ability.name || proposal.ability.primaryEffectLabel)}</p><p>${proposal.cost} Story Points · Usage ${proposal.ability.usesThisSession} · Until the end of the next owner turn (${proposal.ability.activeTurnBudget} turn budget).</p>${secondaryLabels ? `<p>Secondary Effects: ${esc(secondaryLabels)}</p>` : ''}${proposal.strainAfter !== undefined ? `<p>Rejuvenation: recovered ${proposal.strainRecovered} Strain on activation. Recover 2 Strain manually at each owner turn start while active.</p>` : ''}<p>Apply remaining narrative/mechanical effects with the GM.</p>` }); }
     catch { ui.notifications.warn('Heroic activation saved; chat announcement failed.'); }
     return proposal;
   } finally { locks.delete(actor.uuid); }

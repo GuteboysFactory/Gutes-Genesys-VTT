@@ -128,10 +128,10 @@ export function transactHeroic(actor, prepare) {
     const current = getStoryPointState();
     if (current.heroicPending) throw new Error("An interrupted Heroic activation must be recovered first.");
     const proposal = prepare(clone(current));
-    const pending = { actorRef: actor.uuid, beforeAbility: clone(actor.system.heroicAbility), beforeTiming: clone(actor.getFlag(SYSTEM_ID, "heroicTiming") ?? {}), id: foundry.utils.randomID() };
+    const pending = { ...(proposal.strainAfter !== undefined ? { beforeStrain: actor.system.strain.value } : {}), actorRef: actor.uuid, beforeAbility: clone(actor.system.heroicAbility), beforeTiming: clone(actor.getFlag(SYSTEM_ID, "heroicTiming") ?? {}), id: foundry.utils.randomID() };
     await game.settings.set(SYSTEM_ID, SETTING_KEY, { ...current, heroicPending: pending });
     try {
-      await actor.update({ "system.heroicAbility": proposal.ability, [`flags.${SYSTEM_ID}.heroicTiming`]: proposal.timing });
+      await actor.update({ ...(proposal.strainAfter !== undefined ? {"system.strain.value": proposal.strainAfter} : {}), "system.heroicAbility": proposal.ability, [`flags.${SYSTEM_ID}.heroicTiming`]: proposal.timing });
       const entry = historyEntry("heroic", "player", { player: current.player, gm: current.gm }, proposal.pools, "Heroic Ability activated");
       const next = { ...proposal.pools, revision: current.revision + 1, history: [entry, ...current.history].slice(0, HISTORY_LIMIT) };
       await game.settings.set(SYSTEM_ID, SETTING_KEY, next);
@@ -140,7 +140,7 @@ export function transactHeroic(actor, prepare) {
     } catch (error) {
       // Restore actor first. Keep the journal if restoration fails, blocking further pool writes.
       try {
-        await actor.update({ "system.heroicAbility": pending.beforeAbility, [`flags.${SYSTEM_ID}.heroicTiming`]: pending.beforeTiming });
+        await actor.update({ ...(pending.beforeStrain !== undefined ? {"system.strain.value": pending.beforeStrain} : {}), "system.heroicAbility": pending.beforeAbility, [`flags.${SYSTEM_ID}.heroicTiming`]: pending.beforeTiming });
         await game.settings.set(SYSTEM_ID, SETTING_KEY, current);
       } catch { throw new Error("Heroic save was interrupted. Use Recover Interrupted Activation in GM Dock before continuing."); }
       throw error;
@@ -155,7 +155,7 @@ export function recoverHeroicTransaction() {
     if (!pending) return false;
     const actor = await fromUuid(pending.actorRef);
     if (!actor) throw new Error("Interrupted Heroic actor is unavailable; restore that actor before recovery.");
-    await actor.update({ "system.heroicAbility": pending.beforeAbility, [`flags.${SYSTEM_ID}.heroicTiming`]: pending.beforeTiming });
+    await actor.update({ ...(pending.beforeStrain !== undefined ? {"system.strain.value": pending.beforeStrain} : {}), "system.heroicAbility": pending.beforeAbility, [`flags.${SYSTEM_ID}.heroicTiming`]: pending.beforeTiming });
     delete current.heroicPending;
     await game.settings.set(SYSTEM_ID, SETTING_KEY, current);
     Hooks.callAll("genesysStoryPointsChanged", clone(current), null);

@@ -8,6 +8,7 @@ const rules = { storyPointCost:2, baseDurationTurns:1, baseUsesPerSession:1 };
 let actor = { id:'a', uuid:'Actor.a', name:'Hero', isOwner:true, system: { role:'pc', heroicAbility: domain.createHeroicAbilityState({ id:'heroic',label:'Heroic' },{},rules) }, timing:{}, getFlag() { return this.timing; }, async update(data) {
  if (failActor) { failActor=false; throw Error('actor failed'); }
  if (failRollback) throw Error('rollback failed');
+ if(data['system.strain.value'] !== undefined) this.system.strain.value=data['system.strain.value'];
  this.system.heroicAbility=structuredClone(data['system.heroicAbility']); this.timing=structuredClone(data['flags.genesys-vtt.heroicTiming']);
 } };
 const initial=structuredClone(actor.system.heroicAbility);
@@ -39,5 +40,9 @@ reset();pool.heroicPending={actorRef:actor.uuid,beforeAbility:structuredClone(in
 await assert.rejects(points.spendStoryPoint('player'),/interrupted/);
 await points.recoverHeroicTransaction();assert.equal(actor.system.heroicAbility.active,false);assert.ok(!pool.heroicPending);assert.equal(pool.player,2);
 reset();state={...state,activeActorRef:'Actor.other'};await live.activate(actor);state={...state,activeActorRef:actor.uuid};await live.finishTurn(actor,state,scene);assert.equal(actor.system.heroicAbility.active,false,'out-of-turn activation expires after next own completion');
+reset();actor.system.strain={value:5};actor.system.heroicAbility.secondaryEffectIds=['rot-heroic-secondary:rejuvenation'];
+failFinal=true;await assert.rejects(live.activate(actor),/pool failed/);assert.equal(actor.system.strain.value,5,'failed activation restores strain');
+await live.activate(actor);assert.equal(actor.system.strain.value,3);
+reset();actor.system.strain.value=1;actor.system.heroicAbility.secondaryEffectIds=['rot-heroic-secondary:rejuvenation'];await live.activate(actor);assert.equal(actor.system.strain.value,0);
 game.user.isGM=false;await assert.rejects(live.activate(actor),/active GM/);
 console.log('PASS: Heroic coordinated saves, rollback, interrupted journal recovery, insufficient points, uses and next-owner-turn duration');
