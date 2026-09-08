@@ -28,9 +28,15 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Position persistence per client
 - Launcher removed from Actor Directory
 
-### v0.0.1832–v0.0.1835 — GM Dock Live Tools
+### v0.0.1832 — Story Points Live
 
-- Story Point controls and history
+- Synchronized player and GM pools
+- Atomic one-point transfers with serialized writes
+- GM corrections, activity history and chat announcements
+- Smooth requestAnimationFrame launcher dragging
+
+### v0.0.1833–v0.0.1835 — Remaining GM Dock Live Tools
+
 - Party XP awards, notes and audit trail
 - Session controls, reminders and recovery helpers
 - Encounter shortcuts and GM-facing status indicators

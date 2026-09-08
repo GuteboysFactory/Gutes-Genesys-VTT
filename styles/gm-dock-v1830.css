@@ -276,6 +276,47 @@
   touch-action: none;
 }
 
+.genesys-gm-dock-launcher-v1831.is-dragging {
+  cursor: grabbing;
+  will-change: transform;
+  pointer-events: auto;
+}
+
+.genesys-story-point-pools-v1832 {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr);
+  align-items: stretch;
+  gap: 8px;
+}
+
+.genesys-story-point-pools-v1832 article {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 5px 8px;
+  padding: 10px;
+  border: 1px solid rgba(104, 72, 32, .35);
+  background: rgba(255, 255, 255, .18);
+}
+
+.genesys-story-point-pools-v1832 article > small { color: #72552f; font-size: .6rem; font-weight: 800; letter-spacing: .08em; }
+.genesys-story-point-pools-v1832 article > strong { grid-row: span 2; color: #624516; font: 700 2.15rem Georgia, serif; line-height: 1; }
+.genesys-story-point-pools-v1832 article > div { display: flex; gap: 4px; }
+.genesys-story-point-pools-v1832 article > div button { width: 32px; min-height: 27px; padding: 0; }
+.genesys-story-point-pools-v1832 article > button { grid-column: 1 / -1; }
+.genesys-story-point-pools-v1832 article.is-player { border-left: 4px solid #397255; }
+.genesys-story-point-pools-v1832 article.is-gm { border-left: 4px solid #8b6428; }
+
+.genesys-story-point-transfer-v1832 { display: grid; place-content: center; gap: 4px; color: #755526; text-align: center; }
+.genesys-story-point-transfer-v1832 i { font-size: 1.15rem; }
+.genesys-story-point-transfer-v1832 small { font-size: .5rem; font-weight: 800; line-height: 1.2; }
+
+.genesys-story-point-history-v1832 { display: grid; gap: 4px; }
+.genesys-story-point-history-v1832 > small { color: #795c35; font-size: .58rem; font-weight: 800; letter-spacing: .08em; }
+.genesys-story-point-history-v1832 > div { display: grid; grid-template-columns: 40px 1fr auto; gap: 6px; align-items: center; padding: 5px 7px; background: rgba(84, 59, 28, .08); font-size: .61rem; }
+.genesys-story-point-history-v1832 > div span,
+.genesys-story-point-history-v1832 > div small { color: #725f45; }
+.genesys-story-point-history-v1832 > p { color: #725f45; font-size: .67rem; }
+
 .genesys-gm-dock-launcher-v1831:hover { border-color: #efbd43; background: linear-gradient(180deg, #1e4052, #10242f); }
 .genesys-gm-dock-launcher-v1831.is-dragging { cursor: grabbing; }
 .genesys-gm-dock-launcher-v1831 .fa-grip-lines { margin-left: auto; color: #8c7a53; font-size: .62rem; }
@@ -297,4 +338,8 @@
   .genesys-gm-dock-actor-list-v1830,
   .genesys-gm-dock-button-row-v1830 { grid-template-columns: 1fr; }
   .genesys-gm-dock-panel-v1830 > header { align-items: flex-start; flex-direction: column; }
+  .genesys-story-point-pools-v1832 { grid-template-columns: 1fr; }
+  .genesys-story-point-transfer-v1832 { grid-template-columns: auto auto; }
+  .genesys-story-point-history-v1832 > div { grid-template-columns: 36px 1fr; }
+  .genesys-story-point-history-v1832 > div small { grid-column: 2; }
 }

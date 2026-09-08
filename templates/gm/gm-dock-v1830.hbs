@@ -37,17 +37,35 @@
       <div class="genesys-gm-dock-panel-body-v1830">
         <div class="genesys-gm-dock-state-v1830"><span>Current world</span><strong>{{worldName}}</strong></div>
         <div class="genesys-gm-dock-state-v1830"><span>Connected users</span><strong>{{connectedUserCount}}</strong></div>
-        <p>Session start/reset and once-per-session recovery will arrive after the shared Story Point service.</p>
+        <p>Session start/reset and once-per-session recovery will arrive in the dedicated Session lifecycle step.</p>
         <button type="button" data-action="unavailable" data-feature="Session controls">Session Controls · Upcoming</button>
       </div>
     </section>
 
     <section id="genesys-gm-story" class="genesys-gm-dock-panel-v1830">
-      <header><div><small>SHARED RESOURCE</small><h2><i class="fa-solid fa-star"></i> Story Points</h2></div><span class="is-next">NEXT · 1832</span></header>
+      <header><div><small>SHARED RESOURCE</small><h2><i class="fa-solid fa-star"></i> Story Points</h2></div><span class="is-ready">LIVE · R{{storyPoints.revision}}</span></header>
       <div class="genesys-gm-dock-panel-body-v1830">
-        <div class="genesys-gm-dock-readiness-v1830 {{#if storyPointFoundationReady}}is-ready{{/if}}"><i class="fa-solid fa-code-branch"></i><span><strong>Rules foundation</strong><small>{{#if storyPointFoundationReady}}Ready for live state integration{{else}}Not available{{/if}}</small></span></div>
-        <p>The Dock shell does not mutate Story Points yet. v0.0.1832 adds synchronized player/GM pools and atomic transfers.</p>
-        <button type="button" data-action="unavailable" data-feature="Story Point control">Story Point Control · Upcoming</button>
+        <div class="genesys-story-point-pools-v1832">
+          <article class="is-player">
+            <small>PLAYER POOL</small><strong>{{storyPoints.player}}</strong>
+            <div><button type="button" data-action="adjustStoryPoint" data-side="player" data-delta="-1" title="Correct player pool down">−</button><button type="button" data-action="adjustStoryPoint" data-side="player" data-delta="1" title="Correct player pool up">+</button></div>
+            <button type="button" class="genesys-gm-dock-primary-v1830" data-action="spendStoryPoint" data-side="player" {{#unless storyPoints.player}}disabled{{/unless}}>Spend → GM</button>
+          </article>
+          <div class="genesys-story-point-transfer-v1832"><i class="fa-solid fa-right-left"></i><small>SPENT POINTS<br />CHANGE SIDES</small></div>
+          <article class="is-gm">
+            <small>GM POOL</small><strong>{{storyPoints.gm}}</strong>
+            <div><button type="button" data-action="adjustStoryPoint" data-side="gm" data-delta="-1" title="Correct GM pool down">−</button><button type="button" data-action="adjustStoryPoint" data-side="gm" data-delta="1" title="Correct GM pool up">+</button></div>
+            <button type="button" class="genesys-gm-dock-primary-v1830" data-action="spendStoryPoint" data-side="gm" {{#unless storyPoints.gm}}disabled{{/unless}}>Spend → Players</button>
+          </article>
+        </div>
+        <div class="genesys-story-point-history-v1832">
+          <small>RECENT ACTIVITY</small>
+          {{#each storyPointHistory}}
+            <div><span>{{timeLabel}}</span><strong>{{label}}</strong><small>P {{before.player}}→{{after.player}} · GM {{before.gm}}→{{after.gm}}</small></div>
+          {{else}}
+            <p>No Story Point activity yet. Use +/− to establish the opening pools.</p>
+          {{/each}}
+        </div>
       </div>
     </section>
 

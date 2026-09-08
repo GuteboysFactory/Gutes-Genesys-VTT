@@ -5,7 +5,7 @@ const manifest = JSON.parse(fs.readFileSync("system.json", "utf8"));
 const runtime = fs.readFileSync("dist/module/apps/gm-dock-v1830.js", "utf8");
 const css = fs.readFileSync("styles/gm-dock-v1830.css", "utf8");
 
-assert.equal(manifest.version, "0.0.1831");
+assert.ok(Number(manifest.version.split(".").at(-1)) >= 1831);
 assert.match(runtime, /gmDockLauncherPosition/);
 assert.match(runtime, /scope:\s*"client"/);
 assert.match(runtime, /installGmDockLauncher/);

@@ -5,6 +5,7 @@ const LAUNCHER_POSITION_SETTING = "gmDockLauncherPosition";
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 let gmDockApp = null;
 let gmDockLauncher = null;
+let storyPointActionPending = false;
 
 function integer(value, fallback = 0) {
   const number = Number(value ?? fallback);
@@ -89,6 +90,8 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       openActors: this.#openActors,
       openCharacterCreator: this.#openCharacterCreator,
       openActor: this.#openActor,
+      spendStoryPoint: this.#spendStoryPoint,
+      adjustStoryPoint: this.#adjustStoryPoint,
       refresh: this.#refresh,
       unavailable: this.#unavailable
     }
@@ -106,6 +109,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     const pcs = actors.filter((actor) => actor.isPc);
     const npcs = actors.filter((actor) => !actor.isPc);
     const totalAvailableXp = pcs.reduce((sum, actor) => sum + actor.xp.available, 0);
+    const storyPoints = game?.genesysStoryPoints?.snapshot?.() ?? { player: 0, gm: 0, revision: 0, history: [] };
 
     return {
       ...context,
@@ -118,12 +122,17 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       pcCount: pcs.length,
       npcCount: npcs.length,
       totalAvailableXp,
+      storyPoints,
+      storyPointHistory: Array.from(storyPoints.history ?? []).slice(0, 8).map((entry) => ({
+        ...entry,
+        timeLabel: entry.timestamp ? new Date(entry.timestamp).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "—"
+      })),
       actors,
       pcs,
       recentActors: actors.slice(0, 8),
       encounter: encounterSummary(),
       advancementReady: Boolean(game?.genesysAdvancement),
-      storyPointFoundationReady: Boolean(game?.genesysVtt?.storyPoints),
+      storyPointFoundationReady: Boolean(game?.genesysStoryPoints),
       characterCreatorReady: Boolean(game?.genesysCharacterCreator),
       encounterReady: Boolean(game?.genesysVtt?.encounter?.open)
     };
@@ -167,6 +176,35 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     const actor = game?.actors?.get?.(actorId);
     if (!actor) return ui?.notifications?.warn?.("That Actor is no longer available.");
     actor.sheet?.render?.(true);
+  }
+
+  static async #spendStoryPoint(_event, target) {
+    if (!requireGm() || storyPointActionPending) return;
+    const side = target?.dataset?.side === "gm" ? "gm" : "player";
+    storyPointActionPending = true;
+    try {
+      await game?.genesysStoryPoints?.spend?.(side);
+    } catch (error) {
+      ui?.notifications?.warn?.(error?.message ?? "Story Point transfer failed.");
+    } finally {
+      storyPointActionPending = false;
+      if (gmDockApp?.rendered) await gmDockApp.render({ force: true });
+    }
+  }
+
+  static async #adjustStoryPoint(_event, target) {
+    if (!requireGm() || storyPointActionPending) return;
+    const side = target?.dataset?.side === "gm" ? "gm" : "player";
+    const delta = Number(target?.dataset?.delta ?? 0);
+    storyPointActionPending = true;
+    try {
+      await game?.genesysStoryPoints?.adjust?.(side, delta);
+    } catch (error) {
+      ui?.notifications?.warn?.(error?.message ?? "Story Point adjustment failed.");
+    } finally {
+      storyPointActionPending = false;
+      if (gmDockApp?.rendered) await gmDockApp.render({ force: true });
+    }
   }
 
   static async #refresh() {
@@ -231,9 +269,15 @@ function installGmDockLauncher() {
   applyLauncherPosition(game.settings.get(SYSTEM_ID, LAUNCHER_POSITION_SETTING));
 
   let drag = null;
+  let dragFrame = 0;
+  const paintDrag = () => {
+    dragFrame = 0;
+    if (!drag) return;
+    launcher.style.transform = `translate3d(${drag.dx}px, ${drag.dy}px, 0)`;
+  };
   launcher.addEventListener("pointerdown", (event) => {
     if (event.button !== 0) return;
-    drag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, left: Number.parseFloat(launcher.style.left) || 12, top: Number.parseFloat(launcher.style.top) || 520, moved: false };
+    drag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, left: Number.parseFloat(launcher.style.left) || 12, top: Number.parseFloat(launcher.style.top) || 520, dx: 0, dy: 0, moved: false };
     launcher.setPointerCapture?.(event.pointerId);
     launcher.classList.add("is-dragging");
   });
@@ -242,19 +286,31 @@ function installGmDockLauncher() {
     const dx = event.clientX - drag.startX;
     const dy = event.clientY - drag.startY;
     if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
-    applyLauncherPosition({ left: drag.left + dx, top: drag.top + dy });
+    const next = clampLauncherPosition({ left: drag.left + dx, top: drag.top + dy });
+    drag.dx = next.left - drag.left;
+    drag.dy = next.top - drag.top;
+    if (!dragFrame) dragFrame = requestAnimationFrame(paintDrag);
+    event.preventDefault();
   });
   launcher.addEventListener("pointerup", (event) => {
     if (!drag || drag.pointerId !== event.pointerId) return;
     const moved = drag.moved;
+    const position = { left: drag.left + drag.dx, top: drag.top + drag.dy };
+    if (dragFrame) cancelAnimationFrame(dragFrame);
+    dragFrame = 0;
     drag = null;
+    launcher.style.transform = "none";
+    applyLauncherPosition(position);
     launcher.classList.remove("is-dragging");
     launcher.releasePointerCapture?.(event.pointerId);
     if (moved) void saveLauncherPosition();
     else openGmDock();
   });
   launcher.addEventListener("pointercancel", () => {
+    if (dragFrame) cancelAnimationFrame(dragFrame);
+    dragFrame = 0;
     drag = null;
+    launcher.style.transform = "none";
     launcher.classList.remove("is-dragging");
     void saveLauncherPosition();
   });
@@ -269,6 +325,7 @@ Hooks.on("createActor", refreshOpenDock);
 Hooks.on("deleteActor", refreshOpenDock);
 Hooks.on("updateScene", refreshOpenDock);
 Hooks.on("updateUser", refreshOpenDock);
+Hooks.on("genesysStoryPointsChanged", refreshOpenDock);
 
 Hooks.once("init", () => {
   game.settings.register(SYSTEM_ID, LAUNCHER_POSITION_SETTING, {
