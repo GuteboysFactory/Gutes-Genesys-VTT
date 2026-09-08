@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1864** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1865** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -360,3 +360,12 @@ Acceptance checks: Library → native Item → Tome; Foundry-created Item → Li
 ## Delivery rule
 
 Future Heroic work is delivered as a consolidated package, as requested by the user. Every delivery must include a version bump, focused automated tests, a manual QA protocol, regression against accepted encounter modes, and publication to `qa` under the established user-authorized build/test/publish workflow.
+
+
+## Terrinoth Adversary Library – v0.0.1865
+
+- 101 native Actor-mallar: 79 Terrinoth + 22 egna vardags-NPC:er.
+- Sökning, roll-/kategori-/källfilter, egna mallar och world Actors i samma bibliotek.
+- Lokal bilddrop och filväljare, bildförhandsvisning, kopiering till ny Actor och Actor-mapp/ny undermapp.
+- Native vapen/skills/Minion-grupper och Parry; övriga särskilda effekter dokumenterade för manuell GM-hantering.
+- 49 testfiler passerar. Live-QA återstår. Detaljer och källavvikelser: `docs/TERRINOTH_FORGE_PLAN.md`.

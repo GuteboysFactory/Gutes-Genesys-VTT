@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1864 \u2014 Adversary Forge creation workflow.",
-  "version": "0.0.1864",
+  "description": "Genesys VTT 0.0.1865 \u2014 Adversary Library, 101 templates and local portraits.",
+  "version": "0.0.1865",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -73,7 +73,8 @@
     "dist/module/session-service-v1834.js",
     "dist/module/recovery-service-v1837.js",
     "dist/module/encounter-recovery-v1838.js",
-    "dist/module/heroic-live-v1841.js"
+    "dist/module/heroic-live-v1841.js",
+    "dist/module/adversary-library.js"
   ],
   "styles": [
     "styles/genesys.css",
@@ -115,7 +116,8 @@
     "styles/magic-effect-runtime-v1810.css",
     "styles/character-sheet-responsive-v1823.css",
     "styles/encounter-tracker-overhaul-v1824.css",
-    "styles/gm-dock-v1830.css"
+    "styles/gm-dock-v1830.css",
+    "styles/adversary-library.css"
   ],
   "languages": [
     {

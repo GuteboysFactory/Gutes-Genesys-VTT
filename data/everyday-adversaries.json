@@ -1,0 +1,1789 @@
+[
+  {
+    "_id": "ff672c4cce56b4da",
+    "name": "Farmer",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "minion",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 5
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 2,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 5,
+        "casualties": 0,
+        "groupSkillIds": [
+          "athletics",
+          "resilience"
+        ]
+      },
+      "skills": [
+        {
+          "id": "athletics",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:farmer"
+        },
+        {
+          "id": "resilience",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:farmer"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:farmer",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "bonde lantbrukare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "51d627830ace91b2",
+    "name": "Villager",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "minion",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 4
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 2,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 4,
+        "casualties": 0,
+        "groupSkillIds": [
+          "cool"
+        ]
+      },
+      "skills": [
+        {
+          "id": "cool",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:villager"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:villager",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "bybo civil",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "e3e09488ca99d50d",
+    "name": "Laborer",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "minion",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 1,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 1
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 6
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 3,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 6,
+        "casualties": 0,
+        "groupSkillIds": [
+          "athletics",
+          "resilience"
+        ]
+      },
+      "skills": [
+        {
+          "id": "athletics",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:laborer"
+        },
+        {
+          "id": "resilience",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:laborer"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:laborer",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "arbetare hamnarbetare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "75939690740c4e0b",
+    "name": "Merchant",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 3
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 10
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 2,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 10,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "negotiation",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:merchant"
+        },
+        {
+          "id": "deception",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:merchant"
+        },
+        {
+          "id": "charm",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:merchant"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:merchant",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "handlare köpman",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "328462b625ecce52",
+    "name": "Innkeeper",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 3
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 11
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 2,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 11,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "charm",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:innkeeper"
+        },
+        {
+          "id": "negotiation",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:innkeeper"
+        },
+        {
+          "id": "perception",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:innkeeper"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:innkeeper",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "värdshusvärd krögare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "d9ed2d7c3a4bd6ba",
+    "name": "Blacksmith",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 12
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 3,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 12,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "mechanics",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:blacksmith"
+        },
+        {
+          "id": "athletics",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:blacksmith"
+        },
+        {
+          "id": "resilience",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:blacksmith"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Hammer",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-light",
+          "damage": 5,
+          "damageCharacteristic": "none",
+          "critical": 4,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:blacksmith",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "smed hantverkare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "0154f5abb75bb8d1",
+    "name": "Artisan",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 10
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 2,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 10,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "mechanics",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:artisan"
+        },
+        {
+          "id": "negotiation",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:artisan"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:artisan",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "hantverkare snickare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "e259a772346a0555",
+    "name": "Healer",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 10
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 2,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 10,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "medicine",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:healer"
+        },
+        {
+          "id": "discipline",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:healer"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:healer",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "läkare helare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "16f8da2f078f7db1",
+    "name": "Scholar",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 4,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 9
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 1,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 9,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "knowledge-lore",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:scholar"
+        },
+        {
+          "id": "knowledge-geography",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:scholar"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:scholar",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "lärd forskare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "64d27e7260161ef5",
+    "name": "Noble",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 3,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 3
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 11
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 2,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 11,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "leadership",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:noble"
+        },
+        {
+          "id": "charm",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:noble"
+        },
+        {
+          "id": "negotiation",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:noble"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:noble",
+          "origin": "Custom Genesys",
+          "category": "Townsfolk",
+          "aliases": "adelsman adelsdam",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "475947e587639403",
+    "name": "Town Guard",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "minion",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 5
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 4,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 5,
+        "casualties": 0,
+        "groupSkillIds": [
+          "melee-light",
+          "vigilance"
+        ]
+      },
+      "skills": [
+        {
+          "id": "melee-light",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:town-guard"
+        },
+        {
+          "id": "vigilance",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:town-guard"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Sword",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-light",
+          "damage": 6,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:town-guard",
+          "origin": "Custom Genesys",
+          "category": "Guards & Soldiers",
+          "aliases": "stadsvakt vakt",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "05b257fc4df4f739",
+    "name": "Militia",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "minion",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 5
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 3,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 5,
+        "casualties": 0,
+        "groupSkillIds": [
+          "melee-light"
+        ]
+      },
+      "skills": [
+        {
+          "id": "melee-light",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:militia"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Spear",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-light",
+          "damage": 5,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:militia",
+          "origin": "Custom Genesys",
+          "category": "Guards & Soldiers",
+          "aliases": "milis byvakt",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "c8f0d675d8a3c691",
+    "name": "Soldier",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "minion",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 6
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 5,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 6,
+        "casualties": 0,
+        "groupSkillIds": [
+          "melee-heavy",
+          "discipline",
+          "resilience"
+        ]
+      },
+      "skills": [
+        {
+          "id": "melee-heavy",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:soldier"
+        },
+        {
+          "id": "discipline",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:soldier"
+        },
+        {
+          "id": "resilience",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:soldier"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Greatsword",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-heavy",
+          "damage": 7,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:soldier",
+          "origin": "Custom Genesys",
+          "category": "Guards & Soldiers",
+          "aliases": "soldat infanteri",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "02295bff1f15ce86",
+    "name": "Archer",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "minion",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 5
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 3,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 5,
+        "casualties": 0,
+        "groupSkillIds": [
+          "ranged",
+          "vigilance"
+        ]
+      },
+      "skills": [
+        {
+          "id": "ranged",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:archer"
+        },
+        {
+          "id": "vigilance",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:archer"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Bow",
+        "type": "weapon",
+        "system": {
+          "skillId": "ranged",
+          "damage": 6,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "medium",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:archer",
+          "origin": "Custom Genesys",
+          "category": "Guards & Soldiers",
+          "aliases": "bågskytt",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "4a9e8b46287ce76a",
+    "name": "Scout",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 12
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 3,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 12,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "ranged",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:scout"
+        },
+        {
+          "id": "stealth",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:scout"
+        },
+        {
+          "id": "survival",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:scout"
+        },
+        {
+          "id": "perception",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:scout"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Bow",
+        "type": "weapon",
+        "system": {
+          "skillId": "ranged",
+          "damage": 6,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "medium",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:scout",
+          "origin": "Custom Genesys",
+          "category": "Guards & Soldiers",
+          "aliases": "spejare spanare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "5267f2a7eb0733f0",
+    "name": "Veteran",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 3,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 16
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 5,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 16,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "melee-light",
+          "rank": 3,
+          "career": false,
+          "sourceId": "custom:veteran"
+        },
+        {
+          "id": "discipline",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:veteran"
+        },
+        {
+          "id": "vigilance",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:veteran"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Sword",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-light",
+          "damage": 6,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:veteran",
+          "origin": "Custom Genesys",
+          "category": "Guards & Soldiers",
+          "aliases": "veteran erfaren soldat",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "e23cc955da74986b",
+    "name": "Guard Captain",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "nemesis",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 3,
+        "presence": 3
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 18
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 14
+      },
+      "soak": 5,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 1,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 18,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "melee-light",
+          "rank": 3,
+          "career": false,
+          "sourceId": "custom:guard-captain"
+        },
+        {
+          "id": "leadership",
+          "rank": 3,
+          "career": false,
+          "sourceId": "custom:guard-captain"
+        },
+        {
+          "id": "discipline",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:guard-captain"
+        },
+        {
+          "id": "vigilance",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:guard-captain"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Sword",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-light",
+          "damage": 6,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:guard-captain",
+          "origin": "Custom Genesys",
+          "category": "Guards & Soldiers",
+          "aliases": "vaktkapten befäl",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "5824ac3d73ede0fc",
+    "name": "Bandit",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "minion",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 2,
+        "intellect": 2,
+        "cunning": 2,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 5
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 3,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 5,
+        "casualties": 0,
+        "groupSkillIds": [
+          "melee-light",
+          "coercion"
+        ]
+      },
+      "skills": [
+        {
+          "id": "melee-light",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:bandit"
+        },
+        {
+          "id": "coercion",
+          "rank": 0,
+          "career": false,
+          "sourceId": "custom:bandit"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Club",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-light",
+          "damage": 4,
+          "damageCharacteristic": "none",
+          "critical": 4,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:bandit",
+          "origin": "Custom Genesys",
+          "category": "Outlaws",
+          "aliases": "bandit rövare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "cd2afa278d7be4f0",
+    "name": "Thief",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 2
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 10
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 2,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 10,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "skulduggery",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:thief"
+        },
+        {
+          "id": "stealth",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:thief"
+        },
+        {
+          "id": "deception",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:thief"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Dagger",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-light",
+          "damage": 3,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:thief",
+          "origin": "Custom Genesys",
+          "category": "Outlaws",
+          "aliases": "tjuv ficktjuv",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "a01b890f41548d3e",
+    "name": "Smuggler",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "rival",
+      "characteristics": {
+        "brawn": 2,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 2,
+        "presence": 3
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 12
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 0
+      },
+      "soak": 3,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 0,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 12,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "deception",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:smuggler"
+        },
+        {
+          "id": "negotiation",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:smuggler"
+        },
+        {
+          "id": "skulduggery",
+          "rank": 1,
+          "career": false,
+          "sourceId": "custom:smuggler"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Dagger",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-light",
+          "damage": 3,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:smuggler",
+          "origin": "Custom Genesys",
+          "category": "Outlaws",
+          "aliases": "smugglare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "e69774c299973e13",
+    "name": "Bandit Leader",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "nemesis",
+      "characteristics": {
+        "brawn": 3,
+        "agility": 3,
+        "intellect": 2,
+        "cunning": 3,
+        "willpower": 3,
+        "presence": 3
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 18
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 13
+      },
+      "soak": 4,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 1,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 18,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "melee-light",
+          "rank": 3,
+          "career": false,
+          "sourceId": "custom:bandit-leader"
+        },
+        {
+          "id": "coercion",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:bandit-leader"
+        },
+        {
+          "id": "leadership",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:bandit-leader"
+        },
+        {
+          "id": "deception",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:bandit-leader"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [
+      {
+        "name": "Sword",
+        "type": "weapon",
+        "system": {
+          "skillId": "melee-light",
+          "damage": 6,
+          "damageCharacteristic": "none",
+          "critical": 3,
+          "range": "engaged",
+          "equipped": true,
+          "qualities": []
+        }
+      }
+    ],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:bandit-leader",
+          "origin": "Custom Genesys",
+          "category": "Outlaws",
+          "aliases": "rövarhövding banditledare",
+          "revision": 1
+        }
+      }
+    }
+  },
+  {
+    "_id": "e423bf20ea58694f",
+    "name": "Court Mage",
+    "type": "character",
+    "img": "icons/svg/mystery-man.svg",
+    "system": {
+      "role": "nemesis",
+      "characteristics": {
+        "brawn": 1,
+        "agility": 2,
+        "intellect": 4,
+        "cunning": 3,
+        "willpower": 3,
+        "presence": 3
+      },
+      "wounds": {
+        "value": 0,
+        "threshold": 12
+      },
+      "strain": {
+        "value": 0,
+        "threshold": 18
+      },
+      "soak": 1,
+      "defense": {
+        "melee": 0,
+        "ranged": 0
+      },
+      "silhouette": 1,
+      "adversaryRank": 1,
+      "extraActivations": 0,
+      "minionGroup": {
+        "members": 1,
+        "memberWoundThreshold": 12,
+        "casualties": 0,
+        "groupSkillIds": []
+      },
+      "skills": [
+        {
+          "id": "arcana",
+          "rank": 3,
+          "career": false,
+          "sourceId": "custom:court-mage"
+        },
+        {
+          "id": "knowledge-lore",
+          "rank": 3,
+          "career": false,
+          "sourceId": "custom:court-mage"
+        },
+        {
+          "id": "discipline",
+          "rank": 2,
+          "career": false,
+          "sourceId": "custom:court-mage"
+        }
+      ],
+      "profile": {
+        "notes": "Original Genesys GM template. Not an official book statblock. Adjust skills, gear and abilities for the individual."
+      }
+    },
+    "items": [],
+    "flags": {
+      "genesys-vtt": {
+        "rulesProfile": "realms-of-terrinoth",
+        "adversaryTemplate": {
+          "id": "custom:court-mage",
+          "origin": "Custom Genesys",
+          "category": "Specialists",
+          "aliases": "hovmagiker magiker",
+          "revision": 1
+        }
+      }
+    }
+  }
+]

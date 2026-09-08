@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs/promises';
+import {copyAdversaryTemplate} from '../dist/domain/adversaries/templates.js';
+globalThis.__library={copyAdversaryTemplate,getActorProfileId:()=> 'realms-of-terrinoth',openAdversaryForge:()=>{},validateAdversaryImage:()=>{}};
+const source=(await fs.readFile('dist/module/adversary-library.js','utf8')).replace(/^import .*;\n/gm,'');
+let seeded=false,packCreates=0,actorCreates=0;
+globalThis.Hooks={once:()=>{}};
+globalThis.game={user:{isGM:true,id:'gm'},users:{activeGM:{id:'gm'}},packs:new Map(),settings:{get:()=>seeded,set:async(_s,_k,value)=>seeded=value}};
+globalThis.fetch=async url=>({ok:true,json:async()=>JSON.parse(await fs.readFile(url.replace('systems/genesys-vtt/',''),'utf8'))});
+globalThis.foundry={utils:{randomID:()=> 'random'},documents:{collections:{CompendiumCollection:{createCompendium:async meta=>{packCreates++;const pack={collection:'world.'+meta.name,rows:new Map(),getIndex:async()=>pack.rows};game.packs.set(pack.collection,pack);return pack;}}},Actor:{createDocuments:async(rows,{pack,keepId})=>{assert.equal(keepId,true);actorCreates+=rows.length;for(const r of rows)game.packs.get(pack).rows.set(r._id,structuredClone(r));return rows;},create:async(data,{pack})=>{game.packs.get(pack).rows.set('new',data);return data;}}}};
+const module=await import('data:text/javascript;base64,'+Buffer.from('const {copyAdversaryTemplate,getActorProfileId,openAdversaryForge,validateAdversaryImage}=globalThis.__library;\n'+source).toString('base64'));
+const [a,b]=await Promise.all([module.ensureAdversaryLibrary(),module.ensureAdversaryLibrary()]);assert.equal(a,b);assert.equal(packCreates,1);assert.equal(actorCreates,101);
+const first=[...a.rows.keys()][0];a.rows.delete(first);await module.ensureAdversaryLibrary();assert.equal(actorCreates,101,'Do not reintroduce a user-deleted template after seeding');
+const actor=[...a.rows.values()][0];const before=JSON.stringify(actor);const saved=await module.saveAdversaryTemplate(actor);assert.equal(saved._id,undefined);assert.equal(saved.flags['genesys-vtt'].adversaryTemplate.origin,'Custom Genesys');assert.equal(JSON.stringify(actor),before);assert.equal(packCreates,2);
+game.user.isGM=false;await assert.rejects(module.ensureAdversaryLibrary(),/GM/);await assert.rejects(module.saveAdversaryTemplate(actor),/GM/);
+console.log('PASS: concurrent one-time native compendium installation, source deletion retained, independent custom templates and GM authority');

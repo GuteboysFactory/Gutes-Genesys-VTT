@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {validateAdversaryImage,uploadAdversaryImage} from '../dist/module/adversary-art.js';
+assert.throws(()=>validateAdversaryImage({type:'text/html',size:10}),/PNG/);
+assert.throws(()=>validateAdversaryImage({type:'image/png',size:21*1024*1024}),/20 MB/);
+let uploaded=0,decoded=0;
+globalThis.createImageBitmap=async()=>{decoded++;return {close(){}};};
+globalThis.foundry={utils:{randomID:()=> 'unique'},applications:{apps:{FilePicker:{implementation:{browse:async()=>{},upload:async(_source,_dir,file)=>{uploaded++;assert.ok(file.name.endsWith('.png'));return {path:'genesys-adversaries/safe.png'};}}}}}};
+const file=new File(['test'],'unsafe name.png',{type:'image/png'});
+assert.equal(await uploadAdversaryImage(file),'genesys-adversaries/safe.png');assert.equal(decoded,1);assert.equal(uploaded,1);
+globalThis.createImageBitmap=async()=>{throw Error('invalid image');};await assert.rejects(uploadAdversaryImage(file),/invalid image/);assert.equal(uploaded,1,'Do not upload undecodable image data');
+console.log('PASS: image type/size/decode validation and upload result');

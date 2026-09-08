@@ -199,6 +199,9 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
 
   async _onRender(context, options) {
     await super._onRender(context, options);
+    const forge=this.element.querySelector('#genesys-gm-forge');
+    forge?.addEventListener('dragover',event=>{event.preventDefault();});
+    forge?.addEventListener('drop',event=>{event.preventDefault();event.stopPropagation();if(!requireDockWriter())return;const file=event.dataTransfer?.files?.[0];if(file)void import('../adversary-library.js').then(m=>m.openAdversaryLibrary({file})).catch(e=>ui.notifications.warn(e.message));});
     if (!context.dockWriter) {
       const mutations = ["spendStoryPoint", "adjustStoryPoint", "awardPartyXp", "sessionControl", "applyNightRest", "recoverEncounterStrain", "addEncounterTokens", "resetHeroicSession", "activateHeroic", "heroicEffect", "recoverHeroic"];
       for (const action of mutations) for (const button of this.element.querySelectorAll(`[data-action="${action}"]`)) button.disabled = true;
@@ -276,7 +279,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
 
   static async #openAdversaryForge() {
     if (!requireDockWriter()) return;
-    try { await (await import('../adversary-forge.js')).openAdversaryForge(); }
+    try { await (await import('../adversary-library.js')).openAdversaryLibrary(); }
     catch(error) { ui.notifications.warn(error.message); }
   }
 

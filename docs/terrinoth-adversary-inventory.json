@@ -1,0 +1,560 @@
+{
+  "source": "Realms of Terrinoth, supplied PDF",
+  "pageConvention": "1-based PDF page",
+  "status": "Implemented as native Actor templates; special abilities/spells remain manual references except supported mechanics. Live QA pending.",
+  "entries": [
+    {
+      "id": "rot:beast-of-burden",
+      "name": "Beast Of Burden",
+      "role": "minion",
+      "pdfPage": 105,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:flying-mount",
+      "name": "Flying Mount",
+      "role": "rival",
+      "pdfPage": 105,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:riding-beast",
+      "name": "Riding Beast",
+      "role": "minion",
+      "pdfPage": 105,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:war-mount",
+      "name": "War Mount",
+      "role": "rival",
+      "pdfPage": 106,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:baronial-knight",
+      "name": "Baronial Knight",
+      "role": "rival",
+      "pdfPage": 151,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:dragon-hybrid",
+      "name": "Dragon Hybrid",
+      "role": "rival",
+      "pdfPage": 152,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:feral-dragon",
+      "name": "Feral Dragon",
+      "role": "nemesis",
+      "pdfPage": 153,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:goblin",
+      "name": "Goblin",
+      "role": "minion",
+      "pdfPage": 153,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:goblin-witcher",
+      "name": "Goblin Witcher",
+      "role": "rival",
+      "pdfPage": 153,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:greyhaven-wizard",
+      "name": "Greyhaven Wizard",
+      "role": "nemesis",
+      "pdfPage": 154,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:ironbound",
+      "name": "Ironbound",
+      "role": "rival",
+      "pdfPage": 154,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:priest-of-kellos",
+      "name": "Priest Of Kellos",
+      "role": "rival",
+      "pdfPage": 155,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:rune-golem",
+      "name": "Rune Golem",
+      "role": "nemesis",
+      "pdfPage": 155,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:splig-king-of-all-goblins",
+      "name": "Splig, King Of All Goblins",
+      "role": "nemesis",
+      "pdfPage": 155,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:tamalir-guildmaster",
+      "name": "Tamalir Guildmaster",
+      "role": "rival",
+      "pdfPage": 156,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:barghest",
+      "name": "Barghest",
+      "role": "rival",
+      "pdfPage": 164,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:death-knight",
+      "name": "Death Knight",
+      "role": "nemesis",
+      "pdfPage": 165,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:ferrox",
+      "name": "Ferrox",
+      "role": "rival",
+      "pdfPage": 166,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:lord-of-bilehall",
+      "name": "Lord Of Bilehall",
+      "role": "nemesis",
+      "pdfPage": 166,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:necromancer",
+      "name": "Necromancer",
+      "role": "nemesis",
+      "pdfPage": 167,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:reanimate",
+      "name": "Reanimate",
+      "role": "minion",
+      "pdfPage": 167,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:wraith",
+      "name": "Wraith",
+      "role": "rival",
+      "pdfPage": 168,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:aymhelin-scion",
+      "name": "Aymhelin Scion",
+      "role": "rival",
+      "pdfPage": 179,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:deepwood-archer",
+      "name": "Deepwood Archer",
+      "role": "minion",
+      "pdfPage": 180,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:forest-guardian",
+      "name": "Forest Guardian",
+      "role": "nemesis",
+      "pdfPage": 180,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:leonx-rider",
+      "name": "Leonx Rider",
+      "role": "rival",
+      "pdfPage": 180,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:leonx",
+      "name": "Leonx",
+      "role": "rival",
+      "pdfPage": 181,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:storm-sorceress",
+      "name": "Storm Sorceress",
+      "role": "nemesis",
+      "pdfPage": 181,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:true-fae",
+      "name": "True Fae",
+      "role": "nemesis",
+      "pdfPage": 182,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:deep-elf",
+      "name": "Deep Elf",
+      "role": "rival",
+      "pdfPage": 191,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:dimora",
+      "name": "Dimora",
+      "role": "nemesis",
+      "pdfPage": 192,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:dwarf-guilder",
+      "name": "Dwarf Guilder",
+      "role": "rival",
+      "pdfPage": 192,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:dwarven-dragon-hunter",
+      "name": "Dwarven Dragon Hunter",
+      "role": "nemesis",
+      "pdfPage": 192,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:kennsir-dwarf",
+      "name": "Kennsir Dwarf",
+      "role": "rival",
+      "pdfPage": 193,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:kobold",
+      "name": "Kobold",
+      "role": "minion",
+      "pdfPage": 193,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:ancient-dragon",
+      "name": "Ancient Dragon",
+      "role": "nemesis",
+      "pdfPage": 196,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:specter",
+      "name": "Specter",
+      "role": "rival",
+      "pdfPage": 196,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:lava-elemental",
+      "name": "Lava Elemental",
+      "role": "rival",
+      "pdfPage": 197,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:salamander",
+      "name": "Salamander",
+      "role": "rival",
+      "pdfPage": 197,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:young-dragon",
+      "name": "Young Dragon",
+      "role": "rival",
+      "pdfPage": 197,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:beastman",
+      "name": "Beastman",
+      "role": "minion",
+      "pdfPage": 202,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:gurak-tol",
+      "name": "Gurak Tol",
+      "role": "rival",
+      "pdfPage": 203,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:ogre",
+      "name": "Ogre",
+      "role": "nemesis",
+      "pdfPage": 203,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:orc-spiritspeaker",
+      "name": "Orc Spiritspeaker",
+      "role": "nemesis",
+      "pdfPage": 203,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:orc-outrider",
+      "name": "Orc Outrider",
+      "role": "rival",
+      "pdfPage": 204,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:berserker",
+      "name": "Berserker",
+      "role": "minion",
+      "pdfPage": 214,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:bloodsister-and-nightseer",
+      "name": "Bloodsister And Nightseer",
+      "role": "nemesis",
+      "pdfPage": 214,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:flesh-ripper",
+      "name": "Flesh Ripper",
+      "role": "minion",
+      "pdfPage": 215,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:grotesque",
+      "name": "Grotesque",
+      "role": "rival",
+      "pdfPage": 216,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:spined-thresher",
+      "name": "Spined Thresher",
+      "role": "nemesis",
+      "pdfPage": 217,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:viper-legion-archer",
+      "name": "Viper Legion Archer",
+      "role": "rival",
+      "pdfPage": 218,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:witch-and-warlock",
+      "name": "Witch And Warlock",
+      "role": "rival",
+      "pdfPage": 218,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:giant",
+      "name": "Giant",
+      "role": "nemesis",
+      "pdfPage": 227,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:gnome-minstrel",
+      "name": "Gnome Minstrel",
+      "role": "nemesis",
+      "pdfPage": 227,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:lorimor-marine",
+      "name": "Lorimor Marine",
+      "role": "minion",
+      "pdfPage": 228,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:lost-knight",
+      "name": "Lost Knight",
+      "role": "rival",
+      "pdfPage": 228,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:manticore",
+      "name": "Manticore",
+      "role": "nemesis",
+      "pdfPage": 228,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:merriod",
+      "name": "Merriod",
+      "role": "nemesis",
+      "pdfPage": 229,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:pirate",
+      "name": "Pirate",
+      "role": "minion",
+      "pdfPage": 230,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:shade",
+      "name": "Shade",
+      "role": "minion",
+      "pdfPage": 230,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:siren",
+      "name": "Siren",
+      "role": "rival",
+      "pdfPage": 231,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:sword-poet",
+      "name": "Sword Poet",
+      "role": "nemesis",
+      "pdfPage": 231,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:wyrm-of-the-deep",
+      "name": "Wyrm Of The Deep",
+      "role": "nemesis",
+      "pdfPage": 232,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:ice-wyrm",
+      "name": "Ice Wyrm",
+      "role": "nemesis",
+      "pdfPage": 238,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:ice-blood-warrior",
+      "name": "Ice-Blood Warrior",
+      "role": "minion",
+      "pdfPage": 238,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:wendigo",
+      "name": "Wendigo",
+      "role": "rival",
+      "pdfPage": 239,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:onoit-shaman",
+      "name": "Onoit Shaman",
+      "role": "rival",
+      "pdfPage": 240,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:weik-warrior",
+      "name": "Weik Warrior",
+      "role": "minion",
+      "pdfPage": 240,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:assassin",
+      "name": "Assassin",
+      "role": "nemesis",
+      "pdfPage": 248,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:djinn",
+      "name": "Djinn",
+      "role": "nemesis",
+      "pdfPage": 249,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:minor-elemental",
+      "name": "Minor Elemental",
+      "role": "rival",
+      "pdfPage": 249,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:scorpion-swarm",
+      "name": "Scorpion Swarm",
+      "role": "rival",
+      "pdfPage": 250,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:thieves-guild-cutpurse",
+      "name": "Thieves’ Guild Cutpurse",
+      "role": "rival",
+      "pdfPage": 250,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:carnivorous-flora",
+      "name": "Carnivorous Flora",
+      "role": "rival",
+      "pdfPage": 259,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:giant-snake",
+      "name": "Giant Snake",
+      "role": "rival",
+      "pdfPage": 259,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:makhim",
+      "name": "Makhim",
+      "role": "minion",
+      "pdfPage": 259,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:naga-priestess",
+      "name": "Naga Priestess",
+      "role": "rival",
+      "pdfPage": 259,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:singhara-hunter",
+      "name": "Singhara Hunter",
+      "role": "minion",
+      "pdfPage": 260,
+      "status": "implemented"
+    },
+    {
+      "id": "rot:singhara-pridelord",
+      "name": "Singhara Pridelord",
+      "role": "nemesis",
+      "pdfPage": 260,
+      "status": "implemented"
+    }
+  ]
+}
