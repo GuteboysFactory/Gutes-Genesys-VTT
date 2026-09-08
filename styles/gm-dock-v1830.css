@@ -1,0 +1,275 @@
+.genesys-gm-dock .window-content {
+  padding: 0;
+  overflow: auto;
+  background: #071219;
+}
+
+.genesys-gm-dock-shell-v1830 {
+  container-type: inline-size;
+  min-height: 100%;
+  padding: 12px;
+  color: #ead8ac;
+  background:
+    linear-gradient(rgba(5, 14, 20, .96), rgba(5, 14, 20, .96)),
+    var(--genesys-sheet-texture, none);
+}
+
+.genesys-gm-dock-shell-v1830 h1,
+.genesys-gm-dock-shell-v1830 h2,
+.genesys-gm-dock-shell-v1830 p { margin: 0; }
+
+.genesys-gm-dock-hero-v1830 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 20px;
+  border: 1px solid #8b6428;
+  background: linear-gradient(135deg, #18303c, #0a171f 62%);
+  box-shadow: inset 0 -3px 0 rgba(215, 173, 82, .18);
+}
+
+.genesys-gm-dock-hero-v1830 small,
+.genesys-gm-dock-panel-v1830 header small {
+  color: #bc9b56;
+  font-size: .64rem;
+  font-weight: 800;
+  letter-spacing: .14em;
+}
+
+.genesys-gm-dock-hero-v1830 h1 {
+  color: #f0d784;
+  font: 700 2rem Georgia, serif;
+  letter-spacing: .04em;
+}
+
+.genesys-gm-dock-hero-v1830 p { color: #c8b78f; font-size: .78rem; }
+
+.genesys-gm-dock-runtime-v1830 {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.genesys-gm-dock-runtime-v1830 span,
+.genesys-gm-dock-runtime-v1830 button,
+.genesys-gm-dock-panel-v1830 button {
+  min-height: 30px;
+  border: 1px solid rgba(215, 173, 82, .42);
+  border-radius: 2px;
+  background: #122631;
+  color: #efd27c;
+  font-size: .7rem;
+  font-weight: 700;
+}
+
+.genesys-gm-dock-runtime-v1830 span { display: inline-flex; align-items: center; padding: 0 9px; }
+.genesys-gm-dock-shell-v1830 button:hover { border-color: #efbd43; background: #17415a; }
+.genesys-gm-dock-shell-v1830 button:disabled { opacity: .45; cursor: not-allowed; }
+
+.genesys-gm-dock-nav-v1830 {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 6px;
+  padding: 8px 0;
+  background: #071219;
+}
+
+.genesys-gm-dock-nav-v1830 a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  min-width: 0;
+  min-height: 36px;
+  border: 1px solid #65491f;
+  background: linear-gradient(180deg, #172a35, #0d1b23);
+  color: #dfc370;
+  text-decoration: none;
+  font: 700 .72rem Georgia, serif;
+  letter-spacing: .04em;
+}
+
+.genesys-gm-dock-nav-v1830 a:hover { border-color: #efbd43; background: #17415a; }
+
+.genesys-gm-dock-summary-v1830 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.genesys-gm-dock-summary-v1830 article {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(215, 173, 82, .3);
+  background: #10212a;
+}
+
+.genesys-gm-dock-summary-v1830 small { color: #ad9562; font-size: .62rem; text-transform: uppercase; }
+.genesys-gm-dock-summary-v1830 strong { color: #f0cd6b; font: 700 1.2rem Georgia, serif; }
+.genesys-gm-dock-summary-v1830 span { overflow: hidden; color: #c9b991; font-size: .67rem; text-overflow: ellipsis; white-space: nowrap; }
+
+.genesys-gm-dock-grid-v1830 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.genesys-gm-dock-panel-v1830 {
+  min-width: 0;
+  scroll-margin-top: 54px;
+  border: 1px solid #8b6428;
+  background: #ead8b9;
+  color: #332516;
+}
+
+.genesys-gm-dock-panel-wide-v1830 { grid-column: 1 / -1; }
+
+.genesys-gm-dock-panel-v1830 > header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  min-height: 54px;
+  padding: 8px 12px;
+  border-bottom: 1px solid #8b6428;
+  background: linear-gradient(180deg, #172b36, #0c1921);
+}
+
+.genesys-gm-dock-panel-v1830 h2 {
+  color: #e9c866;
+  font: 700 .92rem Georgia, serif;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+
+.genesys-gm-dock-panel-v1830 > header > span {
+  flex: 0 0 auto;
+  padding: 4px 7px;
+  border: 1px solid rgba(215, 173, 82, .35);
+  color: #cdb77e;
+  font-size: .58rem;
+  font-weight: 800;
+  letter-spacing: .06em;
+}
+
+.genesys-gm-dock-panel-v1830 > header > span.is-ready,
+.genesys-gm-dock-panel-v1830 > header > span.is-next { color: #f3cf65; border-color: #b88b2d; }
+
+.genesys-gm-dock-panel-body-v1830 { display: grid; gap: 9px; padding: 12px; }
+.genesys-gm-dock-panel-body-v1830 > p { color: #66513b; font-size: .72rem; line-height: 1.35; }
+
+.genesys-gm-dock-state-v1830 {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 9px;
+  border: 1px solid rgba(111, 77, 37, .24);
+  background: rgba(255, 255, 255, .2);
+  font-size: .72rem;
+}
+
+.genesys-gm-dock-state-v1830 span { color: #765b3a; }
+.genesys-gm-dock-state-v1830 strong { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.genesys-gm-dock-readiness-v1830 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px;
+  border-left: 4px solid #7d6847;
+  background: rgba(86, 64, 38, .08);
+}
+
+.genesys-gm-dock-readiness-v1830.is-ready { border-left-color: #397255; }
+.genesys-gm-dock-readiness-v1830 > i { color: #81591f; font-size: 1.1rem; }
+.genesys-gm-dock-readiness-v1830 span { display: grid; min-width: 0; }
+.genesys-gm-dock-readiness-v1830 small { color: #725d43; font-size: .65rem; }
+
+.genesys-gm-dock-actor-strip-v1830 {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 7px;
+}
+
+.genesys-gm-dock-actor-strip-v1830 button,
+.genesys-gm-dock-actor-list-v1830 button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  min-height: 46px;
+  padding: 5px 7px;
+  background: rgba(255, 255, 255, .22);
+  color: #392716;
+  text-align: left;
+}
+
+.genesys-gm-dock-actor-strip-v1830 img,
+.genesys-gm-dock-actor-list-v1830 img {
+  flex: 0 0 34px;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #8b6428;
+  object-fit: cover;
+}
+
+.genesys-gm-dock-actor-strip-v1830 span,
+.genesys-gm-dock-actor-list-v1830 span { display: grid; min-width: 0; flex: 1; }
+.genesys-gm-dock-actor-strip-v1830 strong,
+.genesys-gm-dock-actor-list-v1830 strong { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.genesys-gm-dock-actor-strip-v1830 small,
+.genesys-gm-dock-actor-list-v1830 small { color: #785f42; font-size: .62rem; }
+
+.genesys-gm-dock-actor-list-v1830 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+.genesys-gm-dock-button-row-v1830 { display: grid; grid-template-columns: 1fr 1fr; gap: 7px; }
+
+.genesys-gm-dock-encounter-state-v1830 {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 2px 8px;
+  padding: 10px;
+  border-left: 4px solid #8b6428;
+  background: rgba(80, 56, 30, .09);
+}
+
+.genesys-gm-dock-encounter-state-v1830.is-active { border-left-color: #2d789e; }
+.genesys-gm-dock-encounter-state-v1830 strong { color: #4d3419; font: 700 1rem Georgia, serif; }
+.genesys-gm-dock-encounter-state-v1830 span { color: #6e512d; font-size: .68rem; font-weight: 800; }
+.genesys-gm-dock-encounter-state-v1830 small { grid-column: 1 / -1; color: #796448; }
+
+.genesys-gm-dock-panel-v1830 button.genesys-gm-dock-primary-v1830 { background: #145174; color: #ffe49a; }
+.genesys-gm-dock-forge-body-v1830 { grid-template-columns: 1fr 1fr; }
+.genesys-gm-dock-forge-body-v1830 > button { grid-column: 1 / -1; }
+.genesys-gm-dock-empty-v1830 { padding: 10px; color: #725d43; font-style: italic; }
+
+.genesys-gm-dock-unauthorized { padding: 20px; }
+.genesys-gm-dock-directory-button { white-space: nowrap; }
+
+@container (max-width: 720px) {
+  .genesys-gm-dock-hero-v1830 { align-items: flex-start; flex-direction: column; }
+  .genesys-gm-dock-runtime-v1830 { justify-content: flex-start; }
+  .genesys-gm-dock-nav-v1830 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .genesys-gm-dock-summary-v1830 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .genesys-gm-dock-grid-v1830 { grid-template-columns: 1fr; }
+  .genesys-gm-dock-panel-wide-v1830 { grid-column: auto; }
+  .genesys-gm-dock-forge-body-v1830 { grid-template-columns: 1fr; }
+  .genesys-gm-dock-forge-body-v1830 > button { grid-column: auto; }
+}
+
+@container (max-width: 470px) {
+  .genesys-gm-dock-shell-v1830 { padding: 7px; }
+  .genesys-gm-dock-nav-v1830 a span { display: none; }
+  .genesys-gm-dock-actor-list-v1830,
+  .genesys-gm-dock-button-row-v1830 { grid-template-columns: 1fr; }
+  .genesys-gm-dock-panel-v1830 > header { align-items: flex-start; flex-direction: column; }
+}

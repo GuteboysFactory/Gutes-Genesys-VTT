@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1825 Extra Activation Completion. Keeps extra turns actionable during End of Round and provides an explicit Mark Extra Activation Used control.",
-  "version": "0.0.1825",
+  "description": "Genesys VTT 0.0.1830 GM Dock Shell. Adds a GM-only control surface with live system summaries and safe navigation into existing workflows.",
+  "version": "0.0.1830",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",
@@ -59,7 +59,8 @@
     "dist/module/magic-effect-rules-v1810.js",
     "dist/module/magic-effect-combat-v1810.js",
     "dist/module/magic-concentration-runtime-v1810.js",
-    "dist/module/magic-effect-ui-v1810.js"
+    "dist/module/magic-effect-ui-v1810.js",
+    "dist/module/apps/gm-dock-v1830.js"
   ],
   "styles": [
     "styles/genesys.css",
@@ -100,7 +101,8 @@
     "styles/magic-resolution-v1800.css",
     "styles/magic-effect-runtime-v1810.css",
     "styles/character-sheet-responsive-v1823.css",
-    "styles/encounter-tracker-overhaul-v1824.css"
+    "styles/encounter-tracker-overhaul-v1824.css",
+    "styles/gm-dock-v1830.css"
   ],
   "languages": [
     { "lang": "en", "name": "English", "path": "lang/en.json" },

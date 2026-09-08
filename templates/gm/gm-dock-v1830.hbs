@@ -1,0 +1,110 @@
+{{#if unauthorized}}
+  <section class="genesys-gm-dock-unauthorized"><h1>GM Dock</h1><p>This control surface is available to the GM only.</p></section>
+{{else}}
+<section class="genesys-gm-dock-shell-v1830">
+  <header class="genesys-gm-dock-hero-v1830">
+    <div>
+      <small>GENESYS GAME MASTER CONTROL</small>
+      <h1>GM Dock</h1>
+      <p>{{worldName}} · {{sceneName}}</p>
+    </div>
+    <div class="genesys-gm-dock-runtime-v1830">
+      <span>v{{systemVersion}}</span>
+      <span><i class="fa-solid fa-user-group"></i> {{connectedUserCount}} connected</span>
+      <button type="button" data-action="refresh"><i class="fa-solid fa-rotate"></i> Refresh</button>
+    </div>
+  </header>
+
+  <nav class="genesys-gm-dock-nav-v1830" aria-label="GM Dock sections">
+    <a href="#genesys-gm-session"><i class="fa-solid fa-calendar-day"></i><span>Session</span></a>
+    <a href="#genesys-gm-story"><i class="fa-solid fa-star"></i><span>Story Points</span></a>
+    <a href="#genesys-gm-xp"><i class="fa-solid fa-arrow-trend-up"></i><span>XP</span></a>
+    <a href="#genesys-gm-encounter"><i class="fa-solid fa-bolt"></i><span>Encounter</span></a>
+    <a href="#genesys-gm-actors"><i class="fa-solid fa-users"></i><span>Actors</span></a>
+    <a href="#genesys-gm-forge"><i class="fa-solid fa-hammer"></i><span>Forge</span></a>
+  </nav>
+
+  <div class="genesys-gm-dock-summary-v1830">
+    <article><small>Characters</small><strong>{{pcCount}}</strong><span>player characters</span></article>
+    <article><small>NPCs</small><strong>{{npcCount}}</strong><span>adversaries & allies</span></article>
+    <article><small>Encounter</small><strong>{{encounter.statusLabel}}</strong><span>{{encounter.participantCount}} participants</span></article>
+    <article><small>Available XP</small><strong>{{totalAvailableXp}}</strong><span>across player characters</span></article>
+  </div>
+
+  <main class="genesys-gm-dock-grid-v1830">
+    <section id="genesys-gm-session" class="genesys-gm-dock-panel-v1830">
+      <header><div><small>CAMPAIGN CONTROL</small><h2><i class="fa-solid fa-calendar-day"></i> Session</h2></div><span class="is-planned">v0.0.1834</span></header>
+      <div class="genesys-gm-dock-panel-body-v1830">
+        <div class="genesys-gm-dock-state-v1830"><span>Current world</span><strong>{{worldName}}</strong></div>
+        <div class="genesys-gm-dock-state-v1830"><span>Connected users</span><strong>{{connectedUserCount}}</strong></div>
+        <p>Session start/reset and once-per-session recovery will arrive after the shared Story Point service.</p>
+        <button type="button" data-action="unavailable" data-feature="Session controls">Session Controls · Upcoming</button>
+      </div>
+    </section>
+
+    <section id="genesys-gm-story" class="genesys-gm-dock-panel-v1830">
+      <header><div><small>SHARED RESOURCE</small><h2><i class="fa-solid fa-star"></i> Story Points</h2></div><span class="is-next">NEXT · 1831</span></header>
+      <div class="genesys-gm-dock-panel-body-v1830">
+        <div class="genesys-gm-dock-readiness-v1830 {{#if storyPointFoundationReady}}is-ready{{/if}}"><i class="fa-solid fa-code-branch"></i><span><strong>Rules foundation</strong><small>{{#if storyPointFoundationReady}}Ready for live state integration{{else}}Not available{{/if}}</small></span></div>
+        <p>The Dock shell does not mutate Story Points yet. v0.0.1831 adds synchronized player/GM pools and atomic transfers.</p>
+        <button type="button" data-action="unavailable" data-feature="Story Point control">Story Point Control · Upcoming</button>
+      </div>
+    </section>
+
+    <section id="genesys-gm-xp" class="genesys-gm-dock-panel-v1830 genesys-gm-dock-panel-wide-v1830">
+      <header><div><small>ADVANCEMENT</small><h2><i class="fa-solid fa-arrow-trend-up"></i> XP Control</h2></div><span class="is-planned">v0.0.1832</span></header>
+      <div class="genesys-gm-dock-panel-body-v1830">
+        <div class="genesys-gm-dock-readiness-v1830 {{#if advancementReady}}is-ready{{/if}}"><i class="fa-solid fa-list-check"></i><span><strong>Advancement service</strong><small>{{#if advancementReady}}Ready · existing ledgers remain authoritative{{else}}Not available{{/if}}</small></span></div>
+        <div class="genesys-gm-dock-actor-strip-v1830">
+          {{#each pcs}}
+            <button type="button" data-action="openActor" data-actor-id="{{id}}">
+              <img src="{{img}}" alt="" /><span><strong>{{name}}</strong><small>{{xp.available}} XP available · {{xp.earned}} earned</small></span>
+            </button>
+          {{else}}
+            <p class="genesys-gm-dock-empty-v1830">No player characters exist yet.</p>
+          {{/each}}
+        </div>
+        <button type="button" data-action="unavailable" data-feature="Party XP awards">Award Party XP · Upcoming</button>
+      </div>
+    </section>
+
+    <section id="genesys-gm-encounter" class="genesys-gm-dock-panel-v1830">
+      <header><div><small>LIVE SCENE</small><h2><i class="fa-solid fa-bolt"></i> Encounter</h2></div><span class="is-ready">AVAILABLE</span></header>
+      <div class="genesys-gm-dock-panel-body-v1830">
+        <div class="genesys-gm-dock-encounter-state-v1830 {{#if encounter.active}}is-active{{/if}}">
+          <strong>{{encounter.statusLabel}}</strong><span>{{encounter.modeLabel}}</span>
+          <small>Round {{encounter.round}} · {{encounter.participantCount}} participants</small>
+        </div>
+        <div class="genesys-gm-dock-state-v1830"><span>Current activation</span><strong>{{encounter.activeActorLabel}}</strong></div>
+        <button type="button" class="genesys-gm-dock-primary-v1830" data-action="openEncounter" {{#unless encounterReady}}disabled{{/unless}}><i class="fa-solid fa-up-right-from-square"></i> Open Encounter Tracker</button>
+      </div>
+    </section>
+
+    <section id="genesys-gm-actors" class="genesys-gm-dock-panel-v1830">
+      <header><div><small>WORLD ACTORS</small><h2><i class="fa-solid fa-users"></i> Characters & NPCs</h2></div><span class="is-ready">{{actorCount}} ACTORS</span></header>
+      <div class="genesys-gm-dock-panel-body-v1830">
+        <div class="genesys-gm-dock-actor-list-v1830">
+          {{#each recentActors}}
+            <button type="button" data-action="openActor" data-actor-id="{{id}}"><img src="{{img}}" alt="" /><span><strong>{{name}}</strong><small>{{roleLabel}}</small></span><i class="fa-solid fa-chevron-right"></i></button>
+          {{else}}
+            <p class="genesys-gm-dock-empty-v1830">No Actors exist yet.</p>
+          {{/each}}
+        </div>
+        <div class="genesys-gm-dock-button-row-v1830">
+          <button type="button" data-action="openActors"><i class="fa-solid fa-folder-open"></i> Actors Directory</button>
+          <button type="button" data-action="openCharacterCreator" {{#unless characterCreatorReady}}disabled{{/unless}}><i class="fa-solid fa-wand-magic-sparkles"></i> Character Creator</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="genesys-gm-forge" class="genesys-gm-dock-panel-v1830 genesys-gm-dock-panel-wide-v1830">
+      <header><div><small>CREATION PIPELINE</small><h2><i class="fa-solid fa-hammer"></i> Forge</h2></div><span class="is-planned">ADVERSARY FORGE · PLANNED</span></header>
+      <div class="genesys-gm-dock-panel-body-v1830 genesys-gm-dock-forge-body-v1830">
+        <div class="genesys-gm-dock-readiness-v1830 is-ready"><i class="fa-solid fa-image"></i><span><strong>Portrait & Token Forge</strong><small>GOLD / LOCKED · available through Actor sheets and Character Creator</small></span></div>
+        <div class="genesys-gm-dock-readiness-v1830"><i class="fa-solid fa-user-shield"></i><span><strong>Adversary Forge</strong><small>Shared backend and template workflows arrive after Heroic/combat hardening</small></span></div>
+        <button type="button" data-action="unavailable" data-feature="Adversary Forge">Adversary Forge · Upcoming</button>
+      </div>
+    </section>
+  </main>
+</section>
+{{/if}}

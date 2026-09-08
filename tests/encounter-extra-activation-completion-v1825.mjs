@@ -24,7 +24,6 @@ assert.match(template.slice(activeActorIndex, startRoundIndex), /data-action="us
 assert.match(template.slice(activeActorIndex, startRoundIndex), /data-action="useManeuver"/);
 assert.match(css, /genesys-extra-turn-focus-v1825\s*\{[^}]*border-left-color:/);
 
-assert.equal(manifest.version, "0.0.1825");
-assert.match(manifest.description, /Extra Activation Completion/);
+assert.ok(Number(manifest.version.split(".").at(-1)) >= 1825);
 
 console.log("PASS: extra activations can be completed explicitly during End of Round");
