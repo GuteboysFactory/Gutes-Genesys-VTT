@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {heroicDockControls,runHeroicDockControl} from '../dist/module/heroic-dock-controls-v1861.js';
+const actor={system:{heroicAbility:{active:true,secondaryEffectIds:['rot-heroic-secondary:renewal','rot-heroic-secondary:drain','custom-heroic:x']}}};
+let result=heroicDockControls(actor,[{id:'custom-heroic:x',label:'Custom',description:'Manual effect'},{id:'custom-heroic:y',label:'Other'}]);
+assert.deepEqual(result.effectControls.map(r=>r.id),['renewal','drain','drain-turn']);assert.equal(result.customEffects.length,1);
+await assert.rejects(runHeroicDockControl(actor,'enemies'),/not available/);
+actor.system.heroicAbility.active=false;assert.equal(heroicDockControls(actor).effectControls.length,0);
+await assert.rejects(runHeroicDockControl(actor,'renewal'),/not available/);
+assert.deepEqual(heroicDockControls(null).effectControls,[]);
+console.log('PASS: selected active controls, custom descriptions, inactive/unavailable action rejection');

@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1860** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1861** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -255,6 +255,14 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - 39 automated files pass; live Foundry layout/disconnect QA pending
 - Panel can briefly appear during a normal in-flight End Turn; it indicates saved actor work, not proof of an error
 - Next: live recovery feedback and remaining Heroic integration before Adversary Forge. Automatic failover replay and multiple active-GM browser sessions remain unsupported.
+
+### v0.0.1861 — Heroic effect controls in GM Dock
+
+- Active selected Secondary Effects expose Renewal, aura targets and activation/turn-start pulse controls in GM Dock
+- Reuses the same services, checks and saved retry markers as the character sheet
+- Selected custom effect descriptions remain visible as GM-resolved guidance
+- 40 automated files pass; live Dock layout/control QA pending
+- Next: Heroic implementation coverage audit to identify remaining primary-effect mechanics before combat hardening and Adversary Forge; this release adds access, not new effect rules.
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 

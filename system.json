@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1860 \u2014 GM interrupted-turn recovery panel.",
-  "version": "0.0.1860",
+  "description": "Genesys VTT 0.0.1861 \u2014 Heroic effect controls in GM Dock.",
+  "version": "0.0.1861",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"

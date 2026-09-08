@@ -1,3 +1,4 @@
+import {heroicDockControls,runHeroicDockControl} from '../heroic-dock-controls-v1861.js';
 import { normalizeActorRole } from "../../domain/adversaries/index.js";
 
 const SYSTEM_ID = "genesys-vtt";
@@ -134,6 +135,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       awardPartyXp: this.#awardPartyXp,
       sessionControl: this.#sessionControl,
       activateHeroic: this.#activateHeroic,
+      heroicEffect: this.#heroicEffect,
       recoverHeroic: this.#recoverHeroic,
       resetHeroicSession: this.#resetHeroicSession,
       applyNightRest: this.#applyNightRest,
@@ -179,7 +181,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       })),
       actors,
       pcs,
-      heroicRows: characterActors().map(actor => game.genesysHeroic?.liveSummary?.(actor)).filter(row => row?.selected),
+      heroicRows: characterActors().map(actor => ({...game.genesysHeroic?.liveSummary?.(actor),...heroicDockControls(actor,game.genesysHeroic?.secondaryOptions?.(actor)??[])})).filter(row => row?.selected),
       encounterRecovery: game.genesysEncounterRecovery?.recoveryRoster() ?? { ready: false },
       recoveryRows: characterActors().filter(actor => actor.system?.role === "pc").map(actor => {
         try { return game.genesysRecovery.nightRestPreview(actor); }
@@ -197,7 +199,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   async _onRender(context, options) {
     await super._onRender(context, options);
     if (!context.dockWriter) {
-      const mutations = ["spendStoryPoint", "adjustStoryPoint", "awardPartyXp", "sessionControl", "applyNightRest", "recoverEncounterStrain", "addEncounterTokens", "resetHeroicSession", "activateHeroic", "recoverHeroic"];
+      const mutations = ["spendStoryPoint", "adjustStoryPoint", "awardPartyXp", "sessionControl", "applyNightRest", "recoverEncounterStrain", "addEncounterTokens", "resetHeroicSession", "activateHeroic", "heroicEffect", "recoverHeroic"];
       for (const action of mutations) for (const button of this.element.querySelectorAll(`[data-action="${action}"]`)) button.disabled = true;
     }
     if (context.unauthorized) {
@@ -378,6 +380,13 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     finally { recoveryPending = false; target.disabled = false; refreshOpenDock(); }
   }
 
+  static async #heroicEffect(_event,target) {
+    if(!requireDockWriter() || target.disabled)return;
+    target.disabled=true;
+    try {await runHeroicDockControl(game.actors.get(target.dataset.actorId),target.dataset.effect);}
+    catch(error){ui.notifications.warn(error.message);}
+    finally{target.disabled=false;refreshOpenDock();}
+  }
   static async #activateHeroic(_event, target) {
     if (!requireDockWriter() || target.disabled) return;
     target.disabled = true;

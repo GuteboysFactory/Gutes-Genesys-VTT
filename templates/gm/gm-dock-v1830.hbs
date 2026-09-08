@@ -57,6 +57,12 @@
               <small>{{cost}} Story Points · Uses {{used}}/{{total}} · {{availablePoints}} Ability Points available</small>
               <small>{{#if active}}Active · {{remainingTurns}} owner turns remaining{{else}}Inactive{{/if}}</small>
               <button type="button" data-action="activateHeroic" data-actor-id="{{id}}" {{#if active}}disabled{{/if}}>Activate Heroic · {{cost}} SP</button>
+              {{#each effectControls}}
+                <button type="button" data-action="heroicEffect" data-actor-id="{{../id}}" data-effect="{{id}}">{{label}}</button>
+              {{/each}}
+              {{#each customEffects}}
+                <small><strong>{{label}} · GM resolved</strong> — {{description}}</small>
+              {{/each}}
               <label><input type="checkbox" /> Reset uses and end active effect</label>
               <button type="button" data-action="resetHeroicSession" data-actor-id="{{id}}">Reset Heroic Session</button>
             </div>
