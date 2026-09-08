@@ -127,7 +127,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     };
     static async #upgradeHeroic(_event, target) {
         target.disabled = true;
-        try { if (await game.genesysHeroicLive.purchaseUpgrade(this.actor, target.dataset.upgrade)) this.render(false); }
+        try { if (await game.genesysHeroicLive.purchaseUpgrade(this.actor, target.dataset.upgrade, target.dataset.effectId)) this.render(false); }
         catch (error) { ui.notifications.warn(error.message); }
         finally { target.disabled = false; }
     }

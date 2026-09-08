@@ -47,12 +47,19 @@ async function commitActorHeroicState(actor, state, settingId = actorSettingId(a
     return next;
 }
 
+export function heroicSecondaryOptions(actor) {
+    return (game.genesysContent?.getContent?.("heroicAbilities", { settingId: actorSettingId(actor) }) ?? [])
+        .filter(row => row.kind === "secondary-effect");
+}
 export function heroicLiveSummary(actor) {
     const rules = rulesForSetting(actorSettingId(actor));
     const state = actorHeroicSnapshot(actor);
     const definitions = game.genesysContent?.getContent?.("heroicAbilities", { settingId: actorSettingId(actor) }) ?? [];
     const label = id => definitions.find(row => row.id === id)?.label ?? id;
-    return { originsLabel: state.origins.map(label).join(" / "), secondaryLabel: state.secondaryEffectIds.map(label).join(" / "), id: actor.id, actorName: actor.name, selected: state.selected && Boolean(state.primaryEffectId),
+    return { secondaryOptions: heroicSecondaryOptions(actor).map(row => ({ id:row.id, label:row.label,
+        source:row.metadata?.printedSource ?? '', owned:state.secondaryEffectIds.includes(row.id) })),
+        secondaryLimit:rules.maxSecondaryEffects, secondaryCost:rules.upgradeCosts.secondaryEffect,
+        originsLabel: state.origins.map(label).join(" / "), secondaryLabel: state.secondaryEffectIds.map(label).join(" / "), id: actor.id, actorName: actor.name, selected: state.selected && Boolean(state.primaryEffectId),
         name: state.name || state.primaryEffectLabel, cost: state.storyPointCost,
         used: state.usesThisSession, total: heroicAbilityUsesPerSession(state, rules),
         active: state.active, remainingTurns: state.activeTurnBudget,
@@ -79,6 +86,7 @@ Hooks.once("ready", () => {
     const api = Object.freeze({
         actorRules: actor => rulesForSetting(actorSettingId(actor)),
         liveSummary: heroicLiveSummary,
+        secondaryOptions: heroicSecondaryOptions,
         resetActorSession: resetActorHeroicSession,
         rulesForSetting,
         normalizeRules: normalizeHeroicAbilityRules,

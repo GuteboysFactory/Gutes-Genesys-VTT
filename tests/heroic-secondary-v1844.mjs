@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import * as domain from '../dist/domain/heroic/index.js';
+globalThis.Hooks={on(){},once(){}};
+const rules={storyPointCost:2,maxSecondaryEffects:2};
+const actor={uuid:'Actor.a',name:'Hero',system:{role:'pc',xp:{earned:200},heroicAbility:domain.createHeroicAbilityState({id:'primary'}, {}, rules)},getFlag:()=>[],async update(data){this.system.heroicAbility=data['system.heroicAbility'];}};
+let options=[{id:'one',label:'First'},{id:'two',label:'Second'},{id:'three',label:'Third'}],during=()=>{},accept=true;
+globalThis.foundry={applications:{api:{DialogV2:{wait:async()=>{during();return accept;}}}}};
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysStoryPoints:{snapshot:()=>({})},genesysHeroic:{actorSnapshot:a=>domain.normalizeHeroicAbilityState(a.system.heroicAbility,rules),actorRules:()=>rules,secondaryOptions:()=>options,purchaseUpgrade:domain.purchaseHeroicAbilityUpgrade,availablePoints:domain.heroicAbilityAvailablePoints}};
+const {purchaseUpgrade}=await import('../dist/module/heroic-live-v1841.js');
+await assert.rejects(purchaseUpgrade(actor,'secondary-effect','unknown'),/this character setting/);
+accept=false;await purchaseUpgrade(actor,'secondary-effect','one');assert.equal(actor.system.heroicAbility.abilityPointsSpent,0);accept=true;
+await purchaseUpgrade(actor,'secondary-effect','one');assert.deepEqual(actor.system.heroicAbility.secondaryEffectIds,['one']);assert.equal(actor.system.heroicAbility.abilityPointsSpent,1);
+await assert.rejects(purchaseUpgrade(actor,'secondary-effect','one'),/same secondary effect twice/);
+during=()=>{options=options.filter(r=>r.id!=='two');};await assert.rejects(purchaseUpgrade(actor,'secondary-effect','two'),/state changed/);assert.equal(actor.system.heroicAbility.abilityPointsSpent,1);
+during=()=>{};options.push({id:'two',label:'Second'});await purchaseUpgrade(actor,'secondary-effect','two');
+await assert.rejects(purchaseUpgrade(actor,'secondary-effect','three'),/at most 2/);assert.equal(actor.system.xp.earned,200);
+console.log('PASS: Secondary Effect catalogue validation, cancellation, purchases, duplicate/capacity limits and stale catalogue');

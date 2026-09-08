@@ -127,7 +127,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Secondary Effect selection and mechanical effect automation remain pending
 - Foundry visual/multiplayer QA pending
 
-### v0.0.1844 onward — Remaining Heroic Abilities Live
+### v0.0.1844 — Secondary Effect selection
+
+- Setting-filtered Secondary Effect purchases with AP validation, duplicate and capacity checks
+- Purchased effects displayed on sheet and activation chat; mechanical resolution remains manual
+- Live Foundry QA for v0.0.1843 and v0.0.1844 remains pending
+
+### v0.0.1845 onward — Remaining Heroic Abilities Live
 
 - Activation, costs, upgrades and encounter lifecycle
 - Sheet, chat and GM Dock integration

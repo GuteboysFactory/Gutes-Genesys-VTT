@@ -22,6 +22,14 @@
           <button type="button" data-action="upgradeHeroic" data-upgrade="story">Story</button>
         </div>
         <p>Select an upgrade to review its cost and effect before purchasing.</p>
+        <details><summary>Secondary Effects · {{heroicLive.secondaryCost}} AP each · maximum {{heroicLive.secondaryLimit}}</summary>
+          <div class="genesys-heroic-upgrades-v1843">
+          {{#each heroicLive.secondaryOptions}}
+            <button type="button" data-action="upgradeHeroic" data-upgrade="secondary-effect" data-effect-id="{{id}}" title="{{source}}" {{#if owned}}disabled{{/if}}>{{label}}{{#if owned}} · Purchased{{/if}}</button>
+          {{else}}<p>No Secondary Effects available for this setting.</p>{{/each}}
+          </div>
+          <p>Purchased effects appear on the sheet and in the activation message. Resolve their effects with the GM.</p>
+        </details>
         {{else}}<p>Ask your GM to purchase an upgrade.</p>{{/if}}
       </details>
       {{#if heroicLive.originsLabel}}<p class="genesys-heroic-details-v1842">Origin: {{heroicLive.originsLabel}}</p>{{/if}}

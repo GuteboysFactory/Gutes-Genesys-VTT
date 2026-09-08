@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1843 \u2014 Heroic Ability Points and GM upgrade purchases.",
-  "version": "0.0.1843",
+  "description": "Genesys VTT 0.0.1844 \u2014 Heroic Secondary Effect purchases and activation reminders.",
+  "version": "0.0.1844",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
