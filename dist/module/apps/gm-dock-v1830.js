@@ -129,6 +129,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       addEncounterTokens: this.#addEncounterTokens,
       openActors: this.#openActors,
       openCharacterCreator: this.#openCharacterCreator,
+      openAdversaryForge: this.#openAdversaryForge,
       openActor: this.#openActor,
       spendStoryPoint: this.#spendStoryPoint,
       adjustStoryPoint: this.#adjustStoryPoint,
@@ -271,6 +272,12 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   static async #openActors() {
     if (!requireGm()) return;
     if (!(await renderDirectory(ui?.actors))) ui?.notifications?.warn?.("Actors Directory is not available.");
+  }
+
+  static async #openAdversaryForge() {
+    if (!requireDockWriter()) return;
+    try { await (await import('../adversary-forge.js')).openAdversaryForge(); }
+    catch(error) { ui.notifications.warn(error.message); }
   }
 
   static async #openCharacterCreator() {

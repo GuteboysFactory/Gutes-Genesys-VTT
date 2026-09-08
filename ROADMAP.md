@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1863** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1864** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -11,7 +11,16 @@ Alla elva primary-förmågor ingår nu i samma arbetsflöde på Actions och i GM
 - Implementerat: återhämtning med sparåterställning, val av slagna Paragon-tärningar, Connected före betalning, faktajournal/tillfälliga SP, Foretelling-omslag och NPC-kopia, social strain, Unleash och utökad Hard to Kill.
 - Secondary: filtrerade kontroller och Devastating även för magiska attacker.
 - Återstår före komplett Heroic: permanenta Signature Weapon-uppgraderingar/fullständiga attachment-regler; samtliga Unbowed/critical-konsumenter; gemensamma råslag/externa slag och spenderingsflöden; live-QA.
-- Dessa luckor ska färdigställas tillsammans. Ingen förmåga markeras helautomatiserad bara för att dess regeltext eller en GM-knapp finns.
+- Användaren accepterar dessa delar som manuella tills vidare och prioriterar nästa funktion; semiautomatik är fortsatt målet. Ingen förmåga markeras helautomatiserad bara för att dess regeltext eller en GM-knapp finns.
+
+## Adversary Forge — v0.0.1864
+
+- GM Dock → Forge skapar native Foundry Actors för Minions, Rivals och Nemeses.
+- Statistik, gruppstorlek, skills, Adversary-rank och 0–1 extra Nemesis-aktivering per runda.
+- Förhandsgranskning med möjlighet att gå tillbaka. Valda world Items kopieras som embedded Items; källorna ändras inte.
+- Aktuell rules profile bevaras. NPC skapas privat med olänkad prototype token.
+- Återstår: mallar, kloning, import/export och direkt överlämning till encounter. Befintliga Actors migreras inte av detta skapandeflöde.
+- Heroic fortsätter med dokumenterade manuella undantag, enligt användarens beslut.
 
 ## Accepted baseline
 

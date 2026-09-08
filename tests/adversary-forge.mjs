@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {prepareAdversary,FORGE_CHARACTERISTICS} from '../dist/domain/adversaries/forge.js';
+import {minionSkillRank,normalizeMinionGroup} from '../dist/domain/adversaries/index.js';
+const defs=[{id:'athletics'},{id:'melee-heavy'}];
+const input={name:'Guards',role:'minion',wounds:5,members:3,strain:12,soak:3,melee:1,ranged:0,silhouette:1,adversaryRank:0,extraActivations:1,...Object.fromEntries(FORGE_CHARACTERISTICS.map(k=>[k,2])),skills:[{id:'melee-heavy',group:true,rank:4}]};
+let data=prepareAdversary(input,defs);
+assert.equal(data.type,'character');assert.equal(data.system.wounds.threshold,15);assert.equal(data.system.strain.threshold,0);assert.equal(data.system.extraActivations,0);
+assert.equal(data.system.skills[1].rank,0);assert.deepEqual(data.system.minionGroup.groupSkillIds,['melee-heavy']);
+assert.equal(minionSkillRank(normalizeMinionGroup(data.system.minionGroup),'melee-heavy'),2);
+data=prepareAdversary({...input,role:'nemesis'},defs);assert.equal(data.system.skills[1].rank,4);assert.equal(data.system.strain.threshold,12);assert.equal(data.system.extraActivations,1);assert.equal(data.system.wounds.threshold,5);
+assert.equal(prepareAdversary({...input,role:'rival'},defs).system.strain.threshold,0);
+for(const change of [{name:''},{role:'pc'},{members:0},{members:51},{brawn:7},{wounds:1.2},{soak:''},{melee:5},{skills:[{id:'bogus'}]}])assert.throws(()=>prepareAdversary({...input,...change},defs));
+assert.throws(()=>prepareAdversary({...input,role:'nemesis',extraActivations:2},defs));
+assert.equal(input.skills[0].rank,4,'input unchanged');
+console.log('PASS: Forge role mapping, minion totals and dynamic skill ranks, Nemesis activation bounds, invalid data rejection');

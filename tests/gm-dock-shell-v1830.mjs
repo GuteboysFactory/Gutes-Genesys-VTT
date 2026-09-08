@@ -22,7 +22,7 @@ for (const section of ["Session", "Story Points", "XP Control", "Encounter", "Ch
 }
 assert.ok(template.includes('data-action="openEncounter"'), "Encounter shortcut must be actionable");
 assert.ok(template.includes('data-action="openCharacterCreator"'), "Character Creator shortcut must be actionable");
-assert.ok(template.includes("Adversary Forge · Upcoming"), "Adversary Forge must be clearly marked as upcoming");
+assert.ok(template.includes('data-action="openAdversaryForge"'), "Adversary Forge shortcut must be actionable");
 assert.match(css, /@container \(max-width: 720px\)/, "GM Dock must define a narrow-window layout");
 assert.match(css, /@container \(max-width: 470px\)/, "GM Dock must define a compact-window layout");
 
