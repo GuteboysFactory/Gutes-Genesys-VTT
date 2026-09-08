@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1867** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1868** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -380,3 +380,10 @@ The Adversary Library upload now includes the current Foundry user ID in the upl
 - Export filtered Library entries as versioned JSON; import 1–500 templates into the custom compendium after confirmation. Re-import creates copies, never overwrites. Images are referenced, not embedded.
 - After Forge creation or from selected world NPC: optional hidden token at scene centre, then optional NPC encounter handoff using the synthetic token Actor and existing authority service. Initiative starts at zero; roll through normal controls.
 - Cancel preserves saved Actors/tokens. Live QA pending; see TEST_PROTOCOL_v0.0.1867.md.
+
+## Native world Talents — v0.0.1868
+
+- User reports Forge v1867 working in live play.
+- Talent Library includes observable native world Talents, keyed by document identity. GM can create a world Talent; Open source uses the native sheet. Shared entries start private; GM sets ownership explicitly.
+- Open libraries refresh for world Talent create/update/delete. Existing actor copies are independent.
+- Compendium talents, catalog materialization, remaining categories and Tome verification are still pending.

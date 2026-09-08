@@ -63,6 +63,13 @@ function registryTalents() {
     }
 }
 
+export function worldTalents() {
+    return Array.from(game.items?.contents ?? []).filter(item => item.type === 'talent' && (game.user?.isGM || item.testUserPermission?.(game.user, 'OBSERVER'))).map(item => ({
+        ...normalizeTalentDefinition({name:item.name,system:{...item.system,sourceId:`world-talent:${item.id}`}}),
+        documentId:item.id, librarySource:'World Items', packId:'world'
+    }));
+}
+
 function dedupeTalents(rows) {
     const map = new Map();
     for (const row of rows) {
@@ -70,6 +77,7 @@ function dedupeTalents(rows) {
         const existing = map.get(talent.id);
         const merged = {
             ...talent,
+            documentId: row.documentId ?? talent.documentId,
             description: String(row.description ?? row.notes ?? talent.notes ?? ""),
             requirements: clone(row.requirements ?? existing?.requirements ?? []),
             librarySource: String(row.librarySource ?? existing?.librarySource ?? talent.sourceType),
@@ -83,7 +91,7 @@ function dedupeTalents(rows) {
 }
 
 export function listTalentLibraryEntries() {
-    return dedupeTalents([...referenceTalents(), ...registryTalents()]);
+    return dedupeTalents([...referenceTalents(), ...registryTalents(), ...worldTalents()]);
 }
 
 function actorTalentItems(actor) {
@@ -263,14 +271,14 @@ function libraryHtml(actor) {
           <header><div><strong>${esc(talent.label)}</strong><span>${esc(talent.librarySource)}</span></div><b>T${talent.tier}</b></header>
           <div class="genesys-library-talent-meta"><span>${talent.ranked ? "Ranked" : "Non-Ranked"}</span><span>${esc(talent.activation)}</span><span>${evaluation.cost} XP</span>${owned ? `<span>${esc(owned)}</span>` : ""}</div>
           <p>${esc(talent.notes || talent.description || "No description supplied by this content pack.")}</p>
-          <div class="genesys-library-talent-actions"><button type="button" data-library-view="${esc(talent.id)}">View</button><button type="button" class="genesys-primary-action" data-library-purchase="${esc(talent.id)}" ${evaluation.allowed ? "" : "disabled"} title="${esc(title)}">${esc(purchaseLabel)}</button></div>
+          <div class="genesys-library-talent-actions">${talent.packId === "world" ? `<button type="button" data-library-edit-world="${esc(talent.documentId)}">Open source</button>` : ""}<button type="button" data-library-view="${esc(talent.id)}">View</button><button type="button" class="genesys-primary-action" data-library-purchase="${esc(talent.id)}" ${evaluation.allowed ? "" : "disabled"} title="${esc(title)}">${esc(purchaseLabel)}</button></div>
         </article>`;
     }).join("") || `<p class="genesys-empty-row">No Talents are registered. Import a Character Content Pack to populate the library.</p>`;
 
     return `<dialog class="genesys-talent-library" data-talent-library-dialog>
       <div class="genesys-talent-library-shell">
         <header class="genesys-talent-library-header"><div><strong>Talent Library</strong><small>${esc(actor?.name ?? "Character")} · ${talents.length} registered Talents</small></div><div class="genesys-talent-library-xp"><span>XP Available</span><strong data-library-xp>${actorAvailableXp(actor)}</strong></div><button type="button" data-library-close aria-label="Close">×</button></header>
-        <div class="genesys-talent-library-controls"><input type="search" data-library-search placeholder="Search Talents…"/><select data-library-tier><option value="all">All Tiers</option><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option><option value="5">Tier 5</option></select><select data-library-source><option value="all">All Sources</option>${sources.map((source) => `<option value="${esc(source)}">${esc(source)}</option>`).join("")}</select></div>
+        <div class="genesys-talent-library-controls">${game.user?.isGM ? `<button type="button" data-library-create-world>Create world Talent</button>` : ""}<input type="search" data-library-search placeholder="Search Talents…"/><select data-library-tier><option value="all">All Tiers</option><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option><option value="5">Tier 5</option></select><select data-library-source><option value="all">All Sources</option>${sources.map((source) => `<option value="${esc(source)}">${esc(source)}</option>`).join("")}</select></div>
         <div class="genesys-talent-library-body"><div class="genesys-talent-library-list">${cards}</div><aside class="genesys-talent-library-detail" data-library-detail><div class="genesys-library-detail-placeholder"><i class="fa-solid fa-book-open"></i><strong>Select a Talent</strong><p>View requirements, Rule Elements, source, XP cost, and purchase eligibility.</p></div></aside></div>
       </div>
     </dialog>`;
@@ -323,6 +331,7 @@ export function openTalentLibrary(actor, root = null) {
     wrapper.innerHTML = libraryHtml(actor);
     const dialog = wrapper.firstElementChild;
     host.append(dialog);
+    dialog._genesysActor = actor;
     dialog.showModal?.();
     return dialog;
 }
@@ -359,6 +368,22 @@ function initializeTalentLibraryButtons() {
 }
 
 document.addEventListener("click", async (event) => {
+    const createWorld = event.target?.closest?.('[data-library-create-world]');
+    const editWorld = event.target?.closest?.('[data-library-edit-world]');
+    if(createWorld || editWorld){
+        event.preventDefault();
+        const dialog=(createWorld||editWorld).closest('dialog');
+        try{
+            let item;
+            if(createWorld){
+                if(!game.user?.isGM)throw Error('Only a GM can create shared Talents here.');
+                item=await foundry.documents.Item.create({name:'New Talent',type:'talent',system:{tier:1,rank:1,ranked:false,activation:'passive'},ownership:{default:0}});
+            }else item=game.items.get(editWorld.dataset.libraryEditWorld);
+            if(!item || !(game.user?.isGM || item.testUserPermission?.(game.user,'OBSERVER')))throw Error('Talent is no longer available.');
+            dialog?.close();await item.sheet.render(true);
+        }catch(error){ui.notifications.warn(error.message);}
+        return;
+    }
     const open = event.target?.closest?.("[data-open-talent-library]");
     if (open) {
         event.preventDefault();
@@ -445,3 +470,15 @@ Hooks.once("ready", () => {
     observer.observe(document.body, { childList: true, subtree: true });
 });
 import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";
+
+// Rebuild open Library views from native documents; owned talent copies remain independent.
+for(const name of ['createItem','updateItem','deleteItem']) Hooks.on(name,item=>{
+    if(item.parent || item.type!=='talent')return;
+    for(const dialog of document.querySelectorAll('[data-talent-library-dialog]')){
+        if(!dialog.open || !dialog._genesysActor)continue;
+        const filters=['search','tier','source'].map(key=>[key,dialog.querySelector(`[data-library-${key}]`)?.value]);
+        const fresh=openTalentLibrary(dialog._genesysActor,dialog.parentElement);
+        for(const [key,value] of filters){const input=fresh.querySelector(`[data-library-${key}]`);if(input)input.value=value;}
+        applyFilters(fresh);
+    }
+});
