@@ -100,6 +100,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         form: { closeOnSubmit: false, submitOnChange: true },
         actions: {
             activateHeroic: this.#activateHeroic,
+            upgradeHeroic: this.#upgradeHeroic,
             rollNarrativeDice: this.#rollNarrativeDice,
             constructAndRoll: this.#constructAndRoll,
             rollSkill: this.#rollSkill,
@@ -124,6 +125,12 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         },
         window: { resizable: true }
     };
+    static async #upgradeHeroic(_event, target) {
+        target.disabled = true;
+        try { if (await game.genesysHeroicLive.purchaseUpgrade(this.actor, target.dataset.upgrade)) this.render(false); }
+        catch (error) { ui.notifications.warn(error.message); }
+        finally { target.disabled = false; }
+    }
     static async #activateHeroic(_event, target) {
         target.disabled = true;
         try { await game.genesysHeroicLive.requestActivation(this.actor); }

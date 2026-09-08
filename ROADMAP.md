@@ -119,7 +119,15 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Activation button beside ability name; remove portrait-top bar and Biography duplicate
 - No activation, cost or duration rule changes
 
-### v0.0.1843 onward — Remaining Heroic Abilities Live
+### v0.0.1843 — Heroic advancement purchases
+
+- v0.0.1842 panel placement accepted by user
+- Available Ability Points in Actions; GM purchases Duration, Frequency, Power and Story with preview and confirmation
+- Purchase history persisted with the actor; XP unchanged
+- Secondary Effect selection and mechanical effect automation remain pending
+- Foundry visual/multiplayer QA pending
+
+### v0.0.1844 onward — Remaining Heroic Abilities Live
 
 - Activation, costs, upgrades and encounter lifecycle
 - Sheet, chat and GM Dock integration

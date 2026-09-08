@@ -27,6 +27,42 @@ export async function activate(actor) {
     return proposal;
   } finally { locks.delete(actor.uuid); }
 }
+export async function purchaseUpgrade(actor, type) {
+  if (!authority()) throw new Error('The active GM must purchase Heroic upgrades.');
+  if (!actor?.uuid || actor.system?.role !== 'pc') throw new Error('Choose a player character.');
+  if (!['duration', 'frequency', 'power', 'story'].includes(type)) throw new Error('Unsupported upgrade.');
+  if (locks.has(actor.uuid)) throw new Error('Heroic action already in progress.');
+  locks.add(actor.uuid);
+  try {
+    const api = game.genesysHeroic;
+    const before = api.actorSnapshot(actor);
+    const rules = api.actorRules(actor);
+    const earned = Number(actor.system?.xp?.earned ?? 0);
+    if (!before.selected || !before.primaryEffectId) throw new Error('No Heroic Ability selected.');
+    if (before.active) throw new Error('End the active Heroic effect before upgrading.');
+    if (game.genesysStoryPoints?.snapshot()?.heroicPending) throw new Error('Recover interrupted Heroic activation first.');
+    const next = api.purchaseUpgrade(before, { type }, earned, rules);
+    const cost = next.abilityPointsSpent - before.abilityPointsSpent;
+    const detail = type === 'duration' ? `Duration: ${api.durationTurns(before,rules)} → ${api.durationTurns(next,rules)} turns`
+      : type === 'frequency' ? `Uses per session: ${api.usesPerSession(before,rules)} → ${api.usesPerSession(next,rules)}`
+      : type === 'power' ? `Power: ${before.powerLevel} → ${next.powerLevel}. Apply the improved effect with the GM.`
+      : `Story Point cost: ${before.storyPointCost} → ${next.storyPointCost}`;
+    const accepted = await foundry.applications.api.DialogV2.wait({
+      window: { title: 'Purchase Heroic Upgrade' },
+      content: `<p><strong>${esc(actor.name)}</strong> · ${esc(type)}</p><p>${esc(detail)}</p><p>Cost: ${cost} Ability Points. Remaining: ${api.availablePoints(next,earned,rules)}. XP is unchanged.</p>`,
+      buttons: [{ action:'buy', label:'Purchase', callback:()=>true }, { action:'cancel', label:'Cancel', default:true, callback:()=>false }],
+      rejectClose:false
+    });
+    if (accepted !== true) return false;
+    if (!authority() || JSON.stringify(api.actorSnapshot(actor)) !== JSON.stringify(before)
+      || Number(actor.system?.xp?.earned ?? 0) !== earned || JSON.stringify(api.actorRules(actor)) !== JSON.stringify(rules)
+      || game.genesysStoryPoints?.snapshot()?.heroicPending) throw new Error('Heroic state changed. Review the upgrade again.');
+    const history = actor.getFlag(SID,'heroicUpgradeHistory') ?? [];
+    await actor.update({ 'system.heroicAbility': next, [`flags.${SID}.heroicUpgradeHistory`]:
+      [...history, { type, cost, earnedXp:earned, spentAfter:next.abilityPointsSpent, userId:game.user.id, at:Date.now() }].slice(-100) });
+    return true;
+  } finally { locks.delete(actor.uuid); }
+}
 export async function finishTurn(actor, state, scene) {
   if (!actor?.system?.heroicAbility?.active || state.activeActorRef !== actor.uuid) return;
   if (game.genesysStoryPoints?.snapshot()?.heroicPending?.actorRef === actor.uuid) throw new Error("Recover interrupted Heroic activation before ending this turn.");
@@ -58,4 +94,4 @@ Hooks.on('renderChatMessageHTML', (_message, html) => {
     });
   }
 });
-Hooks.once('ready', () => Object.defineProperty(game,'genesysHeroicLive',{ configurable:true, value:Object.freeze({ activate, requestActivation, finishTurn, recover: recoverHeroicTransaction }) }));
+Hooks.once('ready', () => Object.defineProperty(game,'genesysHeroicLive',{ configurable:true, value:Object.freeze({ activate, requestActivation, purchaseUpgrade, finishTurn, recover: recoverHeroicTransaction }) }));

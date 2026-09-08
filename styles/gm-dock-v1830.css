@@ -411,3 +411,6 @@
 .genesys-heroic-actions-v1842 .genesys-v1752-heroic-stats { margin: 0 12px 12px; }
 .genesys-heroic-details-v1842 { padding: 0 12px 8px; font-size: .75rem; }
 @media(max-width:650px) { .genesys-heroic-title-row-v1842 { flex-wrap: wrap; } }
+
+.genesys-heroic-upgrades-v1843 { display:flex; flex-wrap:wrap; gap:8px; margin:8px 0; }
+.genesys-heroic-upgrades-v1843 button { width:auto; }

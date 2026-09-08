@@ -12,6 +12,18 @@
         <div><span>Story Cost</span><strong>{{heroicLive.cost}} SP</strong></div>
         <div><span>Uses</span><strong>{{heroicLive.used}}/{{heroicLive.total}}</strong></div>
       </div>
+      <details class="genesys-heroic-details-v1842"><summary>Advancement · {{heroicLive.availablePoints}} Ability Points available</summary>
+        <p>Ability Points come from earned XP. Purchasing upgrades does not spend XP.</p>
+        {{#if heroicGm}}
+        <div class="genesys-heroic-upgrades-v1843">
+          <button type="button" data-action="upgradeHeroic" data-upgrade="duration">Duration</button>
+          <button type="button" data-action="upgradeHeroic" data-upgrade="frequency">Frequency</button>
+          <button type="button" data-action="upgradeHeroic" data-upgrade="power">Power</button>
+          <button type="button" data-action="upgradeHeroic" data-upgrade="story">Story</button>
+        </div>
+        <p>Select an upgrade to review its cost and effect before purchasing.</p>
+        {{else}}<p>Ask your GM to purchase an upgrade.</p>{{/if}}
+      </details>
       {{#if heroicLive.originsLabel}}<p class="genesys-heroic-details-v1842">Origin: {{heroicLive.originsLabel}}</p>{{/if}}
       {{#if heroicLive.secondaryLabel}}<p class="genesys-heroic-details-v1842">Secondary: {{heroicLive.secondaryLabel}}</p>{{/if}}
       {{#if heroicLive.active}}<p class="genesys-heroic-details-v1842">Active · {{heroicLive.remainingTurns}} owner turns remaining</p>{{/if}}
