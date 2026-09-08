@@ -399,3 +399,6 @@
 .genesys-encounter-recovery-row-v1838 > strong, .genesys-encounter-recovery-row-v1838 > small, .genesys-encounter-recovery-row-v1838 > button { grid-column: 1 / -1; }
 .genesys-encounter-recovery-row-v1838 label { display: grid; }
 .genesys-encounter-recovery-row-v1838 select, .genesys-encounter-recovery-row-v1838 input { width: 100%; min-width: 0; background: #f3e5c7; color: #342714; }
+
+.genesys-heroic-live-v1841 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; padding: 10px; background: #172d37; color: #eed38b; border: 1px solid #ad883d; }
+.genesys-heroic-live-v1841 button { width: auto; background: #203e48; color: #eed38b; border: 1px solid #ad883d; }

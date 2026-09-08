@@ -104,7 +104,16 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Explicit per-actor reset of session uses and active duration; no automatic session reset
 - This slice does not yet activate abilities or connect actor state to payment
 
-### v0.0.1841 onward — Heroic Abilities Live
+### v0.0.1841 — Heroic activation and owner-turn duration
+
+- GM Activate on sheet/Dock; owner Request Activation posts a GM-reviewed request
+- Shared Story Point queue with persisted write-ahead journal, actor rollback and explicit interrupted-activation recovery
+- Usage limit, active-state guard, cost and next-owner-turn expiry (current owner turn skipped)
+- Normal End Turn and Force End Turn integration; repeated completion is idempotent
+- Primary/secondary mechanical effects remain GM-resolved; no automatic effect claims
+- Pending: live multiplayer/crash QA; identical GM-account tabs not a supported concurrency guarantee
+
+### v0.0.1842 onward — Remaining Heroic Abilities Live
 
 - Activation, costs, upgrades and encounter lifecycle
 - Sheet, chat and GM Dock integration

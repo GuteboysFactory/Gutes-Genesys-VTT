@@ -342,6 +342,7 @@ export async function endSceneInitiativeTurn(actor, scene = activeScene()) {
     const ref = actorInitiativeRef(actor);
     if (current.activeActorRef !== ref)
         throw new Error(`${actor?.name ?? "Actor"} does not own the active encounter turn.`);
+    await game.genesysHeroicLive?.finishTurn(actor, current, scene);
     await advanceActorTurnConditions(actor);
     return writeSceneInitiativeState(completeCurrentInitiativeSlot(current, ref), scene);
 }
@@ -350,8 +351,10 @@ export async function forceEndCurrentSceneTurn(scene = activeScene()) {
     if (!state.activeActorRef)
         throw new Error("No active actor to end.");
     const actor = resolveInitiativeActorReference(state.activeActorRef);
-    if (actor)
+    if (actor) {
+        await game.genesysHeroicLive?.finishTurn(actor, state, scene);
         await advanceActorTurnConditions(actor);
+    }
     return writeSceneInitiativeState(completeCurrentInitiativeSlot(state, state.activeActorRef), scene);
 }
 export function getInitiativeSheetContext(actor, scene = activeScene()) {

@@ -1,4 +1,5 @@
 <section class="genesys-sheet-body genesys-sheet-v15 genesys-theme-fantasy genesys-target-v153" data-genesys-sheet-tabs data-actor-name="{{actor.name}}">
+  {{#if heroicLive.selected}}<div class="genesys-heroic-live-v1841"><strong>{{heroicLive.name}}</strong><span>{{heroicLive.cost}} SP · Uses {{heroicLive.used}}/{{heroicLive.total}}{{#if heroicLive.active}} · Active: {{heroicLive.remainingTurns}} turns{{/if}}</span><button type="button" data-action="activateHeroic" {{#if heroicLive.active}}disabled{{/if}}>{{#if heroicGm}}Activate Heroic{{else}}Request Activation{{/if}}</button></div>{{/if}}
   <header class="genesys-hero-header genesys-header-wizard-baseline">
     <div class="genesys-portrait-column">
       <div class="genesys-portrait-frame">

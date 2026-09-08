@@ -99,6 +99,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         position: { width: 780, height: 700 },
         form: { closeOnSubmit: false, submitOnChange: true },
         actions: {
+            activateHeroic: this.#activateHeroic,
             rollNarrativeDice: this.#rollNarrativeDice,
             constructAndRoll: this.#constructAndRoll,
             rollSkill: this.#rollSkill,
@@ -123,12 +124,20 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         },
         window: { resizable: true }
     };
+    static async #activateHeroic(_event, target) {
+        target.disabled = true;
+        try { await game.genesysHeroicLive.requestActivation(this.actor); }
+        catch (error) { ui.notifications.warn(error.message); }
+        finally { target.disabled = false; }
+    }
     static PARTS = { main: { template: "systems/genesys-vtt/templates/actor/character-sheet.hbs" } };
     async _prepareContext(options) {
         const context = await super._prepareContext(options);
         const adversary = actorAdversaryContext(this.actor);
         return {
             ...context,
+            heroicLive: game.genesysHeroic?.liveSummary?.(this.actor),
+            heroicGm: Boolean(game.user?.isGM && game.users?.activeGM?.id === game.user.id),
             actor: this.actor,
             system: this.actor.system,
             actorProfile: {

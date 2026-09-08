@@ -133,6 +133,8 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       adjustStoryPoint: this.#adjustStoryPoint,
       awardPartyXp: this.#awardPartyXp,
       sessionControl: this.#sessionControl,
+      activateHeroic: this.#activateHeroic,
+      recoverHeroic: this.#recoverHeroic,
       resetHeroicSession: this.#resetHeroicSession,
       applyNightRest: this.#applyNightRest,
       recoverEncounterStrain: this.#recoverEncounterStrain,
@@ -195,7 +197,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   async _onRender(context, options) {
     await super._onRender(context, options);
     if (!context.dockWriter) {
-      const mutations = ["spendStoryPoint", "adjustStoryPoint", "awardPartyXp", "sessionControl", "applyNightRest", "recoverEncounterStrain", "addEncounterTokens", "resetHeroicSession"];
+      const mutations = ["spendStoryPoint", "adjustStoryPoint", "awardPartyXp", "sessionControl", "applyNightRest", "recoverEncounterStrain", "addEncounterTokens", "resetHeroicSession", "activateHeroic", "recoverHeroic"];
       for (const action of mutations) for (const button of this.element.querySelectorAll(`[data-action="${action}"]`)) button.disabled = true;
     }
     if (context.unauthorized) {
@@ -376,6 +378,19 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     finally { recoveryPending = false; target.disabled = false; refreshOpenDock(); }
   }
 
+  static async #activateHeroic(_event, target) {
+    if (!requireDockWriter() || target.disabled) return;
+    target.disabled = true;
+    try { await game.genesysHeroicLive.activate(game.actors.get(target.dataset.actorId)); }
+    catch (error) { ui.notifications.warn(error.message); }
+    finally { target.disabled = false; refreshOpenDock(); }
+  }
+  static async #recoverHeroic() {
+    if (!requireDockWriter()) return;
+    try { await game.genesysHeroicLive.recover(); ui.notifications.info("Interrupted activation restored."); }
+    catch (error) { ui.notifications.warn(error.message); }
+    finally { refreshOpenDock(); }
+  }
   static async #resetHeroicSession(_event, target) {
     if (!requireDockWriter() || target.disabled) return;
     target.disabled = true;

@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1840 \u2014 Heroic Live foundation: multi-point costs, overview and explicit session reset.",
-  "version": "0.0.1840",
+  "description": "Genesys VTT 0.0.1841 \u2014 Heroic activation, recoverable payment and owner-turn duration.",
+  "version": "0.0.1841",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -72,7 +72,8 @@
     "dist/module/apps/gm-dock-v1830.js",
     "dist/module/session-service-v1834.js",
     "dist/module/recovery-service-v1837.js",
-    "dist/module/encounter-recovery-v1838.js"
+    "dist/module/encounter-recovery-v1838.js",
+    "dist/module/heroic-live-v1841.js"
   ],
   "styles": [
     "styles/genesys.css",
