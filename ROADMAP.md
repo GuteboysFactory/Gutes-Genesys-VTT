@@ -1,5 +1,7 @@
 # Genesys VTT Roadmap
 
+Updated 2026-09-08. Latest build: **v0.0.1846** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
 ## Accepted baseline
@@ -139,7 +141,15 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Sheet and activation chat show custom text; manual resolution
 - Live QA pending
 
-### v0.0.1846 onward — Remaining Heroic Abilities Live
+### v0.0.1846 — First Foundry backend integration slice
+
+- World equipment appears in Equipment Library without a special flag; native Item opened for editing
+- Permission and setting filters; open Library refreshes on world Item changes
+- Existing Library Custom Item creation already creates a world Item
+- Pulled forward from content management following user requirement. Built-in catalog materialization, talents/other categories, Compendiums and Tome verification remain in the required content gate below
+- Live QA pending; no claim of complete two-way integration for all categories
+
+### v0.0.1847 onward — Remaining Heroic Abilities Live
 
 - Activation, costs, upgrades and encounter lifecycle
 - Sheet, chat and GM Dock integration

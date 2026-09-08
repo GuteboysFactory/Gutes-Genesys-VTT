@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {visibleWorldEquipment} from '../dist/module/equipment-world-items-v1846.js';
+const item=(id,type='weapon',settingId='',visible=true)=>({id,type,system:{provenance:{settingId}},testUserPermission:(_u,level)=>visible&&level==='OBSERVER'});
+const items=[item('plain'),item('hidden','gear','',false),item('other','armor','other'),item('talent','talent'),{...item('embedded'),parent:{}},item('ours','implement','rot')];
+assert.deepEqual(visibleWorldEquipment(items,{isGM:false},'rot').map(i=>i.id),['plain','ours']);
+assert.deepEqual(visibleWorldEquipment(items,{isGM:true},'rot').map(i=>i.id),['plain','hidden','ours']);
+assert.equal(visibleWorldEquipment(items,{isGM:true},'rot')[0],items[0],'same document identity');
+items[0].name='Edited in Foundry';assert.equal(visibleWorldEquipment(items,{isGM:true},'rot')[0].name,'Edited in Foundry');
+items.shift();assert.ok(!visibleWorldEquipment(items,{isGM:true},'rot').some(i=>i.id==='plain'));
+console.log('PASS: world equipment identity, permissions, settings, type and parent filters, edits and deletion');

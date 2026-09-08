@@ -1,3 +1,4 @@
+import { visibleWorldEquipment } from "./equipment-world-items-v1846.js";
 const SYSTEM_ID = "genesys-vtt";
 const LIBRARY_PROTOCOL = "genesys-equipment-library-v1";
 const CUSTOM_LIBRARY_FLAG = "equipmentLibraryTemplate";
@@ -73,10 +74,8 @@ function settingEntries(actor) {
     }));
 }
 
-function customEntries() {
-    return Array.from(game?.items ?? [])
-        .filter((item) => ITEM_TYPES.includes(String(item?.type ?? "")))
-        .filter((item) => item?.getFlag?.(SYSTEM_ID, CUSTOM_LIBRARY_FLAG) === true)
+function customEntries(actor) {
+    return visibleWorldEquipment(game?.items ?? [], game.user, actorSettingId(actor))
         .map((item) => ({
             id: `custom:${item.id}`,
             sourceKind: "custom",
@@ -84,7 +83,7 @@ function customEntries() {
             label: item.name,
             itemType: item.type,
             img: String(item.img ?? "icons/svg/item-bag.svg"),
-            sourceLabel: "Custom Library",
+            sourceLabel: "World Items",
             sourceId: String(item.system?.provenance?.sourceId ?? `custom:${item.id}`),
             sourceType: "custom",
             settingId: String(item.system?.provenance?.settingId ?? ""),
@@ -96,7 +95,7 @@ function customEntries() {
 }
 
 export function listEquipmentLibraryEntries(actor) {
-    return [...settingEntries(actor), ...customEntries()]
+    return [...settingEntries(actor), ...customEntries(actor)]
         .sort((a, b) => a.itemType.localeCompare(b.itemType) || a.label.localeCompare(b.label));
 }
 
@@ -130,7 +129,7 @@ function libraryHtml(actor) {
     return `<dialog class="genesys-equipment-library" data-equipment-library-dialog>
       <div class="genesys-equipment-library-shell">
         <header class="genesys-equipment-library-header"><div><strong>Equipment Library</strong><small>${esc(actor?.name ?? "Character")} · ${entries.length} registered entries</small></div><div class="genesys-equipment-library-header-actions">${game?.user?.isGM ? `<button type="button" data-equipment-new-custom><i class="fa-solid fa-plus"></i> Custom Item</button>` : ""}<button type="button" data-equipment-library-close aria-label="Close">×</button></div></header>
-        <div class="genesys-equipment-library-controls"><input type="search" data-equipment-search placeholder="Search equipment…"/><select data-equipment-type><option value="all">All Types</option>${types}</select><select data-equipment-source><option value="all">All Sources</option><option value="setting">Setting Content</option><option value="custom">Custom Content</option></select><select data-equipment-rarity><option value="all">All Rarities</option>${Array.from({length:11},(_,i)=>`<option value="${i}">Rarity ${i}</option>`).join("")}</select></div>
+        <div class="genesys-equipment-library-controls"><input type="search" data-equipment-search placeholder="Search equipment…"/><select data-equipment-type><option value="all">All Types</option>${types}</select><select data-equipment-source><option value="all">All Sources</option><option value="setting">Setting Content</option><option value="custom">World Items</option></select><select data-equipment-rarity><option value="all">All Rarities</option>${Array.from({length:11},(_,i)=>`<option value="${i}">Rarity ${i}</option>`).join("")}</select></div>
         <div class="genesys-equipment-library-body"><div class="genesys-equipment-library-list">${cards}</div><aside class="genesys-equipment-library-detail" data-equipment-detail><div class="genesys-equipment-detail-placeholder"><i class="fa-solid fa-shield-halved"></i><strong>Select an Item</strong><p>Inspect the source, statistics, qualities, and provenance before adding it to the character.</p></div></aside></div>
       </div>
     </dialog>`;
@@ -139,9 +138,10 @@ function libraryHtml(actor) {
 function renderDetail(dialog, actor, entry) {
     const detail = dialog.querySelector("[data-equipment-detail]");
     if (!detail) return;
+    dialog.dataset.selectedEquipment = entry.id;
     const s = entry.system ?? {};
     const sourceReference = String(entry.metadata?.printedSource ?? entry.sourceLabel ?? "");
-    detail.innerHTML = `<div class="genesys-equipment-detail-title"><img src="${esc(entry.img)}" alt=""/><div><strong>${esc(entry.label)}</strong><span>${esc(typeLabel(entry.itemType))} · ${esc(entry.sourceKind === "custom" ? "Custom Content" : "Setting Content")}</span></div></div>
+    detail.innerHTML = `<div class="genesys-equipment-detail-title"><img src="${esc(entry.img)}" alt=""/><div><strong>${esc(entry.label)}</strong><span>${esc(typeLabel(entry.itemType))} · ${esc(entry.sourceKind === "custom" ? "World Items" : "Setting Content")}</span></div></div>
       <dl><div><dt>Price</dt><dd>${esc(priceText(s, entry.metadata))}</dd></div><div><dt>Rarity</dt><dd>${esc(rarityText(s))}</dd></div><div><dt>Encumbrance</dt><dd>${esc(s.encumbrance ?? "—")}</dd></div><div><dt>Source</dt><dd>${esc(sourceReference || entry.sourceType)}</dd></div></dl>
       <section><h3>Profile</h3><p>${esc(summaryText(entry))}</p></section>
       ${entry.itemType === "weapon" || entry.itemType === "armor" ? `<section><h3>Qualities</h3><p>${esc(qualityText(s))}</p></section>` : ""}
@@ -280,6 +280,7 @@ export function openEquipmentLibrary(actor, root = null) {
     const wrapper = document.createElement("div");
     wrapper.innerHTML = libraryHtml(actor);
     const dialog = wrapper.firstElementChild;
+    dialog.genesysLibraryActor = actor;
     host.append(dialog);
     dialog.showModal?.();
     return dialog;
@@ -493,3 +494,19 @@ Hooks.once("ready", () => {
     observer.observe(document.body, { childList: true, subtree: true });
 });
 import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";
+
+for (const hook of ["createItem", "updateItem", "deleteItem"]) Hooks.on(hook, item => {
+    if (item.parent) return;
+    for (const dialog of document.querySelectorAll("[data-equipment-library-dialog]")) {
+        const actor = dialog.genesysLibraryActor;
+        if (!actor) continue;
+        const wrapper = document.createElement("div");
+        wrapper.innerHTML = libraryHtml(actor);
+        dialog.querySelector(".genesys-equipment-library-list").innerHTML = wrapper.querySelector(".genesys-equipment-library-list").innerHTML;
+        dialog.querySelector(".genesys-equipment-library-header small").textContent = wrapper.querySelector(".genesys-equipment-library-header small").textContent;
+        const entry = listEquipmentLibraryEntries(actor).find(row => row.id === dialog.dataset.selectedEquipment);
+        if (entry) renderDetail(dialog, actor, entry);
+        else dialog.querySelector("[data-equipment-detail]").textContent = "Select an Item";
+        applyFilters(dialog);
+    }
+});
