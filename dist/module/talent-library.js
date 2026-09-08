@@ -63,6 +63,25 @@ function registryTalents() {
     }
 }
 
+let compendiumTalents=[];
+export async function loadCompendiumTalents(){
+    const rows=[];
+    for(const pack of Array.from(game.packs?.values?.() ?? [])){
+        if(pack.documentName!=='Item' || !(game.user?.isGM || pack.visible))continue;
+        const docs=await pack.getDocuments();
+        if(!(game.user?.isGM || pack.visible))continue;
+        for(const item of docs){
+            if(item.type!=='talent')continue;
+            rows.push({...normalizeTalentDefinition({name:item.name,system:{...item.system,sourceId:`Compendium.${pack.collection}.${item.id}`}}),documentId:item.id,packId:pack.collection,librarySource:pack.metadata?.label||pack.collection});
+        }
+    }
+    compendiumTalents=rows;
+    return rows;
+}
+function visibleCompendiumTalents(){
+    return compendiumTalents.filter(row=>{const pack=game.packs?.get(row.packId);return pack && (game.user?.isGM || pack.visible);});
+}
+
 export function worldTalents() {
     return Array.from(game.items?.contents ?? []).filter(item => item.type === 'talent' && (game.user?.isGM || item.testUserPermission?.(game.user, 'OBSERVER'))).map(item => ({
         ...normalizeTalentDefinition({name:item.name,system:{...item.system,sourceId:`world-talent:${item.id}`}}),
@@ -91,7 +110,7 @@ function dedupeTalents(rows) {
 }
 
 export function listTalentLibraryEntries() {
-    return dedupeTalents([...referenceTalents(), ...registryTalents(), ...worldTalents()]);
+    return dedupeTalents([...referenceTalents(), ...registryTalents(), ...worldTalents(), ...visibleCompendiumTalents()]);
 }
 
 function actorTalentItems(actor) {
@@ -271,14 +290,14 @@ function libraryHtml(actor) {
           <header><div><strong>${esc(talent.label)}</strong><span>${esc(talent.librarySource)}</span></div><b>T${talent.tier}</b></header>
           <div class="genesys-library-talent-meta"><span>${talent.ranked ? "Ranked" : "Non-Ranked"}</span><span>${esc(talent.activation)}</span><span>${evaluation.cost} XP</span>${owned ? `<span>${esc(owned)}</span>` : ""}</div>
           <p>${esc(talent.notes || talent.description || "No description supplied by this content pack.")}</p>
-          <div class="genesys-library-talent-actions">${talent.packId === "world" ? `<button type="button" data-library-edit-world="${esc(talent.documentId)}">Open source</button>` : ""}<button type="button" data-library-view="${esc(talent.id)}">View</button><button type="button" class="genesys-primary-action" data-library-purchase="${esc(talent.id)}" ${evaluation.allowed ? "" : "disabled"} title="${esc(title)}">${esc(purchaseLabel)}</button></div>
+          <div class="genesys-library-talent-actions">${talent.documentId && (talent.packId === "world" || talent.id.startsWith("Compendium.")) ? `<button type="button" data-library-edit-world="${esc(talent.documentId)}" data-library-pack="${esc(talent.packId)}">Open source</button>` : ""}<button type="button" data-library-view="${esc(talent.id)}">View</button><button type="button" class="genesys-primary-action" data-library-purchase="${esc(talent.id)}" ${evaluation.allowed ? "" : "disabled"} title="${esc(title)}">${esc(purchaseLabel)}</button></div>
         </article>`;
     }).join("") || `<p class="genesys-empty-row">No Talents are registered. Import a Character Content Pack to populate the library.</p>`;
 
     return `<dialog class="genesys-talent-library" data-talent-library-dialog>
       <div class="genesys-talent-library-shell">
         <header class="genesys-talent-library-header"><div><strong>Talent Library</strong><small>${esc(actor?.name ?? "Character")} · ${talents.length} registered Talents</small></div><div class="genesys-talent-library-xp"><span>XP Available</span><strong data-library-xp>${actorAvailableXp(actor)}</strong></div><button type="button" data-library-close aria-label="Close">×</button></header>
-        <div class="genesys-talent-library-controls">${game.user?.isGM ? `<button type="button" data-library-create-world>Create world Talent</button>` : ""}<input type="search" data-library-search placeholder="Search Talents…"/><select data-library-tier><option value="all">All Tiers</option><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option><option value="5">Tier 5</option></select><select data-library-source><option value="all">All Sources</option>${sources.map((source) => `<option value="${esc(source)}">${esc(source)}</option>`).join("")}</select></div>
+        <div class="genesys-talent-library-controls">${game.user?.isGM ? `<button type="button" data-library-create-world>Create world Talent</button>` : ""}<button type="button" data-library-load-packs>Load / refresh Compendiums</button><input type="search" data-library-search placeholder="Search Talents…"/><select data-library-tier><option value="all">All Tiers</option><option value="1">Tier 1</option><option value="2">Tier 2</option><option value="3">Tier 3</option><option value="4">Tier 4</option><option value="5">Tier 5</option></select><select data-library-source><option value="all">All Sources</option>${sources.map((source) => `<option value="${esc(source)}">${esc(source)}</option>`).join("")}</select></div>
         <div class="genesys-talent-library-body"><div class="genesys-talent-library-list">${cards}</div><aside class="genesys-talent-library-detail" data-library-detail><div class="genesys-library-detail-placeholder"><i class="fa-solid fa-book-open"></i><strong>Select a Talent</strong><p>View requirements, Rule Elements, source, XP cost, and purchase eligibility.</p></div></aside></div>
       </div>
     </dialog>`;
@@ -368,6 +387,15 @@ function initializeTalentLibraryButtons() {
 }
 
 document.addEventListener("click", async (event) => {
+    const loadPacks=event.target?.closest?.('[data-library-load-packs]');
+    if(loadPacks){
+        event.preventDefault();loadPacks.disabled=true;
+        const dialog=loadPacks.closest('dialog'),actor=dialog?._genesysActor,host=dialog?.parentElement;
+        try{await loadCompendiumTalents();if(dialog?.isConnected && dialog.open)openTalentLibrary(actor,host);}
+        catch(error){compendiumTalents=[];ui.notifications.warn(`Compendium loading failed: ${error.message}`);}
+        finally{loadPacks.disabled=false;}
+        return;
+    }
     const createWorld = event.target?.closest?.('[data-library-create-world]');
     const editWorld = event.target?.closest?.('[data-library-edit-world]');
     if(createWorld || editWorld){
@@ -378,7 +406,12 @@ document.addEventListener("click", async (event) => {
             if(createWorld){
                 if(!game.user?.isGM)throw Error('Only a GM can create shared Talents here.');
                 item=await foundry.documents.Item.create({name:'New Talent',type:'talent',system:{tier:1,rank:1,ranked:false,activation:'passive'},ownership:{default:0}});
-            }else item=game.items.get(editWorld.dataset.libraryEditWorld);
+            }else if(editWorld.dataset.libraryPack==='world')item=game.items.get(editWorld.dataset.libraryEditWorld);
+            else{
+                const pack=game.packs.get(editWorld.dataset.libraryPack);
+                if(!pack || !(game.user?.isGM || pack.visible))throw Error('Compendium is no longer available.');
+                item=await pack.getDocument(editWorld.dataset.libraryEditWorld);
+            }
             if(!item || !(game.user?.isGM || item.testUserPermission?.(game.user,'OBSERVER')))throw Error('Talent is no longer available.');
             dialog?.close();await item.sheet.render(true);
         }catch(error){ui.notifications.warn(error.message);}
@@ -474,6 +507,7 @@ import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1
 // Rebuild open Library views from native documents; owned talent copies remain independent.
 for(const name of ['createItem','updateItem','deleteItem']) Hooks.on(name,item=>{
     if(item.parent || item.type!=='talent')return;
+    if(item.pack)compendiumTalents=[];
     for(const dialog of document.querySelectorAll('[data-talent-library-dialog]')){
         if(!dialog.open || !dialog._genesysActor)continue;
         const filters=['search','tier','source'].map(key=>[key,dialog.querySelector(`[data-library-${key}]`)?.value]);
@@ -482,3 +516,6 @@ for(const name of ['createItem','updateItem','deleteItem']) Hooks.on(name,item=>
         applyFilters(fresh);
     }
 });
+
+// Invalidate snapshots after native pack changes; refresh explicitly before using changed entries.
+for(const event of ['updateCompendium','deleteCompendium']) Hooks.on(event,()=>{compendiumTalents=[];});

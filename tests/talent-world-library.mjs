@@ -3,7 +3,7 @@ globalThis.document={addEventListener(){}};globalThis.Hooks={once(){},on(){}};gl
 globalThis.game={user:{isGM:false},items:{contents:[]},genesysContent:{getContent:()=>[]}};
 const fs=await import('node:fs');const rules=await import('../dist/domain/rules/index.js');Object.assign(globalThis,{__rules:rules});
 const source=fs.readFileSync('dist/module/talent-library.js','utf8').replace(/^import .*;$/gm,'');
-const {listTalentLibraryEntries}=await import('data:text/javascript;base64,'+Buffer.from('const {createCoreParryTalent,createCoreSecondWindTalent,createTerrinothFinesseTalent,normalizeTalentDefinition}=globalThis.__rules;\n'+source).toString('base64'));
+const {listTalentLibraryEntries,loadCompendiumTalents}=await import('data:text/javascript;base64,'+Buffer.from('const {createCoreParryTalent,createCoreSecondWindTalent,createTerrinothFinesseTalent,normalizeTalentDefinition}=globalThis.__rules;\n'+source).toString('base64'));
 const item=(id,visible)=>({id,type:'talent',name:'Same name',system:{sourceId:'same',tier:2,notes:'Original'},testUserPermission:()=>visible});
 game.items.contents=[item('a',true),item('b',true),item('hidden',false)];
 let entries=listTalentLibraryEntries().filter(x=>x.packId==='world');assert.equal(entries.length,2);assert.notEqual(entries[0].id,entries[1].id);assert.equal(entries[0].documentId,'a');
@@ -11,3 +11,10 @@ game.items.contents[0].system.notes='Edited';assert.equal(listTalentLibraryEntri
 game.items.contents.shift();assert.equal(listTalentLibraryEntries().some(x=>x.documentId==='a'),false);
 game.user.isGM=true;assert.equal(listTalentLibraryEntries().filter(x=>x.packId==='world').length,2);
 console.log('PASS: native talent visibility, stable independent IDs, edits and deletion');
+
+game.user.isGM=false;let reads=0;
+const pack={collection:'world.test',documentName:'Item',visible:true,metadata:{label:'Test pack'},getDocuments:async()=>{reads++;return [item('p',true)];}};
+game.packs=new Map([['world.test',pack],['world.private',{...pack,visible:false,getDocuments:async()=>{throw Error('Private pack read');}}]]);
+await loadCompendiumTalents();assert.equal(reads,1);assert.equal(listTalentLibraryEntries().find(x=>x.packId==='world.test').id,'Compendium.world.test.p');
+pack.visible=false;assert.equal(listTalentLibraryEntries().some(x=>x.packId==='world.test'),false);
+console.log('PASS: compendium loading and permission revocation');
