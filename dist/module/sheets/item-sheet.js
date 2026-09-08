@@ -52,6 +52,7 @@ export class GenesysItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         const rulesSummary = String(reference?.rulesSummary ?? reference?.description ?? "").trim();
         return {
             ...context,
+            isActionTemplate: this.item.type === "actionTemplate",
             item: this.item,
             system,
             editable: this.isEditable,

@@ -1,6 +1,13 @@
 <section class="genesys-sheet-body genesys-item-body">
   <header class="genesys-sheet-header"><div><p class="genesys-eyebrow">GENESYS VTT · v{{systemVersion}} · {{item.type}}</p><input class="genesys-name" type="text" name="name" value="{{item.name}}" {{#unless editable}}disabled{{/unless}} /></div></header>
 
+  {{#if isActionTemplate}}
+  <section class="genesys-panel genesys-item-fields"><h2>Action Template</h2>
+  <label>Activation<input name="system.activation" value="{{system.activation}}" {{#unless editable}}disabled{{/unless}} /></label>
+  <p>action / maneuver / incidental / out-of-turn-incidental</p>
+  <label>Skill ID<input name="system.skillId" value="{{system.skillId}}" {{#unless editable}}disabled{{/unless}} /></label>
+  <label>Difficulty<input type="number" name="system.difficulty" value="{{system.difficulty}}" min="0" max="5" {{#unless editable}}disabled{{/unless}} /></label>
+  </section>{{/if}}
   {{#if isWeapon}}
   <section class="genesys-panel genesys-item-fields"><h2>Weapon</h2><div class="genesys-item-grid">
     <label>Skill<select name="system.skillId" {{#unless editable}}disabled{{/unless}}>{{#each skills}}<option value="{{id}}" {{#if selected}}selected{{/if}}>{{label}}</option>{{/each}}</select></label>

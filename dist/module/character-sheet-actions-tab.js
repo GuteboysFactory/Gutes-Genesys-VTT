@@ -283,7 +283,7 @@ function buildGeneralActions() {
 function buildActionsToolbar() {
     const toolbar = document.createElement("div");
     toolbar.className = "genesys-actions-toolbar";
-    toolbar.innerHTML = `<div><strong>Actions</strong><span>Live actions, actor-specific actions, and reusable templates.</span></div><button type="button" class="genesys-primary-action genesys-create-custom-action" data-custom-action-create><i class="fa-solid fa-plus" aria-hidden="true"></i> Custom Action</button>`;
+    toolbar.innerHTML = `<div><strong>Actions</strong><span>Live actions, actor-specific actions, and reusable templates.</span></div><button type="button" data-action-library>Action Library</button><button type="button" class="genesys-primary-action genesys-create-custom-action" data-custom-action-create><i class="fa-solid fa-plus" aria-hidden="true"></i> Custom Action</button>`;
     return toolbar;
 }
 
@@ -413,6 +413,27 @@ document.addEventListener("click", async (event) => {
             console.error("genesys-vtt | Narrative Dice Transfer failed", error);
             ui?.notifications?.error?.(String(error?.message ?? error));
         }
+        return;
+    }
+    const library=event.target?.closest?.('[data-action-library]');
+    if(library){
+        event.preventDefault();const root=library.closest('[data-genesys-sheet-tabs]'),actor=actorForRoot(root);
+        try{
+            const entries=Array.from(game.items.contents).filter(i=>i.type==='actionTemplate'&&(game.user.isGM||i.testUserPermission(game.user,'OBSERVER')));
+            const choice=await foundry.applications.api.DialogV2.wait({window:{title:'Action Library'},content:`<p>Choose a world Action Template. Adding creates an independent character action.</p><select name="template">${entries.map(i=>`<option value="${esc(i.id)}">${esc(i.name)}</option>`).join('')}</select>`,buttons:[{action:'add',label:'Add to character',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'add'})},{action:'source',label:'Open source',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'source'})},...(game.user.isGM?[{action:'new',label:'Create template',callback:()=>({kind:'new'})}]:[])],rejectClose:false});
+            if(!choice)return;
+            if(choice.kind==='new'){
+                if(!game.user.isGM)throw Error('GM required.');
+                let folder=game.folders.contents.find(f=>f.type==='Item'&&f.name==='Actions'&&!f.folder);
+                if(!folder)folder=await foundry.documents.Folder.create({name:'Actions',type:'Item',folder:null});
+                const item=await foundry.documents.Item.create({name:'New Action',type:'actionTemplate',folder:folder.id,ownership:{default:0}});await item.sheet.render(true);return;
+            }
+            const item=game.items.get(choice.id);
+            if(!item||item.type!=='actionTemplate'||!(game.user.isGM||item.testUserPermission(game.user,'OBSERVER')))throw Error('Template unavailable.');
+            if(choice.kind==='source'){await item.sheet.render(true);return;}
+            if(!actor || !(game.user.isGM||actor.isOwner))throw Error('Character ownership required.');
+            await writeCustomActions(actor,[...customActions(actor),normalizeCustomAction({...item.system,name:item.name,id:actionId()})]);rebuildActionsPanel(root);
+        }catch(error){ui.notifications.warn(error.message);}
         return;
     }
     const create = event.target?.closest?.("[data-custom-action-create]");
