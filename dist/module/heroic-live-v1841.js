@@ -28,6 +28,14 @@ export async function activate(actor) {
     const secondaryLabels = game.genesysHeroic.secondaryOptions?.(actor)?.filter(row => proposal.ability.secondaryEffectIds.includes(row.id)).map(row => row.description ? `${row.label}: ${row.description}` : row.label).join('; ') || proposal.ability.secondaryEffectIds.join(', ');
     try { await foundry.documents.ChatMessage.create({ speaker: { alias: actor.name }, content: `<p><strong>Heroic Ability Activated</strong> · ${esc(proposal.ability.name || proposal.ability.primaryEffectLabel)}</p><p>${proposal.cost} Story Points · Usage ${proposal.ability.usesThisSession} · Until the end of the next owner turn (${proposal.ability.activeTurnBudget} turn budget).</p>${secondaryLabels ? `<p>Secondary Effects: ${esc(secondaryLabels)}</p>` : ''}${proposal.strainAfter !== undefined ? `<p>Rejuvenation: recovered ${proposal.strainRecovered} Strain on activation. Owner-turn recovery is automatic while active.</p>` : ''}<p>Apply remaining narrative/mechanical effects with the GM.</p>` }); }
     catch { ui.notifications.warn('Heroic activation saved; chat announcement failed.'); }
+    if (proposal.ability.secondaryEffectIds.includes('rot-heroic-secondary:renewal')) {
+      const scene = canvas.scene;
+      const state = game.genesysVtt.initiative.sceneState(scene);
+      if (scene?.id === proposal.timing.sceneId && state.status === 'active' && state.mode === 'side-slots') {
+        try { await (await import('./heroic-renewal-ui-v1856.js')).promptRenewal(actor); }
+        catch(error) { ui.notifications.warn(`Heroic activation saved. Renewal unresolved: ${error.message} Use Renewal on Actions to retry.`); }
+      } else ui.notifications.info('Heroic activated. Resolve Renewal manually outside active Side Slots.');
+    }
     return proposal;
   } finally { locks.delete(actor.uuid); }
 }

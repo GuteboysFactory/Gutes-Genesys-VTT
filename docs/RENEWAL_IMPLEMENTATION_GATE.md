@@ -41,3 +41,8 @@ GM uses the Actions button immediately after a new Heroic activation. Timing is 
 The roll is saved on the actor before inserting the scene slot. Retrying a failed scene write reuses that saved result, including after reload. If the initial actor save itself fails, the roll has not been durably recorded; do not claim an atomic cross-document transaction. A local lock blocks duplicate clicks; simultaneous writes from separate GM browser sessions still need hardening. No chat announcement yet; result notification and Encounter Tracker slot provide feedback.
 
 Automated tests cover saved retry, cancellation, GM/encounter guards, unchanged allowances, source removal, preserved active slot and round eligibility. Live Foundry QA remains pending.
+
+
+## v0.0.1856 follow-up
+
+A successful activation now prompts Renewal in active Side Slots. The manual button shares the same prompt and retry path. Slot success is posted to chat, with a warning if posting fails; chat failures do not undo gameplay. Concurrent browser writes remain open. Live prompt/chat QA pending.

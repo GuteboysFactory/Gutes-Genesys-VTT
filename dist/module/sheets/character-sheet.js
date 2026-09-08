@@ -1,6 +1,3 @@
-import { resolveRenewal } from '../heroic-renewal-v1855.js';
-import { readSceneInitiativeState, writeSceneInitiativeState } from '../initiative-service.js';
-import { rollNarrativePool } from '../../domain/dice/index.js';
 import { applyActivationPulse } from "../heroic-pulse-v1852.js";
 import { configureAura } from "../heroic-aura-v1851.js";
 import { parsePoolFromElement, rollPoolToChat } from "../dice-ui.js";
@@ -135,16 +132,8 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     };
     static async #heroicRenewal(_event,target) {
         target.disabled=true;
-        const scene=canvas.scene;
-        try {
-            const result=await resolveRenewal(this.actor,{
-                scene, isGM:()=>game.user?.isGM && game.users.activeGM?.id===game.user.id,
-                read:()=>readSceneInitiativeState(scene), write:state=>writeSceneInitiativeState(state,scene),
-                choose:()=>foundry.applications.api.DialogV2.wait({window:{title:'Renewal · Activation'},content:'<p>Resolve once for this Heroic activation. Choose the initiative skill. A saved result is reused on retry. No extra turn is granted.</p>',buttons:[{action:'cool',label:'Cool',callback:()=> 'cool'},{action:'vigilance',label:'Vigilance',callback:()=> 'vigilance'},{action:'cancel',label:'Cancel',default:true,callback:()=>null}],rejectClose:false}),
-                roll:skill=>rollNarrativePool(prepareActorSkillEngineCheck(this.actor,skill,{mode:'standard',difficulty:0}).check.construction.pool)
-            });
-            if(result)ui.notifications.info(`Renewal: ${result.success} Success, ${result.advantage} Advantage. PC slot added.`);
-        } catch(error){ui.notifications.warn(error.message);}
+        try { await (await import('../heroic-renewal-ui-v1856.js')).promptRenewal(this.actor); }
+        catch(error){ui.notifications.warn(error.message);}
         finally{target.disabled=false;}
     }
     static async #heroicPulse(_event,target) {

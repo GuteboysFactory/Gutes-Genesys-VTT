@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1855** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1856** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -212,6 +212,14 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Renewal survives source removal and participant updates; next-round eligibility skips unusable slots
 - 34 automated test files pass; live Foundry and multi-client QA pending
 - Next: remaining Heroic integration, activation-time prompt/chat feedback and concurrent encounter-write hardening. Popcorn Renewal needs explicit semantics before implementation.
+
+### v0.0.1856 — Renewal activation prompt and chat feedback
+
+- Successful Heroic activation opens Cool/Vigilance choice when Renewal is selected in active Side Slots
+- Cancel leaves the paid Heroic activation intact; Actions remains the recovery entry point
+- Successfully inserted Renewal slot is announced in chat; failed chat does not roll back the slot or repeat the roll
+- Existing 34 automated regressions pass; prompt/chat integration requires live Foundry QA
+- Next: serialize encounter mutations through a shared authority, including player claims and GM actions. Separate GM browser sessions remain an unresolved concurrency limitation.
 
 ### Remaining Heroic Abilities Live (before combat hardening)
 
