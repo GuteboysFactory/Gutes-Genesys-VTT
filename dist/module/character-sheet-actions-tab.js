@@ -1,3 +1,5 @@
+import {ACTION_BINDINGS,installDefaultActions} from './action-defaults.js';
+import {prepareActorSkillEngineCheck,promptActorCheckCharacteristicChoice,rollPreparedActorCheckToChat} from './check-ui.js';
 import {useSceneTurnManeuver} from './initiative-service.js';
 import {listActionTemplateSources,resolveActionTemplateSource} from './action-template-sources.js';
 const SYSTEM_ID = "genesys-vtt";
@@ -39,6 +41,8 @@ function normalizeCustomAction(raw = {}) {
     return {
         id: String(raw.id ?? actionId()),
         name: String(raw.name ?? "Custom Action"),
+        binding: ACTION_BINDINGS.includes(raw.binding) ? raw.binding : 'skill-check',
+        sourceUuid: String(raw.sourceUuid ?? ''),
         activation: String(raw.activation ?? "action"),
         skillId: String(raw.skillId ?? ""),
         difficulty: Math.max(0, Math.min(5, Math.trunc(Number(raw.difficulty ?? 2) || 0))),
@@ -256,7 +260,7 @@ function buildCustomActions(root) {
         const card = document.createElement("article");
         card.className = "genesys-general-action-card genesys-custom-action-card";
         card.dataset.customActionId = action.id;
-        card.innerHTML = `<i class="fa-solid fa-wand-sparkles" aria-hidden="true"></i><div class="genesys-custom-action-copy"><strong>${esc(action.name)}</strong><p>${esc(action.activation)}${action.skillId ? ` · ${esc(action.skillId)}` : ""} · Difficulty ${action.difficulty}</p>${action.notes ? `<small>${esc(action.notes)}</small>` : ""}</div><div class="genesys-custom-action-buttons"><button type="button" data-custom-action-edit="${esc(action.id)}">Edit</button><button type="button" data-custom-action-delete="${esc(action.id)}" title="Delete Custom Action">×</button></div>`;
+        card.innerHTML = `<i class="fa-solid fa-wand-sparkles" aria-hidden="true"></i><div class="genesys-custom-action-copy"><strong>${esc(action.name)}</strong><p>${esc(action.activation)}${action.skillId ? ` · ${esc(action.skillId)}` : ""}${action.binding==='skill-check' ? ` · Difficulty ${action.difficulty}` : ''}</p>${action.notes ? `<small>${esc(action.notes)}</small>` : ""}</div><div class="genesys-custom-action-buttons"><button type="button" data-custom-action-use="${esc(action.id)}">Use</button><button type="button" data-custom-action-edit="${esc(action.id)}">Edit</button><button type="button" data-custom-action-delete="${esc(action.id)}" title="Delete Custom Action">×</button></div>`;
         grid.append(card);
     }
     section.append(grid);
@@ -293,7 +297,7 @@ function buildActionEditor(root) {
     const dialog = document.createElement("dialog");
     dialog.className = "genesys-custom-action-editor";
     dialog.dataset.customActionEditor = "true";
-    dialog.innerHTML = `<form method="dialog" class="genesys-custom-action-form"><header><div><strong data-custom-action-editor-title>Custom Action</strong><small>Actor-bound Action</small></div><button type="button" data-custom-action-cancel aria-label="Close">×</button></header><input type="hidden" name="actionId" value="" /><div class="genesys-custom-action-form-grid"><label>Name<input type="text" name="actionName" value="" required /></label><label>Activation<select name="activation"><option value="action">Action</option><option value="maneuver">Maneuver</option><option value="incidental">Incidental</option><option value="out-of-turn-incidental">Out-of-Turn Incidental</option></select></label><label>Skill<input type="text" name="skillId" value="" placeholder="e.g. athletics, melee-heavy" /></label><label>Difficulty<input type="number" name="difficulty" value="2" min="0" max="5" /></label></div><label class="genesys-custom-action-notes">Description<textarea name="notes" rows="5" placeholder="What does this Action do?"></textarea></label><footer><button type="button" data-custom-action-cancel>Cancel</button><button type="submit" class="genesys-primary-action">Save Action</button></footer></form>`;
+    dialog.innerHTML = `<form method="dialog" class="genesys-custom-action-form"><header><div><strong data-custom-action-editor-title>Custom Action</strong><small>Actor-bound Action</small></div><button type="button" data-custom-action-cancel aria-label="Close">×</button></header><input type="hidden" name="actionId" value="" /><div class="genesys-custom-action-form-grid"><label>Name<input type="text" name="actionName" value="" required /></label><label>Activation<select name="activation"><option value="action">Action</option><option value="maneuver">Maneuver</option><option value="incidental">Incidental</option><option value="out-of-turn-incidental">Out-of-Turn Incidental</option></select></label><label>Behavior<select name="binding"><option value="skill-check">Skill check (live character values)</option><option value="assist">Assist maneuver</option><option value="maneuver">Maneuver</option><option value="custom-check">Open Dice Tools</option></select></label><label>Skill<input type="text" name="skillId" value="" placeholder="e.g. athletics, melee-heavy" /></label><label>Difficulty<input type="number" name="difficulty" value="2" min="0" max="5" /></label></div><label class="genesys-custom-action-notes">Description<textarea name="notes" rows="5" placeholder="What does this Action do?"></textarea></label><footer><button type="button" data-custom-action-cancel>Cancel</button><button type="submit" class="genesys-primary-action">Save Action</button></footer></form>`;
     root.append(dialog);
     return dialog;
 }
@@ -304,6 +308,7 @@ function openActionEditor(root, action = null) {
     dialog.querySelector("[data-custom-action-editor-title]").textContent = action ? `Edit ${normalized.name}` : "Create Custom Action";
     dialog.querySelector("[name='actionId']").value = action ? normalized.id : "";
     dialog.querySelector("[name='actionName']").value = normalized.name;
+    dialog.querySelector("[name='binding']").value = normalized.binding;
     dialog.querySelector("[name='activation']").value = normalized.activation;
     dialog.querySelector("[name='skillId']").value = normalized.skillId;
     dialog.querySelector("[name='difficulty']").value = String(normalized.difficulty);
@@ -368,7 +373,7 @@ async function saveEditor(root, form) {
         throw new Error("Could not resolve this character Actor.");
     const id = String(form.elements.actionId?.value ?? "");
     const actions = customActions(actor);
-    const nextAction = normalizeCustomAction({ id: id || actionId(), name: form.elements.actionName?.value, activation: form.elements.activation?.value, skillId: form.elements.skillId?.value, difficulty: form.elements.difficulty?.value, notes: form.elements.notes?.value });
+    const nextAction = normalizeCustomAction({ sourceUuid: actions.find(a=>a.id===id)?.sourceUuid, binding: form.elements.binding?.value, id: id || actionId(), name: form.elements.actionName?.value, activation: form.elements.activation?.value, skillId: form.elements.skillId?.value, difficulty: form.elements.difficulty?.value, notes: form.elements.notes?.value });
     const index = actions.findIndex((entry) => entry.id === id);
     if (index >= 0)
         actions[index] = nextAction;
@@ -417,6 +422,28 @@ document.addEventListener("click", async (event) => {
         }
         return;
     }
+    const use=event.target?.closest?.('[data-custom-action-use]');
+    if(use){
+        event.preventDefault();if(use.disabled)return;use.disabled=true;
+        try{
+            const root=use.closest('[data-genesys-sheet-tabs]'),actor=actorForRoot(root);
+            if(!actor||!(actor.isOwner||game.user.isGM))throw Error('Character ownership required.');
+            const action=customActions(actor).find(a=>a.id===use.dataset.customActionUse);
+            if(!action)throw Error('Action no longer exists.');
+            if(action.binding!=='skill-check'){
+                const label={assist:'Assist',maneuver:'Maneuver','custom-check':'Custom Check'}[action.binding];
+                root.querySelector(`[data-general-action="${label}"]`)?.click();
+            }else{
+                if(!action.skillId)throw Error('Edit this action and choose a Skill ID first.');
+                const yes=await foundry.applications.api.DialogV2.confirm({window:{title:action.name},content:`<p>Roll ${esc(action.skillId)} at difficulty ${action.difficulty} using current character values? Resolve activation costs and narrative effects manually.</p>`,rejectClose:false});
+                if(!yes)return;
+                const choice=await promptActorCheckCharacteristicChoice(actor,action.skillId,{tags:['skill-check']});
+                const prepared=prepareActorSkillEngineCheck(actor,action.skillId,{mode:'standard',difficulty:action.difficulty,characteristicOverrideId:choice?.characteristicId,appliedRuleLabel:choice?.talentLabel});
+                await rollPreparedActorCheckToChat(prepared,actor.name,actor.id,actor);
+            }
+        }catch(error){ui.notifications.warn(error.message);}finally{use.disabled=false;}
+        return;
+    }
     const general=event.target?.closest?.('[data-general-action]');
     if(general){
         event.preventDefault();const root=general.closest('[data-genesys-sheet-tabs]');
@@ -441,8 +468,9 @@ document.addEventListener("click", async (event) => {
         event.preventDefault();const root=library.closest('[data-genesys-sheet-tabs]'),actor=actorForRoot(root);
         try{
             const entries=await listActionTemplateSources();
-            const choice=await foundry.applications.api.DialogV2.wait({window:{title:'Action Library'},content:`<p>Choose a world or Compendium Action Template. Adding creates an independent character action.</p><select name="template">${entries.map(i=>`<option value="${esc(i.key)}">${esc(i.label)}</option>`).join('')}</select>`,buttons:[{action:'add',label:'Add to character',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'add'})},{action:'source',label:'Open source',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'source'})},...(game.user.isGM?[{action:'new',label:'Create template',callback:()=>({kind:'new'})}]:[])],rejectClose:false});
+            const choice=await foundry.applications.api.DialogV2.wait({window:{title:'Action Library'},content:`<p>Choose a world or Compendium Action Template. Adding creates an independent character action.</p><select name="template">${entries.map(i=>`<option value="${esc(i.key)}">${esc(i.label)}</option>`).join('')}</select>`,buttons:[{action:'add',label:'Add to character',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'add'})},{action:'source',label:'Open source',callback:(_e,_b,d)=>({id:d.element.querySelector('select').value,kind:'source'})},...(game.user.isGM?[{action:'install',label:'Install missing defaults',callback:()=>({kind:'install'})},{action:'new',label:'Create template',callback:()=>({kind:'new'})}]:[])],rejectClose:false});
             if(!choice)return;
+            if(choice.kind==='install'){const count=await installDefaultActions();ui.notifications.info(`${count} default Actions installed in Items → Actions.`);return;}
             if(choice.kind==='new'){
                 if(!game.user.isGM)throw Error('GM required.');
                 let folder=game.folders.contents.find(f=>f.type==='Item'&&f.name==='Actions'&&!f.folder);
@@ -452,7 +480,7 @@ document.addEventListener("click", async (event) => {
             const item=await resolveActionTemplateSource(entries.find(row=>row.key===choice.id));
             if(choice.kind==='source'){await item.sheet.render(true);return;}
             if(!actor || !(game.user.isGM||actor.isOwner))throw Error('Character ownership required.');
-            await writeCustomActions(actor,[...customActions(actor),normalizeCustomAction({...item.system,name:item.name,id:actionId()})]);rebuildActionsPanel(root);
+            await writeCustomActions(actor,[...customActions(actor),normalizeCustomAction({...item.system,sourceUuid:item.uuid,name:item.name,id:actionId()})]);rebuildActionsPanel(root);
         }catch(error){ui.notifications.warn(error.message);}
         return;
     }
@@ -522,3 +550,9 @@ Hooks.once("ready", () => {
     console.log("genesys-vtt | 0.0.1756 Actions layout ready");
 });
 import { GenesysUiObserver as MutationObserver } from "./ui-mount-coordinator-v1812.js";
+
+Hooks.once('ready',async()=>{
+ if(!game.user?.isGM||game.users?.activeGM?.id!==game.user.id)return;
+ try{if(!game.settings.get(SYSTEM_ID,'defaultActionsInstalled')){await installDefaultActions();await game.settings.set(SYSTEM_ID,'defaultActionsInstalled',true);}}catch(error){ui.notifications.warn(`Default Actions: ${error.message}. Retry from Action Library.`);}
+});
+Hooks.once('init',()=>game.settings.register(SYSTEM_ID,'defaultActionsInstalled',{scope:'world',config:false,type:Boolean,default:false}));

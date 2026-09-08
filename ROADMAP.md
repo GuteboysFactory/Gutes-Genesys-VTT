@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1876** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1877** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -423,3 +423,13 @@ User confirms v1874. Action Library reads visible Item Compendiums on opening an
 ## General Action controls — v0.0.1876
 
 Assist and Maneuver cards confirm and use the existing authoritative maneuver service. Assist eligibility/bonus remains GM-resolved, per Core audit §5.6. Custom Check opens existing Dice Tools. These are live controls, not installed native default templates; native default catalog and automatic assistance remain pending. Live QA pending.
+
+## Actions library delivery — v0.0.1877
+
+- v0.0.1876 live test confirmed by user.
+- First active GM world start installs Assist, Maneuver and Custom Check as native Items in Actions; a per-world marker prevents repeated automatic restoration. Action Library can explicitly install missing defaults later.
+- Stable source keys prevent duplicates. Existing renamed/edited/moved defaults are preserved; interrupted installation can be retried.
+- World and Compendium templates copy behavior and provenance into independent character actions. Use dispatches Assist/Maneuver through existing encounter controls, opens Dice Tools, or rolls a current actor skill check.
+- Character action editor preserves behavior/provenance. Legacy actions default to skill-check; no stored dice pools. Custom skill-check activation costs and narrative effects remain manual.
+- Template authoring, source viewing, character copying/editing/deleting/use and default installation now form one workflow. Heroic native document representation and Tome compatibility remain separate roadmap work.
+- Automated regression checks passed; v0.0.1877 live Foundry QA pending.

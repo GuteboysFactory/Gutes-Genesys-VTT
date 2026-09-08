@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {installDefaultActions} from '../dist/module/action-defaults.js';
+const items=[],folders=[];let fail=false;
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},items:{contents:items},folders:{contents:folders}};
+globalThis.foundry={documents:{Folder:{create:async d=>{const f={...d,id:'actions'};folders.push(f);return f;}},Item:{create:async d=>{if(fail)throw Error('write failed');const i={...d,id:String(items.length)};items.push(i);return i;}}}};
+assert.equal(await installDefaultActions(),3);assert.equal(folders.length,1);
+assert.deepEqual(items.map(i=>i.system.binding),['assist','maneuver','custom-check']);
+assert.ok(items.every(i=>i.folder==='actions'&&i.ownership.default===2));
+items[0].name='My Assist';items[0].folder='custom';
+assert.equal(await installDefaultActions(),0);assert.equal(items[0].name,'My Assist');assert.equal(items[0].folder,'custom');
+items.pop();fail=true;await assert.rejects(installDefaultActions(),/write failed/);fail=false;
+assert.equal(await installDefaultActions(),1);assert.equal(items.length,3);
+game.user.isGM=false;await assert.rejects(installDefaultActions(),/active GM/);game.user.isGM=true;game.users.activeGM.id='other';await assert.rejects(installDefaultActions(),/active GM/);
+console.log('PASS default Actions: installation, preservation, retry, permissions');
