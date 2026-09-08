@@ -1,8 +1,10 @@
 import { normalizeActorRole } from "../../domain/adversaries/index.js";
 
 const SYSTEM_ID = "genesys-vtt";
+const LAUNCHER_POSITION_SETTING = "gmDockLauncherPosition";
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 let gmDockApp = null;
+let gmDockLauncher = null;
 
 function integer(value, fallback = 0) {
   const number = Number(value ?? fallback);
@@ -190,38 +192,98 @@ export function getGmDock() {
   return gmDockApp;
 }
 
-function installActorDirectoryButton(app, html) {
-  if (!requireGm({ notify: false })) return;
-  const root = html instanceof HTMLElement ? html : html?.[0] ?? app?.element;
-  if (!root?.querySelector || root.querySelector("[data-open-genesys-gm-dock]")) return;
-  const header = root.querySelector(".directory-header .header-actions") ?? root.querySelector(".directory-header");
-  if (!header) return;
+function clampLauncherPosition(position, launcher = gmDockLauncher) {
+  const width = launcher?.offsetWidth || 112;
+  const height = launcher?.offsetHeight || 34;
+  return {
+    left: Math.max(8, Math.min(integer(position?.left, 12), Math.max(8, window.innerWidth - width - 8))),
+    top: Math.max(8, Math.min(integer(position?.top, 520), Math.max(8, window.innerHeight - height - 8)))
+  };
+}
 
-  const button = document.createElement("button");
-  button.type = "button";
-  button.className = "genesys-gm-dock-directory-button";
-  button.dataset.openGenesysGmDock = "true";
-  button.innerHTML = '<i class="fa-solid fa-shield-halved" aria-hidden="true"></i> GM Dock';
-  button.addEventListener("click", (event) => {
-    event.preventDefault();
-    openGmDock();
+function applyLauncherPosition(position) {
+  if (!gmDockLauncher) return;
+  const next = clampLauncherPosition(position);
+  gmDockLauncher.style.left = `${next.left}px`;
+  gmDockLauncher.style.top = `${next.top}px`;
+}
+
+async function saveLauncherPosition() {
+  if (!gmDockLauncher) return;
+  const position = clampLauncherPosition({
+    left: Number.parseFloat(gmDockLauncher.style.left),
+    top: Number.parseFloat(gmDockLauncher.style.top)
   });
-  header.prepend(button);
+  applyLauncherPosition(position);
+  await game.settings.set(SYSTEM_ID, LAUNCHER_POSITION_SETTING, position);
+}
+
+function installGmDockLauncher() {
+  if (!requireGm({ notify: false }) || gmDockLauncher?.isConnected) return;
+  const launcher = document.createElement("button");
+  launcher.type = "button";
+  launcher.className = "genesys-gm-dock-launcher-v1831";
+  launcher.title = "Open Genesys GM Dock · drag to move";
+  launcher.setAttribute("aria-label", "Open Genesys GM Dock. Drag to move.");
+  launcher.innerHTML = '<i class="fa-solid fa-shield-halved" aria-hidden="true"></i><span>GM Dock</span><i class="fa-solid fa-grip-lines" aria-hidden="true"></i>';
+  document.body.append(launcher);
+  gmDockLauncher = launcher;
+  applyLauncherPosition(game.settings.get(SYSTEM_ID, LAUNCHER_POSITION_SETTING));
+
+  let drag = null;
+  launcher.addEventListener("pointerdown", (event) => {
+    if (event.button !== 0) return;
+    drag = { pointerId: event.pointerId, startX: event.clientX, startY: event.clientY, left: Number.parseFloat(launcher.style.left) || 12, top: Number.parseFloat(launcher.style.top) || 520, moved: false };
+    launcher.setPointerCapture?.(event.pointerId);
+    launcher.classList.add("is-dragging");
+  });
+  launcher.addEventListener("pointermove", (event) => {
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    const dx = event.clientX - drag.startX;
+    const dy = event.clientY - drag.startY;
+    if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
+    applyLauncherPosition({ left: drag.left + dx, top: drag.top + dy });
+  });
+  launcher.addEventListener("pointerup", (event) => {
+    if (!drag || drag.pointerId !== event.pointerId) return;
+    const moved = drag.moved;
+    drag = null;
+    launcher.classList.remove("is-dragging");
+    launcher.releasePointerCapture?.(event.pointerId);
+    if (moved) void saveLauncherPosition();
+    else openGmDock();
+  });
+  launcher.addEventListener("pointercancel", () => {
+    drag = null;
+    launcher.classList.remove("is-dragging");
+    void saveLauncherPosition();
+  });
 }
 
 function refreshOpenDock() {
   if (gmDockApp?.rendered) void gmDockApp.render({ force: true });
 }
 
-Hooks.on("renderActorDirectory", installActorDirectoryButton);
 Hooks.on("updateActor", refreshOpenDock);
 Hooks.on("createActor", refreshOpenDock);
 Hooks.on("deleteActor", refreshOpenDock);
 Hooks.on("updateScene", refreshOpenDock);
 Hooks.on("updateUser", refreshOpenDock);
 
+Hooks.once("init", () => {
+  game.settings.register(SYSTEM_ID, LAUNCHER_POSITION_SETTING, {
+    name: "GM Dock Launcher Position",
+    scope: "client",
+    config: false,
+    type: Object,
+    default: { left: 12, top: 520 }
+  });
+});
+
 Hooks.once("ready", () => {
   const api = Object.freeze({ open: openGmDock, get: getGmDock });
   Object.defineProperty(game, "genesysGmDock", { configurable: true, value: api });
+  installGmDockLauncher();
+  window.addEventListener("resize", () => applyLauncherPosition(game.settings.get(SYSTEM_ID, LAUNCHER_POSITION_SETTING)));
   console.log(`${SYSTEM_ID} | GM Dock shell ready`);
 });

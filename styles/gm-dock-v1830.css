@@ -253,7 +253,32 @@
 .genesys-gm-dock-empty-v1830 { padding: 10px; color: #725d43; font-style: italic; }
 
 .genesys-gm-dock-unauthorized { padding: 20px; }
-.genesys-gm-dock-directory-button { white-space: nowrap; }
+.genesys-gm-dock-launcher-v1831 {
+  position: fixed;
+  z-index: 80;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  width: auto;
+  min-width: 108px;
+  height: 32px;
+  margin: 0;
+  padding: 0 9px;
+  border: 1px solid #8b6428;
+  border-radius: 3px;
+  background: linear-gradient(180deg, #172b36, #0b171e);
+  box-shadow: 0 3px 9px rgba(0, 0, 0, .5), inset 0 0 0 1px rgba(239, 189, 67, .08);
+  color: #efd27c;
+  cursor: grab;
+  font: 700 .72rem Georgia, serif;
+  letter-spacing: .03em;
+  user-select: none;
+  touch-action: none;
+}
+
+.genesys-gm-dock-launcher-v1831:hover { border-color: #efbd43; background: linear-gradient(180deg, #1e4052, #10242f); }
+.genesys-gm-dock-launcher-v1831.is-dragging { cursor: grabbing; }
+.genesys-gm-dock-launcher-v1831 .fa-grip-lines { margin-left: auto; color: #8c7a53; font-size: .62rem; }
 
 @container (max-width: 720px) {
   .genesys-gm-dock-hero-v1830 { align-items: flex-start; flex-direction: column; }

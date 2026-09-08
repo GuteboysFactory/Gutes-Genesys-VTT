@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "Genesys VTT 0.0.1830 GM Dock Shell. Adds a GM-only control surface with live system summaries and safe navigation into existing workflows.",
-  "version": "0.0.1830",
+  "description": "Genesys VTT 0.0.1831 Floating GM Dock Launcher. Moves GM Dock out of Actor Directory into a draggable, position-persistent GM canvas bar.",
+  "version": "0.0.1831",
   "compatibility": { "minimum": "13.351", "verified": "13.351" },
   "authors": [{ "name": "Genesys VTT Project" }],
   "url": "https://github.com/GuteboysFactory/Gutes-Genesys-VTT",

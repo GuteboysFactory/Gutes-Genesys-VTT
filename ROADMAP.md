@@ -22,7 +22,13 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Reserved panels for Story Points, Party XP, Session tools and Adversary Forge
 - No duplicated encounter state and no gameplay mutations
 
-### v0.0.1831–v0.0.1834 — GM Dock Live Tools
+### v0.0.1831 — Floating GM Dock Launcher
+
+- GM-only draggable canvas bar
+- Position persistence per client
+- Launcher removed from Actor Directory
+
+### v0.0.1832–v0.0.1835 — GM Dock Live Tools
 
 - Story Point controls and history
 - Party XP awards, notes and audit trail
