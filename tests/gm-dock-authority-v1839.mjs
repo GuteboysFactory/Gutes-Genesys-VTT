@@ -1,0 +1,35 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+let stored = { player: 2, gm: 0, revision: 0, history: [] }, writes = 0, notifications = 0;
+const hooks = new Map();
+globalThis.Hooks = { once() {}, on(name, fn) { hooks.set(name, fn); }, callAll() { notifications++; } };
+globalThis.ui = { notifications: { warn() {} } };
+globalThis.foundry = { utils: { deepClone: structuredClone, randomID: () => 'id' }, documents: { ChatMessage: { create: async () => { throw Error('chat unavailable'); } } } };
+globalThis.game = { user: { id: 'gm1', isGM: true }, users: { activeGM: { id: 'gm1' } }, settings: {
+ get: () => structuredClone(stored), set: async (_s,_k,value) => { await Promise.resolve(); stored = structuredClone(value); writes++; }
+} };
+const service = await import('../dist/module/story-point-service-v1832.js');
+await Promise.all([service.spendStoryPoint('player'),service.spendStoryPoint('player')]);
+assert.equal(stored.player,0); assert.equal(stored.gm,2); assert.equal(stored.revision,2);
+assert.equal(writes,2); assert.equal(notifications,2, 'chat failure must still refresh views');
+await assert.rejects(service.spendStoryPoint('player'), /Not enough/);
+game.user.id = 'gm2';
+await assert.rejects(service.spendStoryPoint('gm'), /active GM/);
+assert.equal(writes,2);
+game.users.activeGM.id = 'gm2';
+await service.spendStoryPoint('gm');
+assert.equal(stored.player,1);
+const reloaded = await import('../dist/module/story-point-service-v1832.js?reloaded');
+assert.equal(reloaded.getStoryPointState().revision,3, 'reload reads persisted pool');
+game.user.isGM = false;
+await assert.rejects(reloaded.adjustStoryPoints('player',1), /Only the GM/);
+const before = notifications;
+hooks.get('updateSetting')({ key: 'genesys-vtt.storyPointState' });
+assert.equal(notifications,before+1);
+const dock=fs.readFileSync('dist/module/apps/gm-dock-v1830.js','utf8');
+assert.match(dock, /game.socket\?\.on\?\.\("connect", resync\)/);
+assert.match(dock, /visibilitychange/);
+assert.match(dock, /gmDockLauncher\?\.remove\(\)/);
+const counter=fs.readFileSync('dist/module/story-point-counter-v1833.js','utf8');
+assert.match(counter, /activeGM\?\.id === game.user.id/);
+console.log('PASS: serialized pool writes, secondary-GM/player rejection, GM handoff, persisted reload, change hooks and reconnect wiring');

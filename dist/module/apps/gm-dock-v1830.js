@@ -27,6 +27,13 @@ function requireGm({ notify = true } = {}) {
   return allowed;
 }
 
+function requireDockWriter() {
+  if (!requireGm()) return false;
+  if (game.users?.activeGM?.id === game.user.id) return true;
+  ui.notifications.warn("Shared controls are managed by the active GM.");
+  return false;
+}
+
 function characterActors() {
   return Array.from(game?.actors?.contents ?? game?.actors ?? []).filter((actor) => actor?.type === "character");
 }
@@ -151,6 +158,8 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       ...context,
       unauthorized: false,
       systemVersion: String(game?.system?.version ?? "0.0.1830"),
+      dockWriter: game.users?.activeGM?.id === game.user.id,
+      dockWriterName: game.users?.activeGM?.name ?? "No active GM",
       worldName: String(game?.world?.title ?? "Current World"),
       sceneName: String(canvas?.scene?.name ?? "No active Scene"),
       connectedUserCount: connectedUsers(),
@@ -183,6 +192,10 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
 
   async _onRender(context, options) {
     await super._onRender(context, options);
+    if (!context.dockWriter) {
+      const mutations = ["spendStoryPoint", "adjustStoryPoint", "awardPartyXp", "sessionControl", "applyNightRest", "recoverEncounterStrain", "addEncounterTokens"];
+      for (const action of mutations) for (const button of this.element.querySelectorAll(`[data-action="${action}"]`)) button.disabled = true;
+    }
     if (context.unauthorized) {
       ui?.notifications?.warn?.("GM Dock is available to the GM only.");
       void this.close();
@@ -217,7 +230,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async #addEncounterTokens(_event, target) {
-    if (!requireGm() || encounterAddPending) return;
+    if (!requireDockWriter() || encounterAddPending) return;
     const scene = canvas?.scene;
     const service = game.genesysVtt?.initiative;
     if (!scene || !service?.addSceneParticipant) return ui.notifications.warn("Open a scene before adding participants.");
@@ -270,7 +283,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async #spendStoryPoint(_event, target) {
-    if (!requireGm() || storyPointActionPending) return;
+    if (!requireDockWriter() || storyPointActionPending) return;
     const side = target?.dataset?.side === "gm" ? "gm" : "player";
     storyPointActionPending = true;
     try {
@@ -284,7 +297,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async #adjustStoryPoint(_event, target) {
-    if (!requireGm() || storyPointActionPending) return;
+    if (!requireDockWriter() || storyPointActionPending) return;
     const side = target?.dataset?.side === "gm" ? "gm" : "player";
     const delta = Number(target?.dataset?.delta ?? 0);
     storyPointActionPending = true;
@@ -299,7 +312,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async #awardPartyXp(_event, target) {
-    if (!requireGm() || partyXpActionPending) return;
+    if (!requireDockWriter() || partyXpActionPending) return;
     const panel = target?.closest?.("#genesys-gm-xp");
     const amount = integer(panel?.querySelector?.("[data-party-xp-amount]")?.value, 0);
     const note = String(panel?.querySelector?.("[data-party-xp-note]")?.value ?? "").trim();
@@ -313,6 +326,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     target.disabled = true;
     try {
       for (const actor of actors) {
+        if (!requireDockWriter()) throw new Error("Active GM changed; remaining awards were stopped.");
         await game.genesysAdvancement.awardXp(actor, amount, {
           kind: "party-award",
           label: note || `Party award · ${amount} XP`,
@@ -335,7 +349,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async #recoverEncounterStrain(_event, target) {
-    if (!requireGm() || target.disabled) return;
+    if (!requireDockWriter() || target.disabled) return;
     const row = target.closest("[data-encounter-recovery-row]");
     target.disabled = true;
     try {
@@ -345,7 +359,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async #applyNightRest(_event, target) {
-    if (!requireGm() || recoveryPending) return;
+    if (!requireDockWriter() || recoveryPending) return;
     const panel = target.closest("[data-night-rest]");
     const confirmed = panel?.querySelector("[data-rest-confirmed]")?.checked === true;
     const rows = Array.from(panel?.querySelectorAll("[data-rest-actor]:checked") ?? []).map(input => ({ id: input.value, wounds: Number(input.dataset.wounds), strain: Number(input.dataset.strain) }));
@@ -361,7 +375,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
   }
 
   static async #sessionControl(_event, target) {
-    if (!requireGm() || target.disabled) return;
+    if (!requireDockWriter() || target.disabled) return;
     target.disabled = true;
     try {
       if (!game.genesysSession) throw new Error("Session service unavailable.");
@@ -513,3 +527,21 @@ Hooks.on("genesysSessionChanged", refreshOpenDock);
 Hooks.on("canvasReady", refreshOpenDock);
 Hooks.on("updateToken", refreshOpenDock);
 Hooks.on("deleteToken", refreshOpenDock);
+
+Hooks.on("userConnected", refreshOpenDock);
+Hooks.on("genesysGmDockResync", refreshOpenDock);
+Hooks.once("ready", () => {
+  const resync = () => Hooks.callAll("genesysGmDockResync");
+  game.socket?.on?.("connect", resync);
+  window.addEventListener("focus", resync);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) resync(); });
+});
+function syncDockAccess() {
+  if (!game.user?.isGM) {
+    gmDockLauncher?.remove();
+    gmDockLauncher = null;
+    if (gmDockApp?.rendered) void gmDockApp.close();
+  } else installGmDockLauncher();
+}
+Hooks.on("updateUser", syncDockAccess);
+Hooks.on("genesysGmDockResync", syncDockAccess);

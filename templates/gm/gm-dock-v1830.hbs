@@ -10,6 +10,7 @@
     </div>
     <div class="genesys-gm-dock-runtime-v1830">
       <span>v{{systemVersion}}</span>
+      <span>Controls: {{dockWriterName}}{{#unless dockWriter}} · View only{{/unless}}</span>
       <span><i class="fa-solid fa-user-group"></i> {{connectedUserCount}} connected</span>
       <button type="button" data-action="refresh"><i class="fa-solid fa-rotate"></i> Refresh</button>
     </div>

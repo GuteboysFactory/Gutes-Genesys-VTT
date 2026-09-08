@@ -44,10 +44,10 @@ async function savePosition() {
 function renderCounter() {
   if (!counter) return;
   const state = game?.genesysStoryPoints?.snapshot?.() ?? { player: 0, gm: 0 };
-  const gm = Boolean(game?.user?.isGM);
+  const gm = Boolean(game?.user?.isGM && game.users?.activeGM?.id === game.user.id);
   counter.innerHTML = `
     <div class="genesys-sp-counter-grip-v1833" title="Drag Story Points"><i class="fa-solid fa-grip-vertical"></i><span>STORY<br>POINTS</span></div>
-    ${["player", "gm"].map((side, index) => `${index ? '<div class="genesys-sp-counter-swap-v1833"><i class="fa-solid fa-right-left"></i></div>' : ''}<div class="is-${side} genesys-sp-pool-v1834"><small>${side === "gm" ? "GM" : "PLAYER"}</small><strong>${number(state[side])}</strong><button type="button" data-spend-side="${side}" ${!gm || actionPending || !number(state[side]) ? "disabled" : ""} title="${gm ? `Spend one ${side} point` : "GM controls Story Point spending"}">Spend</button></div>`).join("")}`;
+    ${["player", "gm"].map((side, index) => `${index ? '<div class="genesys-sp-counter-swap-v1833"><i class="fa-solid fa-right-left"></i></div>' : ''}<div class="is-${side} genesys-sp-pool-v1834"><small>${side === "gm" ? "GM" : "PLAYER"}</small><strong>${number(state[side])}</strong><button type="button" data-spend-side="${side}" ${!gm || actionPending || !number(state[side]) ? "disabled" : ""} title="${gm ? `Spend one ${side} point` : "Active GM controls Story Point spending"}">Spend</button></div>`).join("")}`;
 }
 
 function installDrag() {
@@ -123,3 +123,7 @@ Hooks.once("ready", () => {
 });
 Hooks.on("genesysStoryPointsChanged", renderCounter);
 
+
+Hooks.on("updateUser", renderCounter);
+Hooks.on("userConnected", renderCounter);
+Hooks.on("genesysGmDockResync", renderCounter);

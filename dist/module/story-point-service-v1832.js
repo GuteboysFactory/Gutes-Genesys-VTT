@@ -42,8 +42,8 @@ export function getStoryPointState() {
 }
 
 function requireGm() {
-  if (game?.user?.isGM) return;
-  throw new Error("Only the GM may change Story Points.");
+  if (!game?.user?.isGM) throw new Error("Only the GM may change Story Points.");
+  if (game.users?.activeGM?.id !== game.user.id) throw new Error("The active GM controls Story Points.");
 }
 
 function historyEntry(type, side, before, after, label) {
@@ -84,7 +84,10 @@ async function commit(type, side, afterPools, label, { postToChat = true } = {})
     history: [entry, ...current.history].slice(0, HISTORY_LIMIT)
   };
   await game.settings.set(SYSTEM_ID, SETTING_KEY, next);
-  if (postToChat) await announce(entry);
+  if (postToChat) {
+    try { await announce(entry); }
+    catch { ui.notifications.warn("Story Point transfer saved, but chat announcement failed."); }
+  }
   Hooks.callAll("genesysStoryPointsChanged", clone(next), clone(entry));
   return clone(next);
 }

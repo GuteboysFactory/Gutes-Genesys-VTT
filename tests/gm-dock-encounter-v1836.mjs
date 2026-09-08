@@ -15,7 +15,7 @@ let opened = 0, added = 0;
 const actor = { uuid: 'Scene.s.Token.new.Actor.new', sheet: { render() { opened++; } } };
 globalThis.canvas = { scene: { id: 's' }, tokens: { controlled: [{ actor }, { actor }] } };
 globalThis.ui = { notifications: { warn() {}, info() {} } };
-globalThis.game = { user: { isGM: true }, genesysVtt: { initiative: {
+globalThis.game = { user: { id: 'gm', isGM: true }, users: { activeGM: { id: 'gm' } }, genesysVtt: { initiative: {
   sceneState: () => state,
   resolveActorRef: ref => ref === actor.uuid ? actor : null,
   addSceneParticipant: async (a, _side, skill, scene) => { assert.equal(scene.id, 's'); assert.equal(skill, 'vigilance'); added++; state.entries.push({ actorRef: a.uuid }); }

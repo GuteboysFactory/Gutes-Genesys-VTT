@@ -79,6 +79,14 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 - Existing ended encounters need a new start/end cycle to establish a recovery ID
 - Automated coverage complete; Foundry multi-client/reconnect QA remains pending
 
+### v0.0.1839 — GM authority and reconnect hardening
+
+- Active-GM writer gate for shared Dock actions and Story Points service
+- Read-only controls for secondary GMs, named controlling GM, counter authority refresh
+- Refresh on socket reconnect, window focus and visibility return
+- Story Point chat failure no longer reports a persisted transfer as failed
+- Simulated client tests added; actual Foundry multi-client and reconnect QA remains an open gate
+
 ### Remaining GM Dock backlog
 
 - Recovery talent automation and alternate recovery skills remain tracked
