@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1885 \u2014 Fixed world background, healing potions and preserved template rule provenance.",
-  "version": "0.0.1885",
+  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1886 \u2014 Critical recovery, persistent injury penalties and Dimora Durable.",
+  "version": "0.0.1886",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -81,7 +81,8 @@
     "dist/module/fear-service-v1883.js",
     "dist/module/medical-care-v1884.js",
     "dist/module/world-background-v1885.js",
-    "dist/module/painkillers-v1885.js"
+    "dist/module/painkillers-v1885.js",
+    "dist/module/critical-recovery-v1886.js"
   ],
   "styles": [
     "styles/genesys.css",

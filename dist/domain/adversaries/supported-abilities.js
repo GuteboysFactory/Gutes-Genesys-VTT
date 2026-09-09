@@ -14,5 +14,8 @@ export function addSupportedAdversaryAbilities(raw) {
   const {id:sourceId,label,...system}=t;
   add({name:label,type:'talent',system:{...system,sourceId,notes:'Realms of Terrinoth p.202; Core p.74. Use the existing active Talent action. Once per encounter on the owner turn, heal 5 strain.'}});
  }
+ if(id==='rot:dimora' && references.some(i=>i.system?.notes==='Durable 2 (a Dimora reduces any Critical Injury result it suffers by 20, to a minimum of 01).')) {
+  add({name:'Durable 2',type:'talent',system:{sourceId:'core-talent:durable',sourceType:'core',enabled:true,activation:'passive',tier:1,rank:2,ranked:true,rules:[],notes:'Realms of Terrinoth p.191. Native Critical Injury resolution subtracts 20, minimum 1.'}});
+ }
  return {...raw,items};
 }

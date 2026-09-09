@@ -1,8 +1,26 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1885** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-09. Latest build: **v0.0.1886**. Live verification is deferred until after 1.0 by GM decision; this is not a claim that those checks passed.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
+
+## Current status — original roadmap, v1886
+
+🟢 Delivered for release · 🟡 Remaining implementation/reconciliation · 🔴 Not started.
+
+| Original block | Status | Remaining |
+|---|---|---|
+| v1830–1839 GM Tools | 🟡 | Broader recovery rule/talent reconciliation; weekly critical recovery now delivered |
+| v1840–1847+ Heroic | 🟢 | Accepted manual exceptions; live follow-up after 1.0 |
+| v185x Combat, reactions and magic | 🟡 | Remaining rule consequences/reaction coverage; five persistent critical penalties now delivered |
+| v186x Forge foundation | 🟢 | Delivered foundation, not full book coverage |
+| v187x Forge workflows | 🟢 | Delivered; live follow-up after 1.0 |
+| v188x Setting/content | 🟡 | Full source reconciliation; Dimora Durable now native; 196 manual reference occurrences remain |
+| Library ↔ Items ↔ Tome | 🟢 | Accepted by GM for release; live follow-up after 1.0 |
+| v189x Release hardening | 🟡 | Migration, accessibility, localization and compatibility work |
+| v1.0 final delivery | 🔴 | Final documentation, upgrade path and compatibility/API declaration |
+
+v1886 combines corrections in the three selected yellow blocks. Scope and actual remaining work: `docs/V1886_COMBINED_RULE_REVIEW.md`. Older sections below are delivery history; their old live gates are superseded by the GM decision above. Genuine implementation gaps are not automatically closed by that decision.
 
 ## Samlad Heroic-leverans — v0.0.1863
 

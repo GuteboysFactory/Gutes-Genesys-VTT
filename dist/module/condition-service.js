@@ -1,3 +1,4 @@
+import {criticalCheckModifiers} from '../domain/criticals/check-modifiers.js';
 import { suppressedCriticals } from '../domain/heroic/primary-effects.js';
 import { auraModifiers } from "./heroic-aura-v1851.js";
 import { heroicCheckModifiers } from "../domain/heroic/combat-effects.js";
@@ -21,7 +22,7 @@ export function getActorConditionRules(actor) {
     const suppressed=new Set(suppressedCriticals(actor).map(row=>`critical:${row.id}`));
     return conditionRules(getActorConditions(actor).filter(row=>!suppressed.has(row.sourceId)));
 }
-export function getActorConditionCheckModifiers(actor) {
+export function getActorConditionCheckModifiers(actor, check = {}) {
     const base = getActorConditionRules(actor).checkModifiers;
     const delta = getMagicAbilityDelta(actor);
     const magic = delta > 0
@@ -29,7 +30,7 @@ export function getActorConditionCheckModifiers(actor) {
         : delta < 0
             ? [{ id: "magic:curse", priority: 10, pool: { remove: { ability: 1 } } }]
             : [];
-    return [...base, ...magic, ...heroicCheckModifiers(actor?.system?.heroicAbility), ...auraModifiers(actor)];
+    return [...base, ...criticalCheckModifiers(actor.system?.criticalInjuries ?? [], check, suppressedCriticals(actor).map(i=>i.id)), ...magic, ...heroicCheckModifiers(actor?.system?.heroicAbility), ...auraModifiers(actor)];
 }
 export async function addActorCondition(actor, conditionId, options = {}) {
     const current = actorConditions(actor);

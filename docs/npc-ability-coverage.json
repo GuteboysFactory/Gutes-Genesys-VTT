@@ -1,13 +1,13 @@
 {
-  "version": "0.0.1883",
+  "version": "0.0.1886",
   "source": "Existing 79 Terrinoth template references; printed book page numbers",
-  "scope": "Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. New-runtime entries were checked in v1881. Flying Mount Dodge 2 removed in v1882 per official FAQ/Errata v1.1. v1883 adds GM-guided Terrifying profiles from intact source references; timing, exemptions and consequences are GM-confirmed. Manual references are not executed.",
+  "scope": "Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. New-runtime entries were checked in v1881. Flying Mount Dodge 2 removed in v1882 per official FAQ/Errata v1.1. v1883 adds GM-guided Terrifying profiles from intact source references; timing, exemptions and consequences are GM-confirmed. v1886 checks Dimora Durable 2 against p.191 and binds its intact reference to native Durable. Manual references are not executed. Clause splitting includes prose fragments; counts are not unique abilities or missing functions.",
   "templates": 79,
   "counts": {
-    "manual-reference": 197,
+    "manual-reference": 196,
     "native-baseline": 49,
     "gm-guided": 17,
-    "new-runtime": 2
+    "new-runtime": 3
   },
   "entries": [
     {
@@ -1066,9 +1066,9 @@
       "page": 191,
       "category": "Talents",
       "name": "Durable 2",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1886 intact Dimora reference adds native Durable rank 2 on Forge copy",
+      "sourceCheckedThisPackage": true
     },
     {
       "templateId": "rot:dimora",
@@ -1488,7 +1488,7 @@
       "name": "Regeneration",
       "status": "new-runtime",
       "implementation": "Forge adds selectable Regeneration Talent; tracked activation-start heal with atomic receipt",
-      "sourceCheckedThisPackage": true
+      "sourceCheckedThisPackage": false
     },
     {
       "templateId": "rot:ogre",
@@ -1508,7 +1508,7 @@
       "name": "Second Wind 5",
       "status": "new-runtime",
       "implementation": "Forge adds native Second Wind 5; existing active Talent UI, authoritative execution and atomic usage receipt",
-      "sourceCheckedThisPackage": true
+      "sourceCheckedThisPackage": false
     },
     {
       "templateId": "rot:orc-spiritspeaker",

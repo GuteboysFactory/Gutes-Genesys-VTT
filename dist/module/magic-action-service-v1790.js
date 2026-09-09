@@ -1,3 +1,6 @@
+import {criticalCheckModifiers} from '../domain/criticals/check-modifiers.js';
+import {suppressedCriticals} from '../domain/heroic/primary-effects.js';
+import {prepareStandardCheck} from '../domain/checks/checks.js';
 import { addDice } from "../domain/pool/index.js";
 import { getActorProfileId, getActorSkillDefinitions, buildSynchronizedSkillStates } from "./skills-service.js";
 import { prepareActorSkillCheck } from "./skill-ui.js";
@@ -311,7 +314,11 @@ export function prepareMagicAction(actor, input = {}) {
   if (totalDifficulty > 5) throw new Error(`Spell difficulty ${totalDifficulty} exceeds Formidable (5) after implement reductions.`);
 
   const prepared = prepareActorSkillCheck(actor, skillId, totalDifficulty);
+  const injuryModifiers = criticalCheckModifiers(actor.system?.criticalInjuries ?? [], prepared, suppressedCriticals(actor).map(i=>i.id));
+  const injuryCheck = prepareStandardCheck({actor:{characteristic:prepared.characteristicValue,skillRank:prepared.skillRank},difficulty:totalDifficulty,modifiers:injuryModifiers});
   let pool = clone(prepared.construction.pool);
+  pool.difficulty = injuryCheck.construction.pool.difficulty;
+  pool.challenge = injuryCheck.construction.pool.challenge;
   if (implementMods.boost > 0) pool = addDice(pool, { boost: implementMods.boost });
 
   const empowered = selected.some((entry) => entry.effect.id === "empowered");
@@ -328,6 +335,7 @@ export function prepareMagicAction(actor, input = {}) {
     implement,
     implementMods: Object.freeze(implementMods),
     rawEffectDifficulty,
+    injuryModifiers,
     totalDifficulty,
     prepared,
     pool: Object.freeze(pool),
@@ -348,6 +356,7 @@ async function postMagicChat(actor, prepared, result) {
   const effectReduction = prepared.implementMods.difficultyReduction;
   const baseLine = `${prepared.action.label} ${prepared.action.baseDifficulty} + Effects ${prepared.rawEffectDifficulty}${effectReduction ? ` - Implement ${effectReduction}` : ""} = Difficulty ${prepared.totalDifficulty}`;
   const extras = [];
+  if (prepared.injuryModifiers?.length) extras.push('<span><strong>Critical Injuries:</strong> applicable difficulty penalties/upgrades included in the pool.</span>');
   if (prepared.attackBaseDamage !== null) extras.push(`<span><strong>Attack base damage:</strong> ${prepared.attackBaseDamage} + uncancelled Success</span>`);
   if (prepared.implementMods.healWoundsBonus) extras.push(`<span><strong>Heal implement bonus:</strong> +${prepared.implementMods.healWoundsBonus} wounds on a successful Heal</span>`);
   if (prepared.concentration) extras.push("<span><strong>Concentration:</strong> Yes</span>");

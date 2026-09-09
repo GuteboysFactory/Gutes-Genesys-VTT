@@ -1,7 +1,7 @@
 import { talentRank } from './recovery-talents-v1881.js';
 import { suppressedCriticals } from '../domain/heroic/primary-effects.js';
 import { activeCriticalCount, applyPermanentCharacteristicReduction, lookupCriticalInjury, rollCriticalInjury, rollCriticalSecondary, toCriticalInjuryState } from "../domain/criticals/index.js";
-import { addActorCondition, removeConditionsBySource } from "./condition-service.js";
+import { addActorCondition } from "./condition-service.js";
 const CHARACTERISTICS = ["brawn", "agility", "intellect", "cunning", "presence", "willpower"];
 function actorCriticals(actor) {
     const raw = actor?.system?.criticalInjuries;
@@ -249,8 +249,8 @@ export async function healCriticalInjury(actor, criticalId) {
     const next = current.filter((entry) => entry.id !== criticalId);
     if (next.length === current.length)
         return false;
-    await actor.update({ "system.criticalInjuries": next });
-    await removeConditionsBySource(actor, `critical:${criticalId}`);
+    const conditions = (actor.system.conditions ?? []).filter(entry => entry.sourceId !== `critical:${criticalId}`);
+    await actor.update({ "system.criticalInjuries": next, "system.conditions": conditions });
     return true;
 }
 export function buildCriticalSheetRows(actor) {

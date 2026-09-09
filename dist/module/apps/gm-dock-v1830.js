@@ -125,6 +125,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     window: { title: "Genesys GM Dock", resizable: true },
     actions: {
       resolveFear: async function(){try{if(!game.genesysFear)throw Error('Fear profiles are not ready.');await game.genesysFear.openFearPanel();}catch(e){ui.notifications.warn(e.message);}},
+      criticalRecovery: async function(){try{await game.genesysCriticalRecovery.openCriticalRecovery();}catch(e){ui.notifications.warn(e.message);}},
       medicalCare: async function(){try{await game.genesysMedicalCare.openMedicalCare();}catch(e){ui.notifications.warn(e.message);}},
       painkillers: async function(){try{await game.genesysPainkillers.openPainkillers();}catch(e){ui.notifications.warn(e.message);}},
       openHealth: async function(){await openGmHealth();},

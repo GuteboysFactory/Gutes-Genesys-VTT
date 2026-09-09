@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {criticalCheckModifiers as modifiers} from '../dist/domain/criticals/check-modifiers.js';
+import {prepareStandardCheck} from '../dist/domain/checks/checks.js';
+const injuries=[{id:'head',total:48},{id:'compromised',total:88},{id:'blind',total:117}];
+let m=modifiers(injuries,{characteristicId:'intellect',skillId:'medicine'});assert.equal(m.length,3);assert.equal(m.at(-1).pool.upgradeNegative,2);
+assert.equal(modifiers(injuries,{characteristicId:'brawn',skillId:'vigilance'}).at(-1).pool.upgradeNegative,3);
+assert.equal(modifiers(injuries,{characteristicId:'brawn'},['compromised','blind']).length,0);
+assert.equal(modifiers([{id:'x',total:53}],{characteristicId:'presence'}).length,1);
+assert.equal(modifiers([{id:'x',total:58}],{characteristicId:'agility'}).length,1);
+assert.equal(modifiers([{id:'x',total:88,active:false},{id:'y',total:88,healed:true}]).length,0);
+const check=prepareStandardCheck({actor:{characteristic:3,skillRank:2},difficulty:1,modifiers:m});
+assert.equal(check.construction.pool.challenge,2);assert.equal(check.construction.pool.difficulty,1);
+assert.equal(modifiers([],{characteristicId:'intellect'}).length,0);
+console.log('PASS persistent critical characteristic filters, difficulty/upgrades, healed/disabled and suppression');
+// Exercise the actual magic preparation function with existing positive modifiers present.
+const {readFileSync}=await import('node:fs');const vm=await import('node:vm');
+const source=readFileSync('dist/module/magic-action-service-v1790.js','utf8');
+const body=source.slice(source.indexOf('export function prepareMagicAction'),source.indexOf('\nfunction selectedText')).replace('export function','function');
+const ctx=vm.createContext({criticalCheckModifiers:modifiers,suppressedCriticals:()=>[],prepareStandardCheck,clone:structuredClone,text:String,CORE_MAGIC_ACTIONS:{attack:{baseDifficulty:1}},MAGIC_COST_STRAIN:2,getActorMagicState:()=>({skills:[{id:'arcana',canCast:true,actions:['attack']}],adversary:{},rules:{}}),normalizeSelections:()=>[],implementById:()=>null,reductionForImplement:()=>({difficultyReduction:0,boost:0,attackDamageBonus:0}),prepareActorSkillCheck:()=>({characteristicId:'intellect',skillId:'arcana',characteristicValue:3,skillRank:2,construction:{pool:{ability:2,proficiency:2,difficulty:1,challenge:0,boost:1}}})});
+vm.runInContext(body,ctx);
+const spell=ctx.prepareMagicAction({id:'a',system:{criticalInjuries:injuries}},{skillId:'arcana',actionId:'attack'});
+assert.equal(spell.pool.ability,2,'preserve existing Augment ability die');assert.equal(spell.pool.boost,1);assert.equal(spell.pool.challenge,2);assert.equal(spell.pool.difficulty,1);
+console.log('PASS magic integration preserves positive effects while applying critical penalties');

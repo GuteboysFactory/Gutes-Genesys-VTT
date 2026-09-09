@@ -17,10 +17,11 @@ for(const actor of actors){
    if(source.id==='rot:ogre'&&name==='Regeneration'){status='new-runtime';implementation='Forge adds selectable Regeneration Talent; tracked activation-start heal with atomic receipt';}
    if(source.id==='rot:orc-spiritspeaker'&&/^Second Wind 5/.test(name)){status='new-runtime';implementation='Forge adds native Second Wind 5; existing active Talent UI, authoritative execution and atomic usage receipt';}
    if(name==='Terrifying'&&fear.has(source.id)){status='gm-guided';implementation='Encounter Fear panel: strongest applicable source, Discipline roll and saved receipt; GM timing/exemptions/consequences';}
-   rows.push({templateId:source.id,actor:actor.name,page:source.page,category,name,status,implementation,sourceCheckedThisPackage:status==='new-runtime'});
+   if(source.id==='rot:dimora'&&name==='Durable 2'){status='new-runtime';implementation='v1886 intact Dimora reference adds native Durable rank 2 on Forge copy';}
+   rows.push({templateId:source.id,actor:actor.name,page:source.page,category,name,status,implementation,sourceCheckedThisPackage:source.id==='rot:dimora'&&name==='Durable 2'});
   }
  }
 }
 const counts={};for(const r of rows)counts[r.status]=(counts[r.status]??0)+1;
-fs.writeFileSync('docs/npc-ability-coverage.json',JSON.stringify({version:'0.0.1883',source:'Existing 79 Terrinoth template references; printed book page numbers',scope:'Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. New-runtime entries were checked in v1881. Flying Mount Dodge 2 removed in v1882 per official FAQ/Errata v1.1. v1883 adds GM-guided Terrifying profiles from intact source references; timing, exemptions and consequences are GM-confirmed. Manual references are not executed.',templates:actors.length,counts,entries:rows},null,2)+'\n');
+fs.writeFileSync('docs/npc-ability-coverage.json',JSON.stringify({version:'0.0.1886',source:'Existing 79 Terrinoth template references; printed book page numbers',scope:'Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. New-runtime entries were checked in v1881. Flying Mount Dodge 2 removed in v1882 per official FAQ/Errata v1.1. v1883 adds GM-guided Terrifying profiles from intact source references; timing, exemptions and consequences are GM-confirmed. v1886 checks Dimora Durable 2 against p.191 and binds its intact reference to native Durable. Manual references are not executed. Clause splitting includes prose fragments; counts are not unique abilities or missing functions.',templates:actors.length,counts,entries:rows},null,2)+'\n');
 console.log(JSON.stringify({templates:actors.length,clauses:rows.length,counts}));

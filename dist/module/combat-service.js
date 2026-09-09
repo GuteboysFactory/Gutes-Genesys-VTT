@@ -194,7 +194,7 @@ export function prepareActorCombatAttack(attacker, item, target, targetRange, ch
         },
         target: actorCombatSnapshot(target),
         targetRange,
-        modifiers: getActorConditionCheckModifiers(attacker),
+        modifiers: getActorConditionCheckModifiers(attacker, skill),
         contextTags: [weapon.equipped ? "equipped" : "unequipped", `target:${target.id}`]
     });
     return {

@@ -101,7 +101,7 @@ export function prepareActorSkillEngineCheck(actor, skillId, options = {}) {
         label: skill.skillLabel
     };
     const mode = options.mode ?? "standard";
-    const conditionModifiers = [...getActorConditionCheckModifiers(actor), ...primaryCheckModifiers(actor?.system?.heroicAbility,skill.skillId)];
+    const conditionModifiers = [...getActorConditionCheckModifiers(actor, skill), ...primaryCheckModifiers(actor?.system?.heroicAbility,skill.skillId)];
     let check;
     if (mode === "opposed") {
         check = prepareOpposedCheck({
