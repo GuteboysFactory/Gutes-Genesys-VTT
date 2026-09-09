@@ -7,6 +7,7 @@ Foundry target: v13.351. v14 remains unverified.
 Combined delivery completes the three selected roadmap blocks: GM Tools; Combat, reactions and magic; Setting, rules and content. Includes source reconciliation, recovery/consumables, action economy and critical lifecycle, two-weapon combat, crafting/alchemy, mounted rules, equipment modifications and runebound shards.
 
 - [Current roadmap](ROADMAP.md)
+- [Remaining work and agreed 1.0 scope](docs/REMAINING_WORK_AFTER_V1889.md)
 - [Implementation, source evidence and automation boundaries](docs/V1888_RULE_RECONCILIATION.md)
 - [QA results and deferred live protocol](TEST_PROTOCOL_v0.0.1888.md)
 - [Individual audit requirements](docs/v1888-audit-requirements.json)
