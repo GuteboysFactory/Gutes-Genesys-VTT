@@ -179,6 +179,17 @@ async function uploadBlob(blob, filename) {
   return path;
 }
 
+
+export async function createStandardToken(src) {
+  if(!game.user?.isGM || game.users?.activeGM?.id!==game.user.id)throw Error('Active GM required for token art.');
+  const image=await loadImage(src);
+  const canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;
+  drawToken(canvas,image,{zoom:1,offsetX:0,offsetY:0,frame:'gold',background:'dark'});
+  const blob=await canvasBlob(canvas);
+  if(!game.user?.isGM || game.users?.activeGM?.id!==game.user.id)throw Error('Active GM changed.');
+  return uploadBlob(blob,`npc-${foundry.utils.randomID()}-${Date.now()}-token.png`);
+}
+
 async function exportForgeArt(session) {
   if (!session.image) throw new Error("Choose an image first.");
   const portraitCanvas = session.dialog.querySelector("[data-forge-portrait-canvas]");
@@ -450,7 +461,7 @@ document.addEventListener("click", (event) => {
 Hooks.once("ready", () => {
   Object.defineProperty(game, "genesysPortraitTokenForge", {
     configurable: true,
-    value: Object.freeze({ open: openPortraitTokenForge, tokenPathFromPortrait })
+    value: Object.freeze({ open: openPortraitTokenForge, tokenPathFromPortrait, createStandardToken })
   });
   initializeEntrypoints();
   const observer = new MutationObserver(() => initializeEntrypoints());

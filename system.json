@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1883 \u2014 Quick Forge image placement, guided Fear, recovery and content workflow improvements.",
-  "version": "0.0.1883",
+  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1884 \u2014 Round quick-Forge tokens, animated join background and guided first aid.",
+  "version": "0.0.1884",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -78,7 +78,8 @@
     "dist/module/action-template-bootstrap.js",
     "dist/module/npc-ability-runtime-v1881.js",
     "dist/module/adversary-drop-v1883.js",
-    "dist/module/fear-service-v1883.js"
+    "dist/module/fear-service-v1883.js",
+    "dist/module/medical-care-v1884.js"
   ],
   "styles": [
     "styles/genesys.css",

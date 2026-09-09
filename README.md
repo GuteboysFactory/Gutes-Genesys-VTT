@@ -1,10 +1,10 @@
-# Genesys VTT — QA v0.0.1883
+# Genesys VTT — QA v0.0.1884
 
 Foundry target: v13.351. v14 remains unverified.
 
-Current delivery: image-drop quick Forge, GM Dock feedback, guided Terrifying checks, Survival group recovery, import identity preservation and Action source permission hardening.
+Current delivery: round gold-framed quick-Forge tokens, guided medical first aid, and native animated login-background setup. Quick Forge v1883 has user live approval; the square token art is corrected here.
 
-- [v1883 scope and QA](TEST_PROTOCOL_v0.0.1883.md)
+- [v1884 scope and QA](TEST_PROTOCOL_v0.0.1884.md)
 - [Roadmap/content gate evidence](docs/V1883_CONTENT_GATE.md)
 - [Current roadmap](ROADMAP.md)
 - [Package 4 scope and test report](docs/PACKAGE_4_QA.md)

@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+globalThis.Hooks={once(){}};
+const {medicalDifficulty,applyMedicalCare}=await import('../dist/module/medical-care-v1884.js');
+assert.equal(medicalDifficulty(5,10),1);assert.equal(medicalDifficulty(6,10),2);assert.equal(medicalDifficulty(10,10),2);assert.equal(medicalDifficulty(11,10),3);assert.equal(medicalDifficulty(11,10,{self:true,equipped:false}),6);
+let receipt=[],rolls=0,net={success:2,advantage:3},fail=false;
+const pc={type:'character',name:'Patient',system:{role:'pc',wounds:{value:6,threshold:10},strain:{value:4}},getFlag:()=>receipt,async update(d){if(fail)throw Error('save');receipt=d['flags.genesys-vtt.medicalCare'];this.system.wounds.value=d['system.wounds.value'];this.system.strain.value=d['system.strain.value'];}};
+const medic={type:'character',name:'Medic'};const actors=new Map([['pc',pc],['medic',medic]]);
+const scene={id:'s',getFlag:()=> 'e'};const state={status:'active',entries:[{actorRef:'pc'}]};
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysVtt:{initiative:{sceneState:()=>state,resolveActorRef:r=>actors.get(r)},checks:{prepareActorSkill:(a,skill,o)=>{assert.equal(skill,'medicine');return {check:{construction:{pool:{difficulty:o.difficulty}}}};}},dice:{roll:()=>{rolls++;return {net};}}}};
+globalThis.foundry={documents:{ChatMessage:{create:async()=>{throw Error('chat');}}}};globalThis.ui={notifications:{warn(){}}};
+const options={key:'s:e',medicRef:'medic',equipped:true,confirmed:true};
+await assert.rejects(applyMedicalCare(pc,{...options,confirmed:false},scene),/Confirm/);assert.equal(rolls,0);
+await applyMedicalCare(pc,options,scene);assert.equal(pc.system.wounds.value,4);assert.equal(pc.system.strain.value,1);assert.equal(receipt.length,1);
+await assert.rejects(applyMedicalCare(pc,options,scene),/already/);assert.equal(rolls,1);
+receipt=[];net={success:0,advantage:3};await applyMedicalCare(pc,options,scene);assert.equal(pc.system.strain.value,1);assert.equal(receipt.length,1,'failure consumes patient attempt');
+receipt=[];fail=true;await assert.rejects(applyMedicalCare(pc,options,scene),/save/);assert.equal(receipt.length,0);
+game.user.isGM=false;await assert.rejects(applyMedicalCare(pc,options,scene),/active GM/);
+console.log('PASS medical thresholds, self/equipment modifiers, atomic health/receipt, failed checks, chat/save failure and GM authority');

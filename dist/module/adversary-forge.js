@@ -76,7 +76,10 @@ export async function createAdversaryFromTemplate(template, {file=null,validateC
  const data=prepareAdversary(adversaryDraft(base),getActorSkillDefinitions(base));
  const img=file?await uploadAdversaryImage(file):base.img;
  authority();validateContext();
- const actor=await foundry.documents.Actor.create({...data,img,system:{...base.system,...data.system},items:base.items,ownership:{default:0},prototypeToken:{actorLink:false,texture:{src:img||'icons/svg/mystery-man.svg'}},flags:{[SID]:{rulesProfile:profile,adversarySource:base.flags[SID].adversaryTemplate,adversaryForge:{version:2,createdAt:Date.now()}}}});
+ if(!game.genesysPortraitTokenForge?.createStandardToken)throw Error('Token Forge is not ready.');
+ const tokenImg=await game.genesysPortraitTokenForge.createStandardToken(img||'icons/svg/mystery-man.svg');
+ authority();validateContext();
+ const actor=await foundry.documents.Actor.create({...data,img,system:{...base.system,...data.system},items:base.items,ownership:{default:0},prototypeToken:{actorLink:false,texture:{src:tokenImg}},flags:{[SID]:{rulesProfile:profile,adversarySource:base.flags[SID].adversaryTemplate,adversaryForge:{version:2,createdAt:Date.now()}}}});
  if(!actor)throw Error('NPC creation failed.');
  return actor;
 }

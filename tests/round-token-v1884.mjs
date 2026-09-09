@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+globalThis.document={addEventListener(){},createElement:()=>canvas};globalThis.Hooks={once(){},on(){}};
+globalThis.MutationObserver=class{observe(){} disconnect(){}};
+const commands=[];const ctx=new Proxy({}, {get:(_o,k)=> (...args)=>commands.push([k,...args]),set:()=>true});
+const canvas={width:0,height:0,getContext:()=>ctx,toBlob:fn=>fn(new Blob(['png'],{type:'image/png'}))};
+globalThis.Image=class {naturalWidth=1024;naturalHeight=576;set src(v){this.onload();}};
+let uploaded;
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},world:{id:'w'}};
+globalThis.foundry={utils:{randomID:()=> 'id'},applications:{apps:{FilePicker:{implementation:{createDirectory:async()=>{},upload:async(_s,_dir,file)=>{uploaded=file;return {path:'worlds/w/genesys-vtt/actor-art/round-token.png'};}}}}}};
+const {createStandardToken}=await import('../dist/module/portrait-token-forge-v1780.js');
+assert.match(await createStandardToken('portrait.webp'),/round-token.png$/);
+assert.equal(canvas.width,512);assert.equal(canvas.height,512);assert.ok(commands.some(c=>c[0]==='clip'));assert.equal(commands.filter(c=>c[0]==='arc').length,3);assert.equal(uploaded.type,'image/png');
+game.user.isGM=false;await assert.rejects(createStandardToken('x'),/Active GM/);
+console.log('PASS standard round token uses shared circular crop, gold-frame draw path and separate PNG upload; GM-only');

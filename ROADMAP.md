@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1883** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1884** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -484,3 +484,11 @@ Original roadmap phases remain unchanged. This delivery advances v187x/v188x and
 - Adversary re-import skips already imported source identities and preserves edits. Native Action source visibility is rechecked after asynchronous lookup.
 - Automated checks and actual Tome adapter contract pass; live drag/drop/rendering, multiplayer/reconnect/GM handover, performance and v14 remain unverified.
 - Full Core/Terrinoth book audit, remaining manual NPC clauses and unsupported optional rules are still open. See docs/V1883_CONTENT_GATE.md and TEST_PROTOCOL_v0.0.1883.md.
+
+## v0.0.1884 — Token art and medical care
+
+- User live feedback: v1883 image → Forge → token works well. Square token appearance corrected using existing round gold-frame renderer; original portrait remains separate. No automatic migration of existing tokens.
+- Animated join background uses existing unchanged WebP through Foundry native Edit World → Background Image. GM Dock includes a path-copy button under Campaign overview. Administrator must apply that world configuration once; this patch cannot remotely configure the user's server and does not force theme/description changes.
+- Original v188x rule/content backlog: guided Medicine first aid for PC encounter participants, health-based difficulty, self/equipment penalties and atomic result/health/attempt receipt. GM handles action economy and exceptional effects.
+- Source: supplied Core p.116. Failed checks consume that patient's attempt. Critical Injury treatment, painkillers and broader medical talent automation remain open.
+- 72 test files pass; Chromium-dependent coordinator test blocked. New work not live approved. Full-book/content gate, multiplayer/reconnect, performance and v14 remain open.

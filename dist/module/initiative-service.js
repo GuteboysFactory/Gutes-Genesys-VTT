@@ -621,7 +621,16 @@ async function queued_resolveSceneFear(actor, options, scene) {
     if(!game.genesysFear)throw Error('Fear service unavailable.');
     return game.genesysFear.resolveFearAuthoritative(actor,options,scene);
 }
+export function resolveSceneMedicalCare(actor, options, scene=activeScene()) {
+ const {key,medicRef,equipped,confirmed}=options;
+ return dispatchInitiativeCommand('resolveSceneMedicalCare',[actorInitiativeRef(actor),{key,medicRef,equipped,confirmed}],scene);
+}
+async function queued_resolveSceneMedicalCare(actor,options,scene){
+ if(!initiativeAuthority())throw Error('Active GM required.');
+ return game.genesysMedicalCare.applyMedicalCare(actor,options,scene);
+}
 const commandRegistry = {
+    resolveSceneMedicalCare:{run:queued_resolveSceneMedicalCare,argc:2,actor:true},
     resolveSceneFear:{run:queued_resolveSceneFear,argc:2,actor:true},
     executeSceneTalent:{run:queued_executeSceneTalent,argc:3,actor:true},
     concentrateSceneSpells: {run:queued_concentrateSceneSpells, argc:1, actor:true},

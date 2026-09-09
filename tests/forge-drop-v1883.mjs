@@ -5,12 +5,13 @@ const {createAdversaryFromTemplate}=await import('../dist/module/adversary-forge
 const {adversaryImportIdentity}=await import('../dist/module/adversary-library.js');
 const {acceptsForgeDrop}=await import('../dist/module/adversary-drop-v1883.js');
 globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},settings:{get:()=> 'core-only'}};
+game.genesysPortraitTokenForge={createStandardToken:async()=> 'round-token.png'};
 let created;
 globalThis.foundry={documents:{Actor:{create:async d=>{created=d;return d;}}}};
 const template=JSON.parse(fs.readFileSync('data/everyday-adversaries.json'))[0];
 const before=JSON.stringify(template);
 await createAdversaryFromTemplate(template);
-assert.equal(created.img,template.img);assert.equal(created.ownership.default,0);assert.equal(created.prototypeToken.actorLink,false);assert.equal(created.system.wounds.value,0);assert.equal(JSON.stringify(template),before);
+assert.equal(created.img,template.img);assert.equal(created.prototypeToken.texture.src,'round-token.png');assert.equal(created.ownership.default,0);assert.equal(created.prototypeToken.actorLink,false);assert.equal(created.system.wounds.value,0);assert.equal(JSON.stringify(template),before);
 await assert.rejects(createAdversaryFromTemplate(template,{validateContext(){throw Error('Scene changed');}}),/Scene changed/);
 const key=await adversaryImportIdentity(template);const renamed=structuredClone(template);renamed.name='Local edit';assert.equal(await adversaryImportIdentity(renamed),key);
 const tokens={};const view={ready:true,tokens,activeLayer:tokens};const event={dataTransfer:{items:[{kind:'file',type:'image/webp'}]}};
