@@ -126,11 +126,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     actions: {
       resolveFear: async function(){try{if(!game.genesysFear)throw Error('Fear profiles are not ready.');await game.genesysFear.openFearPanel();}catch(e){ui.notifications.warn(e.message);}},
       medicalCare: async function(){try{await game.genesysMedicalCare.openMedicalCare();}catch(e){ui.notifications.warn(e.message);}},
-      copyJoinBackground: async function(){
-        const path='systems/genesys-vtt/assets/system/forge-the-story.webp';
-        try{await navigator.clipboard.writeText(path);ui.notifications.info('Background path copied. In Setup → Edit World, paste into Background Image and save.');}
-        catch{ui.notifications.info(`Setup → Edit World → Background Image: ${path}`,{permanent:true});}
-      },
+      painkillers: async function(){try{await game.genesysPainkillers.openPainkillers();}catch(e){ui.notifications.warn(e.message);}},
       openHealth: async function(){await openGmHealth();},
       navigateSection: this.#navigateSection,
       openEncounter: this.#openEncounter,

@@ -167,6 +167,13 @@ function activationLabel(value) {
     }
 }
 
+const RUNTIME_COVERAGE = {
+ "core-talent:durable": "Incoming native Critical Injury rolls; manual/external rolls excluded.",
+ "core-talent:desperate-recovery": "Native encounter strain recovery; strict greater-than-half threshold.",
+ "core-talent:one-with-nature": "Individual/group Survival recovery with GM wilderness confirmation.",
+ "terrinoth-talent:apothecary": "GM-confirmed natural rest under selected caregiver.",
+ "core-talent:painkiller-specialization": "GM-recorded administered doses; provider rank, first five doses only. Inventory/maneuver remain manual."
+};
 function automatedDefinitions() {
     const definitions = [createCoreParryTalent(1), createCoreSecondWindTalent(1), createTerrinothFinesseTalent()];
     return new Map(definitions.map((talent) => [talent.id, talent]));
@@ -199,7 +206,8 @@ export function buildRealmsOfTerrinothTalentCatalog() {
                 printedSource: sourceKind === "rot" ? "Realms of Terrinoth" : "Genesys Core Rulebook",
                 authority: "Realms of Terrinoth Table 2-4 + official errata",
                 workingIndex: "Genesys Talents Expanded Version 5.0",
-                automationStatus: existing ? "implemented" : "catalog-only"
+                automationStatus: existing ? "implemented" : RUNTIME_COVERAGE[id] ? "runtime-supported" : "catalog-only",
+                automationScope: RUNTIME_COVERAGE[id] ?? ""
             }
         };
     });

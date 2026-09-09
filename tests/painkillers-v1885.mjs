@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+globalThis.Hooks={once(){}};
+const {applyPainkiller,painkillerHealing}=await import('../dist/module/painkillers-v1885.js');
+assert.deepEqual([0,1,2,3,4,5,6].map(n=>painkillerHealing(n,2)),[7,6,5,4,3,0,0]);
+let record;const patient={system:{role:'pc',wounds:{value:30}},getFlag:()=>record,async update(d){if(this.fail)throw Error('save');record=d['flags.genesys-vtt.painkillers'];if('system.wounds.value' in d)this.system.wounds.value=d['system.wounds.value'];}};
+const provider={type:'character',items:[{type:'talent',system:{sourceId:'core-talent:painkiller-specialization',rank:2,enabled:true}}]};
+const state={entries:[{actorRef:'p'}]};
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysVtt:{initiative:{resolveActorRef:r=>r==='p'?patient:provider,sceneState:()=>state}}};
+globalThis.foundry={documents:{ChatMessage:{create:async()=>{throw Error('chat');}}}};globalThis.ui={notifications:{warn(){}}};
+const options={revision:0,providerRef:'healer',operation:'use',confirmed:true};
+await applyPainkiller(patient,options,{});assert.equal(patient.system.wounds.value,23);assert.equal(record.uses,1);
+await assert.rejects(applyPainkiller(patient,options,{}),/changed/);
+provider.items[0].system.enabled=false;await applyPainkiller(patient,{...options,revision:1},{});assert.equal(patient.system.wounds.value,19);
+record.uses=5;await applyPainkiller(patient,{...options,revision:2},{});assert.equal(patient.system.wounds.value,19);
+await applyPainkiller(patient,{...options,revision:3,operation:'reset'},{});assert.equal(record.uses,0);assert.equal(record.revision,4);
+patient.fail=true;await assert.rejects(applyPainkiller(patient,{...options,revision:4},{}),/save/);assert.equal(record.revision,4);
+game.user.isGM=false;await assert.rejects(applyPainkiller(patient,{...options,revision:4},{}),/GM/);
+console.log('PASS diminishing healing, provider rank, disabled talent, sixth dose zero, reset revisions and atomic save/chat retry');

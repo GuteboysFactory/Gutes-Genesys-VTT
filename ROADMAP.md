@@ -1,6 +1,6 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-08. Latest build: **v0.0.1884** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
+Updated 2026-09-08. Latest build: **v0.0.1885** (automated checks; live Foundry QA pending). Heroic panel placement v0.0.1842 is user-approved. Heroic upgrades/custom effects v0.0.1843–1845 are published, with live QA still pending.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
@@ -492,3 +492,13 @@ Original roadmap phases remain unchanged. This delivery advances v187x/v188x and
 - Original v188x rule/content backlog: guided Medicine first aid for PC encounter participants, health-based difficulty, self/equipment penalties and atomic result/health/attempt receipt. GM handles action economy and exceptional effects.
 - Source: supplied Core p.116. Failed checks consume that patient's attempt. Critical Injury treatment, painkillers and broader medical talent automation remain open.
 - 72 test files pass; Chromium-dependent coordinator test blocked. New work not live approved. Full-book/content gate, multiplayer/reconnect, performance and v14 remain open.
+
+## v0.0.1885 — Combined Forge, recovery and content follow-up
+
+Original phases v186x–188x retained; no new roadmap phase.
+
+- User-requested fixed system WebP in the in-world native Edit World background field. Render/submit binding supplies the unchanged asset and makes that field read-only. Native Update World persists it; description/theme/title remain untouched. Replaces v1884 manual path-copy control.
+- Painkiller/healing-potion GM recording, patient use counter across encounters, decreasing recovery and provider Painkiller Specialization; sixth onward zero. Shared authoritative Scene queue, atomic wounds/count and stale-request protection. GM controls item consumption, maneuver/range/free hand and new-day reset.
+- Custom Forge templates preserve separate rules provenance through save/copy/create. Intact source references remain required for reviewed abilities. Existing templates with already-lost provenance are not guessed/migrated by name.
+- Native talent catalog now explicitly marks runtime-supported Durable, Desperate Recovery, One with Nature, Apothecary and Painkiller Specialization with scope; pre-existing edited Items are not overwritten.
+- 74 test files PASS; Chromium-dependent test BLOCKED. This is not live acceptance or full Core/Terrinoth rule coverage. Remaining 197 manual NPC reference occurrences, full content audit/grind and v189x live/release gates remain tracked.

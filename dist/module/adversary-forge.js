@@ -59,7 +59,7 @@ export async function openAdversaryForge({template=null,file=null}={}){
  const img=file?await uploadAdversaryImage(file):base?.img;
  authority();
  if(!base&&getActiveProfileId()!==profile)throw Error('Rules profile changed. Reopen Forge.');
- const actor=await foundry.documents.Actor.create({...data,...(img?{img}:{}),system:{...(base?.system??{}),...data.system},folder,items:[...(base?.items??[]).filter((_i,n)=>draft.templateItems.includes(String(n))),...items],ownership:{default:0},prototypeToken:{actorLink:false,...(img?{texture:{src:img}}:{})},flags:{[SID]:{rulesProfile:profile,...(base?{adversarySource:base.flags['genesys-vtt'].adversaryTemplate}:{}),adversaryForge:{version:1,createdAt:Date.now()}}}});
+ const actor=await foundry.documents.Actor.create({...data,...(img?{img}:{}),system:{...(base?.system??{}),...data.system},folder,items:[...(base?.items??[]).filter((_i,n)=>draft.templateItems.includes(String(n))),...items],ownership:{default:0},prototypeToken:{actorLink:false,...(img?{texture:{src:img}}:{})},flags:{[SID]:{rulesProfile:profile,...(base?{adversarySource:base.flags['genesys-vtt'].adversaryTemplate,adversaryRulesSource:base.flags['genesys-vtt'].adversaryRulesSource}:{}),adversaryForge:{version:1,createdAt:Date.now()}}}});
  if(!actor)throw Error('NPC creation did not return an Actor.');
  try{await actor.sheet.render(true);}catch{ui.notifications.warn('NPC saved in Actors; its sheet could not open.');}
  ui.notifications.info(`${actor.name} created.`);
@@ -79,7 +79,7 @@ export async function createAdversaryFromTemplate(template, {file=null,validateC
  if(!game.genesysPortraitTokenForge?.createStandardToken)throw Error('Token Forge is not ready.');
  const tokenImg=await game.genesysPortraitTokenForge.createStandardToken(img||'icons/svg/mystery-man.svg');
  authority();validateContext();
- const actor=await foundry.documents.Actor.create({...data,img,system:{...base.system,...data.system},items:base.items,ownership:{default:0},prototypeToken:{actorLink:false,texture:{src:tokenImg}},flags:{[SID]:{rulesProfile:profile,adversarySource:base.flags[SID].adversaryTemplate,adversaryForge:{version:2,createdAt:Date.now()}}}});
+ const actor=await foundry.documents.Actor.create({...data,img,system:{...base.system,...data.system},items:base.items,ownership:{default:0},prototypeToken:{actorLink:false,texture:{src:tokenImg}},flags:{[SID]:{rulesProfile:profile,adversarySource:base.flags[SID].adversaryTemplate,adversaryRulesSource:base.flags[SID].adversaryRulesSource,adversaryForge:{version:2,createdAt:Date.now()}}}});
  if(!actor)throw Error('NPC creation failed.');
  return actor;
 }

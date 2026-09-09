@@ -629,7 +629,16 @@ async function queued_resolveSceneMedicalCare(actor,options,scene){
  if(!initiativeAuthority())throw Error('Active GM required.');
  return game.genesysMedicalCare.applyMedicalCare(actor,options,scene);
 }
+export function resolveScenePainkiller(actor, options, scene=activeScene()) {
+ const {revision,providerRef,operation,confirmed}=options;
+ return dispatchInitiativeCommand('resolveScenePainkiller',[actorInitiativeRef(actor),{revision,providerRef,operation,confirmed}],scene);
+}
+async function queued_resolveScenePainkiller(actor,options,scene){
+ if(!initiativeAuthority())throw Error('Active GM required.');
+ return game.genesysPainkillers.applyPainkiller(actor,options,scene);
+}
 const commandRegistry = {
+    resolveScenePainkiller:{run:queued_resolveScenePainkiller,argc:2,actor:true},
     resolveSceneMedicalCare:{run:queued_resolveSceneMedicalCare,argc:2,actor:true},
     resolveSceneFear:{run:queued_resolveSceneFear,argc:2,actor:true},
     executeSceneTalent:{run:queued_executeSceneTalent,argc:3,actor:true},

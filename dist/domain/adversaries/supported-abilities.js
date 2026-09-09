@@ -1,7 +1,7 @@
 import {createCoreSecondWindTalent} from '../rules/index.js';
 // Only reviewed, intact source references qualify. Never infer rules from Actor names.
 export function addSupportedAdversaryAbilities(raw) {
- const id=raw.flags?.['genesys-vtt']?.adversaryTemplate?.id;
+ const id=raw.flags?.['genesys-vtt']?.adversaryRulesSource?.id??raw.flags?.['genesys-vtt']?.adversaryTemplate?.id;
  const references=(raw.items??[]).filter(i=>i.flags?.['genesys-vtt']?.adversaryReference===true);
  // Correct only the exact unedited legacy source reference in a copied Forge draft.
  const items=(raw.items??[]).filter(i=>!(id==='rot:flying-mount' && i.flags?.['genesys-vtt']?.adversaryReference===true && i.type==='gear' && i.system?.notes==='Dodge 2.'));

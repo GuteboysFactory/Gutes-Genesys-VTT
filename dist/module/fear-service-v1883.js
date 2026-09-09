@@ -3,7 +3,7 @@ let profiles=[];
 const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 function authority(){if(!game.user?.isGM||game.users?.activeGM?.id!==game.user.id)throw Error('The active GM resolves fear.');}
 export function terrifyingProfile(actor,definitions=profiles){
- const meta=actor?.flags?.[SID];const id=meta?.adversarySource?.id??meta?.adversaryTemplate?.id;
+ const meta=actor?.flags?.[SID];const id=meta?.adversaryRulesSource?.id??meta?.adversarySource?.id??meta?.adversaryTemplate?.id;
  return definitions.find(p=>p.id===id && Array.from(actor.items?.contents??actor.items??[]).some(i=>i.flags?.[SID]?.adversaryReference===true && i.system?.notes?.includes(p.reference)))??null;
 }
 function context(scene){
