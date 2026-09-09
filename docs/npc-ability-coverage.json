@@ -1,16 +1,17 @@
 {
-  "version": "0.0.1886",
+  "version": "0.0.1887",
   "source": "Existing 79 Terrinoth template references; printed book page numbers",
-  "scope": "Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. New-runtime entries were checked in v1881. Flying Mount Dodge 2 removed in v1882 per official FAQ/Errata v1.1. v1883 adds GM-guided Terrifying profiles from intact source references; timing, exemptions and consequences are GM-confirmed. v1886 checks Dimora Durable 2 against p.191 and binds its intact reference to native Durable. Manual references are not executed. Clause splitting includes prose fragments; counts are not unique abilities or missing functions.",
+  "scope": "Inventory of recorded talent/ability/spell clauses, not independent full-book coverage certification. New-runtime entries were checked in v1881. Flying Mount Dodge 2 removed in v1882 per official FAQ/Errata v1.1. v1883 adds GM-guided Terrifying profiles from intact source references; timing, exemptions and consequences are GM-confirmed. v1886 checks Dimora Durable 2 against p.191 and binds its intact reference to native Durable. v1887 adds 11 checked NPC magic occurrences; reference kinds distinguish spell prose and extraction fragments. Manual references are not executed. Clause splitting includes prose fragments; counts are not unique abilities or missing functions.",
   "templates": 79,
   "counts": {
-    "manual-reference": 196,
+    "manual-reference": 185,
     "native-baseline": 49,
     "gm-guided": 17,
-    "new-runtime": 3
+    "new-runtime": 14
   },
   "entries": [
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:beast-of-burden",
       "actor": "Beast Of Burden",
       "page": 104,
@@ -21,6 +22,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:beast-of-burden",
       "actor": "Beast Of Burden",
       "page": 104,
@@ -31,6 +33,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:flying-mount",
       "actor": "Flying Mount",
       "page": 104,
@@ -41,6 +44,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:flying-mount",
       "actor": "Flying Mount",
       "page": 104,
@@ -51,6 +55,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:flying-mount",
       "actor": "Flying Mount",
       "page": 104,
@@ -61,6 +66,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:riding-beast",
       "actor": "Riding Beast",
       "page": 104,
@@ -71,6 +77,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:riding-beast",
       "actor": "Riding Beast",
       "page": 104,
@@ -81,6 +88,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:war-mount",
       "actor": "War Mount",
       "page": 105,
@@ -91,6 +99,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:war-mount",
       "actor": "War Mount",
       "page": 105,
@@ -101,6 +110,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dragon-hybrid",
       "actor": "Dragon Hybrid",
       "page": 151,
@@ -111,6 +121,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dragon-hybrid",
       "actor": "Dragon Hybrid",
       "page": 151,
@@ -121,6 +132,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dragon-hybrid",
       "actor": "Dragon Hybrid",
       "page": 151,
@@ -131,6 +143,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:feral-dragon",
       "actor": "Feral Dragon",
       "page": 152,
@@ -141,6 +154,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:feral-dragon",
       "actor": "Feral Dragon",
       "page": 152,
@@ -151,6 +165,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:feral-dragon",
       "actor": "Feral Dragon",
       "page": 152,
@@ -161,6 +176,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:feral-dragon",
       "actor": "Feral Dragon",
       "page": 152,
@@ -171,6 +187,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:feral-dragon",
       "actor": "Feral Dragon",
       "page": 152,
@@ -181,6 +198,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:feral-dragon",
       "actor": "Feral Dragon",
       "page": 152,
@@ -191,6 +209,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:goblin",
       "actor": "Goblin",
       "page": 152,
@@ -201,6 +220,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:goblin",
       "actor": "Goblin",
       "page": 152,
@@ -211,6 +231,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:goblin-witcher",
       "actor": "Goblin Witcher",
       "page": 152,
@@ -221,16 +242,18 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:goblin-witcher",
       "actor": "Goblin Witcher",
       "page": 152,
       "category": "Talents",
       "name": "Dark Insight",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Dark Insight; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:goblin-witcher",
       "actor": "Goblin Witcher",
       "page": 152,
@@ -241,6 +264,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:goblin-witcher",
       "actor": "Goblin Witcher",
       "page": 152,
@@ -251,6 +275,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:goblin-witcher",
       "actor": "Goblin Witcher",
       "page": 152,
@@ -261,6 +286,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:goblin-witcher",
       "actor": "Goblin Witcher",
       "page": 152,
@@ -271,6 +297,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:greyhaven-wizard",
       "actor": "Greyhaven Wizard",
       "page": 153,
@@ -281,6 +308,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:greyhaven-wizard",
       "actor": "Greyhaven Wizard",
       "page": 153,
@@ -291,6 +319,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:greyhaven-wizard",
       "actor": "Greyhaven Wizard",
       "page": 153,
@@ -301,6 +330,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:greyhaven-wizard",
       "actor": "Greyhaven Wizard",
       "page": 153,
@@ -311,6 +341,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ironbound",
       "actor": "Ironbound",
       "page": 153,
@@ -321,6 +352,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ironbound",
       "actor": "Ironbound",
       "page": 153,
@@ -331,6 +363,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ironbound",
       "actor": "Ironbound",
       "page": 153,
@@ -341,6 +374,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:priest-of-kellos",
       "actor": "Priest Of Kellos",
       "page": 154,
@@ -351,6 +385,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:priest-of-kellos",
       "actor": "Priest Of Kellos",
       "page": 154,
@@ -361,6 +396,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:priest-of-kellos",
       "actor": "Priest Of Kellos",
       "page": 154,
@@ -371,6 +407,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:priest-of-kellos",
       "actor": "Priest Of Kellos",
       "page": 154,
@@ -381,6 +418,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:rune-golem",
       "actor": "Rune Golem",
       "page": 154,
@@ -391,6 +429,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:rune-golem",
       "actor": "Rune Golem",
       "page": 154,
@@ -401,6 +440,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:rune-golem",
       "actor": "Rune Golem",
       "page": 154,
@@ -411,6 +451,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:splig-king-of-all-goblins",
       "actor": "Splig, King Of All Goblins",
       "page": 154,
@@ -421,6 +462,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:splig-king-of-all-goblins",
       "actor": "Splig, King Of All Goblins",
       "page": 154,
@@ -431,6 +473,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:splig-king-of-all-goblins",
       "actor": "Splig, King Of All Goblins",
       "page": 154,
@@ -441,6 +484,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:tamalir-guildmaster",
       "actor": "Tamalir Guildmaster",
       "page": 155,
@@ -451,6 +495,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:barghest",
       "actor": "Barghest",
       "page": 163,
@@ -461,6 +506,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:barghest",
       "actor": "Barghest",
       "page": 163,
@@ -471,6 +517,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:barghest",
       "actor": "Barghest",
       "page": 163,
@@ -481,6 +528,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:barghest",
       "actor": "Barghest",
       "page": 163,
@@ -491,6 +539,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:death-knight",
       "actor": "Death Knight",
       "page": 164,
@@ -501,6 +550,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:death-knight",
       "actor": "Death Knight",
       "page": 164,
@@ -511,6 +561,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:death-knight",
       "actor": "Death Knight",
       "page": 164,
@@ -521,6 +572,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:death-knight",
       "actor": "Death Knight",
       "page": 164,
@@ -531,6 +583,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:death-knight",
       "actor": "Death Knight",
       "page": 164,
@@ -541,6 +594,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:death-knight",
       "actor": "Death Knight",
       "page": 164,
@@ -551,6 +605,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ferrox",
       "actor": "Ferrox",
       "page": 165,
@@ -561,6 +616,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ferrox",
       "actor": "Ferrox",
       "page": 165,
@@ -571,6 +627,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ferrox",
       "actor": "Ferrox",
       "page": 165,
@@ -581,6 +638,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
@@ -591,16 +649,18 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
       "category": "Talents",
       "name": "Dark Insight",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Dark Insight; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
@@ -611,6 +671,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
@@ -621,6 +682,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
@@ -631,6 +693,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
@@ -641,16 +704,18 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
       "category": "Abilities",
       "name": "Vampiric Magic",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Vampiric Magic; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
@@ -661,6 +726,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
@@ -671,6 +737,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:lord-of-bilehall",
       "actor": "Lord Of Bilehall",
       "page": 165,
@@ -681,6 +748,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:necromancer",
       "actor": "Necromancer",
       "page": 166,
@@ -691,36 +759,40 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:necromancer",
       "actor": "Necromancer",
       "page": 166,
       "category": "Talents",
       "name": "Chill of Nordros",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Chill of Nordros; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:necromancer",
       "actor": "Necromancer",
       "page": 166,
       "category": "Talents",
       "name": "Dark Insight",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Dark Insight; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:necromancer",
       "actor": "Necromancer",
       "page": 166,
       "category": "Talents",
       "name": "Necromancy",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Necromancy; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:necromancer",
       "actor": "Necromancer",
       "page": 166,
@@ -731,6 +803,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:necromancer",
       "actor": "Necromancer",
       "page": 166,
@@ -741,6 +814,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:necromancer",
       "actor": "Necromancer",
       "page": 166,
@@ -751,6 +825,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:reanimate",
       "actor": "Reanimate",
       "page": 166,
@@ -761,6 +836,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:reanimate",
       "actor": "Reanimate",
       "page": 166,
@@ -771,6 +847,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wraith",
       "actor": "Wraith",
       "page": 167,
@@ -781,6 +858,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wraith",
       "actor": "Wraith",
       "page": 167,
@@ -791,6 +869,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wraith",
       "actor": "Wraith",
       "page": 167,
@@ -801,6 +880,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wraith",
       "actor": "Wraith",
       "page": 167,
@@ -811,6 +891,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:aymhelin-scion",
       "actor": "Aymhelin Scion",
       "page": 178,
@@ -821,6 +902,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:aymhelin-scion",
       "actor": "Aymhelin Scion",
       "page": 178,
@@ -831,6 +913,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:aymhelin-scion",
       "actor": "Aymhelin Scion",
       "page": 178,
@@ -841,6 +924,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:aymhelin-scion",
       "actor": "Aymhelin Scion",
       "page": 178,
@@ -851,6 +935,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:deepwood-archer",
       "actor": "Deepwood Archer",
       "page": 179,
@@ -861,6 +946,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:forest-guardian",
       "actor": "Forest Guardian",
       "page": 179,
@@ -871,6 +957,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:forest-guardian",
       "actor": "Forest Guardian",
       "page": 179,
@@ -881,6 +968,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:forest-guardian",
       "actor": "Forest Guardian",
       "page": 179,
@@ -891,6 +979,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:leonx-rider",
       "actor": "Leonx Rider",
       "page": 179,
@@ -901,6 +990,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:leonx",
       "actor": "Leonx",
       "page": 180,
@@ -911,6 +1001,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:leonx",
       "actor": "Leonx",
       "page": 180,
@@ -921,6 +1012,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:storm-sorceress",
       "actor": "Storm Sorceress",
       "page": 180,
@@ -931,16 +1023,18 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:storm-sorceress",
       "actor": "Storm Sorceress",
       "page": 180,
       "category": "Abilities",
       "name": "Elemental Mastery",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Elemental Mastery; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:storm-sorceress",
       "actor": "Storm Sorceress",
       "page": 180,
@@ -951,6 +1045,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:storm-sorceress",
       "actor": "Storm Sorceress",
       "page": 180,
@@ -961,6 +1056,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:storm-sorceress",
       "actor": "Storm Sorceress",
       "page": 180,
@@ -971,6 +1067,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:true-fae",
       "actor": "True Fae",
       "page": 181,
@@ -981,16 +1078,18 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:true-fae",
       "actor": "True Fae",
       "page": 181,
       "category": "Abilities",
       "name": "Creature of the Aenlong",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Creature of the Aenlong; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:true-fae",
       "actor": "True Fae",
       "page": 181,
@@ -1001,6 +1100,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:true-fae",
       "actor": "True Fae",
       "page": 181,
@@ -1011,6 +1111,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:true-fae",
       "actor": "True Fae",
       "page": 181,
@@ -1021,6 +1122,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:true-fae",
       "actor": "True Fae",
       "page": 181,
@@ -1031,6 +1133,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:true-fae",
       "actor": "True Fae",
       "page": 181,
@@ -1041,6 +1144,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:deep-elf",
       "actor": "Deep Elf",
       "page": 190,
@@ -1051,6 +1155,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:deep-elf",
       "actor": "Deep Elf",
       "page": 190,
@@ -1061,6 +1166,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dimora",
       "actor": "Dimora",
       "page": 191,
@@ -1068,19 +1174,21 @@
       "name": "Durable 2",
       "status": "new-runtime",
       "implementation": "v1886 intact Dimora reference adds native Durable rank 2 on Forge copy",
-      "sourceCheckedThisPackage": true
+      "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dimora",
       "actor": "Dimora",
       "page": 191,
       "category": "Abilities",
       "name": "Creature of the Aenlong",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Creature of the Aenlong; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dimora",
       "actor": "Dimora",
       "page": 191,
@@ -1091,6 +1199,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dimora",
       "actor": "Dimora",
       "page": 191,
@@ -1101,6 +1210,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:dimora",
       "actor": "Dimora",
       "page": 191,
@@ -1111,6 +1221,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:dimora",
       "actor": "Dimora",
       "page": 191,
@@ -1121,6 +1232,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:dimora",
       "actor": "Dimora",
       "page": 191,
@@ -1131,6 +1243,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dwarf-guilder",
       "actor": "Dwarf Guilder",
       "page": 191,
@@ -1141,6 +1254,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dwarf-guilder",
       "actor": "Dwarf Guilder",
       "page": 191,
@@ -1151,6 +1265,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dwarven-dragon-hunter",
       "actor": "Dwarven Dragon Hunter",
       "page": 191,
@@ -1161,6 +1276,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dwarven-dragon-hunter",
       "actor": "Dwarven Dragon Hunter",
       "page": 191,
@@ -1171,6 +1287,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:dwarven-dragon-hunter",
       "actor": "Dwarven Dragon Hunter",
       "page": 191,
@@ -1181,6 +1298,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:kennsir-dwarf",
       "actor": "Kennsir Dwarf",
       "page": 192,
@@ -1191,6 +1309,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:kennsir-dwarf",
       "actor": "Kennsir Dwarf",
       "page": 192,
@@ -1201,6 +1320,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:kobold",
       "actor": "Kobold",
       "page": 192,
@@ -1211,6 +1331,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:kobold",
       "actor": "Kobold",
       "page": 192,
@@ -1221,6 +1342,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ancient-dragon",
       "actor": "Ancient Dragon",
       "page": 195,
@@ -1231,6 +1353,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ancient-dragon",
       "actor": "Ancient Dragon",
       "page": 195,
@@ -1241,6 +1364,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ancient-dragon",
       "actor": "Ancient Dragon",
       "page": 195,
@@ -1251,6 +1375,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ancient-dragon",
       "actor": "Ancient Dragon",
       "page": 195,
@@ -1261,6 +1386,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ancient-dragon",
       "actor": "Ancient Dragon",
       "page": 195,
@@ -1271,6 +1397,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ancient-dragon",
       "actor": "Ancient Dragon",
       "page": 195,
@@ -1281,6 +1408,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:ancient-dragon",
       "actor": "Ancient Dragon",
       "page": 195,
@@ -1291,6 +1419,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:ancient-dragon",
       "actor": "Ancient Dragon",
       "page": 195,
@@ -1301,6 +1430,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:specter",
       "actor": "Specter",
       "page": 195,
@@ -1311,6 +1441,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:specter",
       "actor": "Specter",
       "page": 195,
@@ -1321,6 +1452,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:specter",
       "actor": "Specter",
       "page": 195,
@@ -1331,6 +1463,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:specter",
       "actor": "Specter",
       "page": 195,
@@ -1341,6 +1474,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lava-elemental",
       "actor": "Lava Elemental",
       "page": 196,
@@ -1351,6 +1485,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lava-elemental",
       "actor": "Lava Elemental",
       "page": 196,
@@ -1361,6 +1496,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "extraction-fragment",
       "templateId": "rot:salamander",
       "actor": "Salamander",
       "page": 196,
@@ -1371,6 +1507,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:salamander",
       "actor": "Salamander",
       "page": 196,
@@ -1381,6 +1518,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:young-dragon",
       "actor": "Young Dragon",
       "page": 196,
@@ -1391,6 +1529,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:young-dragon",
       "actor": "Young Dragon",
       "page": 196,
@@ -1401,6 +1540,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:young-dragon",
       "actor": "Young Dragon",
       "page": 196,
@@ -1411,6 +1551,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:young-dragon",
       "actor": "Young Dragon",
       "page": 196,
@@ -1421,6 +1562,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:young-dragon",
       "actor": "Young Dragon",
       "page": 196,
@@ -1431,6 +1573,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:young-dragon",
       "actor": "Young Dragon",
       "page": 196,
@@ -1441,6 +1584,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:young-dragon",
       "actor": "Young Dragon",
       "page": 196,
@@ -1451,6 +1595,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:beastman",
       "actor": "Beastman",
       "page": 201,
@@ -1461,6 +1606,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:gurak-tol",
       "actor": "Gurak Tol",
       "page": 202,
@@ -1471,6 +1617,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:gurak-tol",
       "actor": "Gurak Tol",
       "page": 202,
@@ -1481,6 +1628,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ogre",
       "actor": "Ogre",
       "page": 202,
@@ -1491,6 +1639,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ogre",
       "actor": "Ogre",
       "page": 202,
@@ -1501,6 +1650,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:orc-spiritspeaker",
       "actor": "Orc Spiritspeaker",
       "page": 202,
@@ -1511,6 +1661,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:orc-spiritspeaker",
       "actor": "Orc Spiritspeaker",
       "page": 202,
@@ -1521,6 +1672,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:orc-spiritspeaker",
       "actor": "Orc Spiritspeaker",
       "page": 202,
@@ -1531,6 +1683,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:orc-spiritspeaker",
       "actor": "Orc Spiritspeaker",
       "page": 202,
@@ -1541,6 +1694,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:orc-outrider",
       "actor": "Orc Outrider",
       "page": 203,
@@ -1551,6 +1705,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:orc-outrider",
       "actor": "Orc Outrider",
       "page": 203,
@@ -1561,6 +1716,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:berserker",
       "actor": "Berserker",
       "page": 213,
@@ -1571,6 +1727,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:berserker",
       "actor": "Berserker",
       "page": 213,
@@ -1581,6 +1738,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:bloodsister-and-nightseer",
       "actor": "Bloodsister And Nightseer",
       "page": 213,
@@ -1591,16 +1749,18 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:bloodsister-and-nightseer",
       "actor": "Bloodsister And Nightseer",
-      "page": 213,
+      "page": 214,
       "category": "Talents",
       "name": "Dark Insight",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Dark Insight; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:bloodsister-and-nightseer",
       "actor": "Bloodsister And Nightseer",
       "page": 213,
@@ -1611,6 +1771,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:bloodsister-and-nightseer",
       "actor": "Bloodsister And Nightseer",
       "page": 213,
@@ -1621,6 +1782,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:bloodsister-and-nightseer",
       "actor": "Bloodsister And Nightseer",
       "page": 213,
@@ -1631,6 +1793,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:bloodsister-and-nightseer",
       "actor": "Bloodsister And Nightseer",
       "page": 213,
@@ -1641,6 +1804,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:bloodsister-and-nightseer",
       "actor": "Bloodsister And Nightseer",
       "page": 213,
@@ -1651,6 +1815,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:flesh-ripper",
       "actor": "Flesh Ripper",
       "page": 214,
@@ -1661,6 +1826,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:flesh-ripper",
       "actor": "Flesh Ripper",
       "page": 214,
@@ -1671,6 +1837,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:grotesque",
       "actor": "Grotesque",
       "page": 215,
@@ -1681,6 +1848,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:grotesque",
       "actor": "Grotesque",
       "page": 215,
@@ -1691,6 +1859,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:spined-thresher",
       "actor": "Spined Thresher",
       "page": 216,
@@ -1701,6 +1870,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:spined-thresher",
       "actor": "Spined Thresher",
       "page": 216,
@@ -1711,6 +1881,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:spined-thresher",
       "actor": "Spined Thresher",
       "page": 216,
@@ -1721,6 +1892,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:spined-thresher",
       "actor": "Spined Thresher",
       "page": 216,
@@ -1731,6 +1903,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:spined-thresher",
       "actor": "Spined Thresher",
       "page": 216,
@@ -1741,6 +1914,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:viper-legion-archer",
       "actor": "Viper Legion Archer",
       "page": 217,
@@ -1751,6 +1925,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:witch-and-warlock",
       "actor": "Witch And Warlock",
       "page": 217,
@@ -1761,16 +1936,18 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:witch-and-warlock",
       "actor": "Witch And Warlock",
       "page": 217,
       "category": "Talents",
       "name": "Dark Insight",
-      "status": "manual-reference",
-      "implementation": null,
-      "sourceCheckedThisPackage": false
+      "status": "new-runtime",
+      "implementation": "v1887 native magic preparation: Dark Insight; explicit effect/creature decisions remain GM-managed",
+      "sourceCheckedThisPackage": true
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:witch-and-warlock",
       "actor": "Witch And Warlock",
       "page": 217,
@@ -1781,6 +1958,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:witch-and-warlock",
       "actor": "Witch And Warlock",
       "page": 217,
@@ -1791,6 +1969,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:witch-and-warlock",
       "actor": "Witch And Warlock",
       "page": 217,
@@ -1801,6 +1980,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:witch-and-warlock",
       "actor": "Witch And Warlock",
       "page": 217,
@@ -1811,6 +1991,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:giant",
       "actor": "Giant",
       "page": 226,
@@ -1821,6 +2002,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:giant",
       "actor": "Giant",
       "page": 226,
@@ -1831,6 +2013,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:giant",
       "actor": "Giant",
       "page": 226,
@@ -1841,6 +2024,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:giant",
       "actor": "Giant",
       "page": 226,
@@ -1851,6 +2035,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:gnome-minstrel",
       "actor": "Gnome Minstrel",
       "page": 226,
@@ -1861,6 +2046,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:gnome-minstrel",
       "actor": "Gnome Minstrel",
       "page": 226,
@@ -1871,6 +2057,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:gnome-minstrel",
       "actor": "Gnome Minstrel",
       "page": 226,
@@ -1881,6 +2068,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:gnome-minstrel",
       "actor": "Gnome Minstrel",
       "page": 226,
@@ -1891,6 +2079,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:gnome-minstrel",
       "actor": "Gnome Minstrel",
       "page": 226,
@@ -1901,6 +2090,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lorimor-marine",
       "actor": "Lorimor Marine",
       "page": 227,
@@ -1911,6 +2101,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:lost-knight",
       "actor": "Lost Knight",
       "page": 227,
@@ -1921,6 +2112,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:manticore",
       "actor": "Manticore",
       "page": 227,
@@ -1931,6 +2123,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:manticore",
       "actor": "Manticore",
       "page": 227,
@@ -1941,6 +2134,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:manticore",
       "actor": "Manticore",
       "page": 227,
@@ -1951,6 +2145,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:merriod",
       "actor": "Merriod",
       "page": 228,
@@ -1961,6 +2156,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:merriod",
       "actor": "Merriod",
       "page": 228,
@@ -1971,6 +2167,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:merriod",
       "actor": "Merriod",
       "page": 228,
@@ -1981,6 +2178,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:merriod",
       "actor": "Merriod",
       "page": 228,
@@ -1991,6 +2189,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:merriod",
       "actor": "Merriod",
       "page": 228,
@@ -2001,6 +2200,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:pirate",
       "actor": "Pirate",
       "page": 229,
@@ -2011,6 +2211,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:shade",
       "actor": "Shade",
       "page": 229,
@@ -2021,6 +2222,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:shade",
       "actor": "Shade",
       "page": 229,
@@ -2031,6 +2233,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:shade",
       "actor": "Shade",
       "page": 229,
@@ -2041,6 +2244,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:siren",
       "actor": "Siren",
       "page": 230,
@@ -2051,6 +2255,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:siren",
       "actor": "Siren",
       "page": 230,
@@ -2061,6 +2266,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:siren",
       "actor": "Siren",
       "page": 230,
@@ -2071,6 +2277,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:sword-poet",
       "actor": "Sword Poet",
       "page": 230,
@@ -2081,6 +2288,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:sword-poet",
       "actor": "Sword Poet",
       "page": 230,
@@ -2091,6 +2299,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:sword-poet",
       "actor": "Sword Poet",
       "page": 230,
@@ -2101,6 +2310,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:sword-poet",
       "actor": "Sword Poet",
       "page": 230,
@@ -2111,6 +2321,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:sword-poet",
       "actor": "Sword Poet",
       "page": 230,
@@ -2121,6 +2332,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wyrm-of-the-deep",
       "actor": "Wyrm Of The Deep",
       "page": 231,
@@ -2131,6 +2343,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wyrm-of-the-deep",
       "actor": "Wyrm Of The Deep",
       "page": 231,
@@ -2141,6 +2354,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wyrm-of-the-deep",
       "actor": "Wyrm Of The Deep",
       "page": 231,
@@ -2151,6 +2365,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wyrm-of-the-deep",
       "actor": "Wyrm Of The Deep",
       "page": 231,
@@ -2161,6 +2376,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ice-wyrm",
       "actor": "Ice Wyrm",
       "page": 237,
@@ -2171,6 +2387,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ice-wyrm",
       "actor": "Ice Wyrm",
       "page": 237,
@@ -2181,6 +2398,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ice-wyrm",
       "actor": "Ice Wyrm",
       "page": 237,
@@ -2191,6 +2409,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ice-wyrm",
       "actor": "Ice Wyrm",
       "page": 237,
@@ -2201,6 +2420,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "extraction-fragment",
       "templateId": "rot:ice-wyrm",
       "actor": "Ice Wyrm",
       "page": 237,
@@ -2211,6 +2431,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:ice-blood-warrior",
       "actor": "Ice-Blood Warrior",
       "page": 237,
@@ -2221,6 +2442,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wendigo",
       "actor": "Wendigo",
       "page": 238,
@@ -2231,6 +2453,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wendigo",
       "actor": "Wendigo",
       "page": 238,
@@ -2241,6 +2464,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wendigo",
       "actor": "Wendigo",
       "page": 238,
@@ -2251,6 +2475,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:wendigo",
       "actor": "Wendigo",
       "page": 238,
@@ -2261,6 +2486,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:onoit-shaman",
       "actor": "Onoit Shaman",
       "page": 239,
@@ -2271,6 +2497,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:onoit-shaman",
       "actor": "Onoit Shaman",
       "page": 239,
@@ -2281,6 +2508,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:onoit-shaman",
       "actor": "Onoit Shaman",
       "page": 239,
@@ -2291,6 +2519,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:onoit-shaman",
       "actor": "Onoit Shaman",
       "page": 239,
@@ -2301,6 +2530,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:onoit-shaman",
       "actor": "Onoit Shaman",
       "page": 239,
@@ -2311,6 +2541,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:weik-warrior",
       "actor": "Weik Warrior",
       "page": 239,
@@ -2321,6 +2552,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:assassin",
       "actor": "Assassin",
       "page": 247,
@@ -2331,6 +2563,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:assassin",
       "actor": "Assassin",
       "page": 247,
@@ -2341,6 +2574,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:assassin",
       "actor": "Assassin",
       "page": 247,
@@ -2351,6 +2585,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:assassin",
       "actor": "Assassin",
       "page": 247,
@@ -2361,6 +2596,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:assassin",
       "actor": "Assassin",
       "page": 247,
@@ -2371,6 +2607,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:assassin",
       "actor": "Assassin",
       "page": 247,
@@ -2381,6 +2618,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:djinn",
       "actor": "Djinn",
       "page": 248,
@@ -2391,6 +2629,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:djinn",
       "actor": "Djinn",
       "page": 248,
@@ -2401,6 +2640,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:djinn",
       "actor": "Djinn",
       "page": 248,
@@ -2411,6 +2651,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:djinn",
       "actor": "Djinn",
       "page": 248,
@@ -2421,6 +2662,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:djinn",
       "actor": "Djinn",
       "page": 248,
@@ -2431,6 +2673,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "spell-prose",
       "templateId": "rot:djinn",
       "actor": "Djinn",
       "page": 248,
@@ -2441,6 +2684,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:minor-elemental",
       "actor": "Minor Elemental",
       "page": 248,
@@ -2451,6 +2695,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:minor-elemental",
       "actor": "Minor Elemental",
       "page": 248,
@@ -2461,6 +2706,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:scorpion-swarm",
       "actor": "Scorpion Swarm",
       "page": 249,
@@ -2471,6 +2717,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:scorpion-swarm",
       "actor": "Scorpion Swarm",
       "page": 249,
@@ -2481,6 +2728,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:scorpion-swarm",
       "actor": "Scorpion Swarm",
       "page": 249,
@@ -2491,6 +2739,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:thieves-guild-cutpurse",
       "actor": "Thieves’ Guild Cutpurse",
       "page": 249,
@@ -2501,6 +2750,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:carnivorous-flora",
       "actor": "Carnivorous Flora",
       "page": 258,
@@ -2511,6 +2761,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:carnivorous-flora",
       "actor": "Carnivorous Flora",
       "page": 258,
@@ -2521,6 +2772,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:carnivorous-flora",
       "actor": "Carnivorous Flora",
       "page": 258,
@@ -2531,6 +2783,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:carnivorous-flora",
       "actor": "Carnivorous Flora",
       "page": 258,
@@ -2541,6 +2794,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:carnivorous-flora",
       "actor": "Carnivorous Flora",
       "page": 258,
@@ -2551,6 +2805,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:giant-snake",
       "actor": "Giant Snake",
       "page": 258,
@@ -2561,6 +2816,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:giant-snake",
       "actor": "Giant Snake",
       "page": 258,
@@ -2571,6 +2827,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:makhim",
       "actor": "Makhim",
       "page": 258,
@@ -2581,6 +2838,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:naga-priestess",
       "actor": "Naga Priestess",
       "page": 258,
@@ -2591,6 +2849,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:naga-priestess",
       "actor": "Naga Priestess",
       "page": 258,
@@ -2601,6 +2860,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:naga-priestess",
       "actor": "Naga Priestess",
       "page": 258,
@@ -2611,6 +2871,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:singhara-hunter",
       "actor": "Singhara Hunter",
       "page": 259,
@@ -2621,6 +2882,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:singhara-hunter",
       "actor": "Singhara Hunter",
       "page": 259,
@@ -2631,6 +2893,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:singhara-pridelord",
       "actor": "Singhara Pridelord",
       "page": 259,
@@ -2641,6 +2904,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:singhara-pridelord",
       "actor": "Singhara Pridelord",
       "page": 259,
@@ -2651,6 +2915,7 @@
       "sourceCheckedThisPackage": false
     },
     {
+      "entryKind": "rule-reference",
       "templateId": "rot:singhara-pridelord",
       "actor": "Singhara Pridelord",
       "page": 259,

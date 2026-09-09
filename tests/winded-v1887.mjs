@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {isWinded} from '../dist/domain/criticals/strain-restriction.js';
+import {evaluateActorVoluntaryStrainCost} from '../dist/module/adversary-service.js';
+import {collectActorReactions,registerReactionProvider,promptReactionChoice} from '../dist/module/reaction-service.js';
+const actor={type:'character',system:{role:'pc',wounds:{value:0,threshold:10},strain:{value:0,threshold:10},criticalInjuries:[{id:'w',total:82}]}};
+assert.equal(isWinded(actor),true);assert.equal(evaluateActorVoluntaryStrainCost(actor,2).allowed,false);assert.equal(evaluateActorVoluntaryStrainCost(actor,0).allowed,true);
+const off=registerReactionProvider(()=>[{id:'paid',timing:'pre-soak',cost:{strain:3}},{id:'free',timing:'pre-soak',cost:{}}]);
+assert.deepEqual(collectActorReactions(actor,{}).map(r=>r.id),['free']);
+assert.equal(await promptReactionChoice(actor,{timing:'pre-soak'},[{id:'paid',timing:'pre-soak',cost:{strain:3}}]),null);
+actor.system.heroicAbility={active:true,primaryEffectId:'rot-heroic:unbowed',powerLevel:'improved'};assert.equal(isWinded(actor),false);assert.equal(evaluateActorVoluntaryStrainCost(actor,2).allowed,true);
+actor.system.heroicAbility.active=false;actor.system.criticalInjuries[0].active=false;assert.equal(isWinded(actor),false);
+actor.system.criticalInjuries[0].active=true;actor.system.criticalInjuries[0].healed=true;assert.equal(isWinded(actor),false);
+actor.system.criticalInjuries=[];assert.equal(evaluateActorVoluntaryStrainCost(actor,2).allowed,true);off();
+console.log('PASS Winded voluntary costs, free effects, paid reaction exclusion, healing and Unbowed suppression');

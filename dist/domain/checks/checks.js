@@ -69,6 +69,8 @@ function resolveModifierPlan(base, difficulty, modifiers = [], context = {}, sto
                 throw new RangeError(`${modifier.id} difficulty delta must be an integer.`);
             effectiveDifficulty = Math.max(0, effectiveDifficulty + delta);
         }
+        if (modifier.difficultyMinimum !== undefined)
+            effectiveDifficulty = Math.max(effectiveDifficulty, nonNegativeInteger(modifier.difficultyMinimum, `${modifier.id} difficulty minimum`));
         pool = mergePoolPlan(pool, modifier.pool);
     }
     let pendingStoryPointTransaction;

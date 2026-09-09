@@ -1,3 +1,4 @@
+import {assertRecoveryPatient,recoveryPatients,runPatientRecovery} from './recovery-patients-v1887.js';
 import {talentRank} from './recovery-talents-v1881.js';
 const SID='genesys-vtt';
 const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
@@ -12,10 +13,13 @@ export function painkillerState(actor){
  return row;
 }
 export async function applyPainkiller(patient,options,scene){
+ return runPatientRecovery(patient,()=>applyLocked(patient,options,scene));
+}
+async function applyLocked(patient,options,scene){
  authority();
  const resolve=game.genesysVtt.initiative.resolveActorRef;
  const state=game.genesysVtt.initiative.sceneState(scene);
- if(patient.system?.role!=='pc'||!state.entries.some(e=>resolve(e.actorRef)===patient&&e.encounterStatus!=='dead'))throw Error('Choose a living PC participant.');
+ assertRecoveryPatient(patient,scene);
  const old=painkillerState(patient);
  if(options?.confirmed!==true||options.revision!==old.revision||!['use','reset'].includes(options.operation))throw Error('Patient record changed or confirmation missing. Reopen the panel.');
  let record,update;
@@ -35,8 +39,8 @@ export async function applyPainkiller(patient,options,scene){
  return record;
 }
 export async function openPainkillers(){
- authority();const scene=canvas.scene,resolve=game.genesysVtt.initiative.resolveActorRef,state=game.genesysVtt.initiative.sceneState(scene);
- const patients=state.entries.map(e=>({...e,actor:resolve(e.actorRef)})).filter(e=>e.encounterStatus!=='dead'&&e.actor?.system?.role==='pc');
+ authority();if(!canvas.scene)throw Error('Open a scene first.');const scene=canvas.scene,resolve=game.genesysVtt.initiative.resolveActorRef,state=game.genesysVtt.initiative.sceneState(scene);
+ const patients=recoveryPatients(scene);
  const providers=new Map(Array.from(game.actors.contents??[]).filter(a=>a.type==='character').map(a=>[a.uuid,a]));for(const e of state.entries){const a=resolve(e.actorRef);if(a)providers.set(e.actorRef,a);}
  const records=patients.map(e=>painkillerState(e.actor));
  const choice=await foundry.applications.api.DialogV2.wait({window:{title:'Painkillers / Healing Potions'},content:`<p>Record an already administered dose: 5/4/3/2/1 wounds, then no effect. The provider's enabled Painkiller Specialization adds its rank to the first five doses only. No strain or Critical Injury healing.</p><label>Patient<select name="patient">${patients.map((e,n)=>`<option value="${n}">${esc(e.actor.name)} · ${records[n].uses} doses since reset</option>`).join('')}</select></label><label>Provider<select name="provider">${[...providers].map(([ref,a])=>`<option value="${esc(ref)}">${esc(a.name)}</option>`).join('')}</select></label><label>Operation<select name="operation"><option value="use">Record administered dose</option><option value="reset">Reset daily count</option></select></label><label><input type="checkbox" name="confirmed">For a dose: item consumed, maneuver and engaged range/free hand checked. For reset: a new rules day is confirmed.</label><p>Inventory, timing and calendar are GM-managed. Counter belongs to the patient across encounters.</p>`,buttons:[{action:'apply',label:'Apply',callback:(_e,_b,d)=>{const n=Number(d.element.querySelector('[name=patient]').value);return {patient:patients[n]?.actor,revision:records[n]?.revision,providerRef:d.element.querySelector('[name=provider]').value,operation:d.element.querySelector('[name=operation]').value,confirmed:d.element.querySelector('[name=confirmed]').checked};}},{action:'cancel',label:'Cancel',callback:()=>null}],rejectClose:false});

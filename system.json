@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1886 \u2014 Critical recovery, persistent injury penalties and Dimora Durable.",
-  "version": "0.0.1886",
+  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1887 \u2014 Expanded medical recovery, Winded and native NPC magic rules.",
+  "version": "0.0.1887",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"

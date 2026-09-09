@@ -1,3 +1,4 @@
+import {isWinded} from '../domain/criticals/strain-restriction.js';
 import { damageImmune } from '../domain/heroic/primary-effects.js';
 import { minionSkillRank, normalizeActorRole, normalizeMinionGroup, routeDamageForActorRole, tracksStrainNormally } from "../domain/adversaries/index.js";
 import { rerenderRenderedCharacterSheet } from "./live-sheet-state.js";
@@ -57,6 +58,9 @@ export function evaluateActorVoluntaryStrainCost(actor, amount = 0) {
     const actorName = String(actor?.name ?? "Actor");
     if (cost <= 0) {
         return { allowed: true, cost, role: context.role, track: context.tracksStrain ? "strain" : "wounds", before: 0, after: 0, threshold: 0, convertedToWounds: false, reason: "" };
+    }
+    if (isWinded(actor)) {
+        return {allowed:false,cost,role:context.role,track:context.tracksStrain?'strain':'wounds',reason:'Winded prevents voluntary strain costs until healed or suppressed.'};
     }
     if (context.roleMinion) {
         return {

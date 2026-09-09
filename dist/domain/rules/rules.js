@@ -366,3 +366,7 @@ export function createTerrinothFinesseTalent() {
         }
     });
 }
+
+export function createCoreSurgeonTalent(rank = 1) {
+ return normalizeTalentDefinition({id:'core-talent:surgeon',name:'Surgeon',system:{sourceId:'core-talent:surgeon',sourceType:'genesys-core',tier:1,ranked:true,rank:Math.max(1,Number(rank)||1),activation:'passive',enabled:true,rules:[],notes:'Core p.74. Medicine checks to heal wounds heal one additional wound per rank. Supported in GM First Aid, including unsuccessful checks; does not heal Critical Injuries.'}});
+}

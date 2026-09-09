@@ -1,3 +1,4 @@
+import {REVIEWED_NPC_MAGIC} from './reviewed-magic-profiles.js';
 import {createCoreSecondWindTalent} from '../rules/index.js';
 // Only reviewed, intact source references qualify. Never infer rules from Actor names.
 export function addSupportedAdversaryAbilities(raw) {
@@ -16,6 +17,9 @@ export function addSupportedAdversaryAbilities(raw) {
  }
  if(id==='rot:dimora' && references.some(i=>i.system?.notes==='Durable 2 (a Dimora reduces any Critical Injury result it suffers by 20, to a minimum of 01).')) {
   add({name:'Durable 2',type:'talent',system:{sourceId:'core-talent:durable',sourceType:'core',enabled:true,activation:'passive',tier:1,rank:2,ranked:true,rules:[],notes:'Realms of Terrinoth p.191. Native Critical Injury resolution subtracts 20, minimum 1.'}});
+ }
+ for(const profile of REVIEWED_NPC_MAGIC.filter(p=>p.templateId===id)) {
+  if(references.some(i=>profile.references.includes(i.system?.notes)))add({name:profile.name,type:'talent',system:{sourceId:`terrinoth-npc:${profile.ruleId}`,sourceType:'realms-of-terrinoth',enabled:true,activation:'passive',tier:1,rank:1,ranked:false,rules:[],notes:`Realms of Terrinoth p.${profile.page}. Native magic preparation supports this rule; narrative consequences and creature creation remain GM-managed.`}});
  }
  return {...raw,items};
 }

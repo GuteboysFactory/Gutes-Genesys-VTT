@@ -1,3 +1,5 @@
+import {npcMagicCheckModifiers} from './npc-magic-rules-v1887.js';
+import {getActorSkillDefinitions} from './skills-service.js';
 import { primaryCheckModifiers } from '../domain/heroic/primary-effects.js';
 import { prepareAssistedCheck, prepareOpposedCheck, prepareStandardCheck } from "../domain/checks/index.js";
 import { ruleElementToCheckModifier } from "../domain/rules/index.js";
@@ -101,7 +103,7 @@ export function prepareActorSkillEngineCheck(actor, skillId, options = {}) {
         label: skill.skillLabel
     };
     const mode = options.mode ?? "standard";
-    const conditionModifiers = [...getActorConditionCheckModifiers(actor, skill), ...primaryCheckModifiers(actor?.system?.heroicAbility,skill.skillId)];
+    const conditionModifiers = [...npcMagicCheckModifiers(actor,skill.skillId,getActorSkillDefinitions(actor).filter(s=>s.category==='magic').map(s=>s.id)), ...getActorConditionCheckModifiers(actor, skill), ...primaryCheckModifiers(actor?.system?.heroicAbility,skill.skillId)];
     let check;
     if (mode === "opposed") {
         check = prepareOpposedCheck({

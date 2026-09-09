@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 globalThis.Hooks={once(){}};
 const {applyPainkiller,painkillerHealing}=await import('../dist/module/painkillers-v1885.js');
 assert.deepEqual([0,1,2,3,4,5,6].map(n=>painkillerHealing(n,2)),[7,6,5,4,3,0,0]);
-let record;const patient={system:{role:'pc',wounds:{value:30}},getFlag:()=>record,async update(d){if(this.fail)throw Error('save');record=d['flags.genesys-vtt.painkillers'];if('system.wounds.value' in d)this.system.wounds.value=d['system.wounds.value'];}};
+let record;const patient={type:'character',system:{role:'pc',wounds:{value:30}},getFlag:()=>record,async update(d){if(this.fail)throw Error('save');record=d['flags.genesys-vtt.painkillers'];if('system.wounds.value' in d)this.system.wounds.value=d['system.wounds.value'];}};
 const provider={type:'character',items:[{type:'talent',system:{sourceId:'core-talent:painkiller-specialization',rank:2,enabled:true}}]};
 const state={entries:[{actorRef:'p'}]};
 globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysVtt:{initiative:{resolveActorRef:r=>r==='p'?patient:provider,sceneState:()=>state}}};

@@ -3,7 +3,7 @@ globalThis.document={addEventListener(){}};globalThis.Hooks={once(){},on(){}};gl
 globalThis.game={user:{isGM:false},items:{contents:[]},genesysContent:{getContent:()=>[]}};
 const fs=await import('node:fs');const rules=await import('../dist/domain/rules/index.js');Object.assign(globalThis,{__rules:rules});
 const source=fs.readFileSync('dist/module/talent-library.js','utf8').replace(/^import .*;$/gm,'');
-const {listTalentLibraryEntries,loadCompendiumTalents,installTalentCatalog}=await import('data:text/javascript;base64,'+Buffer.from('const {createCoreParryTalent,createCoreSecondWindTalent,createTerrinothFinesseTalent,normalizeTalentDefinition}=globalThis.__rules;\n'+source).toString('base64'));
+const {listTalentLibraryEntries,loadCompendiumTalents,installTalentCatalog}=await import('data:text/javascript;base64,'+Buffer.from('const {createCoreParryTalent,createCoreSecondWindTalent,createCoreSurgeonTalent,createTerrinothFinesseTalent,normalizeTalentDefinition}=globalThis.__rules;\n'+source).toString('base64'));
 const item=(id,visible)=>({id,type:'talent',name:'Same name',system:{sourceId:'same',tier:2,notes:'Original'},testUserPermission:()=>visible});
 game.items.contents=[item('a',true),item('b',true),item('hidden',false)];
 let entries=listTalentLibraryEntries().filter(x=>x.packId==='world');assert.equal(entries.length,2);assert.notEqual(entries[0].id,entries[1].id);assert.equal(entries[0].documentId,'a');

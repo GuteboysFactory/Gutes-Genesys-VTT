@@ -1,4 +1,4 @@
-import { createCoreParryTalent, createCoreSecondWindTalent, createTerrinothFinesseTalent, normalizeTalentDefinition } from "../domain/rules/index.js";
+import { createCoreParryTalent, createCoreSecondWindTalent, createCoreSurgeonTalent, createTerrinothFinesseTalent, normalizeTalentDefinition } from "../domain/rules/index.js";
 import { rerenderRenderedCharacterSheet } from "./live-sheet-state.js";
 
 const SYSTEM_ID = "genesys-vtt";
@@ -31,7 +31,7 @@ function actorItems(actor) {
 }
 
 function referenceTalents() {
-    return [createCoreParryTalent(1), createCoreSecondWindTalent(1), createTerrinothFinesseTalent()]
+    return [createCoreParryTalent(1), createCoreSecondWindTalent(1), createCoreSurgeonTalent(1), createTerrinothFinesseTalent()]
         .map((talent) => ({ ...talent, librarySource: "System Reference", packId: "system-reference" }));
 }
 

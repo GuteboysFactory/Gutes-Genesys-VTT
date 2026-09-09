@@ -1,3 +1,4 @@
+import {isWinded} from '../domain/criticals/strain-restriction.js';
 import { damageImmune, incomingDifficulty, signatureWeaponData } from '../domain/heroic/primary-effects.js';
 import { heroicWeaponDamageBonus, heroicSoakBonus } from "../domain/heroic/combat-effects.js";
 import { rollNarrativePool } from "../domain/dice/index.js";
@@ -254,11 +255,13 @@ export async function resolveCombatReactionWindow(prepared, pending, target, tim
         const reaction = eligible.find((entry) => entry.id === choice);
         if (!reaction)
             return current;
+        if(isWinded(target)&&reaction.cost?.strain)throw Error('Winded now blocks this reaction. Review the pending attack without this reaction; do not reroll.');
         current = applyReactionToPendingCombat(current, reaction);
     }
 }
 export async function commitPendingCombatResolutionToActor(target, prepared, pending) {
     target = reacquireActor(target);
+    if(isWinded(target)&&pending.appliedReactions.some(r=>r.cost?.strain))throw Error('Winded blocks the selected strain reaction. Review the pending attack without this reaction; do not reroll.');
     const live = actorCombatSnapshot(target);
     const commitPrepared = {
         ...prepared,

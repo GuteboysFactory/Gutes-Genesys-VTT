@@ -6,7 +6,7 @@ const {addSupportedAdversaryAbilities}=await import('../dist/domain/adversaries/
 let history=[],rolls=0,net={success:1},fail=false,updates=0;
 const patient={uuid:'Actor.p',type:'character',name:'P',system:{role:'pc',wounds:{value:4},criticalInjuries:[],conditions:[]},getFlag:()=>history,async update(d){updates++;if(fail)throw Error('save');for(const [k,v]of Object.entries(d)){if(k==='system.wounds.value')this.system.wounds.value=v;else if(k.startsWith('system.'))this.system[k.slice(7)]=v;else history=v;}}};
 const medic={uuid:'Actor.m',type:'character',name:'M'};
-globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysVtt:{initiative:{resolveActorRef:()=>medic},checks:{prepareActorSkill:(a,s,o)=>({check:{construction:{pool:{difficulty:o.difficulty}}}})},dice:{roll:()=>{rolls++;return {net};}}}};
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysVtt:{initiative:{sceneState:()=>({entries:[]}),resolveActorRef:()=>medic},checks:{prepareActorSkill:(a,s,o)=>({check:{construction:{pool:{difficulty:o.difficulty}}}})},dice:{roll:()=>{rolls++;return {net};}}}};
 globalThis.foundry={documents:{ChatMessage:{create:async()=>{throw Error('chat');}}}};
 globalThis.ui={notifications:{warn(){}}};
 const restore=()=>{patient.system.criticalInjuries=[{id:'inj',total:62,active:true}];patient.system.conditions=[{sourceId:'critical:inj'},{sourceId:'spell:other'}];};

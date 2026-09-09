@@ -1,12 +1,16 @@
+import {assertRecoveryPatient,recoveryPatients,runPatientRecovery} from './recovery-patients-v1887.js';
 import {lookupCriticalInjury} from '../domain/criticals/index.js';
 const SID='genesys-vtt';
 const esc=v=>String(v??'').replaceAll('&','&amp;').replaceAll('<','&lt;').replaceAll('>','&gt;').replaceAll('"','&quot;');
 function authority(){if(!game.user?.isGM||game.users?.activeGM?.id!==game.user.id)throw Error('Active GM required.');}
-export async function applyCriticalRecovery(patient,options){
+export async function applyCriticalRecovery(patient,options,scene){
+ return runPatientRecovery(patient,()=>applyLocked(patient,options,scene));
+}
+async function applyLocked(patient,options,scene){
  authority();
  const {injuryId,medicRef,method,week,equipped,confirmed}=options??{};
  if(confirmed!==true||!['medicine','resilience'].includes(method)||typeof week!=='string'||!week.trim()||week.length>80||typeof equipped!=='boolean')throw Error('Confirm method, campaign week and circumstances.');
- if(patient?.type!=='character'||patient.system?.role!=='pc')throw Error('Choose a PC patient.');
+ assertRecoveryPatient(patient,scene);
  const injuries=patient.system.criticalInjuries??[],injury=injuries.find(i=>i.id===injuryId&&i.active!==false);
  if(!injury||injuries.some(i=>i.active!==false&&Number(i.total)>=151))throw Error('Choose a living patient and an active injury.');
  if(!Number.isSafeInteger(Number(injury.total))||Number(injury.total)<1)throw Error('Invalid injury result.');
@@ -35,9 +39,10 @@ export async function openCriticalRecovery(){
  const scene=canvas.scene;
  if(!scene)throw Error('Open a scene first.');
  const actors=Array.from(game.actors.contents??[]).filter(a=>a.type==='character');
- const patients=actors.filter(a=>a.system?.role==='pc');
+ const patients=recoveryPatients(scene).map(r=>r.actor);
+ for(const patient of patients)if(!actors.some(a=>a.uuid===patient.uuid))actors.push(patient);
  const choices=patients.flatMap(a=>(a.system.criticalInjuries??[]).filter(i=>i.active!==false&&Number(i.total)<151).map(i=>({actor:a,injury:i})));
- if(!choices.length)throw Error('No active PC Critical Injuries.');
+ if(!choices.length)throw Error('No active Critical Injuries for individual patients.');
  const choice=await foundry.applications.api.DialogV2.wait({window:{title:'Critical Injury Recovery'},content:`<label>Patient / injury<select name="injury">${choices.map((r,n)=>`<option value="${n}">${esc(r.actor.name)} · ${esc(r.injury.name)}</option>`).join('')}</select></label><label>Method<select name="method"><option value="medicine">Medicine</option><option value="resilience">Full week of natural rest · Resilience</option></select></label><label>Medic (Medicine only)<select name="medic">${actors.map(a=>`<option value="${esc(a.uuid)}">${esc(a.name)}</option>`).join('')}</select></label><label>Campaign week identifier<input name="week" maxlength="80" placeholder="Use the same label throughout this campaign week"></label><label><input type="checkbox" name="equipped" checked>Medical equipment</label><label><input type="checkbox" name="confirmed">I confirm elapsed time, eligibility, action costs and special modifiers. The week label is unchanged for repeat attempts in the same week.</label><p>Medicine: one attempt per medic, injury and week. Natural rest: one attempt per patient and full week; record nightly healing separately. Failed natural recovery heals one wound. Triumph and manually applied injury effects remain GM-managed.</p>`,buttons:[{action:'roll',label:'Roll recovery',callback:(_e,_b,d)=>{const q=n=>d.element.querySelector(`[name=${n}]`);const row=choices[Number(q('injury').value)];return {patient:row.actor,options:{injuryId:row.injury.id,method:q('method').value,medicRef:q('medic').value,week:q('week').value,equipped:q('equipped').checked,confirmed:q('confirmed').checked}};}},{action:'cancel',label:'Cancel',callback:()=>null}],rejectClose:false});
  if(!choice)return;
  if(canvas.scene!==scene)throw Error('Scene changed.');

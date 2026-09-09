@@ -1,3 +1,4 @@
+import {isWinded} from '../domain/criticals/strain-restriction.js';
 import { resolveAttackMode } from "../domain/combat/index.js";
 import { createCoreParryReaction, formatReactionCost, getEligibleReactions } from "../domain/reactions/index.js";
 import { ruleElementToReaction } from "../domain/rules/index.js";
@@ -22,7 +23,7 @@ export function registerReactionProvider(provider) {
     return () => providers.delete(provider);
 }
 export function collectActorReactions(actor, context) {
-    return Array.from(providers).flatMap((provider) => [...(provider(actor, context) ?? [])]);
+    return Array.from(providers).flatMap((provider) => [...(provider(actor, context) ?? [])]).filter(reaction=>!isWinded(actor)||!reaction.cost?.strain);
 }
 export function getDevReactionState(actor) {
     const raw = actor?.getFlag?.(SYSTEM_ID, "devReactions") ?? actor?.flags?.[SYSTEM_ID]?.devReactions ?? {};
@@ -94,7 +95,7 @@ function chooseDecisionUser(actor) {
     return activeGm ?? game?.user;
 }
 export async function promptReactionChoice(actor, context, reactions, summary = {}) {
-    const eligible = getEligibleReactions(reactions, context);
+    const eligible = getEligibleReactions(reactions, context).filter(reaction=>!isWinded(actor)||!reaction.cost?.strain);
     if (!eligible.length)
         return null;
     const mandatory = eligible.find((reaction) => reaction?.optional === false);

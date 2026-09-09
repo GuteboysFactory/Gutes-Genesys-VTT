@@ -1,0 +1,42 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+globalThis.Hooks={once(){},on(){}};
+globalThis.foundry={utils:{deepClone:structuredClone}};
+globalThis.game={settings:{get:()=> 'realms-of-terrinoth'}};
+const {REALMS_OF_TERRINOTH_MAGIC_RULES}=await import('../dist/module/content-packs/realms-of-terrinoth-skills-magic.js');
+game.genesysContent={getMagicRules:()=>REALMS_OF_TERRINOTH_MAGIC_RULES};
+const {prepareMagicAction,getActorMagicState}=await import('../dist/module/magic-action-service-v1790.js');
+const {addSupportedAdversaryAbilities}=await import('../dist/domain/adversaries/supported-abilities.js');
+const {REVIEWED_NPC_MAGIC}=await import('../dist/domain/adversaries/reviewed-magic-profiles.js');
+const templates=JSON.parse(fs.readFileSync('data/terrinoth-adversaries.json','utf8'));
+function actor(id){const raw=structuredClone(templates.find(a=>a.flags['genesys-vtt'].adversaryTemplate.id===id));const a=addSupportedAdversaryAbilities(raw);a.id=id;a.getFlag=(_s,k)=>a.flags['genesys-vtt'][k];return a;}
+for(const p of REVIEWED_NPC_MAGIC){
+ const a=actor(p.templateId);assert.ok(a.items.some(i=>i.system?.sourceId===`terrinoth-npc:${p.ruleId}`));
+ const before=a.items.length;assert.equal(addSupportedAdversaryAbilities(a).items.length,before);
+ const raw=structuredClone(templates.find(a=>a.flags['genesys-vtt'].adversaryTemplate.id===p.templateId));for(const i of raw.items)if(i.system?.notes)i.system.notes+=' GM edit';
+ assert.equal(addSupportedAdversaryAbilities(raw).items.some(i=>i.system?.sourceId===`terrinoth-npc:${p.ruleId}`),false);
+}
+let a=actor('rot:dimora');let spell=prepareMagicAction(a,{skillId:'arcana',actionId:'attack',effects:{empowered:1}});
+assert.equal(spell.totalDifficulty,2);assert.equal(spell.attackBaseDamage,2*spell.prepared.characteristicValue+3);
+assert.equal(prepareMagicAction(a,{skillId:'arcana',actionId:'attack'}).totalDifficulty,1);
+a=actor('rot:lord-of-bilehall');assert.equal(prepareMagicAction(a,{skillId:'arcana',actionId:'attack'}).totalDifficulty,0);
+assert.equal(getActorMagicState(a).knowledgeSkillId,'knowledge-forbidden');
+a=actor('rot:necromancer');spell=prepareMagicAction(a,{skillId:'arcana',actionId:'attack'});assert.ok(spell.selected.some(e=>e.effect.id==='ice'));assert.equal(spell.totalDifficulty,1);
+spell=prepareMagicAction(a,{skillId:'arcana',actionId:'conjure'});assert.ok(spell.selected.some(e=>e.effect.id==='summon-ally'));assert.equal(spell.totalDifficulty,1);assert.ok(spell.npcMods.notes.some(n=>n.includes('undead')));
+a=actor('rot:storm-sorceress');spell=prepareMagicAction(a,{skillId:'arcana',actionId:'attack',effects:{range:2,empowered:1},firstEffectId:'empowered'});assert.equal(spell.totalDifficulty,3);
+spell=prepareMagicAction(a,{skillId:'arcana',actionId:'attack',effects:{range:2,empowered:1},firstEffectId:'range'});assert.equal(spell.totalDifficulty,4);
+assert.throws(()=>prepareMagicAction(a,{skillId:'arcana',actionId:'attack',effects:{range:1},firstEffectId:'empowered'}),/selected/);
+a.items.push({id:'staff',type:'implement',name:'Staff',system:{equipped:true,provenance:{sourceId:'rot-equipment:magic-staff'},damage:4}});
+spell=prepareMagicAction(a,{skillId:'arcana',actionId:'attack',effects:{range:2},firstEffectId:'range',implementId:'staff'});assert.equal(spell.totalDifficulty,2,'same first Range occurrence is not discounted twice');
+a.items.filter(i=>i.type==='talent').forEach(i=>i.system.enabled=false);assert.equal(prepareMagicAction(a,{skillId:'arcana',actionId:'attack',effects:{range:2}}).totalDifficulty,3);
+console.log('PASS real Forge/magic integration: 11 provenance profiles, disabled/edited/duplicate handling, innate floors/damage, Dark Insight, automatic effects, chosen free effect and implement overlap');
+a=actor('rot:dimora');a.system.role='pc';a.system.skills.forEach(s=>s.career=false);assert.throws(()=>prepareMagicAction(a,{skillId:'arcana',actionId:'attack'}),/career/);
+a.system.role='minion';a.system.skills.forEach(s=>s.career=true);assert.equal(getActorMagicState(a).canCastAny,false);
+a=actor('rot:necromancer');const dark=getActorMagicState(a);assert.equal(dark.knowledgeRank,a.system.skills.find(s=>s.id==='knowledge-forbidden').rank);
+console.log('PASS NPC career exemption does not waive PC career rules or permit Minion casting; Dark Insight uses current Forbidden rank');
+const {prepareActorSkillEngineCheck}=await import('../dist/module/check-ui.js');
+a=actor('rot:dimora');let check=prepareActorSkillEngineCheck(a,'arcana',{difficulty:3});assert.equal(check.check.construction.pool.difficulty,2);
+check=prepareActorSkillEngineCheck(a,'arcana',{difficulty:1});assert.equal(check.check.construction.pool.difficulty,1);
+check=prepareActorSkillEngineCheck(a,'athletics',{difficulty:3});assert.equal(check.check.construction.pool.difficulty,3);
+a=actor('rot:lord-of-bilehall');check=prepareActorSkillEngineCheck(a,'arcana',{difficulty:1});assert.equal(check.check.construction.pool.difficulty,0);
+console.log('PASS native skill-engine Arcana/other-skill boundaries and innate floors');

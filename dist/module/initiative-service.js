@@ -622,8 +622,8 @@ async function queued_resolveSceneFear(actor, options, scene) {
     return game.genesysFear.resolveFearAuthoritative(actor,options,scene);
 }
 export function resolveSceneMedicalCare(actor, options, scene=activeScene()) {
- const {key,medicRef,equipped,confirmed}=options;
- return dispatchInitiativeCommand('resolveSceneMedicalCare',[actorInitiativeRef(actor),{key,medicRef,equipped,confirmed}],scene);
+ const {key,medicRef,equipped,confirmed,episode}=options;
+ return dispatchInitiativeCommand('resolveSceneMedicalCare',[actorInitiativeRef(actor),{key,medicRef,equipped,confirmed,episode}],scene);
 }
 async function queued_resolveSceneMedicalCare(actor,options,scene){
  if(!initiativeAuthority())throw Error('Active GM required.');

@@ -159,6 +159,11 @@ function renderEffects(session) {
     }
     return `<button type="button" class="genesys-magic-effect-card genesys-magic-effect-toggle ${count ? "selected" : ""}" data-magic-effect-toggle="${esc(entry.id)}"><div><strong>${esc(entry.label)}</strong><span>+${entry.difficulty} difficulty</span></div><p>${esc(entry.summary)}</p><i class="fa-solid ${count ? "fa-circle-check" : "fa-circle"}"></i></button>`;
   }).join("");
+  if(session.state.npcMagic?.elemental&&session.skillId==='arcana'){
+    const selected=effects.filter(e=>Number(session.effects[e.id])>0);
+    if(!selected.some(e=>e.id===session.firstEffectId))session.firstEffectId=selected[0]?.id??'';
+    if(selected.length)container.insertAdjacentHTML('beforeend',`<label>Elemental Mastery · first added effect<select data-magic-first-effect>${selected.map(e=>`<option value="${esc(e.id)}" ${e.id===session.firstEffectId?'selected':''}>${esc(e.label)}</option>`).join('')}</select></label>`);
+  }
 }
 
 function specification(session) {
@@ -166,6 +171,7 @@ function specification(session) {
     skillId: session.skillId,
     actionId: session.actionId,
     implementId: session.implementId,
+    firstEffectId: session.state.npcMagic?.elemental&&session.skillId==='arcana'?session.firstEffectId:undefined,
     effects: { ...session.effects }
   };
 }
@@ -181,10 +187,12 @@ function renderPrepared(session) {
     session.prepared = prepared;
     diff.textContent = String(prepared.totalDifficulty);
     const reduction = prepared.implementMods?.difficultyReduction ?? 0;
-    breakdown.textContent = `Base ${prepared.action.baseDifficulty} + Effects ${prepared.rawEffectDifficulty}${reduction ? ` − Implement ${reduction}` : ""}`;
+    const innate=(prepared.npcMods?.effectReduction??0)+(prepared.npcMods?.difficultyReduction??0);
+    breakdown.textContent = `Base ${prepared.action.baseDifficulty} + Effects ${prepared.rawEffectDifficulty}${reduction ? ` − Implement ${reduction}` : ""}${innate?` − Innate ${innate}`:""}`;
     const effects = prepared.selected.length ? prepared.selected.map((entry) => `${entry.effect.label}${entry.count > 1 ? ` ×${entry.count}` : ""}`).join(" · ") : "No additional effects";
-    preview.innerHTML = `<div><strong>${esc(prepared.skill.label)} · ${esc(prepared.action.label)}</strong><span>${esc(effects)}</span></div><div><strong>Pool</strong><span>${prepared.pool.proficiency ?? 0} Proficiency · ${prepared.pool.ability ?? 0} Ability · ${prepared.pool.difficulty ?? 0} Difficulty${prepared.pool.boost ? ` · ${prepared.pool.boost} Boost` : ""}</span></div>${prepared.attackBaseDamage !== null ? `<div><strong>Attack Base Damage</strong><span>${prepared.attackBaseDamage} + uncancelled Success</span></div>` : ""}${prepared.implement ? `<div><strong>Implement</strong><span>${esc(prepared.implement.name)}</span></div>` : ""}`;
+    preview.innerHTML = `<div><strong>${esc(prepared.skill.label)} · ${esc(prepared.action.label)}</strong><span>${esc(effects)}</span></div><div><strong>Pool</strong><span>${prepared.pool.proficiency ?? 0} Proficiency · ${prepared.pool.ability ?? 0} Ability · ${prepared.pool.difficulty ?? 0} Difficulty · ${prepared.pool.challenge ?? 0} Challenge${prepared.pool.boost ? ` · ${prepared.pool.boost} Boost` : ""}</span></div>${prepared.attackBaseDamage !== null ? `<div><strong>Attack Base Damage</strong><span>${prepared.attackBaseDamage} + uncancelled Success</span></div>` : ""}${prepared.implement ? `<div><strong>Implement</strong><span>${esc(prepared.implement.name)}</span></div>` : ""}`;
     validation.innerHTML = prepared.implementMods?.notes?.length ? prepared.implementMods.notes.map((note) => `<span class="genesys-magic-valid"><i class="fa-solid fa-circle-check"></i>${esc(note)}</span>`).join("") : '<span class="genesys-magic-valid"><i class="fa-solid fa-circle-check"></i>Spell is legal and ready to roll.</span>';
+    if(prepared.npcMods?.notes?.length)validation.insertAdjacentHTML('beforeend',prepared.npcMods.notes.map(note=>`<span class="genesys-magic-valid">${esc(note)}</span>`).join(''));
     roll.disabled = false;
   }
   catch (error) {
@@ -211,6 +219,7 @@ function refreshComposer(session, { resetEffects = false, resetAction = false } 
 function wireComposer(session) {
   const dialog = session.dialog;
   dialog.addEventListener("change", (event) => {
+    if(event.target.matches("[data-magic-first-effect]")){session.firstEffectId=event.target.value;renderPrepared(session);return;}
     if (event.target.matches("[data-magic-skill]")) {
       session.skillId = event.target.value;
       session.implementId = defaultImplementId(session.state, session.skillId);

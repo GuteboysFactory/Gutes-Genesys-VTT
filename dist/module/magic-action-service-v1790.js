@@ -1,3 +1,4 @@
+import {npcMagicRules,finalizeNpcMagicRules} from './npc-magic-rules-v1887.js';
 import {criticalCheckModifiers} from '../domain/criticals/check-modifiers.js';
 import {suppressedCriticals} from '../domain/heroic/primary-effects.js';
 import {prepareStandardCheck} from '../domain/checks/checks.js';
@@ -165,12 +166,13 @@ export function getActorMagicState(actor) {
   const purchasePolicy = text(rules.purchasePolicy);
   const skills = actorSkillIndex(actor);
   const magicSkillIds = Array.isArray(rules.magicSkillIds) ? rules.magicSkillIds.map(String) : [];
+  const adversary = actorAdversaryContext(actor);
   const magicSkills = magicSkillIds.map((skillId) => {
     const row = skills.get(skillId) ?? { definition: { id: skillId, label: skillId, characteristic: "" }, state: {} };
     const rank = n(row.state?.rank);
     const career = Boolean(row.state?.career);
     const careerRequired = purchasePolicy === "career-only";
-    const canCast = rank >= minimumRank && (!careerRequired || career);
+    const canCast = !adversary.roleMinion && rank >= minimumRank && (!careerRequired || career || adversary.roleRival || adversary.roleNemesis);
     return {
       id: skillId,
       label: String(row.definition?.label ?? skillId),
@@ -181,15 +183,16 @@ export function getActorMagicState(actor) {
       actions: actionIdsForSkill(rules, skillId)
     };
   });
-  const knowledgeId = text(rules.knowledgeSkillForSpellEffects);
+  const npcMagic=npcMagicRules(actor,{skillId:'arcana'});
+  const knowledgeId = npcMagic.knowledgeSkillId ?? text(rules.knowledgeSkillForSpellEffects);
   const knowledge = skills.get(knowledgeId);
-  const adversary = actorAdversaryContext(actor);
   const implementsOwned = listActorMagicImplements(actor);
   return Object.freeze({
     settingId,
     rules: clone(rules),
     minimumRank,
     purchasePolicy,
+    npcMagic,
     knowledgeSkillId: knowledgeId,
     knowledgeRank: n(knowledge?.state?.rank),
     skills: Object.freeze(magicSkills),
@@ -223,8 +226,10 @@ function implementById(actorState, implementId) {
   return id ? actorState.implements.find((entry) => entry.id === id) ?? null : null;
 }
 
-function reductionForImplement(implement, skillId, actionId, selected) {
+function reductionForImplement(implement, skillId, actionId, selected, free = new Set()) {
   if (!implement) return { difficultyReduction: 0, boost: 0, attackDamageBonus: 0, healWoundsBonus: 0, notes: [] };
+  const firstCost=e=>e&&!free.has(e.effect.id)?e.effect.difficulty:0;
+  const totalCost=e=>e?e.effect.difficulty*Math.max(0,e.count-(free.has(e.effect.id)?1:0)):0;
   let difficultyReduction = 0;
   let boost = 0;
   let healWoundsBonus = 0;
@@ -234,20 +239,20 @@ function reductionForImplement(implement, skillId, actionId, selected) {
   if (contentId === "magic-scepter") {
     boost += 1;
     if (actionId === "attack" && selected.some((entry) => entry.effect.id === "close-combat")) {
-      difficultyReduction += 1;
+      difficultyReduction += firstCost(selected.find(e=>e.effect.id==='close-combat'));
       notes.push("Scepter: Close Combat effect is free.");
     }
   }
   if (contentId === "magic-staff") {
     const range = selected.find((entry) => entry.effect.id === "range");
     if (range?.count > 0) {
-      difficultyReduction += 1;
+      difficultyReduction += firstCost(range);
       notes.push("Staff: first Range effect is free.");
     }
   }
   if (contentId === "holy-icon" && skillId === "divine") {
     for (const entry of selected) {
-      if (entry.effect.tags.includes("divine-only")) difficultyReduction += Math.min(entry.effect.difficulty * entry.count, entry.count);
+      if (entry.effect.tags.includes("divine-only")) difficultyReduction += Math.min(totalCost(entry), Math.max(0,entry.count-(free.has(entry.effect.id)?1:0)));
     }
     if (actionId === "heal") healWoundsBonus += 2;
     if (selected.some((entry) => entry.effect.tags.includes("divine-only"))) notes.push("Holy Icon: Divine-only effect cost reduced.");
@@ -255,21 +260,21 @@ function reductionForImplement(implement, skillId, actionId, selected) {
   if (contentId === "musical-instrument" && skillId === "verse") {
     const additional = selected.find((entry) => entry.effect.id === "additional-target");
     if (additional) {
-      difficultyReduction += additional.effect.difficulty * additional.count;
+      difficultyReduction += totalCost(additional);
       notes.push("Instrument: Additional Target effect is free for Verse.");
     }
   }
   if (contentId === "magic-wand" && implement.boundEffectId) {
     const bound = selected.find((entry) => entry.effect.id === implement.boundEffectId);
     if (bound) {
-      difficultyReduction += bound.effect.difficulty;
+      difficultyReduction += firstCost(bound);
       notes.push(`Wand: ${bound.effect.label} is free.`);
     }
   }
   if (contentId === "magic-tome" && implement.boundEffectIds.length) {
     for (const effectId of implement.boundEffectIds.slice(0, 2)) {
       const bound = selected.find((entry) => entry.effect.id === effectId);
-      if (bound) difficultyReduction += bound.effect.difficulty;
+      if (bound) difficultyReduction += firstCost(bound);
     }
     if (difficultyReduction > 0) notes.push("Tome: bound spell effects reduce difficulty.");
   }
@@ -297,7 +302,9 @@ export function prepareMagicAction(actor, input = {}) {
   const actionDef = CORE_MAGIC_ACTIONS[actionId];
   if (!actionDef) throw new Error(`Unknown magic action '${actionId}'.`);
 
-  const selected = normalizeSelections(actionDef, skillId, input.effects);
+  const traits=npcMagicRules(actor,{skillId,actionId,effects:input.effects});
+  const selected = normalizeSelections(actionDef, skillId, traits.effects);
+  const npcMods=finalizeNpcMagicRules(traits,selected,input.firstEffectId);
   const rawEffectDifficulty = selected.reduce((sum, entry) => sum + entry.effect.difficulty * entry.count, 0);
   const implement = implementById(actorState, input.implementId);
   const skillRules = actorState.rules?.skillRules?.[skillId] ?? {};
@@ -309,8 +316,8 @@ export function prepareMagicAction(actor, input = {}) {
     }
   }
 
-  const implementMods = reductionForImplement(implement, skillId, actionId, selected);
-  const totalDifficulty = Math.max(0, actionDef.baseDifficulty + rawEffectDifficulty - implementMods.difficultyReduction);
+  const implementMods = reductionForImplement(implement, skillId, actionId, selected,npcMods.free);
+  const totalDifficulty = Math.max(npcMods.minimum, actionDef.baseDifficulty + rawEffectDifficulty - implementMods.difficultyReduction - npcMods.effectReduction - npcMods.difficultyReduction);
   if (totalDifficulty > 5) throw new Error(`Spell difficulty ${totalDifficulty} exceeds Formidable (5) after implement reductions.`);
 
   const prepared = prepareActorSkillCheck(actor, skillId, totalDifficulty);
@@ -323,7 +330,7 @@ export function prepareMagicAction(actor, input = {}) {
 
   const empowered = selected.some((entry) => entry.effect.id === "empowered");
   const attackBaseDamage = actionId === "attack"
-    ? (empowered ? prepared.characteristicValue * 2 : prepared.characteristicValue) + implementMods.attackDamageBonus
+    ? (empowered ? prepared.characteristicValue * 2 : prepared.characteristicValue) + implementMods.attackDamageBonus + npcMods.attackBonus
     : null;
 
   return Object.freeze({
@@ -334,6 +341,7 @@ export function prepareMagicAction(actor, input = {}) {
     selected: Object.freeze(selected.map((entry) => ({ effect: entry.effect, count: entry.count }))),
     implement,
     implementMods: Object.freeze(implementMods),
+    npcMods,
     rawEffectDifficulty,
     injuryModifiers,
     totalDifficulty,
@@ -354,8 +362,9 @@ function selectedText(prepared) {
 async function postMagicChat(actor, prepared, result) {
   const implementLabel = prepared.implement?.name ?? "None";
   const effectReduction = prepared.implementMods.difficultyReduction;
-  const baseLine = `${prepared.action.label} ${prepared.action.baseDifficulty} + Effects ${prepared.rawEffectDifficulty}${effectReduction ? ` - Implement ${effectReduction}` : ""} = Difficulty ${prepared.totalDifficulty}`;
+  const baseLine = `${prepared.action.label} ${prepared.action.baseDifficulty} + Effects ${prepared.rawEffectDifficulty}${effectReduction ? ` - Implement ${effectReduction}` : ""} ${prepared.npcMods?.effectReduction||prepared.npcMods?.difficultyReduction?` - Innate ${(prepared.npcMods.effectReduction??0)+(prepared.npcMods.difficultyReduction??0)}`:''} = Difficulty ${prepared.totalDifficulty}`;
   const extras = [];
+  for(const note of prepared.npcMods?.notes??[])extras.push(`<span>${note}</span>`);
   if (prepared.injuryModifiers?.length) extras.push('<span><strong>Critical Injuries:</strong> applicable difficulty penalties/upgrades included in the pool.</span>');
   if (prepared.attackBaseDamage !== null) extras.push(`<span><strong>Attack base damage:</strong> ${prepared.attackBaseDamage} + uncancelled Success</span>`);
   if (prepared.implementMods.healWoundsBonus) extras.push(`<span><strong>Heal implement bonus:</strong> +${prepared.implementMods.healWoundsBonus} wounds on a successful Heal</span>`);
