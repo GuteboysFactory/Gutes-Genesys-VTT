@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1888 \u2014 GM recovery, combat/magic and Terrinoth rule/content reconciliation.",
-  "version": "0.0.1888",
+  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1889 — Rules & Equipment navigation, native rule journals and English user manual.",
+  "version": "0.0.1889",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -97,7 +97,8 @@
     "dist/module/content-provenance-v1888.js",
     "dist/module/repair-service-v1888.js",
     "dist/module/environment-service-v1888.js",
-    "dist/module/critical-lifecycle-v1888.js"
+    "dist/module/critical-lifecycle-v1888.js",
+    "dist/module/rules-journals-v1889.js"
   ],
   "styles": [
     "styles/genesys.css",

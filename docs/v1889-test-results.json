@@ -1,0 +1,62 @@
+[
+  {
+    "file": "tests/forge-drop-v1883.mjs",
+    "status": "PASS",
+    "output": "PASS quick Forge isolation, healthy private NPC, stale scene, import identity and token-layer/Shift/GM drop boundaries\nPASS drop coordinates, visible placement, failed placement cleans only newly created Actor\n"
+  },
+  {
+    "file": "tests/gm-dock-authority-v1839.mjs",
+    "status": "PASS",
+    "output": "PASS: serialized pool writes, secondary-GM/player rejection, GM handoff, persisted reload, change hooks and reconnect wiring\n"
+  },
+  {
+    "file": "tests/gm-dock-encounter-v1836.mjs",
+    "status": "PASS",
+    "output": "PASS: Dock encounter status, extra activation counters, defeat state, token actor sheets and duplicate-safe preparation\n"
+  },
+  {
+    "file": "tests/gm-dock-floating-launcher-v1831.mjs",
+    "status": "PASS",
+    "output": "PASS: GM Dock uses a draggable, persistent GM-only canvas launcher\n"
+  },
+  {
+    "file": "tests/gm-dock-navigation-v1835.mjs",
+    "status": "PASS",
+    "output": "PASS: all six Dock buttons navigate internally, compensate sticky nav, reject invalid targets and enforce GM access\n"
+  },
+  {
+    "file": "tests/gm-dock-party-xp-story-counter-v1833.mjs",
+    "status": "PASS",
+    "output": "PASS: Party XP awards and movable shared Story Point counter are wired\n"
+  },
+  {
+    "file": "tests/gm-dock-recovery-v1837.mjs",
+    "status": "PASS",
+    "output": "PASS: natural rest preview, selected actors, floors, preserved states, permissions, stale previews, duplicate clicks and partial failure reporting\n"
+  },
+  {
+    "file": "tests/gm-dock-shell-v1830.mjs",
+    "status": "PASS",
+    "output": "PASS: GM Dock shell is GM-only, service-backed, non-mutating, navigable and responsive\n"
+  },
+  {
+    "file": "tests/heroic-dock-controls-v1861.mjs",
+    "status": "PASS",
+    "output": "PASS: selected active controls, custom descriptions, inactive/unavailable action rejection\n"
+  },
+  {
+    "file": "tests/journals-v1889.mjs",
+    "status": "PASS",
+    "output": "PASS partial-install recovery, concurrent idempotence, preserved edits/ownership, PDF create/update/remove, authority, reader opening and actual Rules navigation\n"
+  },
+  {
+    "file": "tests/round-token-v1884.mjs",
+    "status": "PASS",
+    "output": "PASS standard round token uses shared circular crop, gold-frame draw path and separate PNG upload; GM-only\n"
+  },
+  {
+    "file": "tests/world-background-v1885.mjs",
+    "status": "PASS",
+    "output": "PASS fixed native WorldConfig background, submit enforcement and unrelated-system/application isolation\n"
+  }
+]

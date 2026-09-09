@@ -1,0 +1,180 @@
+[
+  {
+    "id": "core",
+    "name": "Genesys · Core Rules",
+    "pages": [
+      {
+        "id": "core-01",
+        "name": "01 · Reading the rulebook in Journal",
+        "content": "<h1>Reading the rulebook in Journal</h1><p>This Journal provides a rules overview and directions to the corresponding system workflows. It is not a complete transcription of the Core Rulebook. Read the original PDF page for the full rules, tables and exceptions once the GM has connected the book.</p><p>GM: open Game Settings → Configure Settings → Genesys VTT → Core Rules · Journal PDF. Use the file picker to upload and select your PDF in Foundry File Storage, then save. The Journal gains a Full Rulebook · PDF page. Open it under Journals → Genesys · Rules &amp; Manual → Genesys · Core Rules.</p><p>The PDF is not included in the public system download. Select a file on your Foundry server; a path on your personal computer is not a server address. Journal ownership does not restrict access to the file URL itself. The GM manages server access and who may read the book.</p><p>The following pages cover Core rule families. The GM adjudicates situational exceptions. Describing a rule here does not mean that every application of it is automated.</p>"
+      },
+      {
+        "id": "core-02",
+        "name": "02 · Dice and checks",
+        "content": "<h1>Dice and checks</h1><p>A normal skill check combines a characteristic and a skill. The higher value determines the number of positive dice; the lower determines how many are upgraded. Difficulty, opposition and circumstances add or upgrade negative dice and introduce Boost or Setback dice.</p><p>Success and Failure cancel each other. Advantage and Threat cancel separately. A successful check requires at least one remaining Success. Failure can coexist with Advantage, and success can coexist with Threat. Triumph and Despair each have an ordinary symbol component and a special effect.</p><p>In Foundry, use a sheet skill, an Action or Custom Check. Review the pool before rolling. Supported workflows contribute their own modifiers; the GM supplies external and narrative circumstances. Spend results in the current resolution dialog and avoid applying the same consequence manually a second time.</p>"
+      },
+      {
+        "id": "core-03",
+        "name": "03 · Opposition, assistance and Story Points",
+        "content": "<h1>Opposition, assistance and Story Points</h1><p>Opposed checks derive opposition from the other participant’s relevant characteristic and skill. Competitive checks compare participants’ results; if everyone fails, the system does not automatically select a winner. The GM chooses the appropriate skills and consequences.</p><p>Use Assist when another character can actually help. Skilled assistance may contribute a better value; other assistance may provide Boost as appropriate. Assistance does not allow an unlimited number of characters to stack bonuses.</p><p>GM Dock → Story Points manages the shared pool. The dedicated check workflow keeps reservations and final transfers together with the roll. Normal check spending is limited to one spend per side per check. Permission to attempt an Impossible check follows a separate approval and does not grant an additional upgrade from that same player spend.</p>"
+      },
+      {
+        "id": "core-04",
+        "name": "04 · Rounds, turns and maneuvers",
+        "content": "<h1>Rounds, turns and maneuvers</h1><p>Initiative uses Cool or Vigilance according to the situation. Core Side Slots lets the appropriate side choose who claims an available slot; Popcorn is a separate encounter mode. Follow the mode selected by the GM.</p><p>A normal turn provides one action and one free maneuver. An additional maneuver may be paid for under the rules or replace an action, with the normal limit of two maneuvers during a turn. An incidental does not bypass a specifically stated activation cost.</p><p>The GM confirms the next round. A Nemesis extra activation is a bounded allowance per round, normally two total activations. It does not grant unlimited turns. Defeated, Out of Fight and Dead remain separate statuses set by the GM.</p>"
+      },
+      {
+        "id": "core-05",
+        "name": "05 · Attacks, defense and weapon qualities",
+        "content": "<h1>Attacks, defense and weapon qualities</h1><p>Select an owned weapon and the correct target before attacking. Standard attacks account for the relevant skill, range, defense and supported qualities. On a hit, weapon damage and remaining Success are calculated; soak and applicable modifiers are handled per hit.</p><p>Armor and other defense sources must be distinguished from additional defense increases. The sheet’s defense breakdown shows the system’s sources. Do not add printed NPC equipment defense again when it is already included in the profile.</p><p>Two-weapon attacks use a specific workflow. The secondary hit has its own weapon, damage, soak and eligible qualities. Linked, Stun, Sunder and Critical have specific costs or conditions. Choose only effects and targets allowed by the situation.</p><p>Parry and other supported reactions are offered through reaction handling. External raw rolls or directly editing wounds on a sheet are not equivalent to using the attack workflow.</p>"
+      },
+      {
+        "id": "core-06",
+        "name": "06 · Wounds, strain and Critical Injuries",
+        "content": "<h1>Wounds, strain and Critical Injuries</h1><p>Wounds and strain are separate resources. Rivals normally suffer wounds in place of strain damage, while Nemeses have separate strain. Minion groups use their group structure; choose the correct Actor role.</p><p>Reaching the system’s wound cap does not automatically mean death. The GM decides participant status. Critical Injuries are separate records with their own consequences and treatment; ordinary wound healing does not automatically remove them.</p><p>The system applies supported critical effects, including temporary check modifiers and certain turn effects. Previously edited values, permanent losses and external effects require GM adjudication. Recover Pending Critical Effects resumes saved critical consequences after interrupted processing.</p>"
+      },
+      {
+        "id": "core-07",
+        "name": "07 · Recovery, medicine and fear",
+        "content": "<h1>Recovery, medicine and fear</h1><p>GM Dock provides Healing Potions, First Aid, Critical Recovery, Fear and Health &amp; Recovery. Select the patient and treatment through those tools so the system can track doses, attempts, talent bonuses and saved outcomes.</p><p>Post-encounter recovery, rest, medical care and treating a Critical Injury are different workflows. End the encounter before its recovery checks. The GM confirms the conditions for rest and whether a new day or treatment period has actually begun.</p><p>The Fear panel provides guided rules support. The GM determines when fear is appropriate and selects suitable opposition. Reopening the panel should not automatically count the same frightening event multiple times.</p>"
+      },
+      {
+        "id": "core-08",
+        "name": "08 · Social conflict, environment and magic",
+        "content": "<h1>Social conflict, environment and magic</h1><p>Social Encounter combines opposition, motivation and strain consequences. The GM establishes the social objective and interprets concessions; a mechanical outcome does not automatically dictate what a person must feel or say.</p><p>Environmental Harm handles selected falling, fire, acid and breathing hazards. The GM supplies exposure, protection and duration. The tool does not automatically measure scene geometry or determine participant status.</p><p>Magic combines a selected magical action with additional effects and difficulty. Review targets, implement and strain before resolution. Concentration must be maintained through the tracked encounter workflow. Rituals, narrative effects and external checks may require manual handling.</p>"
+      },
+      {
+        "id": "core-09",
+        "name": "09 · Equipment, advancement and automation boundaries",
+        "content": "<h1>Equipment, advancement and automation boundaries</h1><p>Owned Items represent a character’s equipment. Library Items are sources to copy. Encumbrance depends on carried quantities, equipment and modifiers; the GM must indicate what is actually carried or worn as armor.</p><p>XP and talent purchases use advancement and GM awards. Read each talent’s activation, ranked status and rules text. An Item containing rules text does not by itself execute that effect.</p><p>Vehicles and hacking are outside the selected personal-scale block. Use the original book and GM adjudication where tools are absent. This Journal does not replace the original book’s complete rule definitions.</p>"
+      }
+    ]
+  },
+  {
+    "id": "terrinoth",
+    "name": "Genesys · Realms of Terrinoth Rules",
+    "pages": [
+      {
+        "id": "terrinoth-01",
+        "name": "01 · Sourcebook and reading guide",
+        "content": "<h1>Sourcebook and reading guide</h1><p>This Journal explains how Terrinoth rules relate to the VTT system. It does not contain the entire Realms of Terrinoth rules text, setting descriptions or tables. Connect the original PDF for complete reading.</p><p>GM: open Game Settings → Configure Settings → Genesys VTT → Realms of Terrinoth · Journal PDF. Upload and select your PDF, save, and open Full Rulebook · PDF in this Journal. Core and Terrinoth have separate settings.</p><p>Terrinoth supplements Core. Follow Terrinoth’s specific exceptions when applicable. Library source references identify the book and page; certain corrections follow the official FAQ.</p>"
+      },
+      {
+        "id": "terrinoth-02",
+        "name": "02 · Characters, skills and talents",
+        "content": "<h1>Characters, skills and talents</h1><p>Character Creator uses the selected rules profile for available archetypes, careers, skills, equipment and Heroic choices. Check the profile before creating a character. Use Forge to create NPCs from templates.</p><p>Terrinoth introduces magical and setting-specific skills. A PC’s magic choices must satisfy the character’s rules and career requirements. NPC casting uses ranked skills without the equivalent PC career requirement.</p><p>Native talents install under Items → Talents. Copy the appropriate talent to the character and set its rank when ranked. Some talents directly affect supported checks; others provide guided or manual rules support. Read the source text and the effect’s current limitations.</p>"
+      },
+      {
+        "id": "terrinoth-03",
+        "name": "03 · Heroic abilities",
+        "content": "<h1>Heroic abilities</h1><p>A character selects a Heroic primary and develops it using available ability points. The eleven standard Action Templates are shortcuts to existing selections; they do not grant free abilities or upgrades.</p><p>Use the ability from Actions or GM Dock. Matching primary, cost, session limits and GM approval are checked through the existing workflow. Use Primary Resolve for choices required by the ability. Upgrades and secondary effects determine which options are available.</p><p>Accepted manual handling includes permanent Signature Weapon upgrades and full attachment mechanics; Unbowed against all previous Critical Injury changes; narrative decisions and certain external rolls. Resolve these with the GM and avoid applying an effect twice.</p><p>Session reset restores ability usage through the session workflow. An extra Nemesis activation is not a new session and does not grant another Heroic use.</p>"
+      },
+      {
+        "id": "terrinoth-04",
+        "name": "04 · Magic and runebound shards",
+        "content": "<h1>Magic and runebound shards</h1><p>Create a magical action and select an available skill, effects and implement. The system calculates supported discounts and requirements. NPC special cases require the correct source-identified ability; simply renaming an Item does not automatically activate every rule.</p><p>Runebound Shards in Rules &amp; Equipment uses an owned shard and displays its activation. Select the bearer, all required targets and any special options. The GM confirms timing, range and narrative prerequisites.</p><p>Untrained shard activation and using a shard as a trained Runes implement are separate functions. Temporary rune weapons and conditions follow supported turn and round boundaries in tracked encounters. Other narrative consequences require GM notes and follow-up.</p>"
+      },
+      {
+        "id": "terrinoth-05",
+        "name": "05 · Craftsmanship, attachments and repair",
+        "content": "<h1>Craftsmanship, attachments and repair</h1><p>Equipment Modifications operates on owned Items. Craftsmanship is an equipment profile; select it during creation or through an explicitly confirmed GM correction or exception. It is not a free routine material swap after acquisition.</p><p>Attachments require an owned attachment, an eligible host and sufficient hard points. The same attachment must not be installed on multiple hosts. Supported numeric effects apply to the profile; conditional and narrative effects may remain in notes.</p><p>Repair Equipment uses an owned damaged Item, a saved Mechanics result and GM confirmation of time and payment. Payment and special service conditions require GM handling; do not assume every economic consequence is automatically deducted.</p>"
+      },
+      {
+        "id": "terrinoth-06",
+        "name": "06 · Crafting, alchemy and consumables",
+        "content": "<h1>Crafting, alchemy and consumables</h1><p>Crafting / Alchemy lets the GM select a character, process, recipe and component batch. The standard workflow uses recipe rarity and price for base difficulty, materials and time. The GM confirms tools and location.</p><p>A complete component batch is consumed when attempting production, including on failure. The outcome is saved so an interrupted attempt can resume without a new roll or another material charge. Result choices are limited by available symbols. Future modifiers and narrative consequences are recorded for the GM.</p><p>Stamina / Speed uses owned consumable Items. Daily doses and turn-based durations require correct day and encounter handling. Healing Potions is a separate treatment; do not manually deduct inventory in addition to the tool’s own deduction.</p>"
+      },
+      {
+        "id": "terrinoth-07",
+        "name": "07 · Mounts and the NPC library",
+        "content": "<h1>Mounts and the NPC library</h1><p>Mounted Combat links a rider token and mount token in the scene. Confirm the mount/dismount maneuver and specify training and applicable modifiers. A directed mount shares its rider’s activation and cannot claim an independent turn while directed.</p><p>Move the rider to make the mount follow. The GM assesses obstacles, control checks and targeting. An incapacitated mount may cause falling consequences for its rider; deleting a token is not a substitute for setting participant status correctly.</p><p>Forge includes Terrinoth templates and ordinary NPC templates. Template count does not establish complete book coverage. Source-checked statistics and native weapons can be used by the system, while many special abilities retain manual reference text. Read their notes before play.</p>"
+      }
+    ]
+  },
+  {
+    "id": "manual",
+    "name": "Gutes Genesys VTT · User Manual",
+    "pages": [
+      {
+        "id": "manual-01",
+        "name": "01 · Start here · v0.0.1889",
+        "content": "<h1>Start here · v0.0.1889</h1><p>This manual describes the system’s workflows on Foundry v13.351. Foundry v14 has not been verified. Live verification follows the project decision to perform it after 1.0.</p><p>Begin by logging in as the active GM. Allow world startup to finish installing libraries and these Journals. Open GM Dock. Rules &amp; Equipment scrolls to the rules panel, which includes shortcuts to both rulebooks and this manual.</p><p>The books also appear directly in the Journal Directory under Genesys · Rules &amp; Manual. New books are readable by players. The GM can change ownership. Subsequent startup does not overwrite edited text or permissions.</p><p>Back up the world before system upgrades. Install current QA through the system manifest, restart the world and check the version number. Continue using existing Actors and your own Items.</p>"
+      },
+      {
+        "id": "manual-02",
+        "name": "02 · Connect the full rulebooks",
+        "content": "<h1>Connect the full rulebooks</h1><p>1. Log in as the active GM and open Configure Settings. Find Core Rules · Journal PDF under Genesys VTT.</p><p>2. Open the file picker. Create a folder in Foundry File Storage if needed, upload your Core PDF and select it. Repeat for Realms of Terrinoth using its separate setting.</p><p>3. Save. Open each Journal from Rules &amp; Equipment or the Journal Directory and select Full Rulebook · PDF. The overview’s text pages remain available alongside the original book.</p><p>If the page is missing, have the active GM open the rulebook again to retry installation. Check that the setting points to a .pdf file, the server file exists and the player has Journal permission. A local C: path or a file on the GM’s computer is not an upload.</p><p>Clearing the PDF setting removes the dedicated PDF page during synchronization. It does not delete the uploaded file or your text pages. Changing the path updates the same PDF page. The system package includes rule overviews, not the complete commercial books.</p>"
+      },
+      {
+        "id": "manual-03",
+        "name": "03 · Create and share a character",
+        "content": "<h1>Create and share a character</h1><p>Open Character Creator from GM Dock → Actors. Choose the correct rules profile before selecting archetype, career, skills and other options. Review costs and remaining resources before completing creation.</p><p>Open the created Actor and check characteristics, skills, wounds, strain, soak and defense. Assign the player appropriate ownership through Foundry’s Actor permissions. A player needs an owned Actor to use their controls.</p><p>Use the sheet’s equipment and Actions during play. Current sheet values drive subsequent checks; a library template is not a frozen dice pool. Do not change the same resource both through a result dialog and manually on the sheet.</p>"
+      },
+      {
+        "id": "manual-04",
+        "name": "04 · Items, Talents, Action Templates and Tome",
+        "content": "<h1>Items, Talents, Action Templates and Tome</h1><p>Items → Talents contains native talent sources. Items → Actions includes Assist, Maneuver, Custom Check and Heroic shortcuts. The equipment library provides native equipment Items.</p><p>Copy selected content to the character through the corresponding library or sheet workflow. Action Templates bind to the character’s current values when used. A Heroic shortcut only works for the matching selected primary and pays its normal cost.</p><p>Edit the character’s copy when a change should affect only that character. Editing a source does not automatically update all existing copies.</p><p>AdventurersTome can import native system Items and read their notes. Opening a source document requires its original UUID to remain resolvable and accessible. If the original was deleted or is unavailable, read the imported copy’s notes and source reference. The Journal books are directly accessible without Tome.</p>"
+      },
+      {
+        "id": "manual-05",
+        "name": "05 · Image → Forge → round token",
+        "content": "<h1>Image → Forge → round token</h1><p>Log in as GM and select the scene’s token layer. Drop a local PNG, JPEG or WebP where the NPC should stand. Forge opens with the image and template search. Hold Shift to retain ordinary drop handling.</p><p>Search for a template, check its role and select the desired profile. Complete creation. The system uses the image for the portrait/token and places a visible token at the drop location using the system’s round token appearance. Move or hide it with Foundry’s normal token tools when required.</p><p>Each creation is a separate NPC Actor; the template is unchanged. Check group size for Minions and the extra allowance for a Nemesis. Special abilities may be reference Items that require GM reading.</p><p>If search does not appear, check GM status, active scene, token layer and file format. Use the Forge button and file picker as an alternative. Preparing a token does not by itself start an encounter.</p>"
+      },
+      {
+        "id": "manual-06",
+        "name": "06 · Prepare and run an encounter",
+        "content": "<h1>Prepare and run an encounter</h1><p>Place participant tokens and open Encounter Tracker from GM Dock. Add the intended participants, check sides and roles, and select the encounter mode. Roll initiative using Cool or Vigilance as adjudicated by the GM.</p><p>Choose an eligible participant for the next slot. Record the action, maneuver and any paid extra maneuvers through the controls. Account for conditions and abilities affecting that activation.</p><p>Finish the current activation before taking the next. The GM confirms round advancement. Nemesis extra activation is limited per round; an already used allowance cannot become an unlimited Use action.</p><p>Explicitly set Defeated, Out of Fight or Dead when the GM decides. Wounds are not an automatic death marker. End the encounter when the conflict is over, then proceed to recovery.</p>"
+      },
+      {
+        "id": "manual-07",
+        "name": "07 · Make checks and attacks",
+        "content": "<h1>Make checks and attacks</h1><p>Select a skill, Action or owned weapon. Mark the correct target before attacking. Review range, difficulty and situational modifiers during preparation. The GM determines assistance, cover and other circumstances the system cannot infer from the fiction.</p><p>If using Story Points, do so before resolution through the intended check workflow. Roll and read Success/Failure separately from Advantage/Threat. Treat Triumph/Despair as special outcomes even after their ordinary symbols have been counted.</p><p>Choose permitted spends and reactions. With multiple hits, each hit uses its weapon, soak, reaction window and Critical eligibility. Confirm the result once.</p><p>For external raw rolls, the GM must determine which consequences to apply. A dice chat message is not evidence that costs, damage, turn economy or conditions were updated.</p>"
+      },
+      {
+        "id": "manual-08",
+        "name": "08 · Sessions, Story Points and XP",
+        "content": "<h1>Sessions, Story Points and XP</h1><p>GM Dock → Session controls shared session start and end. Supply the relevant player count, including players not yet connected, when initializing the pool. Opening the Dock does not start a new session.</p><p>The Story Points panel displays and manages the pool. Use corrections when the pool needs an actual correction; use the check workflow for a roll-related spend. Cancel unused reservations through that workflow. Closing a window does not undo an already rolled check.</p><p>The XP panel awards earned XP to the intended characters. Review recipients and amount before confirmation. Sheet advancement handles purchases. Awarded XP does not automatically buy skills or talents.</p>"
+      },
+      {
+        "id": "manual-09",
+        "name": "09 · Heroic abilities step by step",
+        "content": "<h1>Heroic abilities step by step</h1><p>Configure the character’s primary, upgrades and secondary effects. If useful, copy the corresponding Heroic Action Template from Items → Actions. The shortcut does not replace configuration.</p><p>Use Activate Heroic from Actions or GM Dock. Player requests follow GM approval. Review cost and remaining uses before activation. Rejection or cancellation during preliminary selection must not be treated as a free use.</p><p>Open Primary Resolve and make the required choice, such as a question, target, skill or Critical Injury. The GM supplies narrative information. Use supported secondary controls when those effects should occur.</p><p>Resume a pending effect through its recovery workflow after interruption. Reset session use at a real session change. The GM records and follows up manual Signature Weapon, Unbowed and external effects.</p>"
+      },
+      {
+        "id": "manual-10",
+        "name": "10 · Magic and Concentration",
+        "content": "<h1>Magic and Concentration</h1><p>Create or open a magical action on the character. Select skill, base action, additional effects, implement and targets. For PCs, skill selection must satisfy the character’s magic rules. Forge NPCs use their ranked magic skills.</p><p>Review final difficulty and strain cost before rolling. Pay and resolve through the magic workflow. Winded and other conditions can block voluntary strain costs.</p><p>Use the sheet and encounter concentration controls to maintain Concentration on the appropriate turn. Extra activations follow tracked turn economy; do not use them to manually reset an effect’s duration.</p><p>After an interrupted multi-target update, resume the saved workflow. Do not cast the same spell again to repair a partially saved result. Inspect affected targets’ conditions before making manual corrections.</p>"
+      },
+      {
+        "id": "manual-11",
+        "name": "11 · Healing Potions, First Aid and Critical Recovery",
+        "content": "<h1>Healing Potions, First Aid and Critical Recovery</h1><p>Open the appropriate treatment in GM Dock. Select the actual patient and healer where required. The panels support individual characters and supported NPCs outside an active encounter as well.</p><p>Healing Potions tracks dose limits separately from First Aid attempts. First Aid uses the treatment check and relevant supported talents. Critical Recovery selects and treats a specific Critical Injury.</p><p>Confirm treatment once. If a window closes after a result was saved, resume through the same tool so previous attempts and payments are respected. Do not roll again for an already saved treatment.</p><p>Post-encounter recovery, overnight rest and daily reset are distinct. The GM confirms that time and prerequisites have been satisfied. Check remaining Critical Injuries even when wounds have healed.</p>"
+      },
+      {
+        "id": "manual-12",
+        "name": "12 · Rules & Equipment · consumables and hazards",
+        "content": "<h1>Rules &amp; Equipment · consumables and hazards</h1><p>Click Rules &amp; Equipment in the Dock to reach the panel containing Journal shortcuts and rule tools. Stamina / Speed requires the appropriate consumable on the selected Actor.</p><p>Select the bearer and dose in the consumable tool. Owned Item quantity and usage records are handled together. Speed follows supported upcoming turns and its ending cost; daily uses reset only when a new day is confirmed.</p><p>Environmental Harm: select the affected character, hazard and relevant circumstances. Confirm exposure, protection and duration before applying. The tool does not automatically measure falling distance or decide whether a character can breathe.</p><p>Recover Pending Critical Effects resumes saved but unfinished critical consequences. It is not a general healing button. The GM continues to set participant status separately.</p>"
+      },
+      {
+        "id": "manual-13",
+        "name": "13 · Rules & Equipment · crafting and repair",
+        "content": "<h1>Rules &amp; Equipment · crafting and repair</h1><p>Crafting / Alchemy: select a character and choose crafting, brewing or gathering ingredients. Choose a recipe and, for production, a complete component batch in inventory. Confirm suitable tools, location and material value.</p><p>Consume batch and roll starts the attempt and consumes materials even on failure. In the result panel, choose valid symbol spends and record future or narrative consequences. Confirm elapsed time before Resolve and create Items.</p><p>Resume later preserves the attempt. Reopen the same Actor in the tool to continue; do not start another attempt for already consumed materials. Use Custom Check and GM adjudication for exceptional modified recipes.</p><p>Repair Equipment: select an owned damaged Item and perform the Mechanics check. Confirm time and payment as appropriate. Afterwards, inspect the Item’s damage condition. The tool is not an automatic trading or economy simulator.</p>"
+      },
+      {
+        "id": "manual-14",
+        "name": "14 · Rules & Equipment · modifications, mounts and runes",
+        "content": "<h1>Rules &amp; Equipment · modifications, mounts and runes</h1><p>Equipment Modifications: select the Actor and owned Item. Craftsmanship requires a valid creation or GM-exception context. For an attachment, select an owned available attachment and check hard points. Read notes for non-numeric effects.</p><p>Mounted Combat: select rider and mount tokens. Confirm the mount/dismount maneuver, training and applicable modifiers. Move the rider; the mount follows. Use Unlink to separate the pair. The GM assesses terrain and Riding checks.</p><p>Runebound Shards: select the bearer and owned shard. Mark every intended target, enter special choices and confirm timing, range and narrative prerequisites. Ordinary untrained activation is separate from using the shard as a Runes implement.</p><p>Check supported temporary weapons and conditions in the encounter. The GM resolves special narrative rune effects. Switching focus between windows does not constitute a new turn.</p>"
+      },
+      {
+        "id": "manual-15",
+        "name": "15 · Social Encounter, Fear and archetypes",
+        "content": "<h1>Social Encounter, Fear and archetypes</h1><p>Social Encounter: select the acting character and opponent, relevant social opposition and motivation. Confirm context, roll and apply permitted strain consequences. The GM interprets the conflict in the story.</p><p>Fear: select the affected character and a profile appropriate to the actual situation. Resolve the fear check and follow up its result. The GM decides whether a new event warrants another check.</p><p>Ready for Adventure has a dedicated guided archetype workflow under Rules &amp; Equipment. Other archetype and talent effects may be conditional check modifiers or manual reference Items. Do not use this button as a generic activation for every archetype ability.</p>"
+      },
+      {
+        "id": "manual-16",
+        "name": "16 · Troubleshooting and responsibilities",
+        "content": "<h1>Troubleshooting and responsibilities</h1><p>A button does nothing: confirm the world runs v0.0.1889, reload the client and try as the active GM. Shared writes require the correct GM authority. Rules &amp; Equipment should now navigate to its section.</p><p>A Journal is missing: open a Journal shortcut as active GM. Installation retries missing documents and pages without duplicating identified existing pages. Custom text and ownership remain intact. Deleted standard pages may be restored during the next installation.</p><p>A PDF does not open: check the setting’s server address, upload and reading permissions. Protected external links may refuse embedding. Use a PDF uploaded to Foundry File Storage.</p><p>A save was interrupted: resume the tool’s pending work. Do not double-click new operations or edit Actor resources while a pending job is trying to finish. For errors, record the version, console error and exact reproduction steps as GM feedback.</p><p>Automated tests are separate from playtesting. Reconnect, GM handover, larger encounters, browser performance and v14 are not live-certified by this manual. Narrative decisions and explicitly manual rules remain with the group.</p>"
+      }
+    ]
+  }
+]

@@ -124,6 +124,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     position: { width: 1040, height: 760 },
     window: { title: "Genesys GM Dock", resizable: true },
     actions: {
+      openRuleJournal: async function(_event, target){try{await game.genesysJournals.open(target.dataset.book);}catch(e){ui.notifications.error(e.message);}},
       consumables: async function(){try{await game.genesysConsumables.openConsumables();}catch(e){ui.notifications.warn(e.message);}},
       mountedCombat: async function(){try{await game.genesysMounts.openMountedCombat();}catch(e){ui.notifications.warn(e.message);}},
       itemModifications: async function(){try{await game.genesysItemModifications.openItemModifications();}catch(e){ui.notifications.warn(e.message);}},
@@ -240,7 +241,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     event?.stopPropagation?.();
     if (!requireGm()) return;
     const sectionId = target?.dataset?.section;
-    if (!["session", "story", "xp", "encounter", "actors", "forge"].some(name => sectionId === `genesys-gm-${name}`)) return;
+    if (!["session", "story", "xp", "encounter", "actors", "forge", "rules"].some(name => sectionId === `genesys-gm-${name}`)) return;
     const root = this.element;
     const section = root?.querySelector?.(`#${sectionId}`);
     const content = root?.querySelector?.(".window-content");

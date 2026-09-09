@@ -1,4 +1,6 @@
-# Genesys VTT — QA v0.0.1888
+# Genesys VTT — QA v0.0.1889
+
+v1889 fixes Rules & Equipment navigation and adds three native English Journals: Core Rules overview, Realms of Terrinoth overview and a detailed user manual. Connect your full rulebook PDFs using the two Journal PDF settings in Configure Settings. The PDFs are not bundled in the public system package. See [v1889 delivery and checks](docs/V1889_JOURNALS.md).
 
 Foundry target: v13.351. v14 remains unverified.
 
@@ -9,7 +11,7 @@ Combined delivery completes the three selected roadmap blocks: GM Tools; Combat,
 - [QA results and deferred live protocol](TEST_PROTOCOL_v0.0.1888.md)
 - [Individual audit requirements](docs/v1888-audit-requirements.json)
 
-94 automated test files pass; one Chromium test is blocked. Live verification is deferred after 1.0 by GM decision. Native references and GM-resolved special/narrative rules are documented; this is not a claim that every published ability is automatically executed.
+v1888 baseline: 94 automated test files passed; one Chromium test is blocked. Live verification is deferred after 1.0 by GM decision. Native references and GM-resolved special/narrative rules are documented; this is not a claim that every published ability is automatically executed.
 
 The notes below describe the earlier rule-engine foundation.
 

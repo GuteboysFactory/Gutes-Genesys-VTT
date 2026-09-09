@@ -1,10 +1,10 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-09. Latest build: **v0.0.1888**. Live verification is deferred until after 1.0 by GM decision; this is not a claim that those checks passed.
+Updated 2026-09-09. Latest build: **v0.0.1889**. Live verification is deferred until after 1.0 by GM decision; this is not a claim that those checks passed.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
-## Current status — original roadmap, v1888
+## Current status — original roadmap, v1889
 
 🟢 Delivered for release · 🟡 Remaining implementation/reconciliation · 🔴 Not started.
 
@@ -21,6 +21,14 @@ Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe del
 | v1.0 final delivery | 🔴 | Final documentation, upgrade path and compatibility/API declaration |
 
 v1888 completes the three selected release blocks together. Evidence and explicit automation boundaries: `docs/V1888_RULE_RECONCILIATION.md`, `docs/v1888-audit-requirements.json` and `TEST_PROTOCOL_v0.0.1888.md`. Green does not certify every published talent/NPC reference as automatic execution. Source references retain their true execution status. Older sections below are history; their open audit/live statements are superseded only by the evidence and GM decisions recorded above.
+
+## v1889 — Rules navigation and English Journals
+
+- Fix Rules & Equipment navigation: its section was missing from the allowed navigation targets.
+- Install three native English JournalEntries with 32 text pages, including a 16-page user manual. Preserve existing text and ownership; retry missing pages without duplicate installation.
+- Add separate Core and Terrinoth PDF file-picker settings. These connect the GM's uploaded books as native PDF pages; the public package does not include the complete commercial books.
+- 12 targeted test files pass. Actual Foundry Journal/PDF rendering remains a live follow-up, not an automated browser pass. This corrective release precedes v189x; original block statuses are unchanged.
+- Details: `docs/V1889_JOURNALS.md`.
 
 ## v1888 — GM Tools, combat/magic and setting/content together
 
