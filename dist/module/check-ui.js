@@ -103,7 +103,8 @@ export function prepareActorSkillEngineCheck(actor, skillId, options = {}) {
         label: skill.skillLabel
     };
     const mode = options.mode ?? "standard";
-    const conditionModifiers = [...npcMagicCheckModifiers(actor,skill.skillId,getActorSkillDefinitions(actor).filter(s=>s.category==='magic').map(s=>s.id)), ...getActorConditionCheckModifiers(actor, skill), ...primaryCheckModifiers(actor?.system?.heroicAbility,skill.skillId)];
+    const mounted = getActorSkillDefinitions(actor).some(s=>s.id===skill.skillId&&s.category==='magic') ? game.genesysMounts?.mountedModifiers?.(actor,{magic:true})??[] : [];
+    const conditionModifiers = [...(game.genesysItemModifications?.equipmentCheckModifiers?.(actor,skill.skillId)??[]), ...mounted, ...npcMagicCheckModifiers(actor,skill.skillId,getActorSkillDefinitions(actor).filter(s=>s.category==='magic').map(s=>s.id)), ...getActorConditionCheckModifiers(actor, skill), ...primaryCheckModifiers(actor?.system?.heroicAbility,skill.skillId)];
     let check;
     if (mode === "opposed") {
         check = prepareOpposedCheck({
@@ -163,6 +164,9 @@ export async function rollPreparedActorCheckToChat(prepared, speakerAlias, actor
         }
     });
     if(heroicActor) result=await (await import('./heroic-primary-ui.js')).applyPrimaryResult(heroicActor,prepared.skillId,result,{characteristic:prepared.check.actor.characteristic});
+    if(heroicActor&&game.genesysRunes?.applyRuneFate)result=await game.genesysRunes.applyRuneFate(heroicActor,result);
+    if(heroicActor&&game.genesysTerrinothTalents?.dungeoneerResult)result=await game.genesysTerrinothTalents.dungeoneerResult(heroicActor,prepared.skillId,result);
+    if(heroicActor)await game.genesysCriticalLifecycle?.consumeNextCheck?.(heroicActor);
     const assistance = prepared.check.kind === "assisted"
         ? ` · ${prepared.check.assistanceMode === "skilled" ? "Skilled assistance" : "Unskilled assistance"}`
         : "";

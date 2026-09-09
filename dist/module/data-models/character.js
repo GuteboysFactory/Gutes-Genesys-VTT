@@ -72,6 +72,7 @@ function criticalInjuryField() {
         createdAt: new NumberField({ required: true, nullable: false, integer: true, min: 0, initial: 0 }),
         secondaryStatus: new StringField({ required: true, nullable: false, initial: "none" }),
         secondaryKind: new StringField({ required: true, nullable: false, initial: "" }),
+        runtimePending: new BooleanField({required:true,nullable:false,initial:false}),
         secondaryMode: new StringField({ required: true, nullable: false, initial: "" }),
         secondaryRawRoll: new NumberField({ required: true, nullable: false, integer: true, min: 0, max: 10, initial: 0 }),
         secondaryRolledCharacteristic: new StringField({ required: true, nullable: false, initial: "" }),

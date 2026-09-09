@@ -17,6 +17,7 @@
   </header>
 
   <nav class="genesys-gm-dock-nav-v1830" aria-label="GM Dock sections">
+    <button type="button" data-action="navigateSection" data-section="genesys-gm-rules">Rules &amp; Equipment</button>
     <button type="button" data-action="painkillers">Healing Potions</button>
     <button type="button" data-action="medicalCare">First Aid</button>
     <button type="button" data-action="criticalRecovery">Critical Recovery</button>
@@ -113,6 +114,7 @@
     <section id="genesys-gm-story" class="genesys-gm-dock-panel-v1830">
       <header><div><small>SHARED RESOURCE</small><h2><i class="fa-solid fa-star"></i> Story Points</h2></div><span class="is-ready">LIVE · R{{storyPoints.revision}}</span></header>
       <div class="genesys-gm-dock-panel-body-v1830">
+        <button type="button" data-action="storyCheck">Story Point / Impossible Check</button>
         <div class="genesys-story-point-pools-v1832">
           <article class="is-player">
             <small>PLAYER POOL</small><strong>{{storyPoints.player}}</strong>
@@ -211,5 +213,17 @@
       </div>
     </section>
   </main>
+<section id="genesys-gm-rules" class="genesys-gm-dock-panel-v1830"><h2>Rules &amp; Equipment</h2><p>Crafting, item modifications, mounts and runebound shards. GM confirms fictional prerequisites; each tool shows its costs and result.</p><div class="genesys-gm-dock-nav-v1830">
+    <button type="button" data-action="consumables">Stamina / Speed</button>
+    <button type="button" data-action="mountedCombat">Mounted Combat</button>
+    <button type="button" data-action="itemModifications">Equipment Modifications</button>
+    <button type="button" data-action="archetypeAbilities">Ready for Adventure</button>
+    <button type="button" data-action="socialEncounter">Social Encounter</button>
+    <button type="button" data-action="runes">Runebound Shards</button>
+    <button type="button" data-action="criticalEffects">Recover Pending Critical Effects</button>
+    <button type="button" data-action="environment">Environmental Harm</button>
+    <button type="button" data-action="repairEquipment">Repair Equipment</button>
+    <button type="button" data-action="crafting">Crafting / Alchemy</button>
+</div></section>
 </section>
 {{/if}}

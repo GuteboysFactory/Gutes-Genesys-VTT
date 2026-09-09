@@ -82,18 +82,15 @@ export function getActorCriticalModifier(actor) {
 export async function inflictCriticalInjury(actor, modifiers = {}, sourceId = "core:critical-injury", rng = Math.random) {
     const current = actorCriticals(actor);
     const resolution = rollCriticalInjury({ ...modifiers, unresolvedCount: getActorCriticalModifier(actor) / 10, durableRank: talentRank(actor, "core-talent:durable") }, rng);
-    const state = toCriticalInjuryState(resolution, id(), sourceId);
-    await actor.update({ "system.criticalInjuries": [...current, state] });
-    const conditionTag = resolution.injury.tags?.find((tag) => tag.startsWith("condition:"));
-    if (conditionTag) {
-        const conditionId = conditionTag.slice("condition:".length);
-        const untilHealed = resolution.injury.tags?.includes("duration:until-healed");
-        await addActorCondition(actor, conditionId, {
-            sourceId: `critical:${state.id}`,
-            durationType: untilHealed ? "until-healed" : "turns",
-            remaining: untilHealed ? 0 : 1
-        });
+    const state = {...toCriticalInjuryState(resolution, id(), sourceId),...(globalThis.game?.genesysCriticalLifecycle?{runtimePending:true}:{})};
+    const patch={"system.criticalInjuries":[...current,state]};
+    const conditionTag=resolution.injury.tags?.find(tag=>tag.startsWith("condition:"));
+    if(conditionTag){
+        const untilHealed=resolution.injury.tags?.includes("duration:until-healed");
+        patch["system.conditions"]=[...(actor.system.conditions??[]),{id:`critical-condition:${state.id}`,conditionId:conditionTag.slice(10),sourceId:`critical:${state.id}`,active:true,durationType:untilHealed?"until-healed":"turns",remaining:untilHealed?0:globalThis.game?.genesysVtt?.initiative?.sceneState?.(globalThis.canvas?.scene)?.activeActorRef===actor.uuid?2:1}];
     }
+    await actor.update(patch);
+    if(globalThis.game?.genesysCriticalLifecycle)await globalThis.game?.genesysCriticalLifecycle.inflicted(actor,state);
     return { resolution, state };
 }
 export async function resolveActorCriticalSecondary(actor, criticalId, rng = Math.random) {
@@ -134,7 +131,7 @@ export async function applyActorCriticalSecondary(actor, criticalId, characteris
     const characteristic = characteristicOverride ?? rolledCharacteristic;
     if (!CHARACTERISTICS.includes(characteristic))
         throw new Error("Resolve the Critical secondary roll before applying it.");
-    if (state.secondaryMode !== "permanent-characteristic-reduction")
+    if (!["permanent-characteristic-reduction","temporary-characteristic-reduction"].includes(state.secondaryMode))
         throw new Error(`Unsupported secondary mode '${state.secondaryMode}'.`);
     const amount = Math.max(0, integer(state.secondaryAmount, 1));
     const minimum = Math.max(0, integer(state.secondaryMinimum, 1));
@@ -150,7 +147,7 @@ export async function applyActorCriticalSecondary(actor, criticalId, characteris
     };
     found.states[found.index] = next;
     await actor.update({
-        [`system.characteristics.${characteristic}`]: after,
+        ...(state.secondaryMode==="permanent-characteristic-reduction"?{[`system.characteristics.${characteristic}`]:after}:{}),
         "system.criticalInjuries": found.states
     });
     return next;
@@ -174,7 +171,7 @@ async function criticalSecondaryToChat(actor, state) {
     <p><strong>${escapeHtml(actor?.name ?? "Actor")}</strong> resolves <strong>${escapeHtml(state.name)}</strong></p>
     <p><strong>d10:</strong> ${integer(state.secondaryRawRoll)} → <strong>${escapeHtml(rolledCharacteristic)}</strong></p>
     ${overrideLine}
-    <p><strong>Permanent change:</strong> ${escapeHtml(appliedCharacteristic)} ${integer(state.secondaryBefore)} → ${integer(state.secondaryAfter)}</p>
+    <p><strong>${state.secondaryMode==="temporary-characteristic-reduction"?"Effective until healed":"Permanent change"}:</strong> ${escapeHtml(appliedCharacteristic)} ${integer(state.secondaryBefore)} → ${integer(state.secondaryAfter)}</p>
   </section>`;
     await foundry.documents.ChatMessage.create({ content, speaker: { alias: actor?.name ?? "Genesys Critical" } });
 }
@@ -187,9 +184,9 @@ async function promptApplyCriticalSecondary(actor, state) {
         content: `<section class="genesys-critical-secondary-dialog">
       <h3>${escapeHtml(state.name)}</h3>
       <p><strong>d10 ${integer(state.secondaryRawRoll)} → ${escapeHtml(capitalize(characteristic))}</strong></p>
-      <p>${escapeHtml(capitalize(characteristic))} will be permanently reduced by ${integer(state.secondaryAmount, 1)}.</p>
+      <p>${escapeHtml(capitalize(characteristic))} will be ${state.secondaryMode==="temporary-characteristic-reduction"?"treated as lower until healed":"permanently reduced"} by ${integer(state.secondaryAmount, 1)}.</p>
       <p><strong>${escapeHtml(capitalize(characteristic))}: ${before} → ${after}</strong></p>
-      <p>This permanent Actor change is not committed until you choose Apply.</p>
+      <p>This effect is not committed until you choose Apply.</p>
     </section>`,
         buttons: [
             { action: "apply", label: "Apply" },

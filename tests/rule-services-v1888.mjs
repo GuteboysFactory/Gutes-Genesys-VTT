@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+globalThis.Hooks={on(){},once(){},callAll(){}};let serial=0;
+globalThis.foundry={utils:{randomID:()=>`job${++serial}`}};
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysVtt:{checks:{prepareActorSkill:()=>({check:{construction:{pool:{ability:2,difficulty:2}}}})},dice:{roll:()=>({net:{success:1,advantage:2}})}}};
+const flag=function(_s,k){return this.flags?.['genesys-vtt']?.[k];};
+function write(obj,p){for(const [key,v]of Object.entries(p)){let t=obj;const parts=key.split('.');for(const part of parts.slice(0,-1))t=t[part]??={};t[parts.at(-1)]=structuredClone(v);}}
+const host={id:'w',name:'Sword',type:'weapon',system:{damage:2,critical:3,price:100,rarity:2,encumbrance:2,hardPoints:2,qualities:[]},getFlag:flag,async update(p){write(this,p);}};
+const attachment={id:'a',name:'Grip',type:'attachment',system:{hardPointCost:1,compatibleTypes:['weapon']},getFlag:flag};
+const items=[host,attachment];items.get=id=>items.find(i=>i.id===id);
+const actor={uuid:'Actor.a',items,getFlag:flag,async update(p){write(this,p);}};
+const {modifyEquipment,validateModificationUpdate}=await import('../dist/module/item-modifications-v1888.js');
+const record=await modifyEquipment(actor,{confirmed:true,hostId:'w',attachmentIds:['a'],craftsmanshipId:'steel'});assert.equal(record.attachments.length,1);assert.equal(validateModificationUpdate(host,{'system.hardPoints':0}),false);
+host.system.damage=9;await assert.rejects(modifyEquipment(actor,{confirmed:true,hostId:'w',attachmentIds:[],craftsmanshipId:'steel'}),/edited directly/);host.system.damage=2;
+const {repairEquipment}=await import('../dist/module/repair-service-v1888.js');write(actor,{'flags.genesys-vtt.itemDamage':{w:2}});
+const repair=await repairEquipment(actor,{confirmed:true,itemId:'w'});assert.equal(repair.cost,40);assert.equal(actor.getFlag('','itemDamage').w,2,'roll alone does not repair');
+await assert.rejects(repairEquipment(actor,{resolve:repair.id,paid:false}),/Confirm/);await repairEquipment(actor,{resolve:repair.id,paid:true});assert.equal(actor.getFlag('','itemDamage').w,0);
+const {storyCheck,cancelUnrolledStoryCheck}=await import('../dist/module/story-check-v1888.js');
+let cancelled=false;game.genesysStoryPoints={beginCheck:async()=>{throw Error('reservation interrupted');},cancelCheck:async()=>{cancelled=true;}};
+await assert.rejects(storyCheck(actor,{confirmed:true,skillId:'mechanics',difficulty:2,player:1,gm:0}),/interrupted/);assert.equal(actor.getFlag('','storyCheck').stage,'reserve');await cancelUnrolledStoryCheck(actor);assert(cancelled);assert.equal(actor.getFlag('','storyCheck').cancelled,true);
+write(actor,{'flags.genesys-vtt.storyCheck':{id:'rolled',stage:'rolled'}});await assert.rejects(cancelUnrolledStoryCheck(actor),/Only an unrolled/);
+console.log('PASS owned attachment capacity/direct-edit guard, saved repair outcome/payment gate, interrupted Story Point reservation cancellation and rolled-check protection');

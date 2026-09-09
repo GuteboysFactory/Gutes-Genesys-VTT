@@ -230,7 +230,7 @@ export function normalizeInitiativeState(raw) {
         activeActivationId: String(source.activeActivationId ?? ""),
         turn: {
             actionUsed: Boolean(source.turn?.actionUsed),
-            maneuversUsed: Math.min(2, nonNegativeInteger(source.turn?.maneuversUsed))
+            maneuversUsed: Math.min(3, nonNegativeInteger(source.turn?.maneuversUsed))
         }
     };
     baseState.actedActorRefs = actedRefsFromEntitlements(baseState);
@@ -489,8 +489,8 @@ export function spendTurnManeuver(state, actorRef, capability) {
     requireActiveActor(state, actorRef);
     if (!capability.canPerformManeuvers)
         throw new Error("Maneuvers are blocked by the actor's current conditions.");
-    if (state.turn.maneuversUsed >= 2)
-        throw new Error("An actor cannot perform more than two maneuvers on its turn.");
+    if (state.turn.maneuversUsed >= (capability.maxManeuvers === 3 ? 3 : 2))
+        throw new Error("The actor has reached its maneuver limit this turn.");
     return { ...state, turn: { ...state.turn, maneuversUsed: state.turn.maneuversUsed + 1 } };
 }
 function markActiveActivationUsed(state) {

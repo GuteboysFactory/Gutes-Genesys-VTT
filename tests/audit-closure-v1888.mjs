@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+globalThis.Hooks={once(){},on(){},callAll(){}};globalThis.foundry={utils:{deepClone:structuredClone}};
+const creation=await import('../dist/module/character-creation-service.js');
+const {REALMS_OF_TERRINOTH_ARCHETYPES}=await import('../dist/module/content-packs/realms-of-terrinoth-character-creation.js');
+for(const a of REALMS_OF_TERRINOTH_ARCHETYPES){const d=creation.selectDraftArchetype(creation.createCharacterDraft(),a);assert.equal(d.derived.wounds,a.wounds.base+a.characteristics.brawn);assert.equal(d.derived.strain,a.strain.base+a.characteristics.willpower);assert.equal(d.startingXp,a.startingXp);}
+let draft=creation.selectDraftArchetype(creation.createCharacterDraft(),REALMS_OF_TERRINOTH_ARCHETYPES[0]);assert.equal(draft.derived.meleeDefense,0);assert.equal(draft.derived.rangedDefense,0);assert.throws(()=>creation.purchaseDraftSkill(draft,'athletics',3),/cap|maximum|rank|known/i);
+const fs=await import('node:fs');globalThis.document={addEventListener(){}};globalThis.__talentRules=await import('../dist/domain/rules/index.js');
+const source=fs.readFileSync('dist/module/talent-library.js','utf8').replace(/^import .*;$/gm,'');
+const {talentPurchaseTiers,validateTalentPyramidPurchase}=await import('data:text/javascript;base64,'+Buffer.from('const {createCoreParryTalent,createCoreSecondWindTalent,createCoreSurgeonTalent,createTerrinothFinesseTalent,normalizeTalentDefinition}=globalThis.__talentRules;\n'+source).toString('base64'));
+assert.deepEqual(talentPurchaseTiers({id:'x',system:{tier:1,ranked:true,rank:7}}),[1,2,3,4,5,5,5]);
+assert.equal(validateTalentPyramidPurchase({items:[]},{id:'x',system:{tier:2,ranked:false,rank:1}}).allowed,false);
+const {REALMS_OF_TERRINOTH_TALENT_DETAIL_PACK:pack}=await import('../dist/module/content-packs/realms-of-terrinoth-talent-details.js');
+const byName=n=>pack.talents.find(t=>t.name===n);
+assert.equal(byName('Conduit').activation,'incidental');assert.equal(byName('Side Step').activation,'maneuver');assert.equal(byName('Precision').rules[0].effect.characteristicId,'cunning');assert(pack.talents.every(t=>Number.isInteger(t.metadata.sourcePage)&&t.metadata.sourceVersion));
+const {REALMS_OF_TERRINOTH_EQUIPMENT:equipment}=await import('../dist/module/content-packs/realms-of-terrinoth-equipment.js');
+for(const material of ['bone','hazel','yew'])assert.equal(equipment.find(e=>e.id===`implement-material-${material}`).data.priceMultiplier,1.5);
+const {repairPlan}=await import('../dist/domain/equipment/repairs.js');
+assert.equal(repairPlan({damage:2,price:100,advantage:2}).cost,40);assert.equal(repairPlan({damage:2,price:100,rushed:true,missingTools:true}).difficulty,4);assert.throws(()=>repairPlan({damage:4,price:100}),/destroyed/);
+const {environmentalOutcome}=await import('../dist/domain/environment/environment.js');
+const base={wounds:0,woundThreshold:12,strain:0,strainThreshold:12,soak:3};
+let harm=environmentalOutcome({...base,kind:'fall',range:'short',success:2,advantage:3});assert.equal(harm.wounds,5);assert.equal(harm.strain,7);assert.equal(harm.participantStatusChange,false);
+harm=environmentalOutcome({...base,kind:'fall',range:'extreme'});assert.equal(harm.wounds,13);assert.equal(harm.criticalModifier,75);
+harm=environmentalOutcome({...base,kind:'suffocation',strain:13});assert.equal(harm.strain,16);assert.equal(harm.criticalModifier,0);
+console.log('PASS archetype formulas, default defense, creation cap, talent pyramid/ranked tiers, Precision/Conduit/Side Step, 112 exact talent references, material errata, repair and environmental tables');

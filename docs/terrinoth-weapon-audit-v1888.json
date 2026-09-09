@@ -1,0 +1,2309 @@
+{
+  "sourceSha256": "32febac3f5a6cb5879ec32317923ef769bda6f9dfcaa5c6a58c324eb35e1e502",
+  "scope": "Printed skill IDs/ranks and explicit weapon skill, total damage, Critical and range tuples; source missing range/rank is preserved as a documented GM decision",
+  "profiles": 79,
+  "weapons": 120,
+  "entries": [
+    {
+      "templateId": "rot:beast-of-burden",
+      "weaponProfiles": 0
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:riding-beast",
+      "weaponProfiles": 0
+    },
+    {
+      "templateId": "rot:war-mount",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:baronial-knight",
+      "weaponProfiles": 3
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "weaponProfiles": 3
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:goblin",
+      "weaponProfiles": 4
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "weaponProfiles": 0
+    },
+    {
+      "templateId": "rot:ironbound",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:tamalir-guildmaster",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:barghest",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:death-knight",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:ferrox",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:necromancer",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:reanimate",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:wraith",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:deepwood-archer",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:leonx-rider",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:leonx",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "weaponProfiles": 0
+    },
+    {
+      "templateId": "rot:true-fae",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:dimora",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:dwarf-guilder",
+      "weaponProfiles": 0
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "weaponProfiles": 3
+    },
+    {
+      "templateId": "rot:kennsir-dwarf",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:kobold",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:specter",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:lava-elemental",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:salamander",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:beastman",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:ogre",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "weaponProfiles": 0
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:berserker",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "weaponProfiles": 0
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:grotesque",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "weaponProfiles": 3
+    },
+    {
+      "templateId": "rot:viper-legion-archer",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:giant",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "weaponProfiles": 0
+    },
+    {
+      "templateId": "rot:lorimor-marine",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:lost-knight",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:manticore",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:merriod",
+      "weaponProfiles": 3
+    },
+    {
+      "templateId": "rot:pirate",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:shade",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:siren",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:ice-blood-warrior",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:wendigo",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "weaponProfiles": 3
+    },
+    {
+      "templateId": "rot:assassin",
+      "weaponProfiles": 4
+    },
+    {
+      "templateId": "rot:djinn",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:minor-elemental",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:thieves-guild-cutpurse",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "weaponProfiles": 2
+    },
+    {
+      "templateId": "rot:makhim",
+      "weaponProfiles": 3
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "weaponProfiles": 1
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "weaponProfiles": 3
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "weaponProfiles": 3
+    }
+  ],
+  "skillChecks": [
+    {
+      "templateId": "rot:beast-of-burden",
+      "skills": 2
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:riding-beast",
+      "skills": 2
+    },
+    {
+      "templateId": "rot:war-mount",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:baronial-knight",
+      "skills": 7
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "skills": 7
+    },
+    {
+      "templateId": "rot:goblin",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:ironbound",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:tamalir-guildmaster",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:barghest",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:death-knight",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:ferrox",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "skills": 9
+    },
+    {
+      "templateId": "rot:necromancer",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:reanimate",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:wraith",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:deepwood-archer",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:leonx-rider",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:leonx",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:true-fae",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:dimora",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:dwarf-guilder",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:kennsir-dwarf",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:kobold",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "skills": 10
+    },
+    {
+      "templateId": "rot:specter",
+      "skills": 2
+    },
+    {
+      "templateId": "rot:lava-elemental",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:salamander",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "skills": 7
+    },
+    {
+      "templateId": "rot:beastman",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:ogre",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:berserker",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:grotesque",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:viper-legion-archer",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:giant",
+      "skills": 2
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:lorimor-marine",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:lost-knight",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:manticore",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:merriod",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:pirate",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:shade",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:siren",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "skills": 8
+    },
+    {
+      "templateId": "rot:ice-blood-warrior",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:wendigo",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:assassin",
+      "skills": 10
+    },
+    {
+      "templateId": "rot:djinn",
+      "skills": 10
+    },
+    {
+      "templateId": "rot:minor-elemental",
+      "skills": 4
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "skills": 2
+    },
+    {
+      "templateId": "rot:thieves-guild-cutpurse",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "skills": 3
+    },
+    {
+      "templateId": "rot:makhim",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "skills": 5
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "skills": 6
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "skills": 6
+    }
+  ],
+  "skills": 371,
+  "referenceChecks": [
+    {
+      "templateId": "rot:beast-of-burden",
+      "item": "Abilities \u2014 Beast Of Burden",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:beast-of-burden",
+      "item": "Equipment reference \u2014 Beast Of Burden",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "item": "Abilities \u2014 Flying Mount",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "item": "Equipment reference \u2014 Flying Mount",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:riding-beast",
+      "item": "Abilities \u2014 Riding Beast",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:riding-beast",
+      "item": "Equipment reference \u2014 Riding Beast",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:war-mount",
+      "item": "Abilities \u2014 War Mount",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:war-mount",
+      "item": "Equipment reference \u2014 War Mount",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:baronial-knight",
+      "item": "Equipment reference \u2014 Baronial Knight",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "item": "Talents \u2014 Dragon Hybrid",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "item": "Abilities \u2014 Dragon Hybrid",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "item": "Equipment reference \u2014 Dragon Hybrid",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "item": "Talents \u2014 Feral Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "item": "Abilities \u2014 Feral Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "item": "Equipment reference \u2014 Feral Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:goblin",
+      "item": "Abilities \u2014 Goblin",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:goblin",
+      "item": "Equipment reference \u2014 Goblin",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "item": "Talents \u2014 Goblin Witcher",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "item": "Abilities \u2014 Goblin Witcher",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "item": "Equipment reference \u2014 Goblin Witcher",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "item": "Spells \u2014 Goblin Witcher",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "item": "Talents \u2014 Greyhaven Wizard",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "item": "Equipment reference \u2014 Greyhaven Wizard",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "item": "Spells \u2014 Greyhaven Wizard",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ironbound",
+      "item": "Abilities \u2014 Ironbound",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ironbound",
+      "item": "Equipment reference \u2014 Ironbound",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "item": "Talents \u2014 Priest Of Kellos",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "item": "Equipment reference \u2014 Priest Of Kellos",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "item": "Spells \u2014 Priest Of Kellos",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "item": "Talents \u2014 Rune Golem",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "item": "Abilities \u2014 Rune Golem",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "item": "Equipment reference \u2014 Rune Golem",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "item": "Talents \u2014 Splig, King Of All Goblins",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "item": "Abilities \u2014 Splig, King Of All Goblins",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "item": "Equipment reference \u2014 Splig, King Of All Goblins",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:tamalir-guildmaster",
+      "item": "Abilities \u2014 Tamalir Guildmaster",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:tamalir-guildmaster",
+      "item": "Equipment reference \u2014 Tamalir Guildmaster",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:barghest",
+      "item": "Talents \u2014 Barghest",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:barghest",
+      "item": "Abilities \u2014 Barghest",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:barghest",
+      "item": "Equipment reference \u2014 Barghest",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:death-knight",
+      "item": "Talents \u2014 Death Knight",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:death-knight",
+      "item": "Abilities \u2014 Death Knight",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:death-knight",
+      "item": "Equipment reference \u2014 Death Knight",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ferrox",
+      "item": "Abilities \u2014 Ferrox",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ferrox",
+      "item": "Equipment reference \u2014 Ferrox",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "item": "Talents \u2014 Lord Of Bilehall",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "item": "Abilities \u2014 Lord Of Bilehall",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "item": "Equipment reference \u2014 Lord Of Bilehall",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "item": "Spells \u2014 Lord Of Bilehall",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:necromancer",
+      "item": "Talents \u2014 Necromancer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:necromancer",
+      "item": "Equipment reference \u2014 Necromancer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:necromancer",
+      "item": "Spells \u2014 Necromancer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:reanimate",
+      "item": "Abilities \u2014 Reanimate",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:reanimate",
+      "item": "Equipment reference \u2014 Reanimate",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:wraith",
+      "item": "Abilities \u2014 Wraith",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:wraith",
+      "item": "Equipment reference \u2014 Wraith",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "item": "Talents \u2014 Aymhelin Scion",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "item": "Abilities \u2014 Aymhelin Scion",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "item": "Equipment reference \u2014 Aymhelin Scion",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:deepwood-archer",
+      "item": "Abilities \u2014 Deepwood Archer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:deepwood-archer",
+      "item": "Equipment reference \u2014 Deepwood Archer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "item": "Talents \u2014 Forest Guardian",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "item": "Abilities \u2014 Forest Guardian",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "item": "Equipment reference \u2014 Forest Guardian",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:leonx-rider",
+      "item": "Abilities \u2014 Leonx Rider",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:leonx-rider",
+      "item": "Equipment reference \u2014 Leonx Rider",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:leonx",
+      "item": "Talents \u2014 Leonx",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:leonx",
+      "item": "Abilities \u2014 Leonx",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:leonx",
+      "item": "Equipment reference \u2014 Leonx",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "item": "Talents \u2014 Storm Sorceress",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "item": "Abilities \u2014 Storm Sorceress",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "item": "Equipment reference \u2014 Storm Sorceress",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "item": "Spells \u2014 Storm Sorceress",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:true-fae",
+      "item": "Talents \u2014 True Fae",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:true-fae",
+      "item": "Abilities \u2014 True Fae",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:true-fae",
+      "item": "Equipment reference \u2014 True Fae",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:true-fae",
+      "item": "Spells \u2014 True Fae",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "item": "Talents \u2014 Deep Elf",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "item": "Abilities \u2014 Deep Elf",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "item": "Equipment reference \u2014 Deep Elf",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dimora",
+      "item": "Talents \u2014 Dimora",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dimora",
+      "item": "Abilities \u2014 Dimora",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dimora",
+      "item": "Equipment reference \u2014 Dimora",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dimora",
+      "item": "Spells \u2014 Dimora",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dwarf-guilder",
+      "item": "Abilities \u2014 Dwarf Guilder",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dwarf-guilder",
+      "item": "Equipment reference \u2014 Dwarf Guilder",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "item": "Talents \u2014 Dwarven Dragon Hunter",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "item": "Abilities \u2014 Dwarven Dragon Hunter",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "item": "Equipment reference \u2014 Dwarven Dragon Hunter",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:kennsir-dwarf",
+      "item": "Abilities \u2014 Kennsir Dwarf",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:kennsir-dwarf",
+      "item": "Equipment reference \u2014 Kennsir Dwarf",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:kobold",
+      "item": "Abilities \u2014 Kobold",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:kobold",
+      "item": "Equipment reference \u2014 Kobold",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "item": "Talents \u2014 Ancient Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "item": "Abilities \u2014 Ancient Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "item": "Equipment reference \u2014 Ancient Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "item": "Spells \u2014 Ancient Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:specter",
+      "item": "Abilities \u2014 Specter",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:specter",
+      "item": "Equipment reference \u2014 Specter",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lava-elemental",
+      "item": "Abilities \u2014 Lava Elemental",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lava-elemental",
+      "item": "Equipment reference \u2014 Lava Elemental",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:salamander",
+      "item": "Talents \u2014 Salamander",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:salamander",
+      "item": "Abilities \u2014 Salamander",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:salamander",
+      "item": "Equipment reference \u2014 Salamander",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "item": "Talents \u2014 Young Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "item": "Abilities \u2014 Young Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "item": "Equipment reference \u2014 Young Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "item": "Spells \u2014 Young Dragon",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:beastman",
+      "item": "Abilities \u2014 Beastman",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:beastman",
+      "item": "Equipment reference \u2014 Beastman",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "item": "Talents \u2014 Gurak Tol",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "item": "Abilities \u2014 Gurak Tol",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "item": "Equipment reference \u2014 Gurak Tol",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ogre",
+      "item": "Abilities \u2014 Ogre",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ogre",
+      "item": "Equipment reference \u2014 Ogre",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "item": "Talents \u2014 Orc Spiritspeaker",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "item": "Abilities \u2014 Orc Spiritspeaker",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "item": "Equipment reference \u2014 Orc Spiritspeaker",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "item": "Spells \u2014 Orc Spiritspeaker",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "item": "Talents \u2014 Orc Outrider",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "item": "Abilities \u2014 Orc Outrider",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "item": "Equipment reference \u2014 Orc Outrider",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:berserker",
+      "item": "Abilities \u2014 Berserker",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:berserker",
+      "item": "Equipment reference \u2014 Berserker",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "item": "Talents \u2014 Bloodsister And Nightseer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "item": "Abilities \u2014 Bloodsister And Nightseer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "item": "Equipment reference \u2014 Bloodsister And Nightseer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "item": "Spells \u2014 Bloodsister And Nightseer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "item": "Talents \u2014 Flesh Ripper",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "item": "Abilities \u2014 Flesh Ripper",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "item": "Equipment reference \u2014 Flesh Ripper",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:grotesque",
+      "item": "Abilities \u2014 Grotesque",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:grotesque",
+      "item": "Equipment reference \u2014 Grotesque",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "item": "Talents \u2014 Spined Thresher",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "item": "Abilities \u2014 Spined Thresher",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "item": "Equipment reference \u2014 Spined Thresher",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:viper-legion-archer",
+      "item": "Abilities \u2014 Viper Legion Archer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:viper-legion-archer",
+      "item": "Equipment reference \u2014 Viper Legion Archer",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "item": "Talents \u2014 Witch And Warlock",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "item": "Abilities \u2014 Witch And Warlock",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "item": "Equipment reference \u2014 Witch And Warlock",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "item": "Spells \u2014 Witch And Warlock",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:giant",
+      "item": "Talents \u2014 Giant",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:giant",
+      "item": "Abilities \u2014 Giant",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:giant",
+      "item": "Equipment reference \u2014 Giant",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "item": "Talents \u2014 Gnome Minstrel",
+      "status": "official-faq-override"
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "item": "Abilities \u2014 Gnome Minstrel",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "item": "Equipment reference \u2014 Gnome Minstrel",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "item": "Spells \u2014 Gnome Minstrel",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lorimor-marine",
+      "item": "Abilities \u2014 Lorimor Marine",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lorimor-marine",
+      "item": "Equipment reference \u2014 Lorimor Marine",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lost-knight",
+      "item": "Abilities \u2014 Lost Knight",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:lost-knight",
+      "item": "Equipment reference \u2014 Lost Knight",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:manticore",
+      "item": "Abilities \u2014 Manticore",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:manticore",
+      "item": "Equipment reference \u2014 Manticore",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:merriod",
+      "item": "Talents \u2014 Merriod",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:merriod",
+      "item": "Abilities \u2014 Merriod",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:merriod",
+      "item": "Equipment reference \u2014 Merriod",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:pirate",
+      "item": "Talents \u2014 Pirate",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:pirate",
+      "item": "Equipment reference \u2014 Pirate",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:shade",
+      "item": "Abilities \u2014 Shade",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:shade",
+      "item": "Equipment reference \u2014 Shade",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:siren",
+      "item": "Abilities \u2014 Siren",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:siren",
+      "item": "Equipment reference \u2014 Siren",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "item": "Talents \u2014 Sword Poet",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "item": "Abilities \u2014 Sword Poet",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "item": "Equipment reference \u2014 Sword Poet",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "item": "Talents \u2014 Wyrm Of The Deep",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "item": "Abilities \u2014 Wyrm Of The Deep",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "item": "Equipment reference \u2014 Wyrm Of The Deep",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "item": "Talents \u2014 Ice Wyrm",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "item": "Abilities \u2014 Ice Wyrm",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "item": "Equipment reference \u2014 Ice Wyrm",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ice-blood-warrior",
+      "item": "Abilities \u2014 Ice-Blood Warrior",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:ice-blood-warrior",
+      "item": "Equipment reference \u2014 Ice-Blood Warrior",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:wendigo",
+      "item": "Talents \u2014 Wendigo",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:wendigo",
+      "item": "Abilities \u2014 Wendigo",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:wendigo",
+      "item": "Equipment reference \u2014 Wendigo",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "item": "Talents \u2014 Onoit Shaman",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "item": "Abilities \u2014 Onoit Shaman",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "item": "Equipment reference \u2014 Onoit Shaman",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "item": "Spells \u2014 Onoit Shaman",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "item": "Abilities \u2014 Weik Warrior",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "item": "Equipment reference \u2014 Weik Warrior",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:assassin",
+      "item": "Talents \u2014 Assassin",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:assassin",
+      "item": "Abilities \u2014 Assassin",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:assassin",
+      "item": "Equipment reference \u2014 Assassin",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:djinn",
+      "item": "Talents \u2014 Djinn",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:djinn",
+      "item": "Abilities \u2014 Djinn",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:djinn",
+      "item": "Equipment reference \u2014 Djinn",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:djinn",
+      "item": "Spells \u2014 Djinn",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:minor-elemental",
+      "item": "Abilities \u2014 Minor Elemental",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:minor-elemental",
+      "item": "Equipment reference \u2014 Minor Elemental",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "item": "Abilities \u2014 Scorpion Swarm",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "item": "Equipment reference \u2014 Scorpion Swarm",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:thieves-guild-cutpurse",
+      "item": "Talents \u2014 Thieves\u2019 Guild Cutpurse",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:thieves-guild-cutpurse",
+      "item": "Equipment reference \u2014 Thieves\u2019 Guild Cutpurse",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "item": "Abilities \u2014 Carnivorous Flora",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "item": "Equipment reference \u2014 Carnivorous Flora",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "item": "Abilities \u2014 Giant Snake",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "item": "Equipment reference \u2014 Giant Snake",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:makhim",
+      "item": "Abilities \u2014 Makhim",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:makhim",
+      "item": "Equipment reference \u2014 Makhim",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "item": "Talents \u2014 Naga Priestess",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "item": "Abilities \u2014 Naga Priestess",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "item": "Equipment reference \u2014 Naga Priestess",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "item": "Talents \u2014 Singhara Hunter",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "item": "Abilities \u2014 Singhara Hunter",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "item": "Equipment reference \u2014 Singhara Hunter",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "item": "Talents \u2014 Singhara Pridelord",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "item": "Abilities \u2014 Singhara Pridelord",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "item": "Equipment reference \u2014 Singhara Pridelord",
+      "status": "source-text-checked-dice-glyphs-excluded"
+    }
+  ],
+  "referenceMismatchCount": 0,
+  "qualityChecks": [
+    {
+      "templateId": "rot:flying-mount",
+      "weapon": "Hooves or talons",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:war-mount",
+      "weapon": "Hooves or claws",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:baronial-knight",
+      "weapon": "Sword",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:baronial-knight",
+      "weapon": "Lance",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:baronial-knight",
+      "weapon": "Large shield",
+      "qualities": 4
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "weapon": "Greatsword",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "weapon": "Fiery breath",
+      "qualities": 4
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "weapon": "Talons",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "weapon": "Fiery breath",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "weapon": "Claws",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:goblin",
+      "weapon": "Jagged blade",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:goblin",
+      "weapon": "Crude bow",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:goblin",
+      "weapon": "Wooden buckler",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:goblin",
+      "weapon": "Pointy teeth",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "weapon": "Pointy teeth",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:ironbound",
+      "weapon": "Halberd",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:ironbound",
+      "weapon": "Large shield",
+      "qualities": 4
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "weapon": "Mace",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "weapon": "Massive swords",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "weapon": "Stone fists",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "weapon": "The club of all goblins",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:tamalir-guildmaster",
+      "weapon": "Dagger",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:barghest",
+      "weapon": "Claws and fangs",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:death-knight",
+      "weapon": "Sword",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:death-knight",
+      "weapon": "Flail",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:ferrox",
+      "weapon": "Hooked claws",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:ferrox",
+      "weapon": "Fangs",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "weapon": "Bloodstained fangs",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:necromancer",
+      "weapon": "Ceremonial dagger",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:reanimate",
+      "weapon": "Rusted blade",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:reanimate",
+      "weapon": "Worn bow",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:wraith",
+      "weapon": "Spectral claws",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:wraith",
+      "weapon": "Wailing cry",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "weapon": "Limbs",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:deepwood-archer",
+      "weapon": "Deepwood longbow",
+      "qualities": 4
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "weapon": "Huge limbs",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:leonx-rider",
+      "weapon": "Spear",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:leonx",
+      "weapon": "Claws and fangs",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:true-fae",
+      "weapon": "Eldritch blade",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:true-fae",
+      "weapon": "Claws and teeth",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "weapon": "Two freezing blades",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:dimora",
+      "weapon": "Stone blades",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:dimora",
+      "weapon": "Stone fists",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "weapon": "Axe",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "weapon": "Portable bolt thrower",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "weapon": "Dwarven firebombs",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:kennsir-dwarf",
+      "weapon": "Brace of dwarven pickaxes",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:kobold",
+      "weapon": "Claws and teeth",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:kobold",
+      "weapon": "Crude blade",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "weapon": "Fiery breath",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "weapon": "Claws",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:specter",
+      "weapon": "Ethereal hammer",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:lava-elemental",
+      "weapon": "Pseudopods",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:salamander",
+      "weapon": "Burning fangs",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "weapon": "Fiery breath",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "weapon": "Claws",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:beastman",
+      "weapon": "Fangs and claws",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "weapon": "Claws and fangs",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "weapon": "Tail",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:ogre",
+      "weapon": "Cudgel",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:ogre",
+      "weapon": "Spiked chain",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "weapon": "Axe",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:berserker",
+      "weapon": "Two bone blades",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "weapon": "Claws and fangs",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "weapon": "Spiked tail",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:grotesque",
+      "weapon": "Massive claw",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:grotesque",
+      "weapon": "Hurled bone shards",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "weapon": "Two fanged claws",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "weapon": "Slavering maw",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "weapon": "Spiny tail",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:viper-legion-archer",
+      "weapon": "Viper bow",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "weapon": "Sacrificial blade",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:giant",
+      "weapon": "Huge club",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:lorimor-marine",
+      "weapon": "Saber",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:lost-knight",
+      "weapon": "Ancient sword",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:manticore",
+      "weapon": "Claws and fangs",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:manticore",
+      "weapon": "Tail stinger",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:merriod",
+      "weapon": "Claws",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:merriod",
+      "weapon": "Mawed tentacles",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:merriod",
+      "weapon": "Jaws",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:pirate",
+      "weapon": "Cutlass",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:shade",
+      "weapon": "Spectral hands",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:siren",
+      "weapon": "Talons",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "weapon": "Dueling rapier",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "weapon": "Massive jaws",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "weapon": "Tail and fins",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "weapon": "Freezing blood torrent",
+      "qualities": 3
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "weapon": "Claws and fangs",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:ice-blood-warrior",
+      "weapon": "Brittle axe",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:ice-blood-warrior",
+      "weapon": "Freezing touch",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:wendigo",
+      "weapon": "Fangs",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:wendigo",
+      "weapon": "Claws",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "weapon": "Hatchet",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "weapon": "Axe",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "weapon": "Sword",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "weapon": "Bow",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:assassin",
+      "weapon": "Scimitar",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:assassin",
+      "weapon": "Two katars",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:assassin",
+      "weapon": "Three daggers",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:assassin",
+      "weapon": "Bow",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:djinn",
+      "weapon": "Conjured scimitar",
+      "qualities": 0
+    },
+    {
+      "templateId": "rot:djinn",
+      "weapon": "Illusionary claws",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:minor-elemental",
+      "weapon": "Pseudopods",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "weapon": "Claws and stingers",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:thieves-guild-cutpurse",
+      "weapon": "Dagger",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:thieves-guild-cutpurse",
+      "weapon": "Blackjack",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "weapon": "Thorny vines",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "weapon": "Snapping jaws",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "weapon": "Jaws",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "weapon": "Constricting coils",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:makhim",
+      "weapon": "Dolochs",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:makhim",
+      "weapon": "Fists",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:makhim",
+      "weapon": "Sling",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "weapon": "Fangs",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "weapon": "Spear",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "weapon": "Spear (thrown)",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "weapon": "Claws and teeth",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "weapon": "Spear",
+      "qualities": 1
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "weapon": "Spear (thrown)",
+      "qualities": 2
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "weapon": "Claws and teeth",
+      "qualities": 1
+    }
+  ],
+  "qualityRatings": 189
+}

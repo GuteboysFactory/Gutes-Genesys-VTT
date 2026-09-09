@@ -124,6 +124,16 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     position: { width: 1040, height: 760 },
     window: { title: "Genesys GM Dock", resizable: true },
     actions: {
+      consumables: async function(){try{await game.genesysConsumables.openConsumables();}catch(e){ui.notifications.warn(e.message);}},
+      mountedCombat: async function(){try{await game.genesysMounts.openMountedCombat();}catch(e){ui.notifications.warn(e.message);}},
+      itemModifications: async function(){try{await game.genesysItemModifications.openItemModifications();}catch(e){ui.notifications.warn(e.message);}},
+      runes: async function(){try{await game.genesysRunes.openRunes();}catch(e){ui.notifications.warn(e.message);}},
+      archetypeAbilities: async function(){try{await game.genesysArchetypes.openArchetypeAbilities();}catch(e){ui.notifications.warn(e.message);}},
+      socialEncounter: async function(){try{await game.genesysSocial.openSocialEncounter();}catch(e){ui.notifications.warn(e.message);}},
+      criticalEffects: async function(){try{await game.genesysCriticalLifecycle.recoverPending();}catch(e){ui.notifications.warn(e.message);}},
+      environment: async function(){try{await game.genesysEnvironment.openEnvironment();}catch(e){ui.notifications.warn(e.message);}},
+      repairEquipment: async function(){try{await game.genesysRepairs.openRepair();}catch(e){ui.notifications.warn(e.message);}},
+      crafting: async function(){try{await game.genesysCrafting.openCrafting();}catch(e){ui.notifications.warn(e.message);}},
       resolveFear: async function(){try{if(!game.genesysFear)throw Error('Fear profiles are not ready.');await game.genesysFear.openFearPanel();}catch(e){ui.notifications.warn(e.message);}},
       criticalRecovery: async function(){try{await game.genesysCriticalRecovery.openCriticalRecovery();}catch(e){ui.notifications.warn(e.message);}},
       medicalCare: async function(){try{await game.genesysMedicalCare.openMedicalCare();}catch(e){ui.notifications.warn(e.message);}},
@@ -137,6 +147,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       openCharacterCreator: this.#openCharacterCreator,
       openAdversaryForge: this.#openAdversaryForge,
       openActor: this.#openActor,
+      storyCheck: async function(){try{await game.genesysStoryCheck.openStoryCheck();}catch(e){ui.notifications.warn(e.message);}},
       spendStoryPoint: this.#spendStoryPoint,
       adjustStoryPoint: this.#adjustStoryPoint,
       awardPartyXp: this.#awardPartyXp,
@@ -191,7 +202,7 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
       heroicRows: characterActors().map(actor => ({...game.genesysHeroic?.liveSummary?.(actor),...heroicDockControls(actor,game.genesysHeroic?.secondaryOptions?.(actor)??[])})).filter(row => row?.selected),
       encounterRecovery: game.genesysEncounterRecovery?.recoveryRoster() ?? { ready: false },
       apothecaries: game.genesysRecovery?.listApothecaries?.() ?? [],
-      recoveryRows: characterActors().filter(actor => actor.system?.role === "pc").map(actor => {
+      recoveryRows: characterActors().filter(actor => ["pc","rival","nemesis"].includes(actor.system?.role)).map(actor => {
         try { return game.genesysRecovery.nightRestPreview(actor); }
         catch (error) { return { id: actor.id, name: actor.name, blocked: true, reason: error.message }; }
       }),
@@ -441,7 +452,14 @@ export class GenesysGmDock extends HandlebarsApplicationMixin(ApplicationV2) {
     target.disabled = true;
     try {
       if (!game.genesysSession) throw new Error("Session service unavailable.");
-      await game.genesysSession.transition(target.dataset.sessionAction);
+      const options={};
+      if(target.dataset.sessionAction==='start'){
+        const count=await foundry.applications.api.DialogV2.wait({window:{title:'Start Session — players'},content:`<p>Confirm the number of players taking part, including those not connected yet. Players receive one Story Point each; the GM receives one.</p><input name="players" type="number" min="0" step="1" value="${[...game.users].filter(u=>!u.isGM&&u.active).length}">`,buttons:[{action:'start',label:'Start Session',callback:(_e,_b,d)=>Number(d.element.querySelector('[name=players]').value)},{action:'cancel',label:'Cancel',callback:()=>null}],rejectClose:false});
+        if(count===null||count===undefined)return;
+        if(!Number.isSafeInteger(count)||count<0)throw Error('Enter a whole player count.');
+        options.playerCount=count;
+      }
+      await game.genesysSession.transition(target.dataset.sessionAction,options);
     } catch (error) { ui.notifications.warn(error.message); }
     finally { target.disabled = false; }
   }

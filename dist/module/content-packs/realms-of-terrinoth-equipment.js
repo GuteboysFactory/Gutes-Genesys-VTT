@@ -3,7 +3,7 @@ const SETTING_ID = "realms-of-terrinoth";
 const SOURCE_TYPE = "realms-of-terrinoth";
 
 const q = (id, rank = 1) => ({ id, rank });
-const source = (page, table, extra = {}) => ({ printedSource: `Realms of Terrinoth p. ${page}`, table, bundledRulesText: false, ...extra });
+const source = (page, table, extra = {}) => ({ printedSource: `Realms of Terrinoth p. ${page}`, table, bundledRulesText: false, sourcePage:page, sourceVersion:"Official book + FAQ v1.1", ...extra });
 const base = (id, label, itemType, system, page, table, metadata = {}) => ({
     id,
     label,
@@ -117,11 +117,15 @@ export const REALMS_OF_TERRINOTH_EQUIPMENT = Object.freeze([
     gear("speed-potion", "Speed Potion", 1, 350, 7, { table: "2-10", page: 102, category: "potion", consumable: true, activation: "maneuver" }),
     gear("stamina-elixir", "Stamina Elixir", 0, 25, 3, { table: "2-10", page: 102, category: "elixir", consumable: true, activation: "maneuver" }),
 
-    ruleData("craftsmanship-dwarven", "Dwarven Craftsmanship", "craftsmanship", { id: "dwarven", appliesTo: ["weapon", "armor"], priceMultiplier: 2, rarityModifier: 2, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197),
-    ruleData("craftsmanship-elven", "Elven Craftsmanship", "craftsmanship", { id: "elven", appliesTo: ["weapon", "armor"], priceMultiplier: 2, rarityModifier: 2, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197),
-    ruleData("craftsmanship-bone", "Bone Craftsmanship", "craftsmanship", { id: "bone", appliesTo: ["weapon", "armor"], priceMultiplier: 1.5, rarityModifier: 0, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197),
-    ruleData("craftsmanship-hazel", "Hazel Craftsmanship", "craftsmanship", { id: "hazel", appliesTo: ["weapon", "armor"], priceMultiplier: 1.5, rarityModifier: 0, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197),
-    ruleData("craftsmanship-yew", "Yew Craftsmanship", "craftsmanship", { id: "yew", appliesTo: ["weapon", "armor"], priceMultiplier: 1.5, rarityModifier: 0, replacementGroup: "craftsmanship", effect: "validated-at-runtime" }, 197)
+    ruleData("implement-material-bone","Bone Implement Material","implement-material",{id:"bone",priceMultiplier:1.5,rarityModifier:2},99),
+    ruleData("implement-material-hazel","Hazel Implement Material","implement-material",{id:"hazel",priceMultiplier:1.5,rarityModifier:1},99),
+    ruleData("implement-material-yew","Yew Implement Material","implement-material",{id:"yew",priceMultiplier:1.5,rarityModifier:1},99),
+    ruleData("craftsmanship-steel", "Steel Craftsmanship", "craftsmanship", {id:"steel",appliesTo:["weapon","armor"],priceMultiplier:1,rarityModifier:0,replacementGroup:"craftsmanship"},98),
+    ruleData("craftsmanship-ancient", "Ancient Craftsmanship", "craftsmanship", {id:"ancient",appliesTo:["weapon","armor"],priceMultiplier:20,rarity:10,replacementGroup:"craftsmanship"},97),
+    ruleData("craftsmanship-dwarven", "Dwarven Craftsmanship", "craftsmanship", {id:"dwarven",appliesTo:["weapon","armor"],priceMultiplier:2,rarityModifier:2,replacementGroup:"craftsmanship"},97),
+    ruleData("craftsmanship-elven", "Elven Craftsmanship", "craftsmanship", {id:"elven",appliesTo:["weapon","armor"],priceMultiplier:2,rarityModifier:3,replacementGroup:"craftsmanship"},97),
+    ruleData("craftsmanship-iron", "Iron Craftsmanship", "craftsmanship", {id:"iron",appliesTo:["weapon","armor"],priceMultiplier:0.5,rarityModifier:-1,replacementGroup:"craftsmanship"},98)
+
 ]);
 
 export const REALMS_OF_TERRINOTH_EQUIPMENT_PACK = Object.freeze({

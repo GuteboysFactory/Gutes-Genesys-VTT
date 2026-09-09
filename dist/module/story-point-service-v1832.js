@@ -30,7 +30,7 @@ function normalizeHistory(history) {
 
 export function normalizeLiveStoryPointState(raw) {
   const pools = normalizeStoryPointState(raw);
-  return { ...pools, revision: integer(raw?.revision), history: normalizeHistory(raw?.history), ...(raw?.heroicPending ? { heroicPending: clone(raw.heroicPending) } : {}) };
+  return { ...pools, ruleReceipts: clone(raw?.ruleReceipts??{}), revision: integer(raw?.revision), history: normalizeHistory(raw?.history), ...(raw?.checkPending?{checkPending:clone(raw.checkPending)}:{}), ...(raw?.heroicPending ? { heroicPending: clone(raw.heroicPending) } : {}) };
 }
 
 export function getStoryPointState() {
@@ -80,6 +80,7 @@ async function commit(type, side, afterPools, label, { postToChat = true } = {})
   const entry = historyEntry(type, side, { player: current.player, gm: current.gm }, after, label);
   const next = {
     ...after,
+    ruleReceipts:current.ruleReceipts,
     revision: current.revision + 1,
     history: [entry, ...current.history].slice(0, HISTORY_LIMIT)
   };
@@ -96,7 +97,7 @@ export function spendStoryPoint(side, amount = 1) {
   return enqueue(async () => {
     requireGm();
     const current = getStoryPointState();
-    if (current.heroicPending) throw new Error("An interrupted Heroic activation must be recovered first.");
+    if (current.heroicPending || current.checkPending) throw new Error("An interrupted Heroic activation must be recovered first.");
     const normalizedSide = side === "gm" ? "gm" : "player";
     if (!Number.isSafeInteger(amount) || amount < 1) throw new Error("Story Point cost must be a positive whole number.");
     const spend = normalizedSide === "gm" ? { gm: amount } : { player: amount };
@@ -106,11 +107,70 @@ export function spendStoryPoint(side, amount = 1) {
   });
 }
 
+// Durable idempotency for an approved item/archetype action; shared with the existing pool queue.
+export function spendRuleStoryPoint(transactionId,side='player') {
+ return enqueue(async()=>{
+  requireGm();if(typeof transactionId!=='string'||!transactionId||transactionId.length>200)throw Error('Invalid rule transaction.');
+  const current=getStoryPointState();if(current.heroicPending||current.checkPending)throw Error('Recover the interrupted Heroic activation first.');
+  if(current.ruleReceipts[transactionId])return current.ruleReceipts[transactionId];
+  if(!['player','gm'].includes(side))throw Error('Invalid Story Point side.');
+  const after=prepareStoryPointTransaction(current,{[side]:1}).after;
+  const receipt={side,amount:1,timestamp:Date.now()};
+  const entry=historyEntry('rule',side,current,after,'Rule activation: one Story Point transferred');
+  const next={...current,...after,revision:current.revision+1,history:[entry,...current.history].slice(0,HISTORY_LIMIT),ruleReceipts:{...current.ruleReceipts,[transactionId]:receipt}};
+  requireGm();await game.settings.set(SYSTEM_ID,SETTING_KEY,next);Hooks.callAll('genesysStoryPointsChanged',clone(next),clone(entry));return receipt;
+ });
+}
+
+export function beginCheckStoryPoints(id,spend,{impossible=false,gmApproved=false}={}){
+ return enqueue(async()=>{
+  requireGm();const current=getStoryPointState();
+  if(typeof id!=="string"||!id||current.ruleReceipts[id])throw Error("Invalid or already resolved check ID.");
+  if(current.checkPending?.id===id)return current.checkPending;
+  if(current.heroicPending||current.checkPending)throw Error('Resolve the pending Story Point action first.');
+  if(impossible&&(!gmApproved||spend.player!==1))throw Error('Impossible checks require GM permission and exactly one player Story Point; it grants permission, not an upgrade.');
+  const transaction=prepareStoryPointTransaction(current,spend,{maxPlayerSpend:1,maxGmSpend:1});
+  const pending={id,...transaction,impossible};
+  await game.settings.set(SYSTEM_ID,SETTING_KEY,{...current,checkPending:pending});return pending;
+ });
+}
+export function finishCheckStoryPoints(id){
+ return enqueue(async()=>{
+  requireGm();const current=getStoryPointState();if(current.ruleReceipts[id])return current.ruleReceipts[id];
+  if(current.checkPending?.id!==id)throw Error('Check Story Point reservation changed.');
+  const {checkPending:pending,...rest}=current,receipt={check:true,spend:pending.spend};
+  const entry=historyEntry('check','both',pending.before,pending.after,'Check resolved: reserved Story Points transferred');
+  const next={...rest,...pending.after,revision:current.revision+1,ruleReceipts:{...current.ruleReceipts,[id]:receipt},history:[entry,...current.history].slice(0,HISTORY_LIMIT)};
+  await game.settings.set(SYSTEM_ID,SETTING_KEY,next);Hooks.callAll('genesysStoryPointsChanged',clone(next),clone(entry));return receipt;
+ });
+}
+export function cancelCheckStoryPoints(id){
+ return enqueue(async()=>{
+  requireGm();const current=getStoryPointState();
+  if(current.ruleReceipts[id])throw Error('A resolved check cannot be cancelled.');
+  if(!current.checkPending)return;
+  if(current.checkPending.id!==id)throw Error('Another check owns the reservation.');
+  const {checkPending,...rest}=current;
+  await game.settings.set(SYSTEM_ID,SETTING_KEY,rest);
+  Hooks.callAll('genesysStoryPointsChanged',clone(rest));
+ });
+}
+export function seedSessionStoryPoints(number,playerCount){
+ return enqueue(async()=>{
+  requireGm();if(!Number.isSafeInteger(playerCount)||playerCount<0)throw Error('Invalid session player count.');
+  const current=getStoryPointState(),id=`session:${number}`;
+  if(current.ruleReceipts[id])return current;
+  if(current.heroicPending||current.checkPending)throw Error('Finish the pending Story Point action before starting a session.');
+  const entry=historyEntry('session','both',current,{player:playerCount,gm:1},'Session Story Point pools initialized');
+  const next={...current,player:playerCount,gm:1,revision:current.revision+1,ruleReceipts:{...current.ruleReceipts,[id]:{playerCount}},history:[entry,...current.history].slice(0,HISTORY_LIMIT)};
+  await game.settings.set(SYSTEM_ID,SETTING_KEY,next);Hooks.callAll('genesysStoryPointsChanged',clone(next),clone(entry));return next;
+ });
+}
 export function adjustStoryPoints(side, delta) {
   return enqueue(async () => {
     requireGm();
     const current = getStoryPointState();
-    if (current.heroicPending) throw new Error("An interrupted Heroic activation must be recovered first.");
+    if (current.heroicPending || current.checkPending) throw new Error("An interrupted Heroic activation must be recovered first.");
     const normalizedSide = side === "gm" ? "gm" : "player";
     const amount = Math.max(-1, Math.min(1, Math.trunc(Number(delta) || 0)));
     if (!amount) return clone(current);
@@ -126,14 +186,14 @@ export function transactHeroic(actor, prepare) {
   return enqueue(async () => {
     requireGm();
     const current = getStoryPointState();
-    if (current.heroicPending) throw new Error("An interrupted Heroic activation must be recovered first.");
+    if (current.heroicPending || current.checkPending) throw new Error("An interrupted Heroic activation must be recovered first.");
     const proposal = prepare(clone(current));
     const pending = { ...(proposal.woundsAfter !== undefined ? { beforeWounds: actor.system.wounds.value } : {}), ...(proposal.strainAfter !== undefined ? { beforeStrain: actor.system.strain.value } : {}), actorRef: actor.uuid, beforeAbility: clone(actor.system.heroicAbility), beforeTiming: clone(actor.getFlag(SYSTEM_ID, "heroicTiming") ?? {}), id: foundry.utils.randomID() };
     await game.settings.set(SYSTEM_ID, SETTING_KEY, { ...current, heroicPending: pending });
     try {
       await actor.update({ ...(proposal.woundsAfter !== undefined ? {"system.wounds.value": proposal.woundsAfter} : {}), ...(proposal.strainAfter !== undefined ? {"system.strain.value": proposal.strainAfter} : {}), "system.heroicAbility": proposal.ability, [`flags.${SYSTEM_ID}.heroicTiming`]: proposal.timing });
       const entry = historyEntry("heroic", "player", { player: current.player, gm: current.gm }, proposal.pools, "Heroic Ability activated");
-      const next = { ...proposal.pools, revision: current.revision + 1, history: [entry, ...current.history].slice(0, HISTORY_LIMIT) };
+      const next = { ...proposal.pools, ruleReceipts:current.ruleReceipts, revision: current.revision + 1, history: [entry, ...current.history].slice(0, HISTORY_LIMIT) };
       await game.settings.set(SYSTEM_ID, SETTING_KEY, next);
       Hooks.callAll("genesysStoryPointsChanged", clone(next), clone(entry));
       return proposal;
@@ -179,7 +239,7 @@ Hooks.on("updateSetting", (setting) => {
 });
 
 Hooks.once("ready", () => {
-  const api = Object.freeze({ snapshot: getStoryPointState, spend: spendStoryPoint, adjust: adjustStoryPoints });
+  const api = Object.freeze({ snapshot: getStoryPointState, spend: spendStoryPoint, spendRule:spendRuleStoryPoint, beginCheck:beginCheckStoryPoints,finishCheck:finishCheckStoryPoints,cancelCheck:cancelCheckStoryPoints,seedSession:seedSessionStoryPoints, adjust: adjustStoryPoints });
   Object.defineProperty(game, "genesysStoryPoints", { configurable: true, value: api });
   console.log(`${SYSTEM_ID} | Story Point live service ready`);
 });

@@ -179,6 +179,7 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
         const adversary = actorAdversaryContext(this.actor);
         return {
             ...context,
+            defenseBreakdown:game.genesysPhysicalRules?['melee','ranged'].map(axis=>({axis,...game.genesysPhysicalRules.actorDefense(this.actor,axis)})):[],
             heroicLive: game.genesysHeroic?.liveSummary?.(this.actor),
             heroicControls: heroicDockControls(this.actor).effectControls,
             heroicGm: Boolean(game.user?.isGM && game.users?.activeGM?.id === game.user.id),
@@ -360,7 +361,8 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
     static async #rollCombatWeapon(_event, target) {
         const row = target.closest("[data-item-id]");
         const panel = target.closest(".genesys-inventory-panel");
-        const item = row?.dataset.itemId ? this.actor.items?.get?.(row.dataset.itemId) : null;
+        const unarmed=target.dataset.unarmed==='true';
+        const item = unarmed?{id:'unarmed',name:'Unarmed',type:'weapon',system:{skillId:'brawl',attackMode:'melee',damageCharacteristic:'brawn',damage:0,critical:5,range:'engaged',equipped:true,qualities:[{id:'knockdown',rank:1},...(panel?.querySelector('[data-unarmed-strain]')?.checked?[{id:'stun-damage',rank:1}]:[])]}}:row?.dataset.itemId ? this.actor.items?.get?.(row.dataset.itemId) : null;
         const targetRef = panel?.querySelector("[data-combat-target]")?.value;
         const targetRange = panel?.querySelector("[data-combat-range]")?.value ?? "engaged";
         const defender = targetRef ? resolveCombatTargetReference(targetRef) : null;
@@ -375,7 +377,20 @@ export class GenesysCharacterSheet extends HandlebarsApplicationMixin(ActorSheet
             const ruleChoice = await promptActorCheckCharacteristicChoice(this.actor, skillId, { tags: ["combat", "weapon-attack"] });
             if (ruleChoice)
                 ui?.notifications?.info?.(`${ruleChoice.talentLabel}: using ${ruleChoice.characteristicId} for this check. Weapon damage characteristic is unchanged.`);
-            await rollActorCombatAttackToChat(this.actor, item, defender, targetRange, ruleChoiceToCheckOptions(ruleChoice));
+            const options=ruleChoiceToCheckOptions(ruleChoice);
+            const conditional=item.getFlag?.('genesys-vtt','conditionalQualities');
+            if(conditional?.length){
+                options.sourceVariant=await foundry.applications.api.DialogV2.wait({window:{title:'Elemental variant'},content:'<p>Choose this creature’s source variant. Only its matching weapon quality is enabled.</p>',buttons:[...conditional.map(q=>({action:q.variant,label:q.variant})),{action:'cancel',label:'Cancel'}],rejectClose:false});
+                if(!options.sourceVariant||options.sourceVariant==='cancel')return;
+            }
+            if(panel?.querySelector('[data-two-weapons]')?.checked){
+                const others=[...this.actor.items].filter(i=>i.type==='weapon'&&i.id!==item.id);
+                const second=await foundry.applications.api.DialogV2.wait({window:{title:'Two-weapon attack'},content:'<p>Confirm both weapons can be wielded one-handed. The combined check uses the lower skill and characteristic, and the higher difficulty +1. The second hit costs 2 Advantage or 1 Triumph.</p>',buttons:[...others.map(i=>({action:i.id,label:i.name})),{action:'cancel',label:'Cancel'}],rejectClose:false});
+                if(!second||second==='cancel')return;options.secondaryItemId=second;options.oneHandedConfirmed=true;
+                const secondItem=this.actor.items.get(second),choice=await promptActorCheckCharacteristicChoice(this.actor,secondItem.system.skillId,{tags:["combat","weapon-attack"]});
+                options.secondaryCharacteristicOverrideId=ruleChoiceToCheckOptions(choice).characteristicOverrideId;
+            }
+            await rollActorCombatAttackToChat(this.actor, item, defender, targetRange, options);
         }
         catch (error) {
             ui?.notifications?.warn?.(String(error?.message ?? error));

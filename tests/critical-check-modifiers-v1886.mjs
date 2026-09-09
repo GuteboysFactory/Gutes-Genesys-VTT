@@ -1,3 +1,4 @@
+import {runeMagicPlan,runeDiscount} from '../dist/domain/runes/runes.js';
 import assert from 'node:assert/strict';
 import {criticalCheckModifiers as modifiers} from '../dist/domain/criticals/check-modifiers.js';
 import {prepareStandardCheck} from '../dist/domain/checks/checks.js';
@@ -17,7 +18,7 @@ const {readFileSync}=await import('node:fs');const vm=await import('node:vm');
 const source=readFileSync('dist/module/magic-action-service-v1790.js','utf8');
 const body=source.slice(source.indexOf('export function prepareMagicAction'),source.indexOf('\nfunction selectedText')).replace('export function','function');
 const {npcMagicRules,finalizeNpcMagicRules}=await import('../dist/module/npc-magic-rules-v1887.js');
-const ctx=vm.createContext({npcMagicRules,finalizeNpcMagicRules,criticalCheckModifiers:modifiers,suppressedCriticals:()=>[],prepareStandardCheck,clone:structuredClone,text:String,CORE_MAGIC_ACTIONS:{attack:{baseDifficulty:1}},MAGIC_COST_STRAIN:2,getActorMagicState:()=>({skills:[{id:'arcana',canCast:true,actions:['attack']}],adversary:{},rules:{}}),normalizeSelections:()=>[],implementById:()=>null,reductionForImplement:()=>({difficultyReduction:0,boost:0,attackDamageBonus:0}),prepareActorSkillCheck:()=>({characteristicId:'intellect',skillId:'arcana',characteristicValue:3,skillRank:2,construction:{pool:{ability:2,proficiency:2,difficulty:1,challenge:0,boost:1}}})});
+const ctx=vm.createContext({game:{},runeMagicPlan,runeDiscount,npcMagicRules,finalizeNpcMagicRules,criticalCheckModifiers:modifiers,suppressedCriticals:()=>[],prepareStandardCheck,clone:structuredClone,text:String,CORE_MAGIC_ACTIONS:{attack:{baseDifficulty:1}},MAGIC_COST_STRAIN:2,getActorMagicState:()=>({skills:[{id:'arcana',canCast:true,actions:['attack']}],adversary:{},rules:{}}),normalizeSelections:()=>[],implementById:()=>null,reductionForImplement:()=>({difficultyReduction:0,boost:0,attackDamageBonus:0,notes:[]}),prepareActorSkillCheck:()=>({characteristicId:'intellect',skillId:'arcana',characteristicValue:3,skillRank:2,construction:{pool:{ability:2,proficiency:2,difficulty:1,challenge:0,boost:1}}})});
 vm.runInContext(body,ctx);
 const spell=ctx.prepareMagicAction({id:'a',system:{criticalInjuries:injuries}},{skillId:'arcana',actionId:'attack'});
 assert.equal(spell.pool.ability,2,'preserve existing Augment ability die');assert.equal(spell.pool.boost,1);assert.equal(spell.pool.challenge,2);assert.equal(spell.pool.difficulty,1);

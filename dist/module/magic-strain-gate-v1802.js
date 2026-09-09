@@ -21,11 +21,12 @@ function wrapMagicApi() {
       return evaluateActorVoluntaryStrainCost(actor, amount);
     },
     prepare(actor, input = {}) {
-      assertMagicStrainCost(actor, STANDARD_MAGIC_STRAIN_COST);
-      return base.prepare(actor, input);
+      const prepared=base.prepare(actor,input);
+      assertMagicStrainCost(actor,prepared.magicCostStrain??STANDARD_MAGIC_STRAIN_COST);
+      return prepared;
     },
     async roll(actor, input = {}) {
-      assertMagicStrainCost(actor, STANDARD_MAGIC_STRAIN_COST);
+      assertMagicStrainCost(actor,base.prepare(actor,input).magicCostStrain??STANDARD_MAGIC_STRAIN_COST);
       return base.roll(actor, input);
     }
   });
@@ -40,7 +41,7 @@ function wrapMagicResolutionApi() {
     version: VERSION,
     __strainSafetyV1802: true,
     async cast(caster, input = {}) {
-      assertMagicStrainCost(caster, STANDARD_MAGIC_STRAIN_COST);
+      assertMagicStrainCost(caster,game.genesysMagic.prepare(caster,input).magicCostStrain??STANDARD_MAGIC_STRAIN_COST);
       return base.cast(caster, input);
     }
   });

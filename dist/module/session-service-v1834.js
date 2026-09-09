@@ -7,7 +7,7 @@ export function snapshot() {
     startedAt: Number(raw.startedAt) || 0, endedAt: Number(raw.endedAt) || 0,
     history: Array.isArray(raw.history) ? raw.history.slice(0, 20).map(entry => ({ ...entry })) : [] };
 }
-export function transition(action) {
+export function transition(action, options={}) {
   const operation = async () => {
     if (!game.user?.isGM) throw new Error("Only the GM may manage sessions.");
     const activeGm = game.users?.activeGM;
@@ -20,6 +20,7 @@ export function transition(action) {
     if (next.active) { next.number += 1; next.startedAt = now; next.endedAt = 0; }
     else next.endedAt = now;
     next.history = [{ number: next.number, action, timestamp: now, userName: String(game.user.name ?? "GM") }, ...current.history].slice(0, 20);
+    if(next.active&&game.genesysStoryPoints?.seedSession)await game.genesysStoryPoints.seedSession(next.number,options.playerCount??Array.from(game.users?.contents??[]).filter(u=>u.active&&!u.isGM).length);
     await game.settings.set(SYSTEM_ID, KEY, next);
     Hooks.callAll("genesysSessionChanged", snapshot());
     return snapshot();

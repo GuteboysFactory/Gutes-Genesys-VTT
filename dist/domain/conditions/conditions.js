@@ -1,4 +1,5 @@
 export const CORE_CONDITIONS = Object.freeze([
+    {id:"prone",label:"Prone",description:"Melee attacks against you add Boost; ranged attacks add Setback. Your own melee attacks add Setback. Stand with a maneuver."},
     { id: "staggered", label: "Staggered", description: "Cannot perform actions (including downgrading actions to maneuvers)." },
     { id: "immobilized", label: "Immobilized", description: "Cannot perform maneuvers (including maneuvers purchased via strain or Advantage)." },
     { id: "disoriented", label: "Disoriented", description: "Adds one Setback die to all checks." }

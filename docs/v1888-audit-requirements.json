@@ -1,0 +1,1563 @@
+{
+  "baseline": "QA v0.0.1887 / 2e2ccfeaecee637d5c77355afa10beab3df27fec",
+  "status": "Selected block reconciliation complete; evidence and automation boundaries recorded per requirement",
+  "scope": "Original three selected roadmap blocks. Duplicate source IDs retain their section in the key. Live tests deferred after 1.0 by GM.",
+  "requirements": [
+    {
+      "key": "core/18. Core Compliance Test Catalogue/DICE-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "DICE-001",
+      "requirement": "All six dice expose exactly the audited face distributions.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/DICE-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "DICE-002",
+      "requirement": "Triumph contributes one Success and one preserved Triumph.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/DICE-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "DICE-003",
+      "requirement": "Despair contributes one Failure and one preserved Despair.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/DICE-004",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "DICE-004",
+      "requirement": "Success/Failure cancel 1:1; zero net = failure.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/DICE-005",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "DICE-005",
+      "requirement": "Advantage/Threat cancel independently.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/DICE-006",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "DICE-006",
+      "requirement": "Triumph and Despair coexist and do not cancel.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-001",
+      "requirement": "Characteristic 4 + skill 2 => 2 P + 2 A.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-002",
+      "requirement": "Characteristic 2 + skill 4 => 2 P + 2 A.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-003",
+      "requirement": "Skill 0 uses characteristic Ability only.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-004",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-004",
+      "requirement": "Boost and Setback are both retained.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-005",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-005",
+      "requirement": "Upgrade A when A exists -> P.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-006",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-006",
+      "requirement": "Positive upgrade overflow adds A then later promotes it.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-007",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-007",
+      "requirement": "Negative upgrade overflow adds D then later promotes it.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-008",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-008",
+      "requirement": "Downgrade excess is ignored.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-009",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-009",
+      "requirement": "Upgrades apply before downgrades.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/POOL-010",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "POOL-010",
+      "requirement": "Removal applies last and excess removal is ignored.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/CHECK-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "CHECK-001",
+      "requirement": "Opposed difficulty built from opponent higher/lower values.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/CHECK-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "CHECK-002",
+      "requirement": "Competitive tiebreak: Success -> Triumph -> Advantage -> draw.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/CHECK-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "CHECK-003",
+      "requirement": "Skilled assistance combines best eligible characteristic/skill across two characters.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/CHECK-004",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "CHECK-004",
+      "requirement": "Unskilled assistance can add Boost.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/CHECK-005",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "CHECK-005",
+      "requirement": "Impossible check requires one Story Point and blocks extra Story Point on that check.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/story-check-v1888.mjs",
+        "tests/rule-services-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/STORY-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "STORY-001",
+      "requirement": "Session starts player points = player count; GM = 1.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/story-check-v1888.mjs",
+        "tests/session-controls-v1834.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/STORY-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "STORY-002",
+      "requirement": "Player spend transfers to GM only after action resolution.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/story-check-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/STORY-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "STORY-003",
+      "requirement": "GM spend transfers to player only after action resolution.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/story-check-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/STORY-004",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "STORY-004",
+      "requirement": "Same player cannot spend two Story Points on one check.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/STORY-005",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "STORY-005",
+      "requirement": "Player side and GM side may each spend one on same check.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/CHAR-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "CHAR-001",
+      "requirement": "Later Brawn increase changes soak but not stored Wound Threshold.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/physical-rules-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/CHAR-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "CHAR-002",
+      "requirement": "Later Willpower increase does not change stored Strain Threshold.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/physical-rules-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/CHAR-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "CHAR-003",
+      "requirement": "Defense defaults melee=0/ranged=0.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/XP-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "XP-001",
+      "requirement": "Career skill sequential cost 5 x purchased rank.",
+      "roadmapBlock": "v188x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/XP-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "XP-002",
+      "requirement": "Non-career adds +5 per purchased rank.",
+      "roadmapBlock": "v188x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/XP-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "XP-003",
+      "requirement": "Creation skill rank cannot exceed 2 by normal purchase.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/TAL-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "TAL-001",
+      "requirement": "Talent pyramid blocks illegal tier purchase.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/TAL-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "TAL-002",
+      "requirement": "Ranked talent effective tier increases each purchase through Tier 5.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/TAL-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "TAL-003",
+      "requirement": "Ranked talent stays effective Tier 5 for later ranks.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/TAL-004",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "TAL-004",
+      "requirement": "Side Step is a maneuver; Grenadier is non-ranked; Dual Wielder is once/round.",
+      "roadmapBlock": "v188x",
+      "status": "source-reviewed-content",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs"
+      ],
+      "boundary": "Activation/ranked/frequency corrections are content constraints. Non-native talent effects remain explicit manual content, not claimed automated."
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/ENC-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "ENC-001",
+      "requirement": "Encumbrance threshold = 5 + Brawn.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/physical-rules-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/ENC-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "ENC-002",
+      "requirement": "Each point over threshold adds Setback to Brawn/Agility checks.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/physical-rules-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/ENC-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "ENC-003",
+      "requirement": "Overage >= Brawn removes free maneuver.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/physical-rules-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/QUAL-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "QUAL-001",
+      "requirement": "Accurate adds Boost equal rating.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/QUAL-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "QUAL-002",
+      "requirement": "Inaccurate adds Setback equal rating.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/QUAL-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "QUAL-003",
+      "requirement": "Cumbersome/Unwieldy increase difficulty by deficiency.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/physical-rules-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/QUAL-004",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "QUAL-004",
+      "requirement": "Pierce never reduces effective soak below zero.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/QUAL-005",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "QUAL-005",
+      "requirement": "Stun bypasses soak; Stun Damage does not.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/quality-effects-v1888.mjs",
+        "tests/combat-audit-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/QUAL-006",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "QUAL-006",
+      "requirement": "Linked extra hits capped by rating and each gets base + Success damage.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/quality-effects-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/QUAL-007",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "QUAL-007",
+      "requirement": "Sunder can activate on failed attack and changes item condition state.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/quality-effects-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/INIT-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "INIT-001",
+      "requirement": "Initiative sorted Success then Advantage.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/INIT-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "INIT-002",
+      "requirement": "PC wins PC/NPC exact tie.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/INIT-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "INIT-003",
+      "requirement": "Sorted results become side slots, not fixed actor positions.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/TURN-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "TURN-001",
+      "requirement": "Normal turn = one action + one free maneuver.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/TURN-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "TURN-002",
+      "requirement": "Second maneuver via 2 strain; max two maneuvers on own turn.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/consumables-maneuvers-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/MOVE-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "MOVE-001",
+      "requirement": "FAQ disengage clears all engagements by default.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/combat-audit-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-001",
+      "requirement": "Melee base difficulty Average.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-002",
+      "requirement": "Ranged Short/Medium/Long/Extreme = Easy/Average/Hard/Daunting.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-003",
+      "requirement": "Soak applies separately to each hit.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/quality-effects-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-004",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-004",
+      "requirement": "Each uncanceled Success adds 1 damage to a successful hit.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-005",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-005",
+      "requirement": "Crit activation requires successful hit that deals damage past soak.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-006",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-006",
+      "requirement": "Extra crit activations on same hit add +10 to one roll.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-007",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-007",
+      "requirement": "Each existing unresolved Critical adds +10 to new Critical roll.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-008",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-008",
+      "requirement": "Defense provider stacking/increase stacking obeys cap 4.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/physical-rules-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-009",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-009",
+      "requirement": "Two-weapon pool uses lower skill/char, higher difficulty +1; secondary hit costs 2 Advantage or Triumph.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/combat-audit-v1888.mjs",
+        "tests/quality-effects-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/COMBAT-010",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "COMBAT-010",
+      "requirement": "Unarmed base Brawn damage, Crit 5, Knockdown, optional strain damage.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/combat-audit-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/HEALTH-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "HEALTH-001",
+      "requirement": "Equal WT does not incapacitate; WT+1 does.",
+      "roadmapBlock": "v1830–1839",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/HEALTH-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "HEALTH-002",
+      "requirement": "PC WT exceeded creates one Critical Injury.",
+      "roadmapBlock": "v1830–1839",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/quality-effects-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/HEALTH-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "HEALTH-003",
+      "requirement": "Equal ST does not incapacitate; ST+1 does.",
+      "roadmapBlock": "v1830–1839",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/HEAL-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "HEAL-001",
+      "requirement": "Medicine wound difficulty follows half/over-half/over-threshold states.",
+      "roadmapBlock": "v1830–1839",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/medical-care-v1884.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/HEAL-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "HEAL-002",
+      "requirement": "Medicine heals wounds by Success, strain by Advantage.",
+      "roadmapBlock": "v1830–1839",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/medical-care-v1884.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/HEAL-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "HEAL-003",
+      "requirement": "Painkiller sequence 5/4/3/2/1/0.",
+      "roadmapBlock": "v1830–1839",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/painkillers-v1885.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/SOC-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "SOC-001",
+      "requirement": "Social oppose matrix defaults correctly.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/social-archetypes-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/SOC-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "SOC-002",
+      "requirement": "Successful social strain action inflicts 1 + Success; failure costs actor 2 strain.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/social-archetypes-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/SOC-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "SOC-003",
+      "requirement": "Critical remark costs Triumph or 4 Advantage and inflicts 5 strain.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/social-archetypes-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/SOC-004",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "SOC-004",
+      "requirement": "Motivation modifiers +1/+2 Boost or Setback.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/social-archetypes-v1888.mjs"
+      ],
+      "boundary": "GM confirms fictional prerequisites, timing and choices; recorded numeric/state changes are handled by the named service. See delivery report."
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/MINION-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "MINION-001",
+      "requirement": "Group listed-skill rank = members - 1.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/MINION-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "MINION-002",
+      "requirement": "Minion group WT = member WT x members.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/MINION-003",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "MINION-003",
+      "requirement": "Critical removes one minion via member WT +1 wounds.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/MINION-004",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "MINION-004",
+      "requirement": "Strain applied to minions becomes wounds.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/MINION-005",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "MINION-005",
+      "requirement": "FAQ Blast applies soak separately per affected minion.",
+      "roadmapBlock": "v185x",
+      "status": "automated-contract",
+      "evidence": [
+        "tests/core-rule-contract-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/MINION-006",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "MINION-006",
+      "requirement": "FAQ condition affecting one minion affects whole group.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/RIVAL-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "RIVAL-001",
+      "requirement": "Rival strain becomes wounds.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/NEM-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "NEM-001",
+      "requirement": "Nemesis tracks strain normally.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/MAGIC-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "MAGIC-001",
+      "requirement": "Structured magic check costs 2 strain after resolution.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs",
+        "tests/winded-v1887.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/MAGIC-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "MAGIC-002",
+      "requirement": "Magic difficulty composition capped at Formidable.",
+      "roadmapBlock": "v185x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-final-contracts-v1888.mjs"
+      ]
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/VEH-001",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "VEH-001",
+      "requirement": "Use corrected forced-movement table.",
+      "roadmapBlock": "v185x",
+      "status": "outside-selected-personal-scale-block",
+      "evidence": [
+        "docs/V1888_RULE_RECONCILIATION.md"
+      ],
+      "boundary": "Core audit §23 places vehicles/hacking in separate feature modules. No vehicle implementation or passing vehicle test is claimed."
+    },
+    {
+      "key": "core/18. Core Compliance Test Catalogue/VEH-002",
+      "audit": "core",
+      "section": "18. Core Compliance Test Catalogue",
+      "id": "VEH-002",
+      "requirement": "Vicious applies to Critical Hit; Injury-only modifiers do not.",
+      "roadmapBlock": "v185x",
+      "status": "outside-selected-personal-scale-block",
+      "evidence": [
+        "docs/V1888_RULE_RECONCILIATION.md"
+      ],
+      "boundary": "Core audit §23 places vehicles/hacking in separate feature modules. No vehicle implementation or passing vehicle test is claimed."
+    },
+    {
+      "key": "terrinoth/6.2 Official FAQ interactions that become regression tests/ROT-TAL-001",
+      "audit": "terrinoth",
+      "section": "6.2 Official FAQ interactions that become regression tests",
+      "id": "ROT-TAL-001",
+      "requirement": "Finesse / Precision | Check may use Agility/Cunning; melee damage still uses Brawn.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs",
+        "tests/combat-audit-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/6.2 Official FAQ interactions that become regression tests/ROT-TAL-002",
+      "audit": "terrinoth",
+      "section": "6.2 Official FAQ interactions that become regression tests",
+      "id": "ROT-TAL-002",
+      "requirement": "Grapple vs Tumble | Grapple requirement wins; two maneuvers are still required to disengage.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/combat-audit-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/6.2 Official FAQ interactions that become regression tests/ROT-TAL-003",
+      "audit": "terrinoth",
+      "section": "6.2 Official FAQ interactions that become regression tests",
+      "id": "ROT-TAL-003",
+      "requirement": "Dungeoneer errata | Cancels uncanceled Threat only up to ranks in Dungeoneer.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/terrinoth-faq-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/6.2 Official FAQ interactions that become regression tests/ROT-TAL-004",
+      "audit": "terrinoth",
+      "section": "6.2 Official FAQ interactions that become regression tests",
+      "id": "ROT-TAL-004",
+      "requirement": "Impaling Strike errata | Critical Injury can additionally immobilize until end of target’s next turn per corrected text.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/terrinoth-faq-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/6.2 Official FAQ interactions that become regression tests/ROT-TAL-005",
+      "audit": "terrinoth",
+      "section": "6.2 Official FAQ interactions that become regression tests",
+      "id": "ROT-TAL-005",
+      "requirement": "Conduit errata | Activation is Active (Incidental).",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/6.2 Official FAQ interactions that become regression tests/ROT-TAL-006",
+      "audit": "terrinoth",
+      "section": "6.2 Official FAQ interactions that become regression tests",
+      "id": "ROT-TAL-006",
+      "requirement": "Bard / Verse FAQ | A magic user may gain Verse; there is no inherent one-magic-skill limit.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/terrinoth-faq-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/7.4 Heroic Ability test catalogue/ROT-HERO-001",
+      "audit": "terrinoth",
+      "section": "7.4 Heroic Ability test catalogue",
+      "id": "ROT-HERO-001",
+      "requirement": "Activate default Heroic Ability with 2+ player Story Points | Exactly 2 points move to GM pool; activation succeeds.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/heroic-activation-v1841.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/7.4 Heroic Ability test catalogue/ROT-HERO-002",
+      "audit": "terrinoth",
+      "section": "7.4 Heroic Ability test catalogue",
+      "id": "ROT-HERO-002",
+      "requirement": "Only 1 player Story Point available | Activation is blocked; no point moves.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/heroic-activation-v1841.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/7.4 Heroic Ability test catalogue/ROT-HERO-003",
+      "audit": "terrinoth",
+      "section": "7.4 Heroic Ability test catalogue",
+      "id": "ROT-HERO-003",
+      "requirement": "Second use in same session without frequency upgrade | Blocked.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/heroic-activation-v1841.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/7.4 Heroic Ability test catalogue/ROT-HERO-004",
+      "audit": "terrinoth",
+      "section": "7.4 Heroic Ability test catalogue",
+      "id": "ROT-HERO-004",
+      "requirement": "Duration expiry | Base effect expires at correct end-of-next-turn boundary.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/heroic-turn-v1848.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/7.4 Heroic Ability test catalogue/ROT-HERO-005",
+      "audit": "terrinoth",
+      "section": "7.4 Heroic Ability test catalogue",
+      "id": "ROT-HERO-005",
+      "requirement": "Ability-point progression | Award progression at configured XP milestones without counting starting XP incorrectly.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/heroic-upgrades-v1843.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/7.4 Heroic Ability test catalogue/ROT-HERO-006",
+      "audit": "terrinoth",
+      "section": "7.4 Heroic Ability test catalogue",
+      "id": "ROT-HERO-006",
+      "requirement": "Signature Weapon + craftsmanship FAQ | Ancient craftsmanship replaces, not stacks with, existing craftsmanship.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/mounts-equipment-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/7.4 Heroic Ability test catalogue/ROT-HERO-007",
+      "audit": "terrinoth",
+      "section": "7.4 Heroic Ability test catalogue",
+      "id": "ROT-HERO-007",
+      "requirement": "Hard-point reduction from replacement craftsmanship | If capacity falls below installed attachment cost, system requires attachment removal before state is valid.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/rule-services-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-CHAR-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-CHAR-001",
+      "requirement": "Archetype | Starting characteristics/XP/threshold formulas are data-driven and reproduce source profile.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-CHAR-002",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-CHAR-002",
+      "requirement": "Archetype ability | Story Point transfer ability works outside a check and respects once/session.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/social-archetypes-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-CHAR-003",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-CHAR-003",
+      "requirement": "Conditional archetype rule | Strain-relative effect updates when current strain crosses half-threshold boundary.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/social-archetypes-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-SKILL-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-SKILL-001",
+      "requirement": "Registry | Terrinoth profile adds skills without schema migration or sheet-code edits.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/character-creation-custom-v1815.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-SKILL-002",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-SKILL-002",
+      "requirement": "Multiple magic skills | Actor can possess and roll more than one magic skill.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/terrinoth-faq-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-CHECK-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-CHECK-001",
+      "requirement": "Finesse/Precision | Check characteristic override does not alter melee damage characteristic.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/combat-audit-v1888.mjs",
+        "tests/audit-closure-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-TIME-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-TIME-001",
+      "requirement": "Grapple/Tumble | Mandatory rule has precedence over optional maneuver shortcut.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/combat-audit-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-ITEM-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-ITEM-001",
+      "requirement": "Attachments | Hard-point totals validate on add/remove/update.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/rule-services-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-ITEM-002",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-ITEM-002",
+      "requirement": "Craftsmanship | Only one craftsmanship is active; replacement recalculates rules.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/mounts-equipment-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-ITEM-003",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-ITEM-003",
+      "requirement": "Capacity loss | Hard-point reduction cannot leave illegal attachment state silently.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/mounts-equipment-v1888.mjs",
+        "tests/rule-services-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-HERO-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-HERO-001",
+      "requirement": "Heroic Ability cost | Atomic 2-Story-Point cost.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/heroic-activation-v1841.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-HERO-002",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-HERO-002",
+      "requirement": "Heroic Ability timing | Once/session and end-of-next-turn duration are enforced.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/heroic-activation-v1841.mjs",
+        "tests/heroic-turn-v1848.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-HERO-003",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-HERO-003",
+      "requirement": "Heroic progression | Ability points use earned-XP milestones.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/heroic-upgrades-v1843.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-MAG-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-MAG-001",
+      "requirement": "Lesser rune | Adds eligible spell effect while waiving that effect’s normal difficulty increase.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/runes-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-MAG-002",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-MAG-002",
+      "requirement": "Shard activation | Untrained activation and skilled implement paths are distinguishable.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/runes-v1888.mjs"
+      ],
+      "boundary": "GM confirms fictional prerequisites, timing and choices; recorded numeric/state changes are handled by the named service. See delivery report."
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-MAG-003",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-MAG-003",
+      "requirement": "Implement price errata | Corrected material multiplier data used.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-MAG-004",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-MAG-004",
+      "requirement": "Action matrix | Each magic skill exposes exactly the actions enabled by the active Terrinoth profile.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/terrinoth-faq-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-MAG-005",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-MAG-005",
+      "requirement": "Magic rank purchase | Cannot purchase non-career magic-skill ranks while Terrinoth profile restriction is active.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/terrinoth-faq-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-RUNE-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-RUNE-001",
+      "requirement": "Mandatory implement | Runes spell cannot be cast without a valid runebound shard implement.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/runes-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-RUNE-002",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-RUNE-002",
+      "requirement": "Shard activation | Untrained character can use permitted shard Activation without gaining Implement benefits.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/runes-v1888.mjs"
+      ],
+      "boundary": "GM confirms fictional prerequisites, timing and choices; recorded numeric/state changes are handled by the named service. See delivery report."
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-RUNE-003",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-RUNE-003",
+      "requirement": "Non-combat skill weapon | Shard weapon profile can temporarily treat its named skill as a combat skill for the check.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/runes-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-CRAFT-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-CRAFT-001",
+      "requirement": "Craft difficulty | Difficulty equals ceil(rarity / 2) before circumstances/GM modifiers.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/crafting-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-CRAFT-002",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-CRAFT-002",
+      "requirement": "Material consumption | Raw materials are consumed on the attempt whether the craft check succeeds or fails.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/crafting-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-CRAFT-003",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-CRAFT-003",
+      "requirement": "Result spends | Crafting spend options enforce repeatability/limits and GM-approval flags.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/crafting-v1888.mjs"
+      ],
+      "boundary": "GM confirms fictional prerequisites, timing and choices; recorded numeric/state changes are handled by the named service. See delivery report."
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-ALCH-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-ALCH-001",
+      "requirement": "Alchemy timing | Base brew time is one hour + rarity hours and one dose on success.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/crafting-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-ALCH-002",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-ALCH-002",
+      "requirement": "Ingredient gathering | Survival difficulty uses half potion rarity rounded up and yields one batch on success.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/crafting-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-CONS-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-CONS-001",
+      "requirement": "Stateful consumable | Per-turn/per-day consumable state expires/resets at the correct lifecycle boundary.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/consumables-maneuvers-v1888.mjs"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-MOUNT-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-MOUNT-001",
+      "requirement": "Mount state | Rider can link/unlink to mount and predicates update immediately.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/mounts-equipment-v1888.mjs"
+      ],
+      "boundary": "GM confirms fictional prerequisites, timing and choices; recorded numeric/state changes are handled by the named service. See delivery report."
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-DATA-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-DATA-001",
+      "requirement": "Errata precedence | Imported Terrinoth data is patched/validated against official FAQ v1.1.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs",
+        "tests/critical-durable-v1882.mjs",
+        "docs/terrinoth-source-census-v1888.json",
+        "docs/terrinoth-stat-audit-v1888.json",
+        "docs/terrinoth-weapon-audit-v1888.json"
+      ]
+    },
+    {
+      "key": "terrinoth/15. Terrinoth Compliance Test Catalogue/ROT-SOURCE-001",
+      "audit": "terrinoth",
+      "section": "15. Terrinoth Compliance Test Catalogue",
+      "id": "ROT-SOURCE-001",
+      "requirement": "Provenance | Every Terrinoth content document stores source book/page/category/version metadata.",
+      "roadmapBlock": "v188x",
+      "status": "verified-contract",
+      "evidence": [
+        "tests/audit-closure-v1888.mjs",
+        "docs/terrinoth-source-census-v1888.json",
+        "docs/terrinoth-stat-audit-v1888.json",
+        "docs/terrinoth-weapon-audit-v1888.json"
+      ]
+    }
+  ],
+  "version": "0.0.1888",
+  "counts": {
+    "automated-contract": 35,
+    "verified-contract": 89,
+    "source-reviewed-content": 1,
+    "outside-selected-personal-scale-block": 2
+  },
+  "liveVerification": "Deferred after 1.0 by GM; not performed or counted as passing"
+}

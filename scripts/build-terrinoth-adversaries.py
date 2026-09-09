@@ -2,6 +2,7 @@
 import fitz,re,json,hashlib,sys
 from pathlib import Path
 source=Path(sys.argv[1]); pdf=fitz.open(source)
+known_qualities=set(re.findall(r'core\("([^"]+)"', (Path(__file__).resolve().parent.parent/'dist/domain/items/qualities.js').read_text()))
 blocks=[]
 for i,p in enumerate(pdf):
     split=325 if (i+1)%2 else 280
@@ -9,7 +10,7 @@ for i,p in enumerate(pdf):
     pageblocks=[b for b in p.get_text('blocks') if b[1]>45 and b[3]<713]
     for side in [0,1]:
         for b in sorted([b for b in pageblocks if (b[0]>=split)==bool(side)],key=lambda b:(round(b[1]),b[0])):
-            text=b[4].strip()
+            text=re.sub(r'(?m)^S(?:k(?:i)?)?\s*$','',b[4]).strip()
             rb=next((v for v in rich if all(abs(a-c)<0.1 for a,c in zip(v['bbox'],b[:4]))),None)
             for line in (rb or {}).get('lines',[]):
                 for span in line['spans']:
@@ -69,6 +70,7 @@ for j,e in enumerate(entries):
     talents=sec.get('Talents','None.'); abilities=sec.get('Abilities','None.')
     # Official Genesys FAQ/Errata v1.1 removes Flying Mount Dodge 2.
     if e['name']=='Flying Mount':talents='None.'
+    if e['name']=='Gnome Minstrel':talents='Encouraging Song (with an instrument, roll Average Verse; on success choose up to one medium-range target per net Success. Each gains one Boost on its next check. Spend each Advantage to heal one strain on an affected target).'
     equipment=sec.get('Equipment','None.')
     depth=0
     for pos,c in enumerate(equipment):
@@ -82,10 +84,12 @@ for j,e in enumerate(entries):
         name=m[1].strip(' ,');name=re.sub(r'^(?:or|and)\s+','',name,flags=re.I)
         if name.lower()=='or':name=(itemrows[-1]['name'] if itemrows else 'Spear')+' (thrown)'
         qualities=[]
-        for q in (m[6] or '').split(','):
+        for q in re.split(r'[,;]',m[6] or ''):
             qm=re.fullmatch(r'\s*([A-Za-z -]+?)\s*(\d+)?\s*',q)
-            if qm:qualities.append({'id':slug(qm[1]),'rank':int(qm[2] or 1)})
+            if qm and slug(qm[1]) in known_qualities:qualities.append({'id':slug(qm[1]),'rank':int(qm[2] or 1)})
         itemrows.append({'name':name.capitalize(),'type':'weapon','system':{'skillId':('melee-heavy' if m[2].lower()=='melee' and e['name'] in ['Giant','Ogre'] else skill(m[2])),'damage':int(m[3]),'damageCharacteristic':'none','critical':int(m[4]),'range':m[5].lower(),'equipped':True,'qualities':qualities,'notes':'Printed total damage; Brawn is already included. Realms of Terrinoth p. '+str(e['page']-1)}})
+    if e['name']=='Minor Elemental':
+        for weapon in itemrows:weapon.setdefault('flags',{}).setdefault('genesys-vtt',{})['conditionalQualities']=[{'id':'burn','rank':1,'variant':'flame'},{'id':'ensnare','rank':1,'variant':'quicksand'},{'id':'stun','rank':5,'variant':'spring'}]
     # Each talent/ability keeps a source reference; passive printed totals must not be applied twice.
     for label,txt in [('Talents',talents),('Abilities',abilities),('Equipment reference',equipment),('Spells',sec.get('Spells',''))]:
         if txt and txt not in ['None.','None']:
@@ -108,6 +112,13 @@ for j,e in enumerate(entries):
     system={'role':e['role'],'characteristics':dict(zip(chars,cv)),'wounds':{'value':0,'threshold':hv[1]},'strain':{'value':0,'threshold':hv[2] if len(hv)==5 else 0},'soak':hv[0],'defense':{'melee':hv[-2],'ranged':hv[-1]},'silhouette':int(sil[1]) if sil else 1,'adversaryRank':int(adv[1]) if adv else 0,'extraActivations':0,'minionGroup':{'members':1,'memberWoundThreshold':hv[1],'casualties':0,'groupSkillIds':[s['id'] for s in skills if s['group']]},'skills':[{'id':s['id'],'rank':s['rank'],'career':False,'sourceId':sid} for s in skills],'profile':{'notes':'Realms of Terrinoth p. '+str(e['page']-1)+'. Printed totals. See reference Items for manual abilities/spells. '+ ' '.join(issues)}}
     result.append({'_id':hashlib.sha256(sid.encode()).hexdigest()[:16],'name':e['name'],'type':'character','img':'icons/svg/mystery-man.svg','system':system,'items':itemrows,'flags':{'genesys-vtt':{'rulesProfile':'realms-of-terrinoth','adversaryTemplate':{'id':sid,'origin':'Realms of Terrinoth','page':e['page']-1,'pdfPage':e['page'],'category':category,'revision':1,'reviewNotes':issues}}}})
 Path('data').mkdir(exist_ok=True)
+for actor in result:
+    source=actor['flags']['genesys-vtt']['adversaryTemplate']
+    actor['flags']['genesys-vtt']['sourceReference']={'sourceId':source['id'],'book':'realms-of-terrinoth','page':source['page'],'category':'adversary','version':'Official book + FAQ v1.1'}
+    if source['id']=='rot:specter': actor['name']='Dwarf Ancestral Specter'
+    for item in actor['items']:
+        item['system']['provenance']={'sourceId':source['id'],'sourceType':'realms-of-terrinoth','sourceVersion':'RoT + FAQ v1.1','settingId':'realms-of-terrinoth'}
+        item.setdefault('flags',{}).setdefault('genesys-vtt',{})['sourcePage']=source['page']
 out=json.dumps(result,ensure_ascii=False,indent=2)
 for code,label in [(0xf22b0,'Failure'),(0xf22b1,'Threat'),(0xf22b2,'Despair'),(0xf22b3,'Success'),(0xf22b4,'Advantage'),(0xf22b5,'Triumph')]:out=out.replace(chr(code),'['+label+']')
 Path('data/terrinoth-adversaries.json').write_text(out+'\n')

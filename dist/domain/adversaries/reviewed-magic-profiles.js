@@ -83,7 +83,7 @@ export const REVIEWED_NPC_MAGIC = [
   },
   {
     "templateId": "rot:bloodsister-and-nightseer",
-    "page": 214,
+    "page": 213,
     "ruleId": "dark-insight",
     "name": "Dark Insight",
     "references": [

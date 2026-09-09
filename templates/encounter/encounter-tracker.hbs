@@ -102,13 +102,15 @@
             <h2>{{activeActorLabel}}</h2>
             <div class="genesys-turn-budget-v1824">
               <span>Action <strong>{{#if activeActionBlocked}}Blocked{{else}}{{#if turn.actionUsed}}Used{{else}}Available{{/if}}{{/if}}</strong></span>
-              <span>Maneuvers <strong>{{#if activeManeuverBlocked}}Blocked{{else}}{{turn.maneuversUsed}} / 2{{/if}}</strong></span>
+              <span>Maneuvers <strong>{{#if activeManeuverBlocked}}Blocked{{else}}{{turn.maneuversUsed}} / {{maneuverLimit}}{{/if}}</strong></span>
             </div>
             <p>Complete this extra turn to mark its activation budget as used.</p>
           </div>
           <div class="genesys-active-turn-actions genesys-turn-actions-v1824">
             <button type="button" data-action="useAction" {{#unless canUseAction}}disabled{{/unless}}>Use Action</button>
             <button type="button" data-action="useManeuver" {{#unless canUseManeuver}}disabled{{/unless}}>Use Maneuver</button>
+            <button type="button" data-action="exchangeAction" {{#unless canExchangeAction}}disabled{{/unless}}>Action → Maneuver</button>
+            {{#if isGM}}<button type="button" data-action="disengage">Disengage / Tumble</button>{{/if}}
             <button type="button" data-action="endTurn">Mark Extra Activation Used</button>
             {{#if isGM}}<button type="button" data-action="unclaim">Unclaim</button>{{/if}}
           </div>
@@ -135,7 +137,7 @@
           {{#if hasActiveActor}}
             <div class="genesys-turn-budget-v1824">
               <span>Action <strong>{{#if activeActionBlocked}}Blocked{{else}}{{#if turn.actionUsed}}Used{{else}}Available{{/if}}{{/if}}</strong></span>
-              <span>Maneuvers <strong>{{#if activeManeuverBlocked}}Blocked{{else}}{{turn.maneuversUsed}} / 2{{/if}}</strong></span>
+              <span>Maneuvers <strong>{{#if activeManeuverBlocked}}Blocked{{else}}{{turn.maneuversUsed}} / {{maneuverLimit}}{{/if}}</strong></span>
             </div>
             {{#if activeActionBlocked}}<small class="genesys-blocked-note">Action blocked — {{activeActionBlockedReason}}</small>{{/if}}
             {{#if activeManeuverBlocked}}<small class="genesys-blocked-note">Maneuver blocked — {{activeManeuverBlockedReason}}</small>{{/if}}
@@ -147,6 +149,8 @@
           <div class="genesys-active-turn-actions genesys-turn-actions-v1824">
             <button type="button" data-action="useAction" {{#unless canUseAction}}disabled{{/unless}}>Use Action</button>
             <button type="button" data-action="useManeuver" {{#unless canUseManeuver}}disabled{{/unless}}>Use Maneuver</button>
+            <button type="button" data-action="exchangeAction" {{#unless canExchangeAction}}disabled{{/unless}}>Action → Maneuver</button>
+            {{#if isGM}}<button type="button" data-action="disengage">Disengage / Tumble</button>{{/if}}
             <button type="button" data-action="endTurn">End Turn</button>
             {{#if isGM}}<button type="button" data-action="unclaim">Unclaim</button>{{/if}}
           </div>

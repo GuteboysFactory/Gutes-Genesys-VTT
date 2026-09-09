@@ -154,8 +154,7 @@ export function prepareAssistedCheck(input) {
     const assistant = cloneRatings(input.assistant);
     const difficulty = nonNegativeInteger(input.difficulty ?? 0, "Difficulty");
     const extraHelpers = nonNegativeInteger(input.extraHelpers ?? 0, "Extra helpers");
-    const maximaSplit = (actor.characteristic > assistant.characteristic && assistant.skillRank > actor.skillRank)
-        || (assistant.characteristic > actor.characteristic && actor.skillRank > assistant.skillRank);
+    const maximaSplit = assistant.characteristic > actor.characteristic || assistant.skillRank > actor.skillRank;
     let effectiveActor = actor;
     let assistanceMode = "unskilled";
     const modifiers = [...(input.modifiers ?? [])];
@@ -163,8 +162,9 @@ export function prepareAssistedCheck(input) {
         assistanceMode = "skilled";
         effectiveActor = {
             ...actor,
-            characteristic: Math.max(actor.characteristic, assistant.characteristic),
-            skillRank: Math.max(actor.skillRank, assistant.skillRank)
+            // One rating from each character. If helper exceeds both, the caller may choose which rating is supplied.
+            characteristic: assistant.characteristic > actor.characteristic && assistant.skillRank > actor.skillRank && input.assistanceChoice === 'skill' ? actor.characteristic : Math.max(actor.characteristic, assistant.characteristic),
+            skillRank: assistant.characteristic > actor.characteristic && assistant.skillRank > actor.skillRank && input.assistanceChoice !== 'skill' ? actor.skillRank : Math.max(actor.skillRank, assistant.skillRank)
         };
     }
     else {
@@ -191,7 +191,8 @@ export function resolveCompetitiveResults(entries) {
         triumph: Number(result.net.triumph ?? 0),
         advantage: Number(result.net.advantage ?? 0)
     })).sort((a, b) => b.success - a.success || b.triumph - a.triumph || b.advantage - a.advantage || a.id.localeCompare(b.id));
-    const top = ranking[0];
+    const top = ranking.find(entry=>entry.success>0);
+    if(!top)return {winners:[],draw:true,ranking};
     const winners = ranking
         .filter((entry) => entry.success === top.success && entry.triumph === top.triumph && entry.advantage === top.advantage)
         .map((entry) => entry.id);

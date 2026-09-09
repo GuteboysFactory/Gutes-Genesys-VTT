@@ -1,3 +1,4 @@
+import {runeMagicPlan,runeDiscount} from '../domain/runes/runes.js';
 import {npcMagicRules,finalizeNpcMagicRules} from './npc-magic-rules-v1887.js';
 import {criticalCheckModifiers} from '../domain/criticals/check-modifiers.js';
 import {suppressedCriticals} from '../domain/heroic/primary-effects.js';
@@ -207,8 +208,8 @@ function availableEffects(actionDef, skillId) {
   return actionDef.effects.filter((entry) => !entry.skillIds.length || entry.skillIds.includes(skillId));
 }
 
-function normalizeSelections(actionDef, skillId, selections = {}) {
-  const allowed = new Map(availableEffects(actionDef, skillId).map((entry) => [entry.id, entry]));
+function normalizeSelections(actionDef, skillId, selections = {}, forced = []) {
+  const allowed = new Map(actionDef.effects.filter(e=>!e.skillIds.length||e.skillIds.includes(skillId)||forced.includes(e.id)).map((entry) => [entry.id, entry]));
   const out = [];
   for (const [effectId, rawCount] of Object.entries(selections ?? {})) {
     const effectDef = allowed.get(effectId);
@@ -302,11 +303,12 @@ export function prepareMagicAction(actor, input = {}) {
   const actionDef = CORE_MAGIC_ACTIONS[actionId];
   if (!actionDef) throw new Error(`Unknown magic action '${actionId}'.`);
 
-  const traits=npcMagicRules(actor,{skillId,actionId,effects:input.effects});
-  const selected = normalizeSelections(actionDef, skillId, traits.effects);
+  const implement = implementById(actorState, input.implementId);
+  const runePlan=runeMagicPlan(implement,skillId,actionId,input.effects);
+  const traits=npcMagicRules(actor,{skillId,actionId,effects:runePlan.effects});
+  const selected = normalizeSelections(actionDef, skillId, traits.effects,runePlan.forced);
   const npcMods=finalizeNpcMagicRules(traits,selected,input.firstEffectId);
   const rawEffectDifficulty = selected.reduce((sum, entry) => sum + entry.effect.difficulty * entry.count, 0);
-  const implement = implementById(actorState, input.implementId);
   const skillRules = actorState.rules?.skillRules?.[skillId] ?? {};
   if (skillRules.requiresImplement) {
     if (!implement) throw new Error(`${skill.label} requires a magic implement.`);
@@ -317,17 +319,22 @@ export function prepareMagicAction(actor, input = {}) {
   }
 
   const implementMods = reductionForImplement(implement, skillId, actionId, selected,npcMods.free);
+  implementMods.difficultyReduction+=runeDiscount(runePlan,selected,npcMods.free);
+  implementMods.notes.push(...runePlan.notes);
   const totalDifficulty = Math.max(npcMods.minimum, actionDef.baseDifficulty + rawEffectDifficulty - implementMods.difficultyReduction - npcMods.effectReduction - npcMods.difficultyReduction);
   if (totalDifficulty > 5) throw new Error(`Spell difficulty ${totalDifficulty} exceeds Formidable (5) after implement reductions.`);
 
   const prepared = prepareActorSkillCheck(actor, skillId, totalDifficulty);
-  const injuryModifiers = criticalCheckModifiers(actor.system?.criticalInjuries ?? [], prepared, suppressedCriticals(actor).map(i=>i.id));
+  const injuryModifiers = [...criticalCheckModifiers(actor.system?.criticalInjuries ?? [], prepared, suppressedCriticals(actor).map(i=>i.id)), ...(game.genesysCriticalLifecycle?.magicStatusModifiers?.(actor)??[])];
   const injuryCheck = prepareStandardCheck({actor:{characteristic:prepared.characteristicValue,skillRank:prepared.skillRank},difficulty:totalDifficulty,modifiers:injuryModifiers});
   let pool = clone(prepared.construction.pool);
   pool.difficulty = injuryCheck.construction.pool.difficulty;
   pool.challenge = injuryCheck.construction.pool.challenge;
   if (implementMods.boost > 0) pool = addDice(pool, { boost: implementMods.boost });
+  if(game.genesysMounts?.mountedModifiers?.(actor,{magic:true})?.length)pool=addDice(pool,{setback:1});
 
+  if(injuryModifiers.some(m=>m.pool?.remove?.boost))pool.boost=0;
+  if(injuryModifiers.some(m=>m.pool?.add?.setback))pool=addDice(pool,{setback:injuryModifiers.reduce((n,m)=>n+(m.pool?.add?.setback??0),0)});
   const empowered = selected.some((entry) => entry.effect.id === "empowered");
   const attackBaseDamage = actionId === "attack"
     ? (empowered ? prepared.characteristicValue * 2 : prepared.characteristicValue) + implementMods.attackDamageBonus + npcMods.attackBonus
@@ -348,7 +355,8 @@ export function prepareMagicAction(actor, input = {}) {
     prepared,
     pool: Object.freeze(pool),
     attackBaseDamage,
-    magicCostStrain: MAGIC_COST_STRAIN,
+    magicCostStrain: runePlan.strainCost,
+    runePlan,
     knowledgeRank: actorState.knowledgeRank,
     concentration: actionDef.concentration
   });
@@ -364,6 +372,7 @@ async function postMagicChat(actor, prepared, result) {
   const effectReduction = prepared.implementMods.difficultyReduction;
   const baseLine = `${prepared.action.label} ${prepared.action.baseDifficulty} + Effects ${prepared.rawEffectDifficulty}${effectReduction ? ` - Implement ${effectReduction}` : ""} ${prepared.npcMods?.effectReduction||prepared.npcMods?.difficultyReduction?` - Innate ${(prepared.npcMods.effectReduction??0)+(prepared.npcMods.difficultyReduction??0)}`:''} = Difficulty ${prepared.totalDifficulty}`;
   const extras = [];
+  for(const note of prepared.implementMods?.notes??[])extras.push(`<span>${note}</span>`);
   for(const note of prepared.npcMods?.notes??[])extras.push(`<span>${note}</span>`);
   if (prepared.injuryModifiers?.length) extras.push('<span><strong>Critical Injuries:</strong> applicable difficulty penalties/upgrades included in the pool.</span>');
   if (prepared.attackBaseDamage !== null) extras.push(`<span><strong>Attack base damage:</strong> ${prepared.attackBaseDamage} + uncancelled Success</span>`);
@@ -375,7 +384,7 @@ async function postMagicChat(actor, prepared, result) {
       <p><strong>Difficulty:</strong> ${baseLine}</p>
       <p><strong>Effects:</strong> ${selectedText(prepared)}</p>
       <p><strong>Implement:</strong> ${implementLabel}${prepared.implementMods.boost ? ` · +${prepared.implementMods.boost} Boost` : ""}</p>
-      <p><strong>Magic cost:</strong> ${MAGIC_COST_STRAIN} strain</p>
+      <p><strong>Magic cost:</strong> ${prepared.magicCostStrain} strain</p>
       ${extras.length ? `<div class="genesys-magic-chat-notes">${extras.join("")}</div>` : ""}
       <p><strong>Pool:</strong> ${formatPool(prepared.pool)}</p>
       ${resultToChatHtml(result)}
@@ -385,7 +394,7 @@ async function postMagicChat(actor, prepared, result) {
 
 export async function rollMagicAction(actor, input = {}) {
   const prepared = prepareMagicAction(actor, input);
-  const { result } = await rollNarrativeWithPresentation(prepared.pool, {
+  let { result } = await rollNarrativeWithPresentation(prepared.pool, {
     sourceType: "magic-action",
     sourceId: prepared.action.id,
     sourceLabel: `${prepared.action.label} (${prepared.skill.label})`,
@@ -401,7 +410,9 @@ export async function rollMagicAction(actor, input = {}) {
       effects: prepared.selected.map((entry) => ({ id: entry.effect.id, count: entry.count }))
     }
   });
-  await applyActorRoleDamage(actor, { strain: MAGIC_COST_STRAIN });
+  if(game.genesysRunes?.applyRuneFate)result=await game.genesysRunes.applyRuneFate(actor,result);
+  await game.genesysCriticalLifecycle?.consumeNextCheck?.(actor);
+  await applyActorRoleDamage(actor, { strain: prepared.magicCostStrain });
   await postMagicChat(actor, prepared, result);
   return { prepared, result };
 }

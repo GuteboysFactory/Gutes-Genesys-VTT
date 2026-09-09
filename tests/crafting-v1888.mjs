@@ -1,0 +1,34 @@
+import assert from 'node:assert/strict';
+import {craftingPlan,resolveCrafting} from '../dist/domain/crafting/crafting.js';
+for(let rarity=0;rarity<=10;rarity++)for(const mode of ['craft','alchemy','gather']){const p=craftingPlan({mode,rarity,price:100});assert.equal(p.difficulty,Math.ceil(rarity/2));assert.equal(p.duration,mode==='gather'?null:rarity+1);}
+const plan=craftingPlan({mode:'alchemy',rarity:3,price:100});
+const result={net:{success:1,advantage:4,triumph:1,threat:0,despair:0}};
+assert.equal(resolveCrafting(plan,result,[{id:'extra-dose'},{id:'extra-dose'}],{confirmed:true}).quantity,3);
+assert.throws(()=>resolveCrafting(plan,result,[{id:'half-time'},{id:'half-time'}],{confirmed:true}),/once/);
+assert.throws(()=>resolveCrafting(plan,result,[{id:'extra-dose'},{id:'extra-dose'},{id:'extra-dose'}],{confirmed:true}),/symbols/);
+assert.equal(resolveCrafting(plan,{net:{success:0,advantage:2}},[{id:'extra-dose'}],{confirmed:true}).quantity,0);
+assert.equal(resolveCrafting(plan,result,[{id:'extra-dose',currency:'triumph'}],{confirmed:true}).quantity,2);
+assert.throws(()=>resolveCrafting(plan,result,[{id:'superior'}],{confirmed:true}),/unavailable/);
+assert.throws(()=>craftingPlan({mode:'craft',rarity:-1,price:0}),/rarity/);
+globalThis.Hooks={once(){}};let n=0;globalThis.foundry={utils:{randomID:()=>`job${++n}`}};
+const write=(obj,patch)=>{for(const [key,value]of Object.entries(patch)){let t=obj;const parts=key.split('.');for(const part of parts.slice(0,-1))t=t[part]??={};t[parts.at(-1)]=structuredClone(value);}};
+const flag=function(_s,k){return this.flags?.['genesys-vtt']?.[k];};
+let rolls=0,failOutput=true,failComplete=false;
+const batch={id:'batch',type:'gear',system:{quantity:3},getFlag:flag,async update(p){write(this,p);}};
+const items=new Map([['batch',batch]]);
+// Foundry Collection iterates documents, not entries.
+items[Symbol.iterator]=function*(){yield* this.values();};
+const actor={uuid:'Actor.a',type:'character',items,getFlag:flag,async update(p){if(failComplete&&p['flags.genesys-vtt.craftingJob']?.stage==='complete'){failComplete=false;throw Error('complete interrupted');}write(this,p);},async createEmbeddedDocuments(_t,rows){if(failOutput){failOutput=false;throw Error('output interrupted');}for(const row of rows){const doc={...structuredClone(row),id:`item${items.size}`,getFlag:flag};items.set(doc.id,doc);}return rows;}};
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},genesysEquipment:{getDefinition:()=>({id:'potion',label:'Potion',itemType:'gear',system:{price:100,rarity:3,consumable:true}}),embeddedItemData:r=>({name:r.label,type:r.itemType,system:structuredClone(r.system),flags:{'genesys-vtt':{}}})},genesysVtt:{checks:{prepareActorSkill:()=>({check:{construction:{pool:{ability:1}}}})},dice:{roll:()=>{rolls++;return structuredClone(result);}}}};
+const {startCrafting,resumeCrafting,finishCrafting}=await import('../dist/module/crafting-service-v1888.js');
+const job=await startCrafting(actor,{confirmed:true,mode:'alchemy',recipeId:'potion',materialId:'batch'});
+assert.equal(batch.system.quantity,2);assert.equal(rolls,1);
+await assert.rejects(startCrafting(actor,{confirmed:true}),/unfinished/);
+assert.equal((await resumeCrafting(actor)).id,job.id);assert.equal(rolls,1);
+await assert.rejects(finishCrafting(actor,{jobId:job.id,confirmed:true,spends:[{id:'extra-dose'}]}),/output interrupted/);
+failComplete=true;
+await assert.rejects(resumeCrafting(actor),/complete interrupted/);
+assert.equal(items.size,3);await resumeCrafting(actor);assert.equal(items.size,3);assert.equal(batch.system.quantity,2);assert.equal(rolls,1);
+await finishCrafting(actor,{jobId:job.id,confirmed:true});assert.equal(items.size,3);
+game.user.isGM=false;await assert.rejects(resumeCrafting(actor),/Active GM/);
+console.log('PASS crafting formulas, symbol budgets, repeat limits, consumption, interruption recovery, idempotent outputs and authority');

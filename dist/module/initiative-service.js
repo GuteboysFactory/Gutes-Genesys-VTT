@@ -1,3 +1,6 @@
+import {disengagementPlan} from '../domain/movement/movement.js';
+import {talentRank} from './recovery-talents-v1881.js';
+import {payManeuver} from './maneuver-payment-v1888.js';
 import {resolveRenewal} from "./heroic-renewal-v1855.js";
 import {getTurnRecovery} from './initiative-recovery-v1860.js';
 import {createInitiativeTransport,authorizeInitiativeCommand} from './initiative-transport-v1858.js';
@@ -46,6 +49,7 @@ export function resolveInitiativeActorReference(reference) {
     return actors.find((actor) => actorInitiativeRef(actor) === ref || String(actor?.id ?? "") === ref) ?? game?.actors?.get?.(ref) ?? null;
 }
 export function getActorActivationEligibility(actor) {
+    if(game.genesysMounts?.directedMount?.(actor))return {allowed:false,reason:"This mount acts with its rider."};
     const criticals = Array.isArray(actor?.system?.criticalInjuries) ? actor.system.criticalInjuries : [];
     const unbowedSupreme=actor?.system?.heroicAbility?.active===true&&actor.system.heroicAbility.primaryEffectId==='rot-heroic:unbowed'&&actor.system.heroicAbility.powerLevel==='supreme';
     const dead = !unbowedSupreme && criticals.some((row) => row?.active !== false && row?.healed !== true && (Number(row?.total ?? 0) >= 151 || String(row?.name ?? "").toLowerCase() === "dead"));
@@ -108,19 +112,21 @@ export function getSceneTurnActionEligibility(actor, kind = "action", scene = ac
     else {
         if (!rules.canPerformManeuvers)
             return { allowed: false, outsideEncounter: false, gmOverride, reason: "Maneuvers are blocked by the actor's current conditions." };
-        if (state.turn.maneuversUsed >= 2)
-            return { allowed: false, outsideEncounter: false, gmOverride, reason: "The actor has already used two maneuvers this turn." };
+        if (state.turn.maneuversUsed >= (rules.maxManeuvers??2))
+            return { allowed: false, outsideEncounter: false, gmOverride, reason: "The actor has reached its maneuver limit this turn." };
     }
     return { allowed: true, outsideEncounter: false, gmOverride, reason: "" };
 }
 async function queued_consumeSceneEncounterAction(actor, scene = activeScene()) {
     const eligibility = getSceneTurnActionEligibility(actor, "action", scene);
-    if (!eligibility.allowed)
+    const pending=scene?.getFlag?.(SYSTEM_ID,"maneuverPayment");
+    if (!eligibility.allowed && !(pending?.pending&&pending.actorRef===actor.uuid&&pending.next?.turn.actionUsed))
         throw new Error(eligibility.reason || "This action is not legal in the current encounter state.");
     if (eligibility.outsideEncounter)
         return null;
     const current = readSceneInitiativeState(scene);
-    return queued_writeSceneInitiativeState(spendTurnAction(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
+    const capability=getActorConditionRules(actor),next=pending?.pending?pending.next:spendTurnAction(current,actorInitiativeRef(actor),capability),cost=game.genesysCriticalLifecycle?.actionStrain?.(actor)??0;
+    return (cost||pending?.pending)?payManeuver({actor,scene,state:current,next,capability,costOverride:cost,forced:true,write:(value,flags)=>queued_writeSceneInitiativeState(value,scene,flags)}):queued_writeSceneInitiativeState(next,scene);
 }
 function claimFirstEligiblePopcornStarter(state) {
     if (state.mode !== "popcorn" || state.status !== "active" || state.activeActorRef || state.roundPhase === "end-round")
@@ -163,6 +169,7 @@ export function readSceneInitiativeState(scene = activeScene()) {
 }
 async function queued_writeSceneInitiativeState(state, scene = activeScene(), extraFlags = null) {
     if(!initiativeAuthority())throw Error("Active GM changed before saving. Review the encounter.");
+    if(scene?.getFlag?.(SYSTEM_ID,'maneuverPayment')?.pending && !extraFlags?.maneuverPayment)throw Error('Resume the interrupted maneuver before changing initiative.');
     const normalized = nextInitiativeRevision(normalizeInitiativeState(state), readSceneInitiativeState(scene));
     if (!extraFlags) await game.genesysMagicEffects?.prepareTransition?.(scene, readSceneInitiativeState(scene), normalized);
     if(!initiativeAuthority())throw Error("Active GM changed before saving.");
@@ -177,6 +184,8 @@ async function queued_writeSceneInitiativeState(state, scene = activeScene(), ex
         scene.flags[SYSTEM_ID][FLAG_KEY] = normalized;
     }
     fallbackState = normalized;
+    if (normalized.activeActorRef) await game.genesysRunes?.beginTurn?.(resolveInitiativeActorReference(normalized.activeActorRef),normalized,scene);
+    if (normalized.activeActorRef) await game.genesysCriticalLifecycle?.beginTurn?.(resolveInitiativeActorReference(normalized.activeActorRef),normalized,scene);
     if (normalized.activeActorRef) await game.genesysNpcAbilities?.beginTurn?.(resolveInitiativeActorReference(normalized.activeActorRef), normalized, scene);
     if (normalized.activeActorRef) await game.genesysHeroicLive?.beginTurn?.(resolveInitiativeActorReference(normalized.activeActorRef), normalized, scene);
     await rerenderAllRenderedCharacterSheets();
@@ -254,6 +263,7 @@ async function queued_startNextSceneInitiativeRound(options = {}, scene = active
             current = waiveInitiativeActivation(current, row.id);
     }
     let next = startNextInitiativeRound(current, Boolean(options.waivePendingSpecials));
+    await game.genesysCriticalLifecycle?.finishRound?.(scene,current);
     if (next.mode === "popcorn") {
         if (next.activeActorRef)
             next = unclaimInitiativeTurn(next);
@@ -288,6 +298,7 @@ async function queued_claimSceneInitiativeSlot(actor, scene = activeScene()) {
     requireActorCanActivate(actor);
     const current = readSceneInitiativeState(scene);
     const { ref, entry } = entryForActorOrThrow(current, actor);
+    if(game.genesysCriticalLifecycle?.slowedDownBlock?.(actor,current,entry.side))throw Error("Slowed Down: use the last allied initiative slot for your next turn.");
     return queued_writeSceneInitiativeState(claimCurrentInitiativeSlot(current, ref, actor?.name ?? entry.label, entry.side), scene);
 }
 async function queued_forceClaimSceneInitiativeActor(actorRef, scene = activeScene()) {
@@ -308,6 +319,8 @@ async function queued_claimSceneInitiativeActivation(activationId, scene = activ
     if (!actor)
         throw new Error("Encounter Actor could not be resolved.");
     requireActorCanActivate(actor);
+    const side=current.entries?.find(row=>row.actorRef===activation.actorRef)?.side??activation.side;
+    if(game.genesysCriticalLifecycle?.slowedDownBlock?.(actor,current,side))throw Error("Slowed Down: use the last allied initiative slot for your next turn.");
     return queued_writeSceneInitiativeState(forceClaimInitiativeActivation(current, activationId), scene);
 }
 async function queued_forceClaimSceneInitiativeActivation(activationId, scene = activeScene()) {
@@ -342,17 +355,43 @@ async function queued_adjustSceneInitiativeRound(delta, scene = activeScene()) {
 }
 async function queued_useSceneTurnAction(actor, scene = activeScene()) {
     const eligibility = getSceneTurnActionEligibility(actor, "action", scene);
-    if (!eligibility.allowed)
+    const pending=scene?.getFlag?.(SYSTEM_ID,"maneuverPayment");
+    if (!eligibility.allowed && !(pending?.pending&&pending.actorRef===actor.uuid&&pending.next?.turn.actionUsed))
         throw new Error(eligibility.reason || "Action is blocked.");
     const current = readSceneInitiativeState(scene);
-    return queued_writeSceneInitiativeState(spendTurnAction(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
+    const capability=getActorConditionRules(actor),next=pending?.pending?pending.next:spendTurnAction(current,actorInitiativeRef(actor),capability),cost=game.genesysCriticalLifecycle?.actionStrain?.(actor)??0;
+    return (cost||pending?.pending)?payManeuver({actor,scene,state:current,next,capability,costOverride:cost,forced:true,write:(value,flags)=>queued_writeSceneInitiativeState(value,scene,flags)}):queued_writeSceneInitiativeState(next,scene);
 }
 async function queued_useSceneTurnManeuver(actor, scene = activeScene()) {
     const eligibility = getSceneTurnActionEligibility(actor, "maneuver", scene);
-    if (!eligibility.allowed)
+    const pending=scene.getFlag(SYSTEM_ID,'maneuverPayment');
+    if (!eligibility.allowed && !(pending?.pending && pending.actorRef===actor.uuid))
         throw new Error(eligibility.reason || "Maneuver is blocked.");
-    const current = readSceneInitiativeState(scene);
-    return queued_writeSceneInitiativeState(spendTurnManeuver(current, actorInitiativeRef(actor), getActorConditionRules(actor)), scene);
+    const current = readSceneInitiativeState(scene),capability=getActorConditionRules(actor);
+    const next=pending?.pending?pending.next:spendTurnManeuver(current, actorInitiativeRef(actor), capability);
+    return payManeuver({actor,scene,state:current,next,capability,write:(value,flags)=>queued_writeSceneInitiativeState(value,scene,flags)});
+}
+async function queued_exchangeActionForManeuver(actor,scene=activeScene()){
+ const action=getSceneTurnActionEligibility(actor,'action',scene),maneuver=getSceneTurnActionEligibility(actor,'maneuver',scene);
+ if(!action.allowed||!maneuver.allowed)throw Error(action.reason||maneuver.reason||'Action exchange is blocked.');
+ const rules=getActorConditionRules(actor),current=readSceneInitiativeState(scene);
+ const next=spendTurnManeuver(spendTurnAction(current,actorInitiativeRef(actor),rules),actorInitiativeRef(actor),rules);
+ return queued_writeSceneInitiativeState(next,scene);
+}
+async function queued_disengageActor(actor,options,scene){
+ if(!game.user?.isGM||options?.confirmed!==true)throw Error('GM must confirm engagements and Grapple applicability.');
+ const current=readSceneInitiativeState(scene),rules=getActorConditionRules(actor),ref=actorInitiativeRef(actor);
+ const eligibility=getSceneTurnActionEligibility(actor,'maneuver',scene);
+ if(!eligibility.allowed&&!(options.tumble&&current.activeActorRef===ref&&rules.canPerformManeuvers&&current.status==='active'))throw Error(eligibility.reason);
+ const round=`${scene.getFlag(SYSTEM_ID,'ruleEncounterId')}:${current.round}`,used=scene.getFlag(SYSTEM_ID,'tumbleUsage')??{};
+ const plan=disengagementPlan({grapple:options.grapple===true,tumble:options.tumble===true,tumbleAvailable:talentRank(actor,'terrinoth-talent:tumble')>0&&used[ref]!==round,maneuversUsed:current.turn.maneuversUsed,maxManeuvers:rules.maxManeuvers??2});
+ let next=current;for(let i=0;i<plan.maneuvers;i++)next=spendTurnManeuver(next,ref,rules);
+ const engagements=scene.getFlag(SYSTEM_ID,'engagements')??[];
+ const flags={engagements:engagements.filter(pair=>!pair.includes(ref)),...(plan.strain?{tumbleUsage:{...used,[ref]:round}}:{})};
+ return payManeuver({actor,scene,state:current,next,capability:rules,costOverride:plan.strain||null,extraFlags:flags,write:(value,extra)=>queued_writeSceneInitiativeState(value,scene,extra)});
+}
+export function disengageActor(actor,options,scene=activeScene()){
+ return dispatchInitiativeCommand('disengageActor',[actorInitiativeRef(actor),options],scene);
 }
 function conditionTurnIdentity(state, scene) {
     const encounter = `${scene.id}:${scene.getFlag(SYSTEM_ID, 'ruleEncounterId') ?? ''}`;
@@ -364,6 +403,9 @@ async function queued_endSceneInitiativeTurn(actor, scene = activeScene()) {
     if (current.activeActorRef !== ref)
         throw new Error(`${actor?.name ?? "Actor"} does not own the active encounter turn.`);
     await game.genesysHeroicLive?.finishTurn(actor, current, scene);
+    await game.genesysConsumables?.finishTurn?.(actor,current,scene);
+    await game.genesysRunes?.finishTurn?.(actor,current,scene);
+    await game.genesysCriticalLifecycle?.finishTurn?.(actor,current,scene);
     await advanceActorTurnConditions(actor, conditionTurnIdentity(current, scene));
     return queued_writeSceneInitiativeState(completeCurrentInitiativeSlot(current, ref), scene);
 }
@@ -374,6 +416,9 @@ async function queued_forceEndCurrentSceneTurn(scene = activeScene()) {
     const actor = resolveInitiativeActorReference(state.activeActorRef);
     if (actor) {
         await game.genesysHeroicLive?.finishTurn(actor, state, scene);
+        await game.genesysConsumables?.finishTurn?.(actor,state,scene);
+        await game.genesysRunes?.finishTurn?.(actor,state,scene);
+        await game.genesysCriticalLifecycle?.finishTurn?.(actor,state,scene);
         await advanceActorTurnConditions(actor, conditionTurnIdentity(state, scene));
     }
     return queued_writeSceneInitiativeState(completeCurrentInitiativeSlot(state, state.activeActorRef), scene);
@@ -557,6 +602,9 @@ export function useSceneTurnManeuver(actor, scene = activeScene()) {
     return dispatchInitiativeCommand("useSceneTurnManeuver", [actorInitiativeRef(actor)], scene);
 }
 
+export function exchangeActionForManeuver(actor,scene=activeScene()){
+ return dispatchInitiativeCommand('exchangeActionForManeuver',[actorInitiativeRef(actor)],scene);
+}
 export function endSceneInitiativeTurn(actor, scene = activeScene()) {
     return dispatchInitiativeCommand("endSceneInitiativeTurn", [actorInitiativeRef(actor)], scene);
 }
@@ -591,8 +639,11 @@ async function queued_concentrateSceneSpells(actor, scene) {
         read:()=>readSceneInitiativeState(scene),
         pay:journal=>{
             const eligibility=getSceneTurnActionEligibility(actor, 'maneuver', scene);
-            if(!eligibility.allowed)throw Error(eligibility.reason || 'Maneuver is blocked.');
-            return queued_writeSceneInitiativeState(spendTurnManeuver(readSceneInitiativeState(scene), actorInitiativeRef(actor), getActorConditionRules(actor)), scene, {magicConcentrationJournal:journal});
+            const pending=scene.getFlag(SYSTEM_ID,'maneuverPayment');
+            if(!eligibility.allowed && !(pending?.pending&&pending.actorRef===actor.uuid))throw Error(eligibility.reason || 'Maneuver is blocked.');
+            const current=readSceneInitiativeState(scene),capability=getActorConditionRules(actor);
+            const next=pending?.pending?pending.next:spendTurnManeuver(current,actorInitiativeRef(actor),capability);
+            return payManeuver({actor,scene,state:current,next,capability,extraFlags:{magicConcentrationJournal:journal},write:(value,flags)=>queued_writeSceneInitiativeState(value,scene,flags)});
         }
     });
 }
@@ -658,6 +709,8 @@ const commandRegistry = {
     addSceneInitiativeParticipant: {run: queued_addSceneInitiativeParticipant, argc: 3, actor: true},
     forceEndCurrentSceneTurn: {run: queued_forceEndCurrentSceneTurn, argc: 0, actor: false},
     endSceneInitiativeTurn: {run: queued_endSceneInitiativeTurn, argc: 1, actor: true},
+    disengageActor: {run:queued_disengageActor,argc:2,actor:true,gmOnly:true},
+    exchangeActionForManeuver: {run: queued_exchangeActionForManeuver, argc:1, actor:true},
     useSceneTurnManeuver: {run: queued_useSceneTurnManeuver, argc: 1, actor: true},
     useSceneTurnAction: {run: queued_useSceneTurnAction, argc: 1, actor: true},
     adjustSceneInitiativeRound: {run: queued_adjustSceneInitiativeRound, argc: 1, actor: false},

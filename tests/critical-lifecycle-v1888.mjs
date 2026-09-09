@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+globalThis.Hooks={once(){},on(){}};globalThis.game={};
+const {effectiveCharacteristic,inflicted,beginTurn,finishTurn,criticalRuntimeModifiers,consumeNextCheck,actionStrain,slowedDownBlock}=await import('../dist/module/critical-lifecycle-v1888.js');
+const write=(obj,patch)=>{for(const [k,v]of Object.entries(patch)){let t=obj;const ps=k.split('.');for(const p of ps.slice(0,-1))t=t[p]??={};t[ps.at(-1)]=structuredClone(v);}};
+const actor={uuid:'Actor.a',system:{role:'pc',criticalInjuries:[],conditions:[],wounds:{value:0,threshold:10},strain:{value:0,threshold:10}},getFlag(_s,k){return this.flags?.['genesys-vtt']?.[k];},async update(p){write(this,p);}};
+const add=async(total,id)=>{const injury={id,total,runtimePending:true};actor.system.criticalInjuries.push(injury);await inflicted(actor,injury);return injury;};
+const nick=await add(3,'nick');assert.equal(actor.system.strain.value,1);await inflicted(actor,nick);assert.equal(actor.system.strain.value,1);
+await add(23,'balance');await add(38,'stinger');assert.equal(criticalRuntimeModifiers(actor).length,2);await consumeNextCheck(actor);assert.equal(criticalRuntimeModifiers(actor).length,0);
+await add(17,'distracted');await add(93,'brink');assert.equal(actionStrain(actor),2);
+const scene={id:'s',getFlag:()=> 'enc'},state={round:1,turnNumber:1,activeActivationId:'base'};
+await beginTurn(actor,state,scene);assert(actor.getFlag('','criticalRuntime').distracted.distractedTurn);await finishTurn(actor,state,scene);assert.equal(actor.getFlag('','criticalRuntime').distracted.distractedTurn,undefined);
+await add(8,'slowed');assert(slowedDownBlock(actor,{mode:'side-slots',activeSlotIndex:0,slots:[{side:'pc'},{side:'npc'},{side:'pc'}]},'pc'));assert.equal(slowedDownBlock(actor,{mode:'side-slots',activeSlotIndex:2,slots:[{side:'pc'},{side:'npc'},{side:'pc'}]},'pc'),false);
+await add(133,'bleed');await beginTurn(actor,{...state,turnNumber:2},scene);assert.equal(actor.system.wounds.value,1);assert.equal(actor.system.strain.value,2);await beginTurn(actor,{...state,turnNumber:2},scene);assert.equal(actor.system.wounds.value,1);
+actor.system.criticalInjuries.push({id:'h',total:108,secondaryMode:'temporary-characteristic-reduction',secondaryStatus:'applied',affectedCharacteristic:'brawn',secondaryAmount:1});assert.equal(effectiveCharacteristic(actor,'brawn',3),2);actor.system.criticalInjuries.at(-1).healed=true;assert.equal(effectiveCharacteristic(actor,'brawn',3),3);
+console.log('PASS immediate injury receipt, one-check expiry, Distracted next turn, Slowed Down last allied slot, At the Brink, Bleeding Out once per activation and Horrific Injury healing');

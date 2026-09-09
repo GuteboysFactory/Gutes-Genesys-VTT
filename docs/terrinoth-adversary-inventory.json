@@ -1,7 +1,7 @@
 {
   "source": "Realms of Terrinoth, supplied PDF",
   "pageConvention": "1-based PDF page",
-  "status": "Implemented as native Actor templates; special abilities/spells remain manual references except supported mechanics. Live QA pending.",
+  "status": "Native Actor templates; v1888 source census/stat/skill/weapon/reference reconciliation complete. Execution boundaries are recorded in npc-ability-coverage.json. GM moved live verification after 1.0; no live pass claimed.",
   "entries": [
     {
       "id": "rot:beast-of-burden",
@@ -257,7 +257,7 @@
     },
     {
       "id": "rot:specter",
-      "name": "Specter",
+      "name": "Dwarf Ancestral Specter",
       "role": "rival",
       "pdfPage": 196,
       "status": "implemented"

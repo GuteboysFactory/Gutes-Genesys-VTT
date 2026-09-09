@@ -1,26 +1,34 @@
 # Genesys VTT Roadmap
 
-Updated 2026-09-09. Latest build: **v0.0.1887**. Live verification is deferred until after 1.0 by GM decision; this is not a claim that those checks passed.
+Updated 2026-09-09. Latest build: **v0.0.1888**. Live verification is deferred until after 1.0 by GM decision; this is not a claim that those checks passed.
 
 Working roadmap from the accepted `v0.0.1825` QA baseline. Versions describe delivery slices, not fixed release dates.
 
-## Current status — original roadmap, v1887
+## Current status — original roadmap, v1888
 
 🟢 Delivered for release · 🟡 Remaining implementation/reconciliation · 🔴 Not started.
 
 | Original block | Status | Remaining |
 |---|---|---|
-| v1830–1839 GM Tools | 🟡 | Broader recovery reconciliation; Surgeon, individual NPC medical care and non-encounter episodes now delivered |
+| v1830–1839 GM Tools | 🟢 | Recovery/rule reconciliation and GM workflows delivered; saved outcomes and retry tests |
 | v1840–1847+ Heroic | 🟢 | Accepted manual exceptions; live follow-up after 1.0 |
-| v185x Combat, reactions and magic | 🟡 | Remaining rule consequences/reaction coverage; Winded costs and NPC casting access now corrected |
+| v185x Combat, reactions and magic | 🟢 | Combat/magic rule reconciliation, action economy, per-hit reactions and lifecycle delivered |
 | v186x Forge foundation | 🟢 | Delivered foundation, not full book coverage |
 | v187x Forge workflows | 🟢 | Delivered; live follow-up after 1.0 |
-| v188x Setting/content | 🟡 | Full source reconciliation; 11 additional NPC magic occurrences supported; 185 manual reference occurrences remain |
+| v188x Setting/content | 🟢 | Source/FAQ reconciliation and optional rule workflows delivered; execution boundaries documented |
 | Library ↔ Items ↔ Tome | 🟢 | Accepted by GM for release; live follow-up after 1.0 |
 | v189x Release hardening | 🟡 | Migration, accessibility, localization and compatibility work |
 | v1.0 final delivery | 🔴 | Final documentation, upgrade path and compatibility/API declaration |
 
-v1886 combines corrections in the three selected yellow blocks. Scope and actual remaining work: `docs/V1886_COMBINED_RULE_REVIEW.md`. Older sections below are delivery history; their old live gates are superseded by the GM decision above. Genuine implementation gaps are not automatically closed by that decision.
+v1888 completes the three selected release blocks together. Evidence and explicit automation boundaries: `docs/V1888_RULE_RECONCILIATION.md`, `docs/v1888-audit-requirements.json` and `TEST_PROTOCOL_v0.0.1888.md`. Green does not certify every published talent/NPC reference as automatic execution. Source references retain their true execution status. Older sections below are history; their open audit/live statements are superseded only by the evidence and GM decisions recorded above.
+
+## v1888 — GM Tools, combat/magic and setting/content together
+
+- Complete selected-block Core/Terrinoth reconciliation: source census, 817 statistics, 371 skill entries, 120 weapon profiles, 189 native qualities and 212 reference blocks; FAQ corrections and exact talent source pages.
+- Consumables, session Story Points, social strain, repair and environmental harm; authoritative costs and saved recovery.
+- Two-weapon/unarmed combat, per-hit reactions/qualities/criticals, Sunder/Reinforced, defense breakdown, encumbrance and critical lifecycle; preserved bounded extra activations and concentration.
+- Crafting/alchemy, mounted state, exclusive craftsmanship/attachments and 17 runebound shard profiles, with explicit GM context/spend choices.
+- 94 test files pass; one Chromium-dependent file blocked. Live/multiplayer/reconnect/GM change/performance and v14 are not certified. Live checks remain after 1.0 by GM decision.
 
 ## v1887 — Combined recovery and NPC magic follow-up
 

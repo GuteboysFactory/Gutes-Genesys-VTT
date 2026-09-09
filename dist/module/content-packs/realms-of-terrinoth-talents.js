@@ -175,7 +175,11 @@ const RUNTIME_COVERAGE = {
  "core-talent:painkiller-specialization": "GM-recorded administered doses; provider rank, first five doses only. Inventory/maneuver remain manual."
 };
 function automatedDefinitions() {
-    const definitions = [createCoreParryTalent(1), createCoreSecondWindTalent(1), createTerrinothFinesseTalent()];
+    const precision=structuredClone(createTerrinothFinesseTalent());
+    precision.id='terrinoth-talent:precision';precision.name='Precision';precision.sourceId=precision.id;
+    precision.rules=precision.rules.map(r=>({...r,id:'precision-check-characteristic',predicate:{any:['skill:brawl','skill:ranged']},effect:{characteristicId:'cunning'}}));
+    precision.notes='May use Cunning for Brawl or Ranged checks; damage still uses its normal characteristic. RoT p.84.';
+    const definitions = [createCoreParryTalent(1), createCoreSecondWindTalent(1), createTerrinothFinesseTalent(),precision];
     return new Map(definitions.map((talent) => [talent.id, talent]));
 }
 

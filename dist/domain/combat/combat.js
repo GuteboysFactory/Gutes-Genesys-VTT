@@ -51,7 +51,7 @@ export function getAttackDifficulty(weaponInput, targetRange) {
         return { allowed: false, difficulty: 0, attackMode, defenseType: attackMode, engagedProfile, reason: "Target is beyond the weapon's maximum range." };
     }
     if (attackMode === "melee") {
-        if (targetRange !== "engaged") {
+        if (targetRange !== "engaged" && weapon.range === "engaged") {
             return { allowed: false, difficulty: 2, attackMode, defenseType: "melee", engagedProfile, reason: "Melee/Brawl attacks require Engaged range." };
         }
         return { allowed: true, difficulty: 2, attackMode, defenseType: "melee", engagedProfile };
@@ -76,7 +76,16 @@ export function prepareCombatWeaponAttack(input) {
         throw new RangeError(difficulty.reason ?? "Attack is not allowed.");
     const defense = capDefense(difficulty.defenseType === "melee" ? input.target.meleeDefense : input.target.rangedDefense);
     const silhouette = silhouetteDifficultyModifier(input.actor.silhouette ?? 1, input.target.silhouette ?? 1);
-    const baseDifficulty = Math.max(0, difficulty.difficulty + silhouette.difficultyDelta + nn(input.target.heroicDifficulty));
+    let baseDifficulty = Math.max(0, difficulty.difficulty + silhouette.difficultyDelta + nn(input.target.heroicDifficulty));
+    let actor=input.actor,secondary=null;
+    if(input.secondary){
+        const second=normalizeWeaponRuleData(input.secondary.weapon),other=getAttackDifficulty(second,input.targetRange);
+        if(!other.allowed)throw Error(other.reason);
+        const deficiency=(w,a)=>w.qualities.reduce((n,q)=>n+(q.id==='cumbersome'?Math.max(0,q.rank-Number(a.brawn??0)):q.id==='unwieldy'?Math.max(0,q.rank-Number(a.agility??0)):0),0);
+        baseDifficulty=Math.max(baseDifficulty+deficiency(weapon,actor),other.difficulty+silhouette.difficultyDelta+nn(input.target.heroicDifficulty)+deficiency(second,input.secondary.actor))+1-deficiency(weapon,actor);
+        actor={...actor,characteristic:Math.min(actor.characteristic,input.secondary.actor.characteristic),skillRank:Math.min(actor.skillRank,input.secondary.actor.skillRank)};
+        secondary={weapon:second,baseDamage:nn(second.damage)+nn(input.secondary.actor.damageCharacteristicValue),effectiveSoak:Math.max(0,nn(input.target.soak)-(input.target.reinforced?0:qualityRank(second,'pierce')+10*qualityRank(second,'breach'))),damageTrack:qualityRank(second,'stun-damage')?'strain':'wounds'};
+    }
     const adversaryRank = nn(input.target.adversaryRank);
     const modifiers = [
         ...(adversaryRank ? [{ id: `core-adversary:${adversaryRank}`, priority: -100, pool: { upgradeNegative: adversaryRank } }] : []),
@@ -86,7 +95,7 @@ export function prepareCombatWeaponAttack(input) {
     const preparedWeaponAttack = prepareWeaponAttack({
         weaponName: input.weaponName,
         weapon,
-        actor: input.actor,
+        actor,
         difficulty: baseDifficulty,
         modifiers,
         contextTags: [
@@ -101,7 +110,9 @@ export function prepareCombatWeaponAttack(input) {
     });
     return {
         preparedWeaponAttack,
+        secondary,
         target: {
+            reinforced:input.target.reinforced===true,
             role: normalizeActorRole(input.target.role),
             minionGroup: input.target.minionGroup ? {
                 members: nn(input.target.minionGroup.members),
@@ -155,11 +166,11 @@ export function createPendingCombatResolution(prepared, result) {
     const triumph = nn(result.net.triumph);
     const despair = nn(result.net.despair);
     const hit = success > 0;
-    const baseDamage = nn(weapon.damage) + prepared.damageCharacteristicValue + nn(prepared.heroicDamageBonus);
+    const baseDamage = nn(weapon.damage) + prepared.damageCharacteristicValue + nn(prepared.heroicDamageBonus) + nn(prepared.archetypeDamageBonus);
     const grossDamage = hit ? baseDamage + success : 0;
     const pierce = qualityRank(weapon, "pierce");
     const breach = qualityRank(weapon, "breach");
-    const effectiveSoak = Math.max(0, nn(prepared.target.soak) - pierce - breach * 10);
+    const effectiveSoak = Math.max(0, nn(prepared.target.soak) - (prepared.target.reinforced?0:pierce + breach * 10));
     const damageTrack = qualityRank(weapon, "stun-damage") > 0 ? "strain" : "wounds";
     const criticalRating = nn(weapon.critical);
     const pending = {

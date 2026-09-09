@@ -1,3 +1,4 @@
+import { resolveAttackMode } from '../domain/combat/index.js';
 import {isWinded} from '../domain/criticals/strain-restriction.js';
 import { damageImmune, incomingDifficulty, signatureWeaponData } from '../domain/heroic/primary-effects.js';
 import { heroicWeaponDamageBonus, heroicSoakBonus } from "../domain/heroic/combat-effects.js";
@@ -86,14 +87,15 @@ export function actorCombatSnapshot(actor) {
     return {
         role,
         ...(minionGroup ? { minionGroup } : {}),
+        reinforced: [...(actor.items??[])].some(i=>i.type==="armor"&&i.system.equipped&&i.system.qualities?.some(q=>q.id==="reinforced")),
         heroicDifficulty: incomingDifficulty(actor?.system?.heroicAbility),
-        soak: liveNumber(actor, "system.soak", actor?.system?.soak) + heroicSoakBonus(actor?.system?.heroicAbility),
+        soak: Math.max(0,liveNumber(actor, "system.soak", actor?.system?.soak) + (game.genesysCriticalLifecycle?.effectiveCharacteristic?.(actor,"brawn",n(actor?.system?.characteristics?.brawn))??n(actor?.system?.characteristics?.brawn))-n(actor?.system?.characteristics?.brawn)) + heroicSoakBonus(actor?.system?.heroicAbility),
         woundsValue,
         woundsThreshold: minionState?.groupWoundThreshold ?? liveNumber(actor, "system.wounds.threshold", actor?.system?.wounds?.threshold),
         strainValue: liveNumber(actor, "system.strain.value", actor?.system?.strain?.value),
         strainThreshold: liveNumber(actor, "system.strain.threshold", actor?.system?.strain?.threshold),
-        meleeDefense: liveNumber(actor, "system.defense.melee", actor?.system?.defense?.melee),
-        rangedDefense: liveNumber(actor, "system.defense.ranged", actor?.system?.defense?.ranged),
+        meleeDefense: game.genesysPhysicalRules?.actorDefense?.(actor,"melee",liveNumber(actor,"system.defense.melee",actor?.system?.defense?.melee)).value??liveNumber(actor,"system.defense.melee",actor?.system?.defense?.melee),
+        rangedDefense: game.genesysPhysicalRules?.actorDefense?.(actor,"ranged",liveNumber(actor,"system.defense.ranged",actor?.system?.defense?.ranged)).value??liveNumber(actor,"system.defense.ranged",actor?.system?.defense?.ranged),
         silhouette: liveNumber(actor, "system.silhouette", actor?.system?.silhouette ?? 1),
         adversaryRank: liveNumber(actor, "system.adversaryRank", actor?.system?.adversaryRank ?? 0)
     };
@@ -166,12 +168,23 @@ export function listCombatTargets(attacker) {
     return [...tokenTargets, ...actorTargets];
 }
 export function prepareActorCombatAttack(attacker, item, target, targetRange, checkOptions = {}) {
+    const rune=item?.getFlag?.('genesys-vtt','runeWeapon');
+    if(rune){
+        const scene=game.scenes?.get(rune.sceneId),state=game.genesysVtt.initiative.sceneState(scene);
+        const key=`${scene.id}:${scene.getFlag('genesys-vtt','ruleEncounterId')??''}:${state.round}:${state.turnNumber}:${state.activeActivationId}:${state.activeActorRef}`;
+        if(state.status!=='active'||key!==rune.turn||!attacker.items.get(rune.sourceItemId))throw Error('This rune weapon activation expired. Activate the shard again.');
+    }
     if (!item || item.type !== "weapon")
         throw new Error("A weapon Item is required.");
     if (!target || target.type !== "character")
         throw new Error("A character target Actor is required.");
     const heroicConfig=attacker.getFlag?.('genesys-vtt','heroicPrimaryConfig');
     const weapon = normalizeWeaponRuleData(signatureWeaponData(attacker.system?.heroicAbility,heroicConfig,item,attacker.items?.get(heroicConfig?.attachmentId)));
+    const conditional=item.getFlag?.('genesys-vtt','conditionalQualities');
+    if(conditional?.length){
+        if(!conditional.some(q=>q.variant===checkOptions.sourceVariant))throw Error('Choose the source elemental variant for this attack.');
+        weapon.qualities.push(...conditional.filter(q=>q.variant===checkOptions.sourceVariant).map(({id,rank})=>({id,rank})));
+    }
     const characteristicIds = ["brawn", "agility", "intellect", "cunning", "willpower", "presence"];
     const liveCharacteristics = { ...(attacker?.system?.characteristics ?? {}) };
     for (const id of characteristicIds) {
@@ -182,25 +195,42 @@ export function prepareActorCombatAttack(attacker, item, target, targetRange, ch
     const liveAttacker = { ...attacker, system: { ...(attacker?.system ?? {}), characteristics: liveCharacteristics } };
     const skill = prepareActorSkillCheck(liveAttacker, weapon.skillId, 0, checkOptions.rankOverride, checkOptions.characteristicOverrideId);
     const damageCharacteristicId = resolveDamageCharacteristic(weapon);
-    const damageCharacteristicValue = damageCharacteristicId ? n(liveCharacteristics?.[damageCharacteristicId]) : 0;
+    const damageCharacteristicValue = damageCharacteristicId ? (game.genesysCriticalLifecycle?.effectiveCharacteristic?.(attacker,damageCharacteristicId,n(liveCharacteristics?.[damageCharacteristicId]))??n(liveCharacteristics?.[damageCharacteristicId])) : 0;
+    const prone=actor=>(actor?.system?.conditions??[]).some(c=>c.active!==false&&c.conditionId==='prone');
+    const proneMods=[];
+    if(prone(attacker)&&resolveAttackMode(weapon)==='melee')proneMods.push({id:'prone:attacker',priority:20,pool:{add:{setback:1}}});
+    if(prone(target))proneMods.push({id:'prone:target',priority:20,pool:{add:resolveAttackMode(weapon)==='melee'?{boost:1}:{setback:1}}});
+    let secondary;
+    if(checkOptions.secondaryItemId){
+        const second=attacker.items.get(checkOptions.secondaryItemId);
+        if(!second||second.id===item.id||second.type!=='weapon'||checkOptions.oneHandedConfirmed!==true)throw Error('Choose two distinct one-handed weapons and confirm they can both be wielded.');
+        const secondWeapon=normalizeWeaponRuleData(second.system),secondSkill=prepareActorSkillCheck(liveAttacker,secondWeapon.skillId,0,undefined,checkOptions.secondaryCharacteristicOverrideId);
+        const damageId=resolveDamageCharacteristic(secondWeapon);
+        game.genesysQualityEffects?.itemDamageModifiers?.(attacker,second);
+        secondary={weapon:secondWeapon,actor:{characteristic:secondSkill.characteristicValue,skillRank:secondSkill.skillRank,damageCharacteristicValue:damageId?(game.genesysCriticalLifecycle?.effectiveCharacteristic?.(attacker,damageId,n(liveCharacteristics[damageId]))??n(liveCharacteristics[damageId])):0,brawn:game.genesysCriticalLifecycle?.effectiveCharacteristic?.(attacker,"brawn",n(liveCharacteristics.brawn))??n(liveCharacteristics.brawn),agility:game.genesysCriticalLifecycle?.effectiveCharacteristic?.(attacker,"agility",n(liveCharacteristics.agility))??n(liveCharacteristics.agility)}};
+    }
     const prepared = prepareCombatWeaponAttack({
+        secondary,
         weaponName: item.name ?? "Weapon",
         weapon,
         actor: {
             characteristic: skill.characteristicValue,
             skillRank: skill.skillRank,
             damageCharacteristicValue,
+            brawn:game.genesysCriticalLifecycle?.effectiveCharacteristic?.(attacker,"brawn",n(liveCharacteristics.brawn))??n(liveCharacteristics.brawn),
+            agility:game.genesysCriticalLifecycle?.effectiveCharacteristic?.(attacker,"agility",n(liveCharacteristics.agility))??n(liveCharacteristics.agility),
             silhouette: n(getRenderedActorFieldValue(attacker, "system.silhouette") ?? attacker?.system?.silhouette ?? 1),
             label: skill.skillLabel
         },
         target: actorCombatSnapshot(target),
         targetRange,
-        modifiers: getActorConditionCheckModifiers(attacker, skill),
+        modifiers: [...(game.genesysQualityEffects?.itemDamageModifiers?.(attacker,item)??[]), ...proneMods, ...getActorConditionCheckModifiers(attacker, skill), ...(game.genesysMounts?.mountedModifiers?.(attacker,{target,attackMode:resolveAttackMode(weapon)})??[])],
         contextTags: [weapon.equipped ? "equipped" : "unequipped", `target:${target.id}`]
     });
     return {
         ...prepared,
         heroicDamageBonus: heroicWeaponDamageBonus(attacker?.system?.heroicAbility),
+        archetypeDamageBonus: prepared.attackMode==='melee'?(game.genesysArchetypes?.archetypeMeleeBonus?.(attacker)??0):0,
         checkContext: {
             skillId: skill.skillId,
             skillLabel: skill.skillLabel,
@@ -295,6 +325,7 @@ export async function commitPendingCombatResolutionToActor(target, prepared, pen
         const viciousRank = prepared.preparedWeaponAttack.weapon.qualities.find((quality) => quality.id === "vicious")?.rank ?? 0;
         automaticCritical = await inflictCriticalInjury(target, { viciousRank }, "core:wound-threshold");
     }
+    await game.genesysCriticalLifecycle?.reconcileBleeding?.(target);
     await rerenderRenderedCharacterSheet(target);
     return { plan, applied: true, automaticCritical };
 }
@@ -330,7 +361,9 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
     const transfer = await consumeNarrativeDiceForActor(attacker, primaryPool);
     prepared.preparedWeaponAttack.check.construction.pool = transfer.pool;
     prepared.preparedWeaponAttack.check.construction.trace.afterRemovals = transfer.pool;
-    const result = await primaryUi.applyPrimaryResult(attacker,prepared.checkContext.skillId,rollNarrativePool(transfer.pool));
+    let result = await primaryUi.applyPrimaryResult(attacker,prepared.checkContext.skillId,rollNarrativePool(transfer.pool));
+    if(game.genesysRunes?.applyRuneFate)result=await game.genesysRunes.applyRuneFate(attacker,result);
+    await game.genesysCriticalLifecycle?.consumeNextCheck?.(attacker);
     result.transferredDice = transfer.consumed;
     let pending = createPendingCombatResolution(prepared, result);
     if (pending.hit)
@@ -420,3 +453,5 @@ export async function rollActorCombatAttackToChat(attacker, item, target, target
     };
 }
 //# sourceMappingURL=combat-service.js.map
+
+Hooks.once('ready',()=>{game.genesysCombatRuntime={actorCombatSnapshot,resolveCombatReactionWindow,inflictCriticalInjury};});

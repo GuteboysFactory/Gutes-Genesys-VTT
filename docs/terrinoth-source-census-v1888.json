@@ -1,0 +1,641 @@
+{
+  "source": "Realms of Terrinoth, supplied PDF",
+  "sha256": "32febac3f5a6cb5879ec32317923ef769bda6f9dfcaa5c6a58c324eb35e1e502",
+  "scope": "Complete printed Minion/Rival/Nemesis profile-heading census; identity/page/role coverage. Does not certify every reference ability automated or every statistic correct.",
+  "profileCount": 79,
+  "templateCount": 79,
+  "entries": [
+    {
+      "templateId": "rot:beast-of-burden",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "heading": "BEAST OF BURDEN",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "heading": "FLYING MOUNT",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:riding-beast",
+      "printedPage": 104,
+      "pdfPage": 105,
+      "heading": "RIDING BEAST",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:war-mount",
+      "printedPage": 105,
+      "pdfPage": 106,
+      "heading": "WAR MOUNT",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:baronial-knight",
+      "printedPage": 150,
+      "pdfPage": 151,
+      "heading": "BARONIAL KNIGHT",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "printedPage": 151,
+      "pdfPage": 152,
+      "heading": "DRAGON HYBRID",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "heading": "FERAL DRAGON",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:goblin",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "heading": "GOBLIN",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "printedPage": 152,
+      "pdfPage": 153,
+      "heading": "GOBLIN WITCHER",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "heading": "GREYHAVEN WIZARD",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:ironbound",
+      "printedPage": 153,
+      "pdfPage": 154,
+      "heading": "IRONBOUND",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "printedPage": 154,
+      "pdfPage": 155,
+      "heading": "PRIEST OF KELLOS",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "printedPage": 154,
+      "pdfPage": 155,
+      "heading": "RUNE GOLEM",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "printedPage": 154,
+      "pdfPage": 155,
+      "heading": "SPLIG, KING OF ALL GOLBINS",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:tamalir-guildmaster",
+      "printedPage": 155,
+      "pdfPage": 156,
+      "heading": "TAMALIR GUILDMASTER",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:barghest",
+      "printedPage": 163,
+      "pdfPage": 164,
+      "heading": "BARGHEST",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:death-knight",
+      "printedPage": 164,
+      "pdfPage": 165,
+      "heading": "DEATH KNIGHT",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:ferrox",
+      "printedPage": 165,
+      "pdfPage": 166,
+      "heading": "FERROX",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "printedPage": 165,
+      "pdfPage": 166,
+      "heading": "LORD OF BILEHALL",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:necromancer",
+      "printedPage": 166,
+      "pdfPage": 167,
+      "heading": "NECROMANCER",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:reanimate",
+      "printedPage": 166,
+      "pdfPage": 167,
+      "heading": "REANIMATE",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:wraith",
+      "printedPage": 167,
+      "pdfPage": 168,
+      "heading": "WRAITH",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "printedPage": 178,
+      "pdfPage": 179,
+      "heading": "AYMHELIN SCION",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:deepwood-archer",
+      "printedPage": 179,
+      "pdfPage": 180,
+      "heading": "DEEPWOOD ARCHER",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "printedPage": 179,
+      "pdfPage": 180,
+      "heading": "FOREST GUARDIAN",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:leonx-rider",
+      "printedPage": 179,
+      "pdfPage": 180,
+      "heading": "LEONX RIDER",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:leonx",
+      "printedPage": 180,
+      "pdfPage": 181,
+      "heading": "LEONX",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "printedPage": 180,
+      "pdfPage": 181,
+      "heading": "STORM SORCERESS",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:true-fae",
+      "printedPage": 181,
+      "pdfPage": 182,
+      "heading": "TRUE FAE",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "printedPage": 190,
+      "pdfPage": 191,
+      "heading": "DEEP ELF",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:dimora",
+      "printedPage": 191,
+      "pdfPage": 192,
+      "heading": "DIMORA",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:dwarf-guilder",
+      "printedPage": 191,
+      "pdfPage": 192,
+      "heading": "DWARF GUILDER",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "printedPage": 191,
+      "pdfPage": 192,
+      "heading": "DWARVEN DRAGON HUNTER",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:kennsir-dwarf",
+      "printedPage": 192,
+      "pdfPage": 193,
+      "heading": "KENNSIR DWARF",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:kobold",
+      "printedPage": 192,
+      "pdfPage": 193,
+      "heading": "KOBOLD",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "printedPage": 195,
+      "pdfPage": 196,
+      "heading": "ANCIENT DRAGON",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:specter",
+      "printedPage": 195,
+      "pdfPage": 196,
+      "heading": "DWARF ANCESTRAL SPECTER",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:lava-elemental",
+      "printedPage": 196,
+      "pdfPage": 197,
+      "heading": "LAVA ELEMENTAL",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:salamander",
+      "printedPage": 196,
+      "pdfPage": 197,
+      "heading": "SALAMANDER",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "printedPage": 196,
+      "pdfPage": 197,
+      "heading": "YOUNG DRAGON",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:beastman",
+      "printedPage": 201,
+      "pdfPage": 202,
+      "heading": "BEASTMAN",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "printedPage": 202,
+      "pdfPage": 203,
+      "heading": "GURAK TOL",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:ogre",
+      "printedPage": 202,
+      "pdfPage": 203,
+      "heading": "OGRE",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "printedPage": 202,
+      "pdfPage": 203,
+      "heading": "ORC SPIRITSPEAKER",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "printedPage": 203,
+      "pdfPage": 204,
+      "heading": "ORC OUTRIDER",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:berserker",
+      "printedPage": 213,
+      "pdfPage": 214,
+      "heading": "BERSERKER",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "printedPage": 213,
+      "pdfPage": 214,
+      "heading": "BLOODSISTER AND NIGHTSEER",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "printedPage": 214,
+      "pdfPage": 215,
+      "heading": "FLESH RIPPER",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:grotesque",
+      "printedPage": 215,
+      "pdfPage": 216,
+      "heading": "GROTESQUE",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "printedPage": 216,
+      "pdfPage": 217,
+      "heading": "SPINED THRESHER",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:viper-legion-archer",
+      "printedPage": 217,
+      "pdfPage": 218,
+      "heading": "VIPER LEGION ARCHER",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "printedPage": 217,
+      "pdfPage": 218,
+      "heading": "WITCH AND WARLOCK",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:giant",
+      "printedPage": 226,
+      "pdfPage": 227,
+      "heading": "GIANT",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "printedPage": 226,
+      "pdfPage": 227,
+      "heading": "GNOME MINSTREL",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:lorimor-marine",
+      "printedPage": 227,
+      "pdfPage": 228,
+      "heading": "LORIMOR MARINE",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:lost-knight",
+      "printedPage": 227,
+      "pdfPage": 228,
+      "heading": "LOST KNIGHT",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:manticore",
+      "printedPage": 227,
+      "pdfPage": 228,
+      "heading": "MANTICORE",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:merriod",
+      "printedPage": 228,
+      "pdfPage": 229,
+      "heading": "MERRIOD",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:pirate",
+      "printedPage": 229,
+      "pdfPage": 230,
+      "heading": "PIRATE",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:shade",
+      "printedPage": 229,
+      "pdfPage": 230,
+      "heading": "SHADE",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:siren",
+      "printedPage": 230,
+      "pdfPage": 231,
+      "heading": "SIREN",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "printedPage": 230,
+      "pdfPage": 231,
+      "heading": "SWORD POET",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "printedPage": 231,
+      "pdfPage": 232,
+      "heading": "WYRM OF THE DEEP",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "printedPage": 237,
+      "pdfPage": 238,
+      "heading": "ICE WYRM",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:ice-blood-warrior",
+      "printedPage": 237,
+      "pdfPage": 238,
+      "heading": "ICE-BLOOD WARRIOR",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:wendigo",
+      "printedPage": 238,
+      "pdfPage": 239,
+      "heading": "WENDIGO",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "printedPage": 239,
+      "pdfPage": 240,
+      "heading": "ONOIT SHAMAN",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "printedPage": 239,
+      "pdfPage": 240,
+      "heading": "WEIK WARRIOR",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:assassin",
+      "printedPage": 247,
+      "pdfPage": 248,
+      "heading": "ASSASSIN",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:djinn",
+      "printedPage": 248,
+      "pdfPage": 249,
+      "heading": "DJINN",
+      "role": "nemesis",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:minor-elemental",
+      "printedPage": 248,
+      "pdfPage": 249,
+      "heading": "MINOR ELEMENTAL",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "printedPage": 249,
+      "pdfPage": 250,
+      "heading": "SCORPION SWARM",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:thieves-guild-cutpurse",
+      "printedPage": 249,
+      "pdfPage": 250,
+      "heading": "THIEVES^ GUILD CUTPURSE",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "printedPage": 258,
+      "pdfPage": 259,
+      "heading": "CARNIVOROUS FLORA",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "printedPage": 258,
+      "pdfPage": 259,
+      "heading": "GIANT SNAKE",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:makhim",
+      "printedPage": 258,
+      "pdfPage": 259,
+      "heading": "MAKHIM",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "printedPage": 258,
+      "pdfPage": 259,
+      "heading": "NAGA PRIESTESS",
+      "role": "rival",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "printedPage": 259,
+      "pdfPage": 260,
+      "heading": "SINGHARA HUNTER",
+      "role": "minion",
+      "identityMatch": true
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "printedPage": 259,
+      "pdfPage": 260,
+      "heading": "SINGHARA PRIDELORD",
+      "role": "nemesis",
+      "identityMatch": true
+    }
+  ]
+}

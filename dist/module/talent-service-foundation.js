@@ -17,7 +17,11 @@ function actorItems(actor) {
 export function collectActorTalents(actor) {
     return actorItems(actor)
         .filter((item) => item?.type === "talent")
-        .map((item) => normalizeTalentDefinition(item));
+        .map((item) => {
+            const talent=normalizeTalentDefinition(item);
+            if(talent.id==='terrinoth-talent:precision'&&!talent.rules.length)talent.rules=[{id:'precision-check-characteristic',type:'check.characteristic-override',timing:'before-check-build',optional:true,predicate:{any:['skill:brawl','skill:ranged']},effect:{characteristicId:'cunning'},usage:{limit:0,period:'none'}}];
+            return talent;
+        });
 }
 
 export function actorHasTalent(actor, sourceId) {

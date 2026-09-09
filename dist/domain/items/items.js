@@ -28,7 +28,7 @@ export function normalizeWeaponRuleData(input = {}) {
 }
 export function prepareWeaponAttack(input) {
     const weapon = normalizeWeaponRuleData(input.weapon);
-    const qualityModifiers = qualityCheckModifiers(weapon.qualities);
+    const qualityModifiers = qualityCheckModifiers(weapon.qualities,input.actor);
     const check = prepareStandardCheck({
         actor: input.actor,
         difficulty: input.difficulty,

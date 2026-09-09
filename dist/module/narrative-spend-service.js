@@ -40,10 +40,11 @@ function chooseActorDecisionUser(actor) {
 function cloneState(state) {
     return JSON.parse(JSON.stringify(state ?? {}));
 }
-function activeQualityRows(prepared, hit, targetSilhouette) {
+export function activeQualityRows(prepared, hit, targetSilhouette) {
     const qualities = prepared?.preparedWeaponAttack?.weapon?.qualities ?? [];
     return qualities.map((quality) => {
         const definition = getQualityDefinition(quality.id);
+        if (quality.id === "guided" && hit) return null;
         if (!definition || definition.mode !== "active")
             return null;
         let advantageCost = hit ? 2 : null;
@@ -53,8 +54,8 @@ function activeQualityRows(prepared, hit, targetSilhouette) {
             advantageCost = 2 + Math.max(0, n(targetSilhouette) - 1);
         if (quality.id === "auto-fire")
             advantageCost = null;
-        if (quality.id === "sunder" && !hit)
-            advantageCost = null;
+        if (quality.id === "sunder") advantageCost = 1;
+        if (!hit && !["sunder", "blast", "guided"].includes(quality.id)) return null;
         return {
             id: quality.id,
             label: definition.label,
@@ -239,10 +240,12 @@ async function applyPendingCritical(target, state) {
         };
     }
     else {
-        const injury = await inflictCriticalInjury(target, {
+        const source=state.id?`core:weapon-critical:${state.id}:${critical.slotId??'primary'}`:'core:weapon-critical';
+        const prior=state.id?(target.system.criticalInjuries??[]).find(i=>i.sourceId===source):null;
+        const injury = prior?{state:prior,resolution:{total:prior.total,rawRoll:prior.rawRoll}}:await inflictCriticalInjury(target, {
             viciousRank: n(critical.viciousRank),
             extraActivations: Math.max(0, activations - 1)
-        }, "core:weapon-critical");
+        }, source);
         result = {
             kind: "critical-injury",
             id: injury?.state?.id ?? "",
@@ -260,8 +263,7 @@ async function applyPendingCritical(target, state) {
     await rerenderRenderedCharacterSheet(target);
     return result;
 }
-function addCriticalSpend(state, symbol) {
-    const critical = state.critical;
+function addCriticalSpend(state, symbol, critical = state.critical) {
     if (!critical?.eligible || critical.resolved)
         return false;
     if (critical.targetRole === "minion" && n(critical.pendingActivations) >= 1)
@@ -273,10 +275,14 @@ function addCriticalSpend(state, symbol) {
     state.spends.push({ type: "critical", symbol: symbol === "triumph" ? "Triumph" : "Advantage", amount: cost });
     return true;
 }
-function addQualitySpend(state, qualityId, symbol) {
+export function addQualitySpend(state, qualityId, symbol) {
     const quality = (state.activeQualities ?? []).find((row) => row.id === qualityId);
     if (!quality)
         return false;
+    const effectId=quality.effectId??qualityId;
+    const used=state.spends.filter(s=>(s.optionId??s.qualityId)===qualityId).length;
+    if(effectId==="linked"&&used>=quality.rank)return false;
+    if(effectId!=="linked"&&effectId!=="sunder"&&used)return false;
     const cost = symbol === "triumph" ? 1 : n(quality.advantageCost);
     if (cost <= 0 || !spendSymbol(state, symbol, cost))
         return false;
@@ -284,7 +290,9 @@ function addQualitySpend(state, qualityId, symbol) {
         type: "quality",
         symbol: symbol === "triumph" ? "Triumph" : "Advantage",
         amount: cost,
-        qualityId,
+        qualityId:effectId,
+        optionId:qualityId,
+        secondary:quality.secondary===true,
         label: quality.label,
         rank: quality.rank,
         manualEffect: true
@@ -304,9 +312,17 @@ function buildButtons(state, attacker) {
             buttons.push({ action: "critical-triumph", label: `Critical Injury — 1 Triumph${bonus ? ` (+${bonus})` : ""}` });
         }
     }
+    for(const [index,extra]of (state.extraCriticals??[]).entries()){
+        if(!extra.eligible||extra.resolved||extra.targetRole==='minion'&&n(extra.pendingActivations)>=1)continue;
+        if(n(state.remaining.advantage)>=extra.rating)buttons.push({action:`extra-critical:${index}:advantage`,label:`${extra.label}: Critical — ${extra.rating} Advantage`});
+        if(n(state.remaining.triumph)>0)buttons.push({action:`extra-critical:${index}:triumph`,label:`${extra.label}: Critical — 1 Triumph`});
+    }
     if (n(state.remaining.advantage) >= 1 && n(attacker?.system?.strain?.value) > 0)
         buttons.push({ action: "recover-strain", label: "Recover 1 Strain — 1 Advantage" });
     for (const quality of state.activeQualities ?? []) {
+        const used=state.spends.filter(s=>(s.optionId??s.qualityId)===quality.id).length;
+        const effectId=quality.effectId??quality.id;
+        if(effectId==="linked"?used>=quality.rank:effectId!=="sunder"&&used>0)continue;
         if (quality.advantageCost && n(state.remaining.advantage) >= quality.advantageCost)
             buttons.push({ action: `quality-advantage:${quality.id}`, label: `Activate ${quality.label} — ${quality.advantageCost} Advantage` });
         if (n(state.remaining.triumph) >= 1)
@@ -323,7 +339,11 @@ export function createCombatNarrativeSpendState(attacker, target, prepared, reso
     const viciousRank = prepared?.preparedWeaponAttack?.weapon?.qualities?.find((quality) => quality.id === "vicious")?.rank ?? 0;
     const targetRole = normalizeActorRole(target?.system?.role);
     return {
-        version: 1,
+        version: 2,
+        id: foundry.utils.randomID(),
+        targetRange:prepared.targetRange,
+        secondaryQualities:prepared.secondary?activeQualityRows({preparedWeaponAttack:{weapon:prepared.secondary.weapon}},true,target?.system?.silhouette).map(q=>({...q,id:`secondary:${q.id}`,effectId:q.id,secondary:true,label:`Secondary: ${q.label}`})):[],
+        hitProfile:{weapon:prepared.preparedWeaponAttack.weapon,melee:prepared.attackMode==="melee",baseDamage:n(resolution?.baseDamage)-n(prepared.archetypeDamageBonus),success:n(resolution?.success),effectiveSoak:n(resolution?.effectiveSoak),damageTrack:resolution?.damageTrack??"wounds"},
         kind: "combat-positive-results",
         attackerUuid: String(attacker?.uuid ?? ""),
         attackerName: String(attacker?.name ?? "Attacker"),
@@ -333,7 +353,8 @@ export function createCombatNarrativeSpendState(attacker, target, prepared, reso
         hit: Boolean(resolution?.hit),
         original: { advantage, triumph },
         remaining: { advantage, triumph },
-        activeQualities: activeQualityRows(prepared, Boolean(resolution?.hit), target?.system?.silhouette),
+        activeQualities: [...activeQualityRows(prepared, Boolean(resolution?.hit), target?.system?.silhouette), ...(prepared.secondary&&resolution.hit?[{id:"secondary-hit",label:"Secondary weapon hit",rank:1,advantageCost:2,manualEffect:false}]:[])],
+        secondaryProfile:prepared.secondary?{...prepared.secondary,success:n(resolution?.success)}:null,
         critical: {
             eligible: Boolean(resolution?.criticalEligible),
             rating: n(resolution?.criticalRating),
@@ -352,7 +373,9 @@ export function createCombatNarrativeSpendState(attacker, target, prepared, reso
     };
 }
 export async function promptCombatNarrativeSpend(attacker, target, stateInput) {
-    const state = cloneState(stateInput);
+    let state = cloneState(stateInput);
+    const saved=Object.values(target.getFlag?.(SYSTEM_ID,"qualitySpends")??{}).map(r=>r.state).filter(s=>s.id===state.id&&s.spends.length>state.spends.length).sort((a,b)=>b.spends.length-a.spends.length)[0];
+    if(saved)state=cloneState(saved);
     if (n(state.original?.advantage) <= 0 && n(state.original?.triumph) <= 0)
         return { state, activatedCritical: null };
     const DialogV2 = foundry?.applications?.api?.DialogV2;
@@ -370,6 +393,7 @@ export async function promptCombatNarrativeSpend(attacker, target, stateInput) {
         const action = String(decision ?? "done");
         if (!action || action === "done")
             break;
+        if(action.startsWith('extra-critical:')){const [,index,symbol]=action.split(':');const critical=state.extraCriticals?.[Number(index)];if(critical)addCriticalSpend(state,symbol,critical);continue;}
         if (action === "critical-advantage") {
             addCriticalSpend(state, "advantage");
             continue;
@@ -382,12 +406,22 @@ export async function promptCombatNarrativeSpend(attacker, target, stateInput) {
             await recoverStrain(attacker, state);
             continue;
         }
-        if (action.startsWith("quality-advantage:")) {
-            addQualitySpend(state, action.slice("quality-advantage:".length), "advantage");
-            continue;
-        }
-        if (action.startsWith("quality-triumph:")) {
-            addQualitySpend(state, action.slice("quality-triumph:".length), "triumph");
+        if (action.startsWith("quality-advantage:")||action.startsWith("quality-triumph:")) {
+            const qualityId=action.slice(action.indexOf(":")+1),effectId=(state.activeQualities.find(q=>q.id===qualityId)?.effectId??qualityId),symbol=action.startsWith("quality-advantage:")?"advantage":"triumph";
+            let itemId;
+            if(effectId==="sunder"){
+                const items=[...(target.items??[])].filter(i=>["weapon","armor","implement"].includes(i.type)&&i.system.equipped);
+                itemId=await waitForDecision(game.users.activeGM,{window:{title:"Sunder — wielded item"},content:"<p>Each activation damages the same wielded item by one step. Reinforced items are immune.</p>",buttons:[...items.map(i=>({action:i.id,label:i.name})),{action:"cancel",label:"Cancel"}],rejectClose:false});
+                if(!itemId||itemId==="cancel")continue;
+            }
+            const next=cloneState(state);
+            if(addQualitySpend(next,qualityId,symbol)){
+                if(["sunder","linked","stun","secondary-hit"].includes(effectId)){
+                    if(!state.id||!state.hitProfile){ui.notifications.warn("This older roll lacks the saved hit profile. Resolve its quality manually.");continue;}
+                    try{state=await game.genesysQualityEffects.applyQualityEffect(target,next,next.spends.at(-1),{itemId});}
+                    catch(e){ui.notifications.warn(e.message);}
+                }else state=next;
+            }
             continue;
         }
         if (action === "other") {
@@ -403,6 +437,8 @@ export async function promptCombatNarrativeSpend(attacker, target, stateInput) {
         }
     }
     const activatedCritical = await applyPendingCritical(target, state);
+    for(const critical of state.extraCriticals??[])await applyPendingCritical(target,{...state,critical});
+    if(activatedCritical&&game.genesysTerrinothTalents?.impalingStrike)await game.genesysTerrinothTalents.impalingStrike(attacker,target,state);
     return { state, activatedCritical };
 }
 export function renderNarrativeSpendSummary(state) {
@@ -411,7 +447,7 @@ export function renderNarrativeSpendSummary(state) {
     const spends = Array.isArray(state.spends) && state.spends.length
         ? `<ul>${state.spends.map((spend) => `<li>✓ ${escapeHtml(spendLabel(spend))}</li>`).join("")}</ul>`
         : "<p>No narrative results have been spent yet.</p>";
-    const criticalResult = criticalSummary(state.critical);
+    const criticalResult = [criticalSummary(state.critical),...(state.extraCriticals??[]).map(c=>criticalSummary(c))].filter(Boolean).join(" · ");
     const remaining = n(state.remaining?.advantage) + n(state.remaining?.triumph);
     return `${SUMMARY_START}<section class="genesys-narrative-spend-summary" data-genesys-narrative-spend-summary>
       <hr />

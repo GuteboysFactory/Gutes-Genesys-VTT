@@ -90,10 +90,15 @@ export function formatQualityText(input = []) {
         return definition.ranked ? `${definition.label} ${entry.rank}` : definition.label;
     }).join(", ");
 }
-export function qualityCheckModifiers(input = []) {
+export function qualityCheckModifiers(input = [], characteristics = {}) {
     const qualities = normalizeQualityStates(input);
     const modifiers = [];
     for (const quality of qualities) {
+        const characteristic=quality.id==='cumbersome'?'brawn':quality.id==='unwieldy'?'agility':null;
+        if(characteristic&&Number.isFinite(characteristics[characteristic])){
+            const deficiency=Math.max(0,quality.rank-characteristics[characteristic]);
+            if(deficiency)modifiers.push({id:`quality:${quality.id}:${quality.rank}`,priority:-100,difficultyDelta:deficiency});
+        }
         if (quality.id === "accurate") {
             modifiers.push({
                 id: `quality:accurate:${quality.rank}`,

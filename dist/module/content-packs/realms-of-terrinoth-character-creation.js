@@ -75,7 +75,7 @@ export const REALMS_OF_TERRINOTH_ARCHETYPES = Object.freeze([
     {
         id: "rot-archetype:sunderlands-orc", label: "Sunderlands Orc", ...ORC,
         startingSkills: [skill("alchemy", 1)],
-        abilities: [ability("tenacious", "Tenacious", { type: "target-marker", trigger: "successful-combat-hit", benefit: { combatTargetSetback: 1 }, duration: "encounter" })],
+        abilities: [ability("tenacious", "Tenacious", { type: "target-marker", trigger: "successful-combat-hit", benefit: { combatTargetBoost: 1 }, duration: "encounter" })],
         tags: ["orc", "sunderlands", "alchemy"]
     },
     {

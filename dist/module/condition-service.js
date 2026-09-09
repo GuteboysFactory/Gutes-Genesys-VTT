@@ -20,7 +20,12 @@ export function getActorConditionSummary(actor) {
 }
 export function getActorConditionRules(actor) {
     const suppressed=new Set(suppressedCriticals(actor).map(row=>`critical:${row.id}`));
-    return conditionRules(getActorConditions(actor).filter(row=>!suppressed.has(row.sourceId)));
+    const rules=conditionRules(getActorConditions(actor).filter(row=>!suppressed.has(row.sourceId)));
+    const speed=Number(actor?.getFlag?.('genesys-vtt','consumables')?.speed?.remaining)>0;
+    const ignored=new Set(suppressedCriticals(actor).map(i=>i.id));
+    const hamstrung=(actor.system?.criticalInjuries??[]).some(i=>i.active!==false&&!i.healed&&!ignored.has(i.id)&&i.total>=71&&i.total<=75);
+    const encumbered=globalThis.game?.genesysPhysicalRules?.actorEncumbrance?.(actor)?.losesFreeManeuver;
+    return {...rules,maxManeuvers:speed?3:2,freeManeuvers:(speed?2:1)-(hamstrung||encumbered||globalThis.game?.genesysCriticalLifecycle?.losesNextFreeManeuver?.(actor)?1:0)};
 }
 export function getActorConditionCheckModifiers(actor, check = {}) {
     const base = getActorConditionRules(actor).checkModifiers;
@@ -30,7 +35,7 @@ export function getActorConditionCheckModifiers(actor, check = {}) {
         : delta < 0
             ? [{ id: "magic:curse", priority: 10, pool: { remove: { ability: 1 } } }]
             : [];
-    return [...base, ...criticalCheckModifiers(actor.system?.criticalInjuries ?? [], check, suppressedCriticals(actor).map(i=>i.id)), ...magic, ...heroicCheckModifiers(actor?.system?.heroicAbility), ...auraModifiers(actor)];
+    return [...base, ...(globalThis.game?.genesysCriticalLifecycle?.criticalRuntimeModifiers?.(actor)??[]), ...(globalThis.game?.genesysArchetypes?.archetypeCheckModifiers?.(actor,check)??[]), ...(globalThis.game?.genesysPhysicalRules?.physicalCheckModifiers?.(actor,check)??[]), ...criticalCheckModifiers(actor.system?.criticalInjuries ?? [], check, suppressedCriticals(actor).map(i=>i.id)), ...magic, ...heroicCheckModifiers(actor?.system?.heroicAbility), ...auraModifiers(actor)];
 }
 export async function addActorCondition(actor, conditionId, options = {}) {
     const current = actorConditions(actor);

@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {prepareCombatWeaponAttack,resolveCombatAttack} from '../dist/domain/combat/index.js';
+import {disengagementPlan} from '../dist/domain/movement/movement.js';
+const target={soak:3,woundsValue:0,woundsThreshold:15,strainValue:0,strainThreshold:12,silhouette:1};
+const weapon={skillId:'melee-light',attackMode:'melee',damageCharacteristic:'brawn',damage:2,critical:3,range:'engaged',qualities:[]};
+const prepared=prepareCombatWeaponAttack({weapon,actor:{characteristic:4,skillRank:3,damageCharacteristicValue:4,brawn:4,agility:2},target,targetRange:'engaged',secondary:{weapon:{skillId:'ranged-light',range:'short',damage:5,damageCharacteristic:'none'},actor:{characteristic:2,skillRank:1,damageCharacteristicValue:0,brawn:4,agility:2}}});
+assert.equal(prepared.preparedWeaponAttack.check.actor.characteristic,2);assert.equal(prepared.preparedWeaponAttack.check.actor.skillRank,1);assert.equal(prepared.baseDifficulty,3);assert.equal(prepared.damageCharacteristicValue,4);assert.equal(prepared.secondary.baseDamage,5);
+const unarmed=prepareCombatWeaponAttack({weapon:{skillId:'brawl',damage:0,critical:5,range:'engaged',qualities:[{id:'knockdown',rank:1},{id:'stun-damage',rank:1}]},actor:{characteristic:3,skillRank:1,damageCharacteristicValue:3},target,targetRange:'engaged'});
+const result=resolveCombatAttack(unarmed,{net:{success:2,advantage:0}});assert.equal(result.baseDamage,3);assert.equal(result.damageAfterSoak,2);assert.equal(result.damageTrack,'strain');assert.equal(result.criticalRating,5);
+assert.equal(disengagementPlan({}).clearAll,true);assert.equal(disengagementPlan({grapple:true}).maneuvers,2);assert.throws(()=>disengagementPlan({grapple:true,tumble:true,tumbleAvailable:true}),/cannot bypass/);assert.equal(disengagementPlan({tumble:true,tumbleAvailable:true,maneuversUsed:2}).strain,2);
+console.log('PASS COMBAT-009 lower skill/characteristic, higher difficulty+1 and independent damage; COMBAT-010 unarmed strain/soak; MOVE-001 all-engagement disengage; Grapple overrides Tumble');

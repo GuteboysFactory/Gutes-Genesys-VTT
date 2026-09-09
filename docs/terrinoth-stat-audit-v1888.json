@@ -1,0 +1,482 @@
+{
+  "sourceSha256": "32febac3f5a6cb5879ec32317923ef769bda6f9dfcaa5c6a58c324eb35e1e502",
+  "method": "Positioned words around printed table labels; independent of builder numeric-block parser",
+  "profiles": 79,
+  "values": 817,
+  "entries": [
+    {
+      "templateId": "rot:beast-of-burden",
+      "printedPage": 104,
+      "statTablePage": 104,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:flying-mount",
+      "printedPage": 104,
+      "statTablePage": 104,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:riding-beast",
+      "printedPage": 104,
+      "statTablePage": 104,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:war-mount",
+      "printedPage": 105,
+      "statTablePage": 105,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:baronial-knight",
+      "printedPage": 150,
+      "statTablePage": 151,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:dragon-hybrid",
+      "printedPage": 151,
+      "statTablePage": 151,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:feral-dragon",
+      "printedPage": 152,
+      "statTablePage": 152,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:goblin",
+      "printedPage": 152,
+      "statTablePage": 152,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:goblin-witcher",
+      "printedPage": 152,
+      "statTablePage": 152,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:greyhaven-wizard",
+      "printedPage": 153,
+      "statTablePage": 153,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:ironbound",
+      "printedPage": 153,
+      "statTablePage": 153,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:priest-of-kellos",
+      "printedPage": 154,
+      "statTablePage": 154,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:rune-golem",
+      "printedPage": 154,
+      "statTablePage": 154,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:splig-king-of-all-goblins",
+      "printedPage": 154,
+      "statTablePage": 155,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:tamalir-guildmaster",
+      "printedPage": 155,
+      "statTablePage": 155,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:barghest",
+      "printedPage": 163,
+      "statTablePage": 163,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:death-knight",
+      "printedPage": 164,
+      "statTablePage": 164,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:ferrox",
+      "printedPage": 165,
+      "statTablePage": 165,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:lord-of-bilehall",
+      "printedPage": 165,
+      "statTablePage": 165,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:necromancer",
+      "printedPage": 166,
+      "statTablePage": 166,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:reanimate",
+      "printedPage": 166,
+      "statTablePage": 167,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:wraith",
+      "printedPage": 167,
+      "statTablePage": 167,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:aymhelin-scion",
+      "printedPage": 178,
+      "statTablePage": 178,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:deepwood-archer",
+      "printedPage": 179,
+      "statTablePage": 179,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:forest-guardian",
+      "printedPage": 179,
+      "statTablePage": 179,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:leonx-rider",
+      "printedPage": 179,
+      "statTablePage": 179,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:leonx",
+      "printedPage": 180,
+      "statTablePage": 180,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:storm-sorceress",
+      "printedPage": 180,
+      "statTablePage": 180,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:true-fae",
+      "printedPage": 181,
+      "statTablePage": 181,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:deep-elf",
+      "printedPage": 190,
+      "statTablePage": 191,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:dimora",
+      "printedPage": 191,
+      "statTablePage": 191,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:dwarf-guilder",
+      "printedPage": 191,
+      "statTablePage": 191,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:dwarven-dragon-hunter",
+      "printedPage": 191,
+      "statTablePage": 192,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:kennsir-dwarf",
+      "printedPage": 192,
+      "statTablePage": 192,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:kobold",
+      "printedPage": 192,
+      "statTablePage": 192,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:ancient-dragon",
+      "printedPage": 195,
+      "statTablePage": 195,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:specter",
+      "printedPage": 195,
+      "statTablePage": 195,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:lava-elemental",
+      "printedPage": 196,
+      "statTablePage": 196,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:salamander",
+      "printedPage": 196,
+      "statTablePage": 196,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:young-dragon",
+      "printedPage": 196,
+      "statTablePage": 196,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:beastman",
+      "printedPage": 201,
+      "statTablePage": 202,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:gurak-tol",
+      "printedPage": 202,
+      "statTablePage": 202,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:ogre",
+      "printedPage": 202,
+      "statTablePage": 202,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:orc-spiritspeaker",
+      "printedPage": 202,
+      "statTablePage": 202,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:orc-outrider",
+      "printedPage": 203,
+      "statTablePage": 203,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:berserker",
+      "printedPage": 213,
+      "statTablePage": 213,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:bloodsister-and-nightseer",
+      "printedPage": 213,
+      "statTablePage": 214,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:flesh-ripper",
+      "printedPage": 214,
+      "statTablePage": 215,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:grotesque",
+      "printedPage": 215,
+      "statTablePage": 215,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:spined-thresher",
+      "printedPage": 216,
+      "statTablePage": 216,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:viper-legion-archer",
+      "printedPage": 217,
+      "statTablePage": 217,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:witch-and-warlock",
+      "printedPage": 217,
+      "statTablePage": 217,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:giant",
+      "printedPage": 226,
+      "statTablePage": 226,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:gnome-minstrel",
+      "printedPage": 226,
+      "statTablePage": 226,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:lorimor-marine",
+      "printedPage": 227,
+      "statTablePage": 227,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:lost-knight",
+      "printedPage": 227,
+      "statTablePage": 227,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:manticore",
+      "printedPage": 227,
+      "statTablePage": 228,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:merriod",
+      "printedPage": 228,
+      "statTablePage": 228,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:pirate",
+      "printedPage": 229,
+      "statTablePage": 229,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:shade",
+      "printedPage": 229,
+      "statTablePage": 229,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:siren",
+      "printedPage": 230,
+      "statTablePage": 230,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:sword-poet",
+      "printedPage": 230,
+      "statTablePage": 230,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:wyrm-of-the-deep",
+      "printedPage": 231,
+      "statTablePage": 231,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:ice-wyrm",
+      "printedPage": 237,
+      "statTablePage": 237,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:ice-blood-warrior",
+      "printedPage": 237,
+      "statTablePage": 238,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:wendigo",
+      "printedPage": 238,
+      "statTablePage": 238,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:onoit-shaman",
+      "printedPage": 239,
+      "statTablePage": 239,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:weik-warrior",
+      "printedPage": 239,
+      "statTablePage": 239,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:assassin",
+      "printedPage": 247,
+      "statTablePage": 248,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:djinn",
+      "printedPage": 248,
+      "statTablePage": 248,
+      "matchedValues": 11
+    },
+    {
+      "templateId": "rot:minor-elemental",
+      "printedPage": 248,
+      "statTablePage": 249,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:scorpion-swarm",
+      "printedPage": 249,
+      "statTablePage": 249,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:thieves-guild-cutpurse",
+      "printedPage": 249,
+      "statTablePage": 249,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:carnivorous-flora",
+      "printedPage": 258,
+      "statTablePage": 258,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:giant-snake",
+      "printedPage": 258,
+      "statTablePage": 258,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:makhim",
+      "printedPage": 258,
+      "statTablePage": 258,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:naga-priestess",
+      "printedPage": 258,
+      "statTablePage": 258,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:singhara-hunter",
+      "printedPage": 259,
+      "statTablePage": 259,
+      "matchedValues": 10
+    },
+    {
+      "templateId": "rot:singhara-pridelord",
+      "printedPage": 259,
+      "statTablePage": 259,
+      "matchedValues": 11
+    }
+  ]
+}

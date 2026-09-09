@@ -1,8 +1,8 @@
 {
   "id": "genesys-vtt",
   "title": "Genesys VTT",
-  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1887 \u2014 Expanded medical recovery, Winded and native NPC magic rules.",
-  "version": "0.0.1887",
+  "description": "<img src=\"systems/genesys-vtt/assets/system/forge-the-story.webp\" alt=\"Forge the Story\" style=\"width:100%;height:auto\"> Genesys VTT 0.0.1888 \u2014 GM recovery, combat/magic and Terrinoth rule/content reconciliation.",
+  "version": "0.0.1888",
   "compatibility": {
     "minimum": "13.351",
     "verified": "13.351"
@@ -82,7 +82,22 @@
     "dist/module/medical-care-v1884.js",
     "dist/module/world-background-v1885.js",
     "dist/module/painkillers-v1885.js",
-    "dist/module/critical-recovery-v1886.js"
+    "dist/module/critical-recovery-v1886.js",
+    "dist/module/crafting-service-v1888.js",
+    "dist/module/consumables-v1888.js",
+    "dist/module/mounted-combat-v1888.js",
+    "dist/module/item-modifications-v1888.js",
+    "dist/module/rune-activation-v1888.js",
+    "dist/module/core-physical-rules-v1888.js",
+    "dist/module/social-encounter-v1888.js",
+    "dist/module/archetype-rules-v1888.js",
+    "dist/module/quality-effects-v1888.js",
+    "dist/module/story-check-v1888.js",
+    "dist/module/terrinoth-talents-v1888.js",
+    "dist/module/content-provenance-v1888.js",
+    "dist/module/repair-service-v1888.js",
+    "dist/module/environment-service-v1888.js",
+    "dist/module/critical-lifecycle-v1888.js"
   ],
   "styles": [
     "styles/genesys.css",

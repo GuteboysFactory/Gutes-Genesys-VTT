@@ -1,3 +1,4 @@
+import {payManeuver} from '../dist/module/maneuver-payment-v1888.js';
 import assert from 'node:assert/strict';
 import fs from 'node:fs/promises';
 import * as initiative from '../dist/domain/initiative/index.js';
@@ -17,7 +18,7 @@ const scene={id:'s',tokens:[],getFlag:(_s,k)=>k==='initiativeState'?raw:sceneFla
 const scenes=new Map([['s',scene]]);
 globalThis.game={user:gm,users:{activeGM:gm,get:id=>({gm,gm2,p:player}[id])},scenes,actors:{contents:[actor]},genesysHeroicLive:{beginTurn:async()=>{},finishTurn:async()=>{}}};
 globalThis.canvas={scene,tokens:{placeables:[]}};globalThis.ui={notifications:{warn(){}}};globalThis.foundry={utils:{randomID:()=> 'r'},documents:{ChatMessage:{}}};
-globalThis.__initiativeDeps={resolveRenewal,getTurnRecovery,...initiative,...adversaries,...queue,...transport,SYSTEM_ID:'genesys-vtt',rerenderAllRenderedCharacterSheets:async()=>{},getActorConditionRules:()=>({canPerformActions:true,canPerformManeuvers:true}),advanceActorTurnConditions:async()=>{},prepareActorSkillEngineCheck:()=>({check:{construction:{pool:{ability:2}}}}),rollNarrativePool:()=>{rollCount++;return {net:{success:4,advantage:1}};}};
+globalThis.__initiativeDeps={payManeuver,resolveRenewal,getTurnRecovery,...initiative,...adversaries,...queue,...transport,SYSTEM_ID:'genesys-vtt',rerenderAllRenderedCharacterSheets:async()=>{},getActorConditionRules:()=>({canPerformActions:true,canPerformManeuvers:true}),advanceActorTurnConditions:async()=>{},prepareActorSkillEngineCheck:()=>({check:{construction:{pool:{ability:2}}}}),rollNarrativePool:()=>{rollCount++;return {net:{success:4,advantage:1}};}};
 let code=await fs.readFile('dist/module/initiative-service.js','utf8');code=code.replace(/import \{([^}]+)\} from [^;]+;/g,(_m,names)=>`const {${names}}=globalThis.__initiativeDeps;`);
 const api=await import('data:text/javascript;base64,'+Buffer.from(code).toString('base64'));
 let results=await Promise.allSettled([api.resolveSceneRenewal(actor,'cool','a',scene),api.resolveSceneRenewal(actor,'cool','a',scene)]);

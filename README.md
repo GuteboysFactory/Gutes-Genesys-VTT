@@ -1,14 +1,15 @@
-# Genesys VTT — QA v0.0.1885
+# Genesys VTT — QA v0.0.1888
 
 Foundry target: v13.351. v14 remains unverified.
 
-Current delivery: fixed Edit World background path, guided painkiller/healing-potion recovery, custom-template rule provenance and explicit talent runtime coverage.
+Combined delivery completes the three selected roadmap blocks: GM Tools; Combat, reactions and magic; Setting, rules and content. Includes source reconciliation, recovery/consumables, action economy and critical lifecycle, two-weapon combat, crafting/alchemy, mounted rules, equipment modifications and runebound shards.
 
-- [v1885 scope and QA](TEST_PROTOCOL_v0.0.1885.md)
-- [Roadmap/content gate evidence](docs/V1883_CONTENT_GATE.md)
 - [Current roadmap](ROADMAP.md)
-- [Package 4 scope and test report](docs/PACKAGE_4_QA.md)
-- [Combined live QA protocol](TEST_PROTOCOL_v0.0.1881.md)
+- [Implementation, source evidence and automation boundaries](docs/V1888_RULE_RECONCILIATION.md)
+- [QA results and deferred live protocol](TEST_PROTOCOL_v0.0.1888.md)
+- [Individual audit requirements](docs/v1888-audit-requirements.json)
+
+94 automated test files pass; one Chromium test is blocked. Live verification is deferred after 1.0 by GM decision. Native references and GM-resolved special/narrative rules are documented; this is not a claim that every published ability is automatically executed.
 
 The notes below describe the earlier rule-engine foundation.
 

@@ -6,6 +6,8 @@ export function criticalCheckModifiers(injuries=[],{characteristicId,skillId}={}
   if(!Number.isSafeInteger(total))return [];
   const affected=total>=46&&total<=50?['intellect','cunning']:total>=51&&total<=55?['presence','willpower']:total>=56&&total<=60?['brawn','agility']:[];
   if(affected.includes(characteristicId)||(total>=86&&total<=90))return [{...modifier,difficultyDelta:1}];
+  if(total>=66&&total<=70)return [{...modifier,pool:{remove:{boost:Number.MAX_SAFE_INTEGER}}}];
+  if(total>=101&&total<=105)return [{...modifier,pool:{add:{setback:1}}}];
   if(total>=116&&total<=120)return [{...modifier,pool:{upgradeNegative:['perception','vigilance'].includes(skillId)?3:2}}];
   return [];
  });

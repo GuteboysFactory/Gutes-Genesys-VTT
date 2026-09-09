@@ -18,7 +18,7 @@ export function fearRoster(scene){
 }
 /** Called inside the authoritative Scene command queue; consequences remain GM choices. */
 export async function resolveFearAuthoritative(actor,options,scene){
- authority();const roster=fearRoster(scene);
+ authority();if(game.genesysRunes?.terrorRuneImmune?.(actor))throw Error("The bearer of a Terror Rune is immune to fear checks.");const roster=fearRoster(scene);
  if(!options||options.key!==roster.key||options.confirmed!==true)throw Error('Confirm the current fear circumstances.');
  if(!Array.isArray(options.sources)||!options.sources.length||new Set(options.sources).size!==options.sources.length)throw Error('Choose applicable fear sources.');
  if(!roster.targets.some(r=>r.actor===actor))throw Error('Choose an active PC participant.');

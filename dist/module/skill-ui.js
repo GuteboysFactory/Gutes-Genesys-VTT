@@ -107,7 +107,7 @@ export function prepareActorSkillCheck(actor, skillId, difficulty = 2, rankOverr
     const prepared = prepareSkillCheck({
         definition,
         state: effectiveState,
-        characteristics: actor.system.characteristics,
+        characteristics: Object.fromEntries(Object.entries(actor.system.characteristics).map(([id,value])=>[id,globalThis.game?.genesysCriticalLifecycle?.effectiveCharacteristic?.(actor,id,value)??value])),
         difficulty
     });
     return applyMagicAbilityEffectsToPrepared(prepared, actor);

@@ -6,7 +6,7 @@ import { actorRoleLabel, normalizeActorRole, normalizeMinionGroup } from "../../
 import { CORE_CONDITIONS } from "../../domain/conditions/index.js";
 import { SYSTEM_ID } from "../constants.js";
 import { getActorConditionRules, getActorConditionSummary } from "../condition-service.js";
-import { addSceneInitiativeParticipant, adjustSceneInitiativeRound, claimSceneInitiativeSlot, endSceneInitiativeEncounter, endSceneInitiativeTurn, forceClaimSceneInitiativeActor, claimSceneInitiativeActivation, forceEndCurrentSceneTurn, getActorActivationEligibility, getSceneTurnActionEligibility, markSceneActorActed, markSceneActorUnacted, moveSceneSlot, readSceneInitiativeState, removeSceneInitiativeParticipant, resetSceneInitiative, resolveInitiativeActorReference, rewindSceneInitiativeTurn, setSceneInitiativeMode, setSceneSlotSide, startSceneInitiative, startNextSceneInitiativeRound, setSceneParticipantStatus, getSceneEncounterOutcome, pendingSceneSpecialActivations, subscribeInitiativeState, unclaimSceneInitiative, useSceneTurnAction, useSceneTurnManeuver } from "../initiative-service.js";
+import { disengageActor, exchangeActionForManeuver, addSceneInitiativeParticipant, adjustSceneInitiativeRound, claimSceneInitiativeSlot, endSceneInitiativeEncounter, endSceneInitiativeTurn, forceClaimSceneInitiativeActor, claimSceneInitiativeActivation, forceEndCurrentSceneTurn, getActorActivationEligibility, getSceneTurnActionEligibility, markSceneActorActed, markSceneActorUnacted, moveSceneSlot, readSceneInitiativeState, removeSceneInitiativeParticipant, resetSceneInitiative, resolveInitiativeActorReference, rewindSceneInitiativeTurn, setSceneInitiativeMode, setSceneSlotSide, startSceneInitiative, startNextSceneInitiativeRound, setSceneParticipantStatus, getSceneEncounterOutcome, pendingSceneSpecialActivations, subscribeInitiativeState, unclaimSceneInitiative, useSceneTurnAction, useSceneTurnManeuver } from "../initiative-service.js";
 const { HandlebarsApplicationMixin, ApplicationV2 } = foundry.applications.api;
 const EXTRA_ACTIVATION_REMINDER_SETTING = "extraActivationReminder";
 const reminderSeen = new Set();
@@ -252,6 +252,8 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
             openActor: this.#openActor,
             useAction: this.#useAction,
             useManeuver: this.#useManeuver,
+            exchangeAction: this.#exchangeAction,
+            disengage:this.#disengage,
             endTurn: this.#endTurn,
             forceEndTurn: this.#forceEndTurn,
             recoverTurn: this.#recoverTurn,
@@ -328,6 +330,8 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
             activeManeuverBlockedReason: activeManeuverEligibility.reason,
             canUseAction: Boolean(state.activeActorRef && activeActionEligibility.allowed),
             canUseManeuver: Boolean(state.activeActorRef && activeManeuverEligibility.allowed),
+            canExchangeAction: Boolean(state.activeActorRef && activeManeuverEligibility.allowed && activeActionEligibility.allowed),
+            maneuverLimit: activeActor?(getActorConditionRules(activeActor).maxManeuvers??2):2,
             slots: state.slots.map((slot, index) => ({
                 ...slot,
                 index,
@@ -428,6 +432,17 @@ export class GenesysEncounterTracker extends HandlebarsApplicationMixin(Applicat
         catch (error) {
             ui?.notifications?.warn?.(String(error?.message ?? error));
         }
+    }
+    static async #disengage(){
+        if(!game.user.isGM){ui.notifications.warn('The GM confirms engagement and Grapple circumstances.');return;}
+        const actor=resolveInitiativeActorReference(readSceneInitiativeState().activeActorRef);if(!actor)return;
+        const choice=await foundry.applications.api.DialogV2.wait({window:{title:'Disengage from all adversaries'},content:'<p>One maneuver clears all engagements. Grapple requires two maneuvers and takes precedence over Tumble. Move the token to the appropriate short-range position afterwards.</p><label><input type="checkbox" name="grapple">An active Grapple requires two maneuvers</label><label><input type="checkbox" name="tumble">Use Tumble (once per round, 2 strain, incidental)</label>',buttons:[{action:'use',label:'Confirm and disengage',callback:(_e,_b,d)=>({confirmed:true,grapple:d.element.querySelector('[name=grapple]').checked,tumble:d.element.querySelector('[name=tumble]').checked})},{action:'cancel',label:'Cancel',callback:()=>null}],rejectClose:false});
+        if(choice)try{await disengageActor(actor,choice);}catch(e){ui.notifications.warn(e.message);}
+    }
+    static async #exchangeAction(){
+        const actor=resolveInitiativeActorReference(readSceneInitiativeState().activeActorRef);
+        if(!actor)return;
+        try{await exchangeActionForManeuver(actor);}catch(e){ui.notifications.warn(e.message);}
     }
     static async #useManeuver() {
         const state = readSceneInitiativeState();

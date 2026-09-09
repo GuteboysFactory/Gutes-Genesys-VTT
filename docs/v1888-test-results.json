@@ -1,0 +1,496 @@
+{
+  "version": "0.0.1888",
+  "environment": "Node v24.19.0; actual service modules with Foundry mocks; no live Foundry session",
+  "passed": 94,
+  "blocked": 1,
+  "files": [
+    {
+      "file": "tests/action-defaults.mjs",
+      "status": "PASS",
+      "output": "PASS default Actions: installation, preservation, retry, permissions\n"
+    },
+    {
+      "file": "tests/action-runtime-binding.mjs",
+      "status": "PASS",
+      "output": "PASS runtime binding: legacy, live values, cancel, maneuver routing\n"
+    },
+    {
+      "file": "tests/action-template-sources.mjs",
+      "status": "PASS",
+      "output": "PASS: Action source identity, private packs, revocation and deleted source\nPASS permission revocation during awaited source read\n"
+    },
+    {
+      "file": "tests/action-template.mjs",
+      "status": "PASS",
+      "output": "PASS: native Action Template schema and sheet registration\n"
+    },
+    {
+      "file": "tests/adversary-art.mjs",
+      "status": "PASS",
+      "output": "PASS: image type/size/decode validation and upload result\n"
+    },
+    {
+      "file": "tests/adversary-forge-workflow.mjs",
+      "status": "PASS",
+      "output": "PASS: Forge cancel/review/create flow, native Item copies, private unlinked NPC, sheet failure after save, failed-save retry and GM authority\n"
+    },
+    {
+      "file": "tests/adversary-forge.mjs",
+      "status": "PASS",
+      "output": "PASS: Forge role mapping, minion totals and dynamic skill ranks, Nemesis activation bounds, invalid data rejection\n"
+    },
+    {
+      "file": "tests/adversary-library.mjs",
+      "status": "PASS",
+      "output": "PASS: concurrent one-time native compendium installation, source deletion retained, independent custom templates and GM authority\n"
+    },
+    {
+      "file": "tests/adversary-templates.mjs",
+      "status": "PASS",
+      "output": "PASS: 101 templates, native schema constraints, source isolation, damage basis, qualities, dice labels and visual-reference M/R order\n"
+    },
+    {
+      "file": "tests/adversary-transfer.mjs",
+      "status": "PASS",
+      "output": "PASS: package validation, isolated copies, direct visible placement without confirmations or automatic encounter mutation\n"
+    },
+    {
+      "file": "tests/audit-closure-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS archetype formulas, default defense, creation cap, talent pyramid/ranked tiers, Precision/Conduit/Side Step, 112 exact talent references, material errata, repair and environmental tables\n"
+    },
+    {
+      "file": "tests/audit-final-contracts-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS initiative PC tie/side slots, one action/two maneuvers, per-hit Success/soak/crit eligibility, Reinforced on both weapons, Rival/Nemesis strain, native magic cost and difficulty ceiling\nPASS Accurate/Inaccurate both remain in the pool; one recorded minion condition modifies the group check\n"
+    },
+    {
+      "file": "tests/authoritative-effects-v1881.mjs",
+      "status": "PASS",
+      "output": "PASS real authority queue: Renewal concurrency/saved-roll retry/handover, unchanged turn allowances, atomic concentration payment and player authorization\n"
+    },
+    {
+      "file": "tests/character-creation-custom-v1815.mjs",
+      "status": "PASS",
+      "output": "PASS: custom archetype/career normalization, grants, derived values, XP, and validation\n"
+    },
+    {
+      "file": "tests/character-creator-talent-details-v1816.mjs",
+      "status": "PASS",
+      "output": "PASS: Character Creator reads the same Talent explanation fields as Talent Library\n"
+    },
+    {
+      "file": "tests/character-sheet-layout-v1819.mjs",
+      "status": "PASS",
+      "output": "PASS: Actions and Dice Tools retain the 50/50 top row\n"
+    },
+    {
+      "file": "tests/character-sheet-layout-v1820.mjs",
+      "status": "PASS",
+      "output": "PASS: Custom and Talent Actions are stacked beneath Combat Actions\n"
+    },
+    {
+      "file": "tests/character-sheet-responsive-v1823.mjs",
+      "status": "PASS",
+      "output": "PASS: Concentration and Biography initiative adapt to narrow sheets\n"
+    },
+    {
+      "file": "tests/combat-audit-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS COMBAT-009 lower skill/characteristic, higher difficulty+1 and independent damage; COMBAT-010 unarmed strain/soak; MOVE-001 all-engagement disengage; Grapple overrides Tumble\n"
+    },
+    {
+      "file": "tests/concentration-recovery-v1881.mjs",
+      "status": "PASS",
+      "output": "PASS concentration atomic payment, partial target retry, extra activation expiry, cast duration, conflict review, removed targets, GM authority and player dispatch\n"
+    },
+    {
+      "file": "tests/condition-turn-retry-v1859.mjs",
+      "status": "PASS",
+      "output": "PASS: atomic condition tick marker, retry after scene failure, failed actor save, rewind and new encounter\n"
+    },
+    {
+      "file": "tests/consumables-maneuvers-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS consumable daily counters, social use, actual inventory, retry, next-three-turn duration, extra activation, expiry once, maneuver ceiling and strain payment recovery\n"
+    },
+    {
+      "file": "tests/core-rule-contract-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS 36 named Core audit contracts: DICE-001, DICE-002, DICE-003, DICE-004, DICE-005, DICE-006, POOL-001, POOL-002, POOL-003, POOL-004, POOL-005, POOL-006, POOL-007, POOL-008, POOL-009, POOL-010, CHECK-001, CHECK-002, CHECK-003, CHECK-004, STORY-004, STORY-005, XP-001, XP-002, HEALTH-001, HEALTH-003, MINION-001, MINION-002, MINION-003, MINION-004, MINION-005, COMBAT-001, COMBAT-002, COMBAT-006, COMBAT-007, CRITICAL-SCATTERED\n"
+    },
+    {
+      "file": "tests/crafting-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS crafting formulas, symbol budgets, repeat limits, consumption, interruption recovery, idempotent outputs and authority\n"
+    },
+    {
+      "file": "tests/critical-check-modifiers-v1886.mjs",
+      "status": "PASS",
+      "output": "PASS persistent critical characteristic filters, difficulty/upgrades, healed/disabled and suppression\nPASS magic integration preserves positive effects while applying critical penalties\n"
+    },
+    {
+      "file": "tests/critical-durable-v1882.mjs",
+      "status": "PASS",
+      "output": "PASS Durable rank, disabled/duplicate talents, authoritative rank, combined modifiers, floor and targeted Flying Mount errata\n"
+    },
+    {
+      "file": "tests/critical-lifecycle-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS immediate injury receipt, one-check expiry, Distracted next turn, Slowed Down last allied slot, At the Brink, Bleeding Out once per activation and Horrific Injury healing\n"
+    },
+    {
+      "file": "tests/critical-recovery-v1886.mjs",
+      "status": "PASS",
+      "output": "PASS weekly recovery, failures, atomic injury/condition removal, authority and intact Dimora provenance\n"
+    },
+    {
+      "file": "tests/encounter-extra-activation-completion-v1825.mjs",
+      "status": "PASS",
+      "output": "PASS: extra activations can be completed explicitly during End of Round\n"
+    },
+    {
+      "file": "tests/encounter-recovery-v1838.mjs",
+      "status": "PASS",
+      "output": "PASS: encounter recovery engine, Simple checks, success-only healing, zero-success receipts, duplicate prevention, GM permissions and chat-failure safety\n"
+    },
+    {
+      "file": "tests/encounter-tracker-overhaul-v1824.mjs",
+      "status": "PASS",
+      "output": "PASS: Encounter Tracker overhaul preserves controls and responsive structure\n"
+    },
+    {
+      "file": "tests/equipment-catalog-install.mjs",
+      "status": "PASS",
+      "output": "PASS: Equipment folder, repeat install, preserved edits, permissions and failure recovery\n"
+    },
+    {
+      "file": "tests/equipment-compendiums.mjs",
+      "status": "PASS",
+      "output": "PASS: equipment Compendium type/setting/visibility filters and native source identity\n"
+    },
+    {
+      "file": "tests/equipment-world-v1846.mjs",
+      "status": "PASS",
+      "output": "PASS: world equipment identity, permissions, settings, type and parent filters, edits and deletion\n"
+    },
+    {
+      "file": "tests/fear-v1883.mjs",
+      "status": "PASS",
+      "output": "PASS 17 source profiles, edited references, strongest-only fear, context, confirmation, save/chat failure and duplicate receipt\nPASS world NPC clone preserves source identity for guided abilities\nPASS custom templates retain reviewed rules origin but require intact references\n"
+    },
+    {
+      "file": "tests/forge-drop-v1883.mjs",
+      "status": "PASS",
+      "output": "PASS quick Forge isolation, healthy private NPC, stale scene, import identity and token-layer/Shift/GM drop boundaries\nPASS drop coordinates, visible placement, failed placement cleans only newly created Actor\n"
+    },
+    {
+      "file": "tests/gm-dock-authority-v1839.mjs",
+      "status": "PASS",
+      "output": "PASS: serialized pool writes, secondary-GM/player rejection, GM handoff, persisted reload, change hooks and reconnect wiring\n"
+    },
+    {
+      "file": "tests/gm-dock-encounter-v1836.mjs",
+      "status": "PASS",
+      "output": "PASS: Dock encounter status, extra activation counters, defeat state, token actor sheets and duplicate-safe preparation\n"
+    },
+    {
+      "file": "tests/gm-dock-floating-launcher-v1831.mjs",
+      "status": "PASS",
+      "output": "PASS: GM Dock uses a draggable, persistent GM-only canvas launcher\n"
+    },
+    {
+      "file": "tests/gm-dock-navigation-v1835.mjs",
+      "status": "PASS",
+      "output": "PASS: all six Dock buttons navigate internally, compensate sticky nav, reject invalid targets and enforce GM access\n"
+    },
+    {
+      "file": "tests/gm-dock-party-xp-story-counter-v1833.mjs",
+      "status": "PASS",
+      "output": "PASS: Party XP awards and movable shared Story Point counter are wired\n"
+    },
+    {
+      "file": "tests/gm-dock-recovery-v1837.mjs",
+      "status": "PASS",
+      "output": "PASS: natural rest preview, selected actors, floors, preserved states, permissions, stale previews, duplicate clicks and partial failure reporting\n"
+    },
+    {
+      "file": "tests/gm-dock-shell-v1830.mjs",
+      "status": "PASS",
+      "output": "PASS: GM Dock shell is GM-only, service-backed, non-mutating, navigable and responsive\n"
+    },
+    {
+      "file": "tests/gm-health.mjs",
+      "status": "PASS",
+      "output": "PASS health roster, deduplication, source protection, recovery partial failure, permissions\nPASS batch Survival uses one wilderness confirmation and cancel rolls nothing\n"
+    },
+    {
+      "file": "tests/heroic-activation-v1841.mjs",
+      "status": "PASS",
+      "output": "PASS: Heroic coordinated saves, rollback, interrupted journal recovery, insufficient points, uses and next-owner-turn duration\n"
+    },
+    {
+      "file": "tests/heroic-aura-v1851.mjs",
+      "status": "PASS",
+      "output": "PASS: aura target identity, Boost/Setback, movement, timing and active-state checks\n"
+    },
+    {
+      "file": "tests/heroic-custom-v1845.mjs",
+      "status": "PASS",
+      "output": "PASS: Custom effect validation, cancellation, atomic definition/purchase and duplicate name checks\n"
+    },
+    {
+      "file": "tests/heroic-devastating-v1849.mjs",
+      "status": "PASS",
+      "output": "PASS: Devastating active gating, damage before soak, misses and unchanged weapon source\n"
+    },
+    {
+      "file": "tests/heroic-dock-controls-v1861.mjs",
+      "status": "PASS",
+      "output": "PASS: selected active controls, custom descriptions, inactive/unavailable action rejection\n"
+    },
+    {
+      "file": "tests/heroic-empowered-v1850.mjs",
+      "status": "PASS",
+      "output": "PASS: Empowered integrated modifier, one Boost, active gating and no state mutation\n"
+    },
+    {
+      "file": "tests/heroic-hard-to-kill-v1862.mjs",
+      "status": "PASS",
+      "output": "PASS: Hard to Kill Base/Improved soak, inactive/unrelated exclusion, explicit Supreme boundary\n"
+    },
+    {
+      "file": "tests/heroic-library.mjs",
+      "status": "PASS",
+      "output": "PASS 11 Heroic Items, idempotent install and owned ability routing\n"
+    },
+    {
+      "file": "tests/heroic-live-foundation-v1840.mjs",
+      "status": "PASS",
+      "output": "PASS: atomic 2-point cost, insufficient funds no-write, single-point compatibility, setting-aware Heroic overview and explicit GM reset\n"
+    },
+    {
+      "file": "tests/heroic-primary-effects.mjs",
+      "status": "PASS",
+      "output": "PASS: Heroic tiers, expiry, recovery, selected rolled dice, critical suppression, social reductions and temporary weapon qualities\n"
+    },
+    {
+      "file": "tests/heroic-primary-workflows.mjs",
+      "status": "PASS",
+      "output": "PASS: GM workflow cancellation, per-turn facts, temporary point expiry independence, duplicate prevention, saved result despite chat failure, atomic critical and condition healing\n"
+    },
+    {
+      "file": "tests/heroic-pulse-v1852.mjs",
+      "status": "PASS",
+      "output": "PASS: pulse NPC routing, heal floor, partial failure retry, duplicate prevention and authority\n"
+    },
+    {
+      "file": "tests/heroic-secondary-v1844.mjs",
+      "status": "PASS",
+      "output": "PASS: Secondary Effect catalogue validation, cancellation, purchases, duplicate/capacity limits and stale catalogue\n"
+    },
+    {
+      "file": "tests/heroic-turn-v1848.mjs",
+      "status": "PASS",
+      "output": "PASS: owner turn recovery, duplicate/concurrent calls, rewind, mid-turn activation, failed saves, floor and authority\n"
+    },
+    {
+      "file": "tests/heroic-unleash.mjs",
+      "status": "PASS",
+      "output": "PASS: Unleash once per round, target-save retry without repeat maneuver, Improved incidental and GM authority\n"
+    },
+    {
+      "file": "tests/heroic-upgrades-v1843.mjs",
+      "status": "PASS",
+      "output": "PASS: Heroic upgrade costs, cancellation, XP preservation, failed saves, stale state, activation lock and authority\n"
+    },
+    {
+      "file": "tests/initiative-authority-integration-v1858.mjs",
+      "status": "PASS",
+      "output": "PASS: service routes simultaneous GM claims and player End Turn; player reset rejected\n"
+    },
+    {
+      "file": "tests/initiative-recovery-v1860.mjs",
+      "status": "PASS",
+      "output": "PASS: recovery detects partial/completed actor work and rejects other turns/encounters\n"
+    },
+    {
+      "file": "tests/initiative-transport-v1858.mjs",
+      "status": "PASS",
+      "output": "PASS: request/reply, trusted event user, forged replies ignored, duplicate event, GM/owner guards, no GM and failed delivery\n"
+    },
+    {
+      "file": "tests/initiative-write-queue-v1857.mjs",
+      "status": "PASS",
+      "output": "PASS: per-scene sequencing, independent scenes, failure recovery, stale revision rejection and reset persistence\n"
+    },
+    {
+      "file": "tests/magic-actions-banner-v1822.mjs",
+      "status": "PASS",
+      "output": "PASS: Magic Actions copy stacks above a full-width Compose Spell button\n"
+    },
+    {
+      "file": "tests/magic-actions-placement-v1821.mjs",
+      "status": "PASS",
+      "output": "PASS: Magic Actions mounts above General Actions for magic-enabled Actors\n"
+    },
+    {
+      "file": "tests/magic-concentration-identity.mjs",
+      "status": "PASS",
+      "output": "PASS concentration identity, target permissions, lifecycle authority\n"
+    },
+    {
+      "file": "tests/medical-care-v1884.mjs",
+      "status": "PASS",
+      "output": "PASS medical thresholds, self/equipment modifiers, atomic health/receipt, failed checks, chat/save failure and GM authority\n"
+    },
+    {
+      "file": "tests/mounts-equipment-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS craftsmanship replacement/capacity/type validation, mount predicates, independent-turn block, incapacitation fall once and token deletion cleanup\n"
+    },
+    {
+      "file": "tests/narrative-dice-transfer-v1818.mjs",
+      "status": "PASS",
+      "output": "0.0.1818 narrative dice transfer tests passed\n"
+    },
+    {
+      "file": "tests/npc-abilities-v1881.mjs",
+      "status": "PASS",
+      "output": "PASS source-preserving Forge ability enrichment, edited-reference exclusion, native Second Wind, regeneration per activation, atomic retry and disabled/dead guards\n"
+    },
+    {
+      "file": "tests/npc-magic-v1887.mjs",
+      "status": "PASS",
+      "output": "PASS real Forge/magic integration: 11 provenance profiles, disabled/edited/duplicate handling, innate floors/damage, Dark Insight, automatic effects, chosen free effect and implement overlap\nPASS NPC career exemption does not waive PC career rules or permit Minion casting; Dark Insight uses current Forbidden rank\nPASS native skill-engine Arcana/other-skill boundaries and innate floors\n"
+    },
+    {
+      "file": "tests/painkillers-v1885.mjs",
+      "status": "PASS",
+      "output": "PASS diminishing healing, provider rank, disabled talent, sixth dose zero, reset revisions and atomic save/chat retry\n"
+    },
+    {
+      "file": "tests/physical-rules-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS ENC-001/002/003 formulas, worn armor, reference exclusion, CHAR-001/002 and QUAL-003 real characteristic deficiency\nPASS COMBAT-008 defense providers do not stack, increases add, cap four\n"
+    },
+    {
+      "file": "tests/portrait-forge-square-v1817.mjs",
+      "status": "PASS",
+      "output": "PASS: Portrait Forge exports through the same square aspect used by the character sheet\n"
+    },
+    {
+      "file": "tests/quality-effects-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS Stun bypasses soak, Linked per-hit damage, Sunder four persistent condition steps, unusable weapon and Reinforced immunity, receipt replay\nPASS actual narrative UI Sunder-on-miss cost 1, Linked cap and separate Advantage/Triumph budget\nPASS secondary quality budget, actual Parry domain reduction/cost, threshold-critical partial failure without repeated damage or reaction\n"
+    },
+    {
+      "file": "tests/reaction-choice-validation.mjs",
+      "status": "PASS",
+      "output": "PASS reaction choice eligibility validation\n"
+    },
+    {
+      "file": "tests/recovery-expansion-v1887.mjs",
+      "status": "PASS",
+      "output": "PASS recovery for individual NPCs outside encounters, Surgeon failed/disabled, per-patient concurrent serialization, duplicate episode/dose protection, dead/minion guards and atomic critical healing\n"
+    },
+    {
+      "file": "tests/recovery-talents-v1881.mjs",
+      "status": "PASS",
+      "output": "PASS strict half-threshold, disabled talents, Apothecary caregiver/rank validation, natural healing and zero-success recovery receipt\n"
+    },
+    {
+      "file": "tests/renewal-resolution-v1855.mjs",
+      "status": "PASS",
+      "output": "PASS: Renewal saved retry, idempotency, cancellation, authority, encounter scope, participant edits/removal and round eligibility\n"
+    },
+    {
+      "file": "tests/renewal-slots-v1854.mjs",
+      "status": "PASS",
+      "output": "PASS: Renewal persistence, claim preservation, no extra activations, skip, round sorting and encounter cleanup\n"
+    },
+    {
+      "file": "tests/round-token-v1884.mjs",
+      "status": "PASS",
+      "output": "PASS standard round token uses shared circular crop, gold-frame draw path and separate PNG upload; GM-only\n"
+    },
+    {
+      "file": "tests/rule-services-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS owned attachment capacity/direct-edit guard, saved repair outcome/payment gate, interrupted Story Point reservation cancellation and rolled-check protection\n"
+    },
+    {
+      "file": "tests/runes-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS 17 shard profiles, separate trained implement rules, forced/free effects, costs, untrained Discipline weapon activation, retry, expiry and once-per-encounter healing\nPASS rune round expiry occurs before the next out-of-duration check\n"
+    },
+    {
+      "file": "tests/second-wind-atomic-v1881.mjs",
+      "status": "PASS",
+      "output": "PASS Second Wind real rule evaluation, atomic health/usage write, scene identity, once-per-encounter across extra activation, failure retry and dispatch\n"
+    },
+    {
+      "file": "tests/session-controls-v1834.mjs",
+      "status": "PASS",
+      "output": "PASS: session start/end persistence, duplicate protection, permissions, queue recovery and Spend controls\n"
+    },
+    {
+      "file": "tests/social-archetypes-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS social opposition, 4-Advantage critical remark, failed-check strain, partial-update recovery, hot-tempered strict half threshold, once/session Story Point transfer with retry\n"
+    },
+    {
+      "file": "tests/story-check-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS session seeding and retry, deferred simultaneous transfers, Impossible permission and one-point limit, reservation lock and finalization replay\n"
+    },
+    {
+      "file": "tests/story-points-live-v1832.mjs",
+      "status": "PASS",
+      "output": "PASS: synchronized Story Point pools, transfers, history, GM gate, and smooth launcher drag are wired\n"
+    },
+    {
+      "file": "tests/talent-world-library.mjs",
+      "status": "PASS",
+      "output": "PASS: native talent visibility, stable independent IDs, edits and deletion\nPASS: compendium loading and permission revocation\nPASS: catalog identity, repeated install, edit preservation and private source filtering\nPASS: Talents folder creation/reuse and root-only organization\n"
+    },
+    {
+      "file": "tests/terrinoth-faq-v1888.mjs",
+      "status": "PASS",
+      "output": "PASS Dungeoneer uncancelled Threat/rank/context; Impaling Strike next-turn condition; complete Terrinoth action matrix; same PC Arcana+Verse; real magic-purchase wrapper rejects non-career ranks\n"
+    },
+    {
+      "file": "tests/ui-coordinator-unit-v1812.cjs",
+      "status": "PASS",
+      "output": "PASS: coordinator scheduling unit tests (mock observer; not a browser test)\n"
+    },
+    {
+      "file": "tests/ui-coordinator-v1812.cjs",
+      "status": "BLOCKED",
+      "output": "browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1234/chrome-headless-shell-linux64/chrome-headless-shell\n╔════════════════════════════════════════════════════════════╗\n║ Looks like Playwright was just installed or updated.       ║\n║ Please run the following command to download new browsers: ║\n║                                                            ║\n║     npx playwright install                                 ║\n║                                                            ║\n║ <3 Playwright Team                                         ║\n╚════════════════════════════════════════════════════════════╝\n    at /workspace/scratch/4693a8b26904/genesys-v1884/tests/ui-coordinator-v1812.cjs:6:34\n    at Object.<anonymous> (/workspace/scratch/4693a8b26904/genesys-v1884/tests/ui-coordinator-v1812.cjs:37:3) {\n  log: [],\n  name: 'Error'\n}\n"
+    },
+    {
+      "file": "tests/winded-v1887.mjs",
+      "status": "PASS",
+      "output": "PASS Winded voluntary costs, free effects, paid reaction exclusion, healing and Unbowed suppression\n"
+    },
+    {
+      "file": "tests/world-background-v1885.mjs",
+      "status": "PASS",
+      "output": "PASS fixed native WorldConfig background, submit enforcement and unrelated-system/application isolation\n"
+    }
+  ],
+  "sourceChecks": {
+    "census": 79,
+    "statValues": 817,
+    "skills": 371,
+    "weapons": 120,
+    "nativeQualityRatings": 189,
+    "referenceTexts": 212,
+    "diceColorGlyphsCompared": false,
+    "importerQualityReproduction": "79 profiles; zero native quality differences",
+    "javascriptSyntaxChecks": 76,
+    "systemModulePaths": 82,
+    "webpSha256": "cc13dbe09750b37e578e0dc368eb329404f5ce668a0f45ee2e300b4a4be920a9"
+  }
+}

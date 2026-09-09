@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+globalThis.Hooks={once(){},on(){},callAll(){}};
+let raw={player:2,gm:1},serial=0;
+globalThis.foundry={utils:{randomID:()=>`sp${++serial}`}};
+globalThis.game={user:{id:'gm',isGM:true},users:{activeGM:{id:'gm'}},settings:{get:()=>raw,async set(_s,_k,v){raw=structuredClone(v);}}};
+const api=await import('../dist/module/story-point-service-v1832.js');
+await api.seedSessionStoryPoints(1,4);assert.equal(raw.player,4);assert.equal(raw.gm,1);
+await api.beginCheckStoryPoints('check',{player:1,gm:1});assert.equal(raw.player,4);assert.equal(raw.gm,1,'reservation does not transfer');
+await assert.rejects(api.spendStoryPoint('gm'),/recover|interrupted/i);
+await api.finishCheckStoryPoints('check');assert.equal(raw.player,4);assert.equal(raw.gm,1);
+await api.beginCheckStoryPoints('impossible',{player:1,gm:0},{impossible:true,gmApproved:true});assert.equal(raw.player,4);await api.finishCheckStoryPoints('impossible');assert.equal(raw.player,3);assert.equal(raw.gm,2);await api.finishCheckStoryPoints('impossible');assert.equal(raw.player,3);
+await assert.rejects(api.beginCheckStoryPoints('bad',{player:2,gm:0},{impossible:true,gmApproved:true}),/exactly one/);
+await api.seedSessionStoryPoints(1,4);assert.equal(raw.player,3,'session retry does not reset spent pools');
+await api.seedSessionStoryPoints(2,3);assert.equal(raw.player,3);assert.equal(raw.gm,1);
+await api.beginCheckStoryPoints('gm-check',{player:0,gm:1});assert.equal(raw.gm,1);await api.finishCheckStoryPoints('gm-check');assert.equal(raw.gm,0);assert.equal(raw.player,4);
+console.log('PASS session seeding and retry, deferred simultaneous transfers, Impossible permission and one-point limit, reservation lock and finalization replay');

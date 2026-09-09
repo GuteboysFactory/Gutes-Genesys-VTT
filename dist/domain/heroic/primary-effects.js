@@ -36,7 +36,7 @@ export function paragonResult(result,ability,{negativeIndex=-1,setbackIndex=-1}=
 }
 export function influentialValues(ability,{characteristic=0,presence=0,cool=0,strain=0,voluntary=false,social=false}={}) {
  const rank=primaryRank(ability,'influential');
- return {bonus:rank&&social?Math.max(0,characteristic):0,criticalRemarkCost:rank>=2&&social?2:3,
+ return {bonus:rank&&social?Math.max(0,characteristic):0,criticalRemarkCost:rank>=2&&social?2:4,
   strain:rank===3&&social&&!voluntary?Math.max(0,strain-Math.max(presence,cool)):strain};
 }
 /** Only data-backed attachment qualities are automatic; descriptive attachment rules remain GM resolved. */

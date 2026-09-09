@@ -15,7 +15,7 @@ export function listApothecaries() {
 }
 export function carePreview(id) { const actor=game.actors.get(id); if(!actor)throw Error('Caregiver unavailable.'); return apothecaryCare(actor); }
 export function nightRestPreview(actor, care = null) {
-  if (actor?.type !== 'character' || actor?.system?.role !== 'pc') throw new Error('Select player characters for natural rest.');
+  if (actor?.type !== 'character' || !['pc','rival','nemesis'].includes(actor?.system?.role)) throw new Error('Select an individual PC, Rival or Nemesis for natural rest.');
   const dead = (actor.system.criticalInjuries ?? []).some(row => row.active !== false && row.healed !== true && (Number(row.total) >= 151 || String(row.name).toLowerCase() === 'dead'));
   if (dead) throw new Error('Natural rest cannot revive a dead character.');
   const before = { wounds: amount(actor.system.wounds?.value), strain: amount(actor.system.strain?.value) };

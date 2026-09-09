@@ -1,3 +1,4 @@
+import {TALENT_SOURCE_PAGES} from './talent-source-pages-v1888.js';
 import { REALMS_OF_TERRINOTH_TALENT_PACK } from "./realms-of-terrinoth-talents.js";
 import { talentRulesSummary } from "./talent-rules-summaries.js";
 
@@ -56,6 +57,7 @@ function correctedSourceType(entry) {
 }
 
 function sourceReference(entry, sourceType) {
+  const exact=TALENT_SOURCE_PAGES[entry.id];if(exact)return `${sourceType === "realms-of-terrinoth"?"Realms of Terrinoth":"Genesys Core Rulebook"} p. ${exact.page}`;
   if (sourceType === "realms-of-terrinoth") return "Realms of Terrinoth pp. 84–91";
   const page = CORE_PAGE_REFERENCES[entry?.label];
   return page ? `Genesys Core Rulebook p. ${page}` : "Genesys Core Rulebook";
@@ -75,6 +77,7 @@ function detailTalent(entry) {
     notes: "",
     metadata: {
       ...(entry?.metadata ?? {}),
+      sourcePage:TALENT_SOURCE_PAGES[entry.id]?.page,sourceVersion:"Official book + FAQ v1.1",category:"talent",
       printedSource: sourceType === "realms-of-terrinoth" ? "Realms of Terrinoth" : "Genesys Core Rulebook",
       automationStatus: automated ? "implemented" : "manual",
       rulesSummaryStatus: "quick-reference",
